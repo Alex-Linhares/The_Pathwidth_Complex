@@ -16,6 +16,55 @@ Started 2026-10-09. Check items off as they are done.
   checked by `paper1/complex_check.py` on small instances, and only then a
   Lean statement in `lean/MOSPFormalization/Complex/`.
 
+  **The owner's first candidates, read in Garey & Johnson (2026-11-06; scanned
+  book, entries read from rendered pages 198–201 and 228–229):**
+  - **GT35 Interval Graph Completion** (p. 198): is there an interval supergraph
+    with at most `K` added edges; Garey, Gavril & Johnson 1977, from Optimal
+    Linear Arrangement; NP-complete even on line graphs. *Reading*: this is the
+    **sum** objective of the family. Pathwidth + 1 is the smallest clique number
+    of an interval supergraph (interval thickness, in the complex already); the
+    smallest *number of edges* of an interval supergraph is the **profile**
+    (Billionnet 1986, to be checked and held), the sum analogue of pathwidth as
+    the minimum linear arrangement is of bandwidth. Not a member; a relative to
+    state as such, with the exact relation to the complex's interval-thickness
+    row written out.
+  - **SR16 Consecutive Ones Matrix Augmentation** (p. 229): change at most `K`
+    zeros to ones so that the matrix has the consecutive-ones property; Booth
+    1975, Papadimitriou 1976a, from Optimal Linear Arrangement. *Reading*: on a
+    MOSP matrix (customers × patterns) a pattern order with every row's ones
+    consecutive is exactly an order in which every stack closes as soon as it
+    opens; the ones added count, summed over customers, the idle open-stack time
+    `Σ_c (last_c − first_c + 1 − |row_c|)`, so this is the **sum** version of
+    MOSP where MOSP is the **max over time** of open rows — the matrix form of
+    GT35. Not a member; the same relative seen from the matrix side (and the
+    matrix side of Billionnet's profile, to be checked). SR14 Consecutive Ones
+    Submatrix (p. 228, Booth 1975; from Hamiltonian Path) is the deletion
+    variant, to be placed beside it.
+  - **GT44 Minimum Cut Linear Arrangement** (p. 201): cutwidth; Stockmeyer
+    1974b, Gavril 1977a, from Simple Max Cut. *Reading*: a **band relative on
+    bounded degree**, not a member: `pw ≤ cw ≤ Δ · pw` (Chung & Seymour 1989;
+    Korach & Solel 1993), exact for `Δ ≤ 3` through the degree-clique expansion
+    of `reports/subexp_pathwidth.md` §3.4 (Makedon & Sudborough 1989 to be
+    checked for the same statement). The complex already has the negative:
+    edge separation as cutwidth is false (`Complex/EdgeSeparation.lean`). The
+    owner's "maybe" is right: in the paper as a band row for subcubic graphs,
+    or out.
+  - **GT42 Optimal Linear Arrangement** (p. 200): `Σ_{uv ∈ E} |f(u) − f(v)| ≤ K`;
+    Garey, Johnson & Stockmeyer 1976, from Simple Max Cut; polynomial on trees.
+    *Reading*: the sum version of **bandwidth**, two steps from pathwidth (sum
+    for max, bandwidth for pathwidth); no fixed offset or band with pathwidth
+    is known to us and none is expected (a path has arrangement cost `n − 1` and
+    pathwidth 1; a star has cost `Θ(n²)` and pathwidth 1). Out, unless the
+    owner knows a relation we do not.
+  - Spotted on the same pages, to place: **GT40 Bandwidth** (p. 200; the
+    complex has split bandwidth as a band, bandwidth itself is not within a
+    band of pathwidth: `pw ≤ bw`, ratio unbounded); **GT36 Path Graph
+    Completion** (p. 199, Gavril 1977b, from Interval Graph Completion:
+    supergraph an intersection graph of paths in a tree) — the tree-shaped
+    cousin of GT35, a sum problem, out; **GT46 Directed Elimination Ordering**
+    and **GT47 Elimination Degree Sequence** (p. 201) — the chordal /
+    treewidth side, out.
+
 ## Before posting on arXiv
 
 Done 2026-10-19: the source bundle builds and compiles standalone
