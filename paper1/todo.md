@@ -28,6 +28,20 @@ Started 2026-10-09. Check items off as they are done.
     the minimum linear arrangement is of bandwidth. Not a member; a relative to
     state as such, with the exact relation to the complex's interval-thickness
     row written out.
+    *Checked 2026-11-06 at the owner's question "Interval Graph Completion =
+    MOSP?"*: the two are different objectives over the same family of
+    interval supergraphs — fewest added edges (GT35, = profile) against
+    smallest clique number (interval thickness = pathwidth + 1 = MOSP). On
+    every connected graph of the atlas to 7 vertices and on 48 random sparse
+    graphs at 8–9 vertices (exhaustive over orderings) **some ordering is
+    optimal for both** — no separating example found yet. A separating
+    example is expected on trees (profile-optimal orders are DFS-like, with
+    vertex separation about the height, while the pathwidth of a complete
+    binary tree is about half the height): **to do**, a complete binary tree
+    of height 4 or 5 with an exact profile (Kuo & Chang 1994, polynomial on
+    trees, to be held) against its pathwidth. If none exists, that is a
+    theorem relating the two rows and worth stating; if one does, it is the
+    sentence that separates them.
   - **SR16 Consecutive Ones Matrix Augmentation** (p. 229): change at most `K`
     zeros to ones so that the matrix has the consecutive-ones property; Booth
     1975, Papadimitriou 1976a, from Optimal Linear Arrangement. *Reading*: on a
