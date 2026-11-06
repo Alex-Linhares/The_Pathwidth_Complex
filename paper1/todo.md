@@ -137,7 +137,20 @@ pass (the hypercube and Mycielski theorems were missing from
       Garcia de la Banda & Stuckey (2007), already held, and the 19 papers to
       obtain listed in `literature/MISSING.md`.
 
-- [ ] **The solver claim: head-to-head against SageMath** (high priority; ready to run: `pathwidth_solver/bench/sage_headtohead.py`, SageMath 10.8 in the `sage` conda env; needs a quiet machine). "Best" would hold
+- [ ] **Scaling table for the parallel refutation at 1, 2, 4, 8 and 16 cores** (owner,
+      2026-11-06), beside the SageMath comparison but kept out of it (Sage has no
+      parallel mode): on the graphs Sage could not finish, our split refutation at
+      each core count, wall time and total nodes (the lost memo hits and the waste
+      counted). Needs the split driver for graphs: `paper1/solver_fix_split.py`
+      works on MOSP instances, so either an adapter that writes a graph as a
+      MOSP instance with one pattern per edge (its customer graph is the graph,
+      Theorem~thm:mosp) or a graph-side split in `pathwidth_solver/`.
+- [ ] **The solver claim: head-to-head against SageMath** — **running since
+      2026-11-06 22:05** as the paired, pinned, CPU-capped protocol of
+      `pathwidth_solver/bench/sage_paired.py` (both solvers start together, one
+      physical core each, `RLIMIT_CPU` 600 s, nice 19, 6 pairs at once; output
+      `results/sage_paired_600s.csv`); a 50-graph variance sample (`--sample 50`)
+      to be run again on a busy afternoon. (high priority; ready to run: `pathwidth_solver/bench/sage_headtohead.py`, SageMath 10.8 in the `sage` conda env; needs a quiet machine). "Best" would hold
       after a few hours of running SageMath's solver against ours on this
       machine, which is better done once the split run finishes. SageMath's
       `vertex_separation(algorithm="BAB")` is Coudert, Mazauric & Nisse's (2016)
