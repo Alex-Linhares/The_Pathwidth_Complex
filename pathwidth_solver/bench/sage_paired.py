@@ -4,7 +4,7 @@
 For every graph the two solvers start at the same moment, each pinned to its own
 physical core (hyperthread siblings left to the machine), both at `nice -n 19`,
 each with the same **CPU-time** cap (`RLIMIT_CPU`) and a wall-clock hard kill at
-twice the cap plus a minute. Whatever the machine's other load does, it does to
+four times the cap plus a minute. Whatever the machine's other load does, it does to
 both; and CPU time, not the clock, is what is recorded and compared.
 
   * SageMath: `vertex_separation(G, algorithm="BAB")`, the branch and bound of
@@ -46,7 +46,7 @@ from readers import HERE as INST, SETS, read_any  # noqa: E402
 
 SAGE_PY = "/home/al/anaconda3/envs/sage/bin/python"
 CLI = HERE.parent / "cli" / "pathwidth"
-FIELDS = ["set", "name", "n", "m", "cap", "load1",
+FIELDS = ["set", "name", "n", "m", "cap", "load1", "load1_end",
           "ours_width", "ours_status", "ours_proof", "ours_cpu", "ours_wall", "ours_nodes", "ours_core",
           "sage_width", "sage_status", "sage_cpu", "sage_wall", "sage_core", "sage_detail"]
 
@@ -117,7 +117,7 @@ def run_pair(job) -> dict:
     with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
         json.dump([G.number_of_nodes(), edges], f)
         gfile = f.name
-    hard = 2 * cap + 60
+    hard = 4 * cap + 60      # under heavy contention a pinned process may need several times the wall time to spend its CPU cap
     tfile = gfile + ".time"
     ours_cmd = ["taskset", "-c", str(core_ours), "/usr/bin/time", "-f", "%U %S", "-o", tfile,
                 str(CLI), "-t", str(cap), "-l", "-v"]
@@ -128,6 +128,7 @@ def run_pair(job) -> dict:
         o_out, o_err, o_rc, o_wall, o_status = fo.result()
         s_out, s_err, s_rc, s_wall, s_status = fs.result()
     Path(gfile).unlink(missing_ok=True)
+    row["load1_end"] = round(os.getloadavg()[0], 1)
     # ours: stdout "pathwidth w status" (+ layout); stderr -v line: n width status lower upper nodes minor_nodes calls seconds
     for line in o_out.decode(errors="replace").splitlines():
         if line.startswith("pathwidth "):
