@@ -199,20 +199,35 @@ def main() -> None:
     new = not a.out.exists() or a.out.stat().st_size == 0
     slots = [(cores[a.first_core + 2 * i], cores[a.first_core + 2 * i + 1]) for i in range(a.pairs)]
     k = 0
-    with open(a.out, "a", newline="") as fh, ThreadPoolExecutor(a.pairs) as pool:
+    import queue, threading
+    q: "queue.Queue" = queue.Queue()
+    for item in todo:
+        q.put(item)
+    lock = threading.Lock()
+    with open(a.out, "a", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=FIELDS)
         if new:
             w.writeheader()
-        # a fixed slot per worker: submit in waves of `pairs` so cores are never shared
-        pending = list(todo)
-        while pending:
-            wave, pending = pending[:a.pairs], pending[a.pairs:]
-            futs = [pool.submit(run_pair, (s, p, a.cap, slots[i][0], slots[i][1])) for i, (s, p) in enumerate(wave)]
-            for fut in as_completed(futs):
-                row = fut.result(); w.writerow(row); fh.flush(); k += 1
-                print(f"{time.strftime('%T')} {k}/{len(todo)} {row['name'][:40]:40} n={row['n']:>4} | ours w={row['ours_width']} "
-                      f"{row['ours_proof']:10} {row['ours_wall']}s nodes {row['ours_nodes']} | sage w={row['sage_width']} "
-                      f"{row['sage_status']:7} cpu {row['sage_cpu']}s | load {row['load1']}", flush=True)
+
+        def worker(slot):            # one worker per core pair; it owns its two cores for the whole run
+            nonlocal k
+            while True:
+                try:
+                    s_, p_ = q.get_nowait()
+                except queue.Empty:
+                    return
+                row = run_pair((s_, p_, a.cap, slot[0], slot[1]))
+                with lock:
+                    w.writerow(row); fh.flush(); k += 1
+                    print(f"{time.strftime('%T')} {k}/{len(todo)} {row['name'][:40]:40} n={row['n']:>4} | ours w={row['ours_width']} "
+                          f"{row['ours_proof']:10} {row['ours_wall']}s nodes {row['ours_nodes']} | sage w={row['sage_width']} "
+                          f"{row['sage_status']:7} cpu {row['sage_cpu']}s | load {row['load1']}", flush=True)
+
+        threads = [threading.Thread(target=worker, args=(slots[i],)) for i in range(a.pairs)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
     print(f"{time.strftime('%F %T')} done: {k} graphs", flush=True)
 
 
