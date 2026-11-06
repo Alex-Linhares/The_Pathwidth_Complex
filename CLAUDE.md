@@ -570,8 +570,10 @@ paper2/                         → Paper 2, MOSP on structured instances (plan.
                                     polynomial cases, more members of the complex, the wavefront and vertex-search
                                     reports; to_fetch.md is the reading list)
 pathwidth_solver/               → Exact graph pathwidth solver, Chu & Stuckey's search ported to graphs
-                                    (transferred from ~/dev/pathwidth 2026-09-30, see TRANSFER.md; Rome
-                                    11,183 / 11,534 proved, VSPLIB trees 50 / 50, HB 39 / 73)
+                                    (transferred from ~/dev/pathwidth 2026-09-30, see TRANSFER.md; since
+                                    October every one of the 11,534 Rome graphs is proved, VSPLIB trees 50 / 50,
+                                    HB 43 / 73 — the bench/results/rome*.csv files are the stale September state;
+                                    the record is the dataset's provenance, by member name)
 
 reports/                        → Analysis documents
 tools/drat-trim/                → DRAT proof checker, built from source (loop0003 item 03)
