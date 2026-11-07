@@ -375,9 +375,17 @@ Because the machine was loaded, the CPU-time cap is what makes the comparison
 fair, but it cannot make it exact: a process that is descheduled loses its
 cache, and the same graph can cost either solver more or fewer processor
 seconds on a busy machine than on a quiet one. To measure the variance this
-adds, a 50-graph sample drawn from the same sets was run a second time under
-the same protocol; its rows are published with the data
-(Section~\ref{sec:data}).
+adds, a 50-graph sample drawn from the same sets (28 Rome, 7 grids, 5 named, 4
+trees, 4 Harwell--Boeing, 2 colouring) was run a second time under the same
+protocol, at loads between 12 and 56 at launch. Every outcome was the same:
+each solver proved exactly the graphs it had proved the first time, with the
+same widths, and our node counts were identical on all 39 graphs we proved,
+since the search is deterministic and nodes do not see the load. The CPU
+times moved by factors of 0.6 to 1.6 for SageMath (median 0.84 on the 22
+graphs where it ran half a second or more) and of 0.7 to 1.1 for ours on the
+three such graphs, which is the size of the noise in the ratio column of
+Table~\ref{tab:sage}, against ratios of 34 and more. The rows of both runs
+are published with the data (Section~\ref{sec:data}).
 
 \subsection{A checkable proof of a refutation}
 \label{sec:certs}

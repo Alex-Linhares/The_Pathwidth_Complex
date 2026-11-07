@@ -207,9 +207,9 @@ pass (the hypercube and Mycielski theorems were missing from
       "Head to head with SageMath", Table `tables/sage_paired.tex` from
       `paper1/data/sage_paired_600s.csv` (`make_tables.py`). The 50-graph
       variance sample (`--sample 50 --seed 0`) ran on the busy machine from
-      09:22 (`results/sage_paired_sample50_busy.csv`); its comparison with the
-      main run's rows for the same graphs goes into the subsection's last
-      paragraph when it ends.
+      09:22 (`results/sage_paired_sample50_busy.csv`); ended 10:05: every outcome
+      and width the same, node counts identical, CPU times within 0.6-1.6x; in
+      the subsection's last paragraph.
 - [ ] **Add the configuration table to Section 4**, beside Theorem 4.9, so the
       claim is exact and fair: which configurations fail, which do not, and
       that "answers correctly here" is not soundness (the published better move

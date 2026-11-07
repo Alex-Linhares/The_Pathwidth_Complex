@@ -1,0 +1,52 @@
+2026-11-07 09:21:57 sage_paired: 50 graphs (0 done), cap 600 s CPU, 6 pairs on physical cores [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], load 22.4
+09:21:58 1/50 named/gr/MoserSpindle.gr                 n=   7 | ours w=3 bound      0.01s nodes 0 | sage w=3 ok      cpu 0.41s | load 22.4
+09:21:58 2/50 named/gr/AhrensSzekeresGeneralizedQuadra n=  27 | ours w=18 refutation 0.01s nodes 378 | sage w=18 ok      cpu 0.54s | load 22.4
+09:21:58 3/50 coloring/queen7_7.dgf                    n=  49 | ours w=35 refutation 0.04s nodes 5221 | sage w=35 ok      cpu 0.57s | load 22.4
+09:21:59 4/50 named/gr/SymplecticPolarGraph_4_3.gr     n=  40 | ours w=29 refutation 0.11s nodes 83240 | sage w=29 ok      cpu 0.59s | load 22.4
+09:21:59 5/50 rome/rome/grafo10621.37.graphml          n=  37 | ours w=5 refutation 0.01s nodes 1014 | sage w=5 ok      cpu 0.52s | load 22.4
+09:22:00 6/50 rome/rome/grafo11371.36.graphml          n=  36 | ours w=3 bound      0.01s nodes 45 | sage w=3 ok      cpu 0.51s | load 22.4
+09:22:00 7/50 rome/rome/grafo2206.19.graphml           n=  19 | ours w=3 bound      0.0s nodes 37 | sage w=3 ok      cpu 0.5s | load 22.4
+09:22:01 8/50 rome/rome/grafo2243.46.graphml           n=  46 | ours w=5 refutation 0.01s nodes 2723 | sage w=5 ok      cpu 0.5s | load 22.0
+09:22:02 9/50 rome/rome/grafo2278.39.graphml           n=  39 | ours w=4 bound      0.01s nodes 436 | sage w=4 ok      cpu 0.5s | load 22.0
+09:22:02 10/50 rome/rome/grafo2418.17.graphml           n=  17 | ours w=3 refutation 0.0s nodes 35 | sage w=3 ok      cpu 0.5s | load 22.0
+09:22:03 11/50 rome/rome/grafo2604.18.graphml           n=  18 | ours w=3 bound      0.0s nodes 18 | sage w=3 ok      cpu 0.5s | load 22.0
+09:22:04 12/50 rome/rome/grafo2888.27.graphml           n=  27 | ours w=3 bound      0.0s nodes 51 | sage w=3 ok      cpu 0.51s | load 22.0
+09:22:05 13/50 rome/rome/grafo3885.40.graphml           n=  40 | ours w=5 refutation 0.01s nodes 1920 | sage w=5 ok      cpu 0.5s | load 22.0
+09:22:05 14/50 rome/rome/grafo4671.62.graphml           n=  62 | ours w=6 refutation 0.05s nodes 35223 | sage w=6 ok      cpu 0.61s | load 22.0
+09:31:59 15/50 coloring/le450_5d.dgf                    n= 450 | ours w=270 upper      600.04s nodes 196762914 | sage w= timeout cpu s | load 22.4
+09:31:59 16/50 named/gr/OddGraph_5.gr                   n= 126 | ours w=41 upper      600.03s nodes 1494587586 | sage w= timeout cpu s | load 22.4
+09:32:00 17/50 rome/rome/grafo5328.41.graphml           n=  41 | ours w=5 refutation 0.01s nodes 1995 | sage w=5 ok      cpu 0.37s | load 16.1
+09:32:00 18/50 named/gr/RingedTree_8.gr                 n= 255 | ours w=13 minor      1.81s nodes 1289987 | sage w= timeout cpu s | load 22.4
+09:32:00 19/50 rome/rome/grafo10293.99.graphml          n=  99 | ours w=8 minor      0.25s nodes 168286 | sage w= timeout cpu s | load 22.4
+09:32:00 20/50 rome/rome/grafo552.27.graphml            n=  27 | ours w=2 bound      0.01s nodes 26 | sage w=2 ok      cpu 0.39s | load 16.1
+09:32:00 21/50 rome/rome/grafo648.39.graphml            n=  39 | ours w=3 refutation 0.01s nodes 238 | sage w=3 ok      cpu 0.36s | load 16.1
+09:32:00 22/50 rome/rome/grafo6708.49.graphml           n=  49 | ours w=4 bound      0.01s nodes 1309 | sage w=4 ok      cpu 0.41s | load 16.1
+09:32:01 23/50 rome/rome/grafo7673.46.graphml           n=  46 | ours w=3 bound      0.01s nodes 79 | sage w=3 ok      cpu 0.37s | load 16.0
+09:32:01 24/50 rome/rome/grafo7367.44.graphml           n=  44 | ours w=5 refutation 0.01s nodes 4391 | sage w=5 ok      cpu 0.41s | load 16.1
+09:32:01 25/50 rome/rome/grafo10953.93.graphml          n=  93 | ours w=8 minor      0.16s nodes 122793 | sage w= timeout cpu s | load 22.4
+09:32:01 26/50 rome/rome/grafo862.25.graphml            n=  25 | ours w=3 refutation 0.01s nodes 82 | sage w=3 ok      cpu 0.39s | load 16.0
+09:32:01 27/50 rome/rome/grafo8455.61.graphml           n=  61 | ours w=7 refutation 0.07s nodes 69171 | sage w=7 ok      cpu 0.49s | load 16.0
+09:32:02 28/50 rome/rome/grafo9020.65.graphml           n=  65 | ours w=8 minor      0.14s nodes 113856 | sage w=8 ok      cpu 1.17s | load 16.0
+09:32:04 29/50 rome/rome/grafo7082.53.graphml           n=  53 | ours w=5 refutation 0.02s nodes 5121 | sage w=5 ok      cpu 3.76s | load 16.1
+09:32:04 30/50 rome/rome/grafo9741.69.graphml           n=  69 | ours w=7 refutation 0.07s nodes 71277 | sage w=7 ok      cpu 1.67s | load 16.0
+09:32:04 31/50 rome/rome/grafo9967.39.graphml           n=  39 | ours w=4 refutation 0.01s nodes 738 | sage w=4 ok      cpu 0.37s | load 16.0
+09:32:07 32/50 rome/rome/grafo4958.66.graphml           n=  66 | ours w=6 refutation 0.06s nodes 44338 | sage w= timeout cpu s | load 21.6
+09:40:41 33/50 rome/rome/grafo9586.78.graphml           n=  78 | ours w=7 minor      0.09s nodes 103935 | sage w=7 ok      cpu 435.16s | load 16.0
+09:43:04 34/50 rome/rome/grafo7792.96.graphml           n=  96 | ours w=8 minor      0.29s nodes 232669 | sage w= timeout cpu s | load 16.0
+09:43:05 35/50 rome/rome/grafo9037.70.graphml           n=  70 | ours w=8 minor      0.13s nodes 104608 | sage w= timeout cpu s | load 16.0
+09:43:08 36/50 vsplib/grids/grid_13.mtx.rnd             n= 169 | ours w=13 minor      3.14s nodes 2233663 | sage w= timeout cpu s | load 16.0
+09:43:18 37/50 vsplib/grids/grid_15.mtx.rnd             n= 225 | ours w=15 upper      600.03s nodes 542347123 | sage w= timeout cpu s | load 16.0
+09:43:47 38/50 vsplib/grids/grid_22.mtx.rnd             n= 484 | ours w=22 upper      600.06s nodes 123774555 | sage w= timeout cpu s | load 16.0
+09:51:53 39/50 vsplib/grids/grid_24.mtx.rnd             n= 576 | ours w=24 upper      600.18s nodes 119075040 | sage w= timeout cpu s | load 55.5
+09:54:17 40/50 vsplib/hb/can__187.mtx.rnd               n= 187 | ours w=12 refutation 0.34s nodes 53313 | sage w= timeout cpu s | load 32.2
+09:54:18 41/50 vsplib/hb/dwt___59.mtx.rnd               n=  59 | ours w=5 refutation 0.01s nodes 573 | sage w=5 ok      cpu 0.33s | load 13.8
+09:54:19 42/50 vsplib/grids/grid_36.mtx.rnd             n=1296 | ours w=36 upper      0.03s nodes 0 | sage w= timeout cpu s | load 34.0
+09:54:30 43/50 vsplib/grids/grid_43.mtx.rnd             n=1849 | ours w=43 upper      0.07s nodes 0 | sage w= timeout cpu s | load 34.0
+09:54:43 44/50 vsplib/hb/can__445.mtx.rnd               n= 445 | ours w=55 upper      600.04s nodes 208261004 | sage w= timeout cpu s | load 26.0
+09:54:43 45/50 vsplib/tree/3rot/TREE_22_3_rot4.mtx.rnd  n=  22 | ours w=3 refutation 0.0s nodes 90 | sage w=3 ok      cpu 0.33s | load 12.5
+09:54:48 46/50 vsplib/grids/grid_49.mtx.rnd             n=2401 | ours w=49 upper      0.06s nodes 0 | sage w= timeout cpu s | load 33.4
+10:02:56 47/50 vsplib/hb/dwt__503.mtx.rnd               n= 503 | ours w=30 upper      600.06s nodes 174802438 | sage w= timeout cpu s | load 30.6
+10:05:08 48/50 vsplib/tree/1rot/TREE_67_4_rot5.mtx.rnd  n=  67 | ours w=4 refutation 0.01s nodes 3880 | sage w= timeout cpu s | load 13.8
+10:05:09 49/50 vsplib/tree/1rot/TREE_202_5_rot56.mtx.rn n= 202 | ours w=5 refutation 2.92s nodes 2021132 | sage w= timeout cpu s | load 13.8
+10:05:13 50/50 vsplib/tree/2rot/TREE_67_4_rot7.mtx.rnd  n=  67 | ours w=4 refutation 0.01s nodes 3618 | sage w= timeout cpu s | load 13.3
+2026-11-07 10:05:13 done: 50 graphs
