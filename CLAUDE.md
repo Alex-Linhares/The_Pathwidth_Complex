@@ -501,6 +501,9 @@ lean/
                                         patterns of given sizes): P(mospValue ≤ k+1) ≤ C(n,t)·C(n−t,t−1)·∏_j avoidCount(s_j)/C(n,s_j),
                                         in MOSP vocabulary via coverInstance; sorry-free (2026-10-31)
         Search/MinorTabu.lean           The tabu search's certificates are sound (2026-11-07): the printed union-find contraction
+                                        (the search itself, pathwidth_solver/cli/minor_tabu.c, run on the 91 open classes the same
+                                        day: 0 closed, 0 raised; 243,310 floor-level neighbour refutations logged, 0 target-level;
+                                        reports/scratch/minor_tabu/README.md; paper 1 Appendix G "Status")
                                         sequence is a legal contraction sequence and its replay is the forest quotient; refutation
                                         and contraction-degeneracy floors are lower bounds; a run's output is a floor and reaches w
                                         iff a visited minor refuted w − 1; MOSP units too. 45 theorems, no sorry, no axiom.

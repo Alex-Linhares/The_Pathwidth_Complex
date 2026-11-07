@@ -129,10 +129,24 @@ and 3,756 simulated runs compared with the run theorems; no violation
 theorem.
 
 \paragraph{Status.} On five graphs of known pathwidth the search reproduces
-the exact value. On the open classes of the dataset the first run, seeded
-from each class's best certificate on record, is in progress at the time of
-writing; its tally, the classes closed and the floors raised, with every new
-certificate passed through the independent checker, will be reported here.
-What the search cannot do is what no minor search can: where no minor of the
-sizes it visits refutes $w-1$, as on \texttt{Random-125-125-2-2\_0}, the
-certificate is the whole graph.
+the exact value. On the 91 open classes of the dataset, seeded from each
+class's best minor certificate on record, with 40, 80 or 120 CPU minutes per
+class by the gap between floor and width, eight walks at a time, it closed no
+class and raised no floor. What its log says is more useful than that count.
+Every neighbour refutation was written out with its minor: 243,310
+refutations of the floor's level on 26 classes, on minors of 0.77 to 1.02
+times the seed's size by class median, so the known obstruction survives
+nearly everywhere in the band and is cheap to re-prove there; and not one
+refutation of the target level, on any class, at any size. On 23 further
+classes, among them every \texttt{Random-150} and \texttt{Random-175} class
+and \texttt{myciel7}, no neighbour refuted even the floor's level within the
+per-neighbour budget of 400,000 nodes, and the walk ran on contraction
+degeneracy alone. The 42 classes whose seed minor has more than 120 vertices,
+the cap on the exact step, were not reached by the first run, whose size band
+was empty for them; a second run with the cap lifted is in progress. The
+reading is the one the duality gaps of Section~\ref{sec:certs} gave: on these
+classes, a minor small enough to decide within the budget does not have the
+full width, and the certificate of the last unit is the whole graph or a minor
+too large to decide cheaply, as on \texttt{Random-125-125-2-2\_0}, where no
+minor of any size tried refutes $w-1$. The run's record, with every claim
+replayable, is \path{reports/scratch/minor_tabu/}.
