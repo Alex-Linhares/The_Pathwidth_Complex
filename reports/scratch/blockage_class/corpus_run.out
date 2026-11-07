@@ -1,0 +1,13 @@
+  25/197 instances, 1 s
+  50/197 instances, 1 s
+  75/197 instances, 2 s
+  100/197 instances, 2 s
+  125/197 instances, 3 s
+  150/197 instances, 3 s
+  175/197 instances, 5 s
+  197/197 instances, 6 s
+corpus: 197 instances in 6 s -> reports/scratch/blockage_class/corpus_gap40.csv
+verdict
+dead                 104
+clique-minor only     76
+branch open           17

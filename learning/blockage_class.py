@@ -670,6 +670,20 @@ def min_vertices(t: int, had: int) -> int:
     return 3 * min_vertices(t - 1, had)
 
 
+def branch_excluded(t: int, n: int, had_upper: int, tau: int, edges: int) -> bool:
+    """No branch certificate of order ``t`` fits: three disjoint connected sets
+    of order ``t − 1`` need ``3 · min_vertices(t − 1)`` vertices, vertex cover
+    ``3 (t − 1)`` and, when their certificates are clique minors (``t ≤
+    had_upper``), ``3 · C(t, 2)`` edges."""
+    if 3 * min_vertices(t - 1, had_upper) > n:
+        return True
+    if 3 * (t - 1) > tau:
+        return True
+    if t <= had_upper and 3 * (t * (t - 1) // 2) > edges:
+        return True
+    return False
+
+
 def counting_upper_bound(n: int, had_upper: int, tau: int | None = None, edges: int | None = None) -> int:
     """The largest order the class can reach on a graph with ``n`` vertices,
     Hadwiger number ``≤ had_upper``, vertex cover number ``tau`` and ``edges``
@@ -690,6 +704,147 @@ def counting_upper_bound(n: int, had_upper: int, tau: int | None = None, edges: 
         best = t
         t += 1
     return best
+
+
+# ----------------------------------------------------------------------------
+# the corpus bound-gap instances at ≤ 40 customers
+# ----------------------------------------------------------------------------
+
+LEDGER_CSV = ROOT / "reports" / "scratch" / "obstruction_search" / "01_ledger" / "ledger_corpus.csv"
+MINOR_CSV = ROOT / "reports" / "scratch" / "obstruction_search" / "04_minor" / "joined.csv"
+HARPER_CSV = ROOT / "reports" / "scratch" / "obstruction_search" / "02_expansion" / "ceiling.csv"
+CORPUS_CSV = SCRATCH / "corpus_gap40.csv"
+
+
+def independence_number(graph) -> int:
+    import networkx as nx
+
+    comp = nx.complement(graph)
+    clique, _ = nx.max_weight_clique(comp, weight=None)
+    return len(clique)
+
+
+def cand_blockage_class(graph, matrix, budget):
+    """A lower bound on the class's ceiling, **in optimum units** (pathwidth + 1),
+    as a `bound_harness` candidate: the best of the clique number, the clique
+    numbers of the contraction-degeneracy minors, and the harness's separator
+    branch recursion seeded by cliques only (`sep-branch` with `seed_clique`),
+    on the graph and on its contraction minors. Every term is a certificate of
+    the class (a clique frame, pulled back along a minor, or a branch frame of
+    components linked through a connected set of the separator)."""
+    from learning.bound_harness import (Budget, _family_minor, branch_bound, clique_number as nx_clique,
+                                        contraction_minors, family_separators, seed_clique)
+
+    info: dict = {}
+    omega = nx_clique(graph)
+    top = branch_bound(graph, family_separators, seed_clique, budget, info=info)
+    best_minor_clique = omega
+    best_minor_branch = top
+    minors = 0
+    for minor in contraction_minors(graph):
+        minors += 1
+        if minors == 1 or minor.number_of_nodes() < 3:
+            continue
+        if minors > 60 or not budget.ok():
+            break
+        best_minor_clique = max(best_minor_clique, nx_clique(minor))
+        sub = Budget(seconds=min(2.0, max(0.2, budget.seconds - (time.monotonic() - budget.started))),
+                     max_subproblems=300)
+        best_minor_branch = max(best_minor_branch, branch_bound(minor, _family_minor, seed_clique, sub))
+        if sub.exhausted:
+            budget.exhausted = True
+    value = max(omega - 1, best_minor_clique - 1, top, best_minor_branch)
+    return value + 1, {"omega": omega, "minor_clique": best_minor_clique, "branch_top": top + 1,
+                       "branch_minor": best_minor_branch + 1, "minors": minors}
+
+
+def _corpus_job(args) -> dict:
+    name, key = args
+    from learning.bound_harness import Budget, evaluate_candidates
+    from learning.extremal import matrix_from_key
+    import numpy as np
+
+    matrix = matrix_from_key(key)
+    out = evaluate_candidates(matrix, {"blockage-class": cand_blockage_class}, seconds={"blockage-class": 20.0})
+    graph = _graph_of(matrix)
+    out["instance_name"] = name
+    out["alpha"] = independence_number(graph)
+    out["tau"] = graph.number_of_nodes() - out["alpha"]
+    return out
+
+
+def _graph_of(matrix):
+    from learning.bound_harness import graph_from_matrix
+
+    return graph_from_matrix(matrix)
+
+
+def corpus_rows() -> "pd.DataFrame":
+    import pandas as pd
+
+    d = pd.read_csv(LEDGER_CSV)
+    s = d[d.is_gap338 & (d.n <= 40)].copy()
+    m = pd.read_csv(MINOR_CSV)[["instance_name", "ladder_floor", "search_floor", "best_floor"]]
+    h = pd.read_csv(HARPER_CSV)[["instance_name", "ceiling"]].rename(columns={"ceiling": "harper_ceiling"})
+    s = s.merge(m, on="instance_name", how="left").merge(h, on="instance_name", how="left")
+    s["pw"] = s.optimum - 1
+    s["reference"] = s[["lb_best", "tw1"]].max(axis=1)
+    return s
+
+
+def run_corpus(workers: int = 8, out_csv: Path = CORPUS_CSV, log=print) -> "pd.DataFrame":
+    """The 197 bound-gap instances at ≤ 40 customers: the class's ceiling bracketed
+    between the certificates found (`cand_blockage_class`, through the harness's
+    `evaluate_candidates`) and the counting upper bound; every value checked
+    against the certified optimum, a value above it stops the run."""
+    import pandas as pd
+    from multiprocessing import Pool
+    from learning.extremal import matrix_key  # noqa: F401  (the key format)
+    from learning.dataset import enumerate_instances
+
+    rows = corpus_rows()
+    wanted = set(rows.instance_name)
+    keys = {}
+    for _path, inst in enumerate_instances():
+        if inst.name in wanted and inst.name not in keys:
+            from learning.extremal import matrix_key as mk
+            import numpy as np
+            keys[inst.name] = mk(np.asarray(inst.matrix, dtype=int))
+    missing = wanted - set(keys)
+    if missing:
+        raise SystemExit(f"matrices not found for {sorted(missing)[:5]}")
+    jobs = [(name, keys[name]) for name in rows.instance_name]
+    t0 = time.time()
+    out = []
+    with Pool(workers) as pool:
+        for i, r in enumerate(pool.imap_unordered(_corpus_job, jobs)):
+            out.append(r)
+            if (i + 1) % 25 == 0 or i + 1 == len(jobs):
+                log(f"  {i + 1}/{len(jobs)} instances, {time.time() - t0:.0f} s", flush=True)
+    vals = pd.DataFrame(out).drop(columns=["n", "m", "edges", "omega", "components"], errors="ignore")
+    f = rows.merge(vals, on="instance_name", how="left")
+    f["class_lower"] = f["blockage_class"] - 1                     # pathwidth units
+    f["class_upper"] = [min(int(pw), counting_upper_bound(int(n), int(twh) + 1, int(tau), int(e)))
+                        for pw, n, twh, tau, e in zip(f.pw, f.n, f.tw_hi, f.tau, f.g_edges)]
+    bad = f[f.class_lower > f.pw]
+    if len(bad):
+        raise SystemExit(f"VALIDITY: class certificate above the certified optimum on {bad.instance_name.tolist()}")
+    bad = f[f.class_lower > f.class_upper]
+    if len(bad):
+        raise SystemExit(f"INCONSISTENT: certificate above the counting bound on {bad.instance_name.tolist()}")
+    # can a *branch* certificate of order pw exist at all? (three disjoint linked
+    # sub-certificates of order pw − 1: vertices, vertex cover and edges)
+    f["branch_excluded"] = [branch_excluded(int(pw), int(n), int(twh) + 1, int(tau), int(e))
+                            for pw, n, twh, tau, e in zip(f.pw, f.n, f.tw_hi, f.tau, f.g_edges)]
+    f["verdict"] = [
+        "tight" if lo == pw else
+        "dead" if up < pw else
+        "clique-minor only" if bx else "branch open"
+        for lo, up, pw, bx in zip(f.class_lower, f.class_upper, f.pw, f.branch_excluded)]
+    f.to_csv(out_csv, index=False)
+    log(f"corpus: {len(f)} instances in {time.time() - t0:.0f} s -> {out_csv.relative_to(ROOT)}")
+    log(f.verdict.value_counts().to_string())
+    return f
 
 
 # ----------------------------------------------------------------------------
@@ -721,29 +876,45 @@ def census_rows(max_n: int = 9) -> list[dict]:
     return rows
 
 
+def _census_job(rows: list[dict]) -> list[dict]:
+    ce = Ceiling()
+    out = []
+    for r in rows:
+        adj = adj_from_graph6(r["graph6"])
+        had = ce.hadwiger(adj)
+        val = ce.ceiling(adj)
+        out.append({**r, "omega": clique_number(adj), "had": had, "ceiling": val,
+                    "tight": val == r["pw"], "shortfall": r["pw"] - val})
+    return out
+
+
 def run_census(max_n: int = 9, include_found: bool = True, limit: int | None = None,
-               out_csv: Path | None = None, log=print) -> "pd.DataFrame":
+               out_csv: Path | None = None, workers: int = 8, chunk: int = 50,
+               log=print) -> "pd.DataFrame":
+    """The ceiling of every pw > tw graph to ``max_n`` vertices (and the pw − tw = 2
+    graphs at 10–11 when ``include_found``), in ``workers`` processes, each with
+    its own certificate memo; a ceiling above the pathwidth stops the run."""
     import pandas as pd
+    from multiprocessing import Pool
 
     rows = census_rows(max_n)
     if not include_found:
         rows = [r for r in rows if r["source"] == "exhaust"]
     if limit:
         rows = rows[:limit]
-    ce = Ceiling()
+    rows.sort(key=lambda r: (r["n"], r["graph6"]))
+    chunks = [rows[i:i + chunk] for i in range(0, len(rows), chunk)]
     out = []
     t0 = time.time()
-    for i, r in enumerate(rows):
-        adj = adj_from_graph6(r["graph6"])
-        had = ce.hadwiger(adj)
-        val = ce.ceiling(adj)
-        if val > r["pw"]:
-            raise SystemExit(f"VALIDITY: ceiling {val} above pw {r['pw']} on {r['graph6']}")
-        out.append({**r, "omega": clique_number(adj), "had": had, "ceiling": val,
-                    "tight": val == r["pw"], "shortfall": r["pw"] - val})
-        if (i + 1) % 500 == 0:
-            log(f"  {i + 1}/{len(rows)} graphs, {time.time() - t0:.0f} s, memo {len(ce.ceil_memo):,}")
-    frame = pd.DataFrame(out)
+    with Pool(workers) as pool:
+        for i, part in enumerate(pool.imap_unordered(_census_job, chunks)):
+            out.extend(part)
+            if (i + 1) % 20 == 0 or i + 1 == len(chunks):
+                log(f"  {len(out)}/{len(rows)} graphs, {time.time() - t0:.0f} s", flush=True)
+    frame = pd.DataFrame(out).sort_values(["n", "graph6"]).reset_index(drop=True)
+    bad = frame[frame.ceiling > frame.pw]
+    if len(bad):
+        raise SystemExit(f"VALIDITY: ceiling above pw on {len(bad)} graphs, e.g. {bad.iloc[0].to_dict()}")
     out_csv = out_csv or SCRATCH / "census_ceiling.csv"
     frame.to_csv(out_csv, index=False)
     log(f"census: {len(frame)} graphs in {time.time() - t0:.0f} s -> {out_csv.relative_to(ROOT)}")
@@ -756,6 +927,7 @@ def main() -> None:
     ap.add_argument("--max-n", type=int, default=9)
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--workers", type=int, default=8)
     args = ap.parse_args()
     SCRATCH.mkdir(parents=True, exist_ok=True)
     if args.stage == "check":
@@ -764,11 +936,9 @@ def main() -> None:
         if any(v for k, v in counts.items() if k.endswith("_bad")):
             sys.exit(1)
     elif args.stage == "census":
-        run_census(max_n=args.max_n, limit=args.limit)
+        run_census(max_n=args.max_n, limit=args.limit, workers=args.workers)
     elif args.stage == "corpus":
-        from learning.blockage_corpus import run_corpus
-
-        run_corpus()
+        run_corpus(workers=args.workers)
 
 
 if __name__ == "__main__":

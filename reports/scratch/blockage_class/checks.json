@@ -1,0 +1,11 @@
+{
+ "graphs": 208,
+ "clique_bad": 0,
+ "branch_bad": 0,
+ "minor_bad": 0,
+ "duality_bad": 0,
+ "unlinked_fail": 3486,
+ "linked_ok": 4240,
+ "unlinked_ok": 1220,
+ "seconds": 71.0
+}

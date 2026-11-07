@@ -1,0 +1,56 @@
+⚠ [1635/1718] Replayed MOSPFormalization.BlockageClass
+warning: MOSPFormalization/BlockageClass.lean:144:6: Variable name `v` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _v
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: MOSPFormalization/BlockageClass.lean:686:2: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+info: MOSPFormalization/BlockageClass.lean:741:0: 'MOSPFormalization.Blockage.Frame.pathwidth_ge' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: MOSPFormalization/BlockageClass.lean:742:0: 'MOSPFormalization.Blockage.isBlockageIn_clique' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: MOSPFormalization/BlockageClass.lean:743:0: 'MOSPFormalization.Blockage.isBlockageIn_minor' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: MOSPFormalization/BlockageClass.lean:744:0: 'MOSPFormalization.Blockage.isBlockageIn_branch' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: MOSPFormalization/BlockageClass.lean:745:0: 'MOSPFormalization.Blockage.pathwidth_ge_of_branch_frames' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [1642/1718] Replayed MOSPFormalization.Encoding
+warning: MOSPFormalization/Encoding.lean:176:4: Unused tactic linter: `simp [Finset.filter_congr_decidable]` does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: MOSPFormalization/Encoding.lean:184:6: `dif_neg` has been deprecated: Use `dite_eq_right` instead
+⚠ [2320/2467] Replayed MOSPFormalization.TreeBound
+warning: MOSPFormalization/TreeBound.lean:688:5: Variable name `hSR` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hSR
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: MOSPFormalization/TreeBound.lean:774:22: `if_pos` has been deprecated: Use `ite_eq_left` instead
+warning: MOSPFormalization/TreeBound.lean:779:6: `if_neg` has been deprecated: Use `ite_eq_right` instead
+warning: MOSPFormalization/TreeBound.lean:779:25: `if_neg` has been deprecated: Use `ite_eq_right` instead
+warning: MOSPFormalization/TreeBound.lean:784:6: `if_neg` has been deprecated: Use `ite_eq_right` instead
+warning: MOSPFormalization/TreeBound.lean:784:25: `if_pos` has been deprecated: Use `ite_eq_left` instead
+warning: MOSPFormalization/TreeBound.lean:922:22: `if_pos` has been deprecated: Use `ite_eq_left` instead
+warning: MOSPFormalization/TreeBound.lean:927:22: `if_neg` has been deprecated: Use `ite_eq_right` instead
+warning: MOSPFormalization/TreeBound.lean:927:41: `if_neg` has been deprecated: Use `ite_eq_right` instead
+⚠ [2328/2467] Replayed MOSPFormalization.Hypercube.Order
+warning: MOSPFormalization/Hypercube/Order.lean:126:23: Variable name `y` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _y
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: MOSPFormalization/Hypercube/Order.lean:262:6: Variable name `y` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _y
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+✔ [8990/8991] Built MOSPFormalization (10s)
+Build completed successfully (8991 jobs).
+exit 0

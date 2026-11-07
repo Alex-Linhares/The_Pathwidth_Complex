@@ -670,3 +670,26 @@ setup's Crossref check.
   not rewritten).
 - **De Giovanni, Massi & Pezzella (2010), the genetic-algorithm technical report**: treated the
   same way on 2026-11-06 (held on disk, git-ignored, removed from the index; the history is not rewritten, by the owner's decision).
+
+## Blockages as a bound (2026-11-07, `reports/blockage_class.md`)
+
+Looked for a published analogue, for pathwidth and blockages, of brambles built as
+treewidth lower bounds (Bodlaender, Grigoriev & Koster 2005). We found no prior
+statement of a blockage class used as a computed lower bound. What the search did find:
+
+- **Diestel, R. & Oum, S.** (2019). Tangle-tree duality: in graphs, matroids and beyond.
+  *Combinatorica*, 39, 879–910; arXiv 1701.02651 (open). Names the blockages of
+  Bienstock, Robertson, Seymour & Thomas as the tangle-like structures dual to
+  path-width, inside the general duality framework. Not held; the arXiv version is
+  free. Relevant to the dual side of Appendix F, not to computation.
+- **Groenland, C., Joret, G., Nadara, W. & Walczak, B.** (2023). Approximating pathwidth
+  for graphs of small treewidth. *ACM Transactions on Algorithms*, 19(2), 16 (SODA 2021).
+  arXiv 2008.00779 (open). Its certificate that `pw ≥ h` is a subdivision of a complete
+  binary tree of height `h` found inside a tree decomposition — a *branching*
+  certificate, the one kind the class of `BlockageClass.lean` contains, and the one
+  the census shows is almost never the obstruction on graphs with `pw > tw` at ≤ 11
+  vertices. Not held.
+- **Kim, R., Kim, S. & Kwon, O.** (2017, Hamburg preprint). Directed path-decompositions.
+  arXiv 1711.00718 (open). Defines directed blockages and proves the directed min-max
+  theorem; it is the only other place the blockage axioms are restated in print.
+  Not held.

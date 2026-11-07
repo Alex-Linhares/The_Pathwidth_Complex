@@ -1,0 +1,21 @@
+⚠ [1220/1220] Built MOSPFormalization.BlockageClass (7.6s)
+warning: MOSPFormalization/BlockageClass.lean:144:6: Variable name `v` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _v
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: MOSPFormalization/BlockageClass.lean:686:2: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+info: MOSPFormalization/BlockageClass.lean:741:0: 'MOSPFormalization.Blockage.Frame.pathwidth_ge' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: MOSPFormalization/BlockageClass.lean:742:0: 'MOSPFormalization.Blockage.isBlockageIn_clique' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: MOSPFormalization/BlockageClass.lean:743:0: 'MOSPFormalization.Blockage.isBlockageIn_minor' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: MOSPFormalization/BlockageClass.lean:744:0: 'MOSPFormalization.Blockage.isBlockageIn_branch' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: MOSPFormalization/BlockageClass.lean:745:0: 'MOSPFormalization.Blockage.pathwidth_ge_of_branch_frames' depends on axioms: [propext, Classical.choice, Quot.sound]
+Build completed successfully (1220 jobs).
