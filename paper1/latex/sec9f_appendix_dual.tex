@@ -28,13 +28,13 @@ $X_1\setminus X_2$ to $X_2\setminus X_1$, so a complementary pair is a
 separation of $G$ with $X_1\cap X_2$ as its separator. A \emph{blockage of
 order $n$} is a family $\mathcal B$ of subsets of $V$ such that
 \begin{enumerate}
-\item[(i)] every $X\in\mathcal B$ has $\alpha(X)<n$;
-\item[(ii)] if $X\in\mathcal B$, $Y\subseteq X$ and $\alpha(Y)<n$, then $Y\in\mathcal B$;
-\item[(iii)] if $X_1,X_2$ are complementary and $|X_1\cap X_2|<n$, then
+\item[(i)] every $X\in\mathcal B$ has $\alpha(X)\le n$;
+\item[(ii)] if $X\in\mathcal B$, $Y\subseteq X$ and $\alpha(Y)\le n$, then $Y\in\mathcal B$;
+\item[(iii)] if $X_1,X_2$ are complementary and $|X_1\cap X_2|\le n$, then
   exactly one of $X_1,X_2$ lies in $\mathcal B$.
 \end{enumerate}
 Read as a game, $\mathcal B$ is the strategy of an invisible fugitive against
-$n$ searchers: for every way the searchers can cut the graph with fewer than
+$n+1$ searchers: for every way the searchers can cut the graph with at most
 $n$ of them, (iii) says which side the fugitive is on, and (i), (ii) make
 those choices consistent. Theorem~(2.1) of \citet{BRST1991} is the min-max
 statement: \emph{there is a blockage of order $n$ in $G$ if and only if
@@ -48,22 +48,22 @@ If $G$ has a blockage of order $n$, then $\pw(G)\ge n$~\leanref{blockage}.
 \begin{proof}
 Suppose $\mathcal B$ is a blockage of order $n$ and, for a contradiction,
 that $W_0,\dots,W_r$ is a path decomposition of $G$ of width less than $n$,
-so every bag has fewer than $n$ vertices. Let $X_i=W_0\cup\dots\cup W_{i-1}$
+so every bag has at most $n$ vertices. Let $X_i=W_0\cup\dots\cup W_{i-1}$
 be the prefix unions, with $X_0=\emptyset$ and $X_{r+1}=V$. Two facts follow
 from the interval property of a path decomposition: $\att(X_i)\subseteq W_i$,
 since a vertex of $X_i$ with a neighbour outside $X_i$ shares a bag with that
 neighbour, which lies at or after $W_i$, so the vertex's interval of bags
 reaches $W_i$; and $X_{i+1}\setminus X_i\subseteq W_i$ by definition. Hence
-$\alpha(X_i)<n$ for every $i$.
+$\alpha(X_i)\le n$ for every $i$.
 
 Now $\emptyset\in\mathcal B$ and $V\notin\mathcal B$, because $(\emptyset,V)$
 is a complementary pair with empty intersection, and (iii) puts exactly one of
 the two in $\mathcal B$, while (ii) with $Y=\emptyset$ rules out the second
 choice. Lemma~(2.2) of the paper, proved in Lean as
-\texttt{IsBlockage.mem\_of\_mem}, says: if $X\in\mathcal B$, $\alpha(Y)<n$ and
-$|(Y\setminus X)\cup\att(X)|<n$, then $Y\in\mathcal B$. Apply it to
-$X=X_i\in\mathcal B$ and $Y=X_{i+1}$: $\alpha(X_{i+1})<n$, and
-$(X_{i+1}\setminus X_i)\cup\att(X_i)\subseteq W_i$ has fewer than $n$
+\texttt{IsBlockage.mem\_of\_mem}, says: if $X\in\mathcal B$, $\alpha(Y)\le n$ and
+$|(Y\setminus X)\cup\att(X)|\le n$, then $Y\in\mathcal B$. Apply it to
+$X=X_i\in\mathcal B$ and $Y=X_{i+1}$: $\alpha(X_{i+1})\le n$, and
+$(X_{i+1}\setminus X_i)\cup\att(X_i)\subseteq W_i$ has at most $n$
 vertices, so $X_{i+1}\in\mathcal B$. By induction $V=X_{r+1}\in\mathcal B$, a
 contradiction.
 \end{proof}
@@ -85,7 +85,7 @@ bottom-up search for lower bounds possible: exhibit any blockage of order $n$
 and $\pw(G)\ge n$ follows, and strong duality says that maximising $n$ over
 blockages reaches $\pw(G)$ exactly, so a search on this side has no ceiling.
 Every lower-bound family in this paper is a restricted class of blockages. A
-clique of size $n+1$ gives one: let $\mathcal B$ be the sets with fewer than
+clique of size $n+1$ gives one: let $\mathcal B$ be the sets with at most
 $n$ attachments that miss some vertex of the clique on the far side. Harper's
 vertex-isoperimetric bound at one prefix size is a blockage built from the
 separations at that size alone. A minor $H$ with $\pw(H)\ge n$ gives a

@@ -687,8 +687,9 @@ under the wrong authors, "Kim, Kim & Kwon": arXiv 1711.00718 is by Joshua Erde):
   `2019-Diestel-Oum-Tangle-Tree-Duality-Graphs-Matroids-Beyond-Combinatorica-arXiv1701.02651.pdf`.
 - **Groenland, C., Joret, G., Nadara, W. & Walczak, B.** (2023). Approximating pathwidth
   for graphs of small treewidth. *ACM Transactions on Algorithms*, 19(2), 16 (SODA 2021).
-  arXiv 2008.00779 (open). Its certificate that `pw ≥ h` is a subdivision of a complete
-  binary tree of height `h` found inside a tree decomposition — a *branching*
+  arXiv 2008.00779 (open). Its certificate that `pw ≥ h` is the `T_h`-witness of its Lemma 2.1, found inside
+  a tree decomposition (the subdivided complete binary tree of height `h` it implies
+  certifies only `⌈h/2⌉`, p. 2) — a *branching*
   certificate, the one kind the class of `BlockageClass.lean` contains, and the one
   the census shows is almost never the obstruction on graphs with `pw > tw` at ≤ 11
   vertices. **Held**:

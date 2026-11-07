@@ -130,8 +130,12 @@ proof; the ceiling formula and the counting bounds are on paper (§3.1, §3.4); 
 Hadwiger numbers that would settle the 93 undecided corpus instances were not
 computed (a minor-containment search). Literature: we found no prior statement of a
 blockage class used as a computed lower bound (`literature/MISSING.md`, three
-entries); Groenland, Joret, Nadara & Walczak (2023) certify pathwidth by a subdivided
-complete binary tree, the branching kind this class contains.
+entries); Groenland, Joret, Nadara & Walczak (2023) certify `pw ≥ h` by the
+`T_h`-witness of their Lemma 2.1, the iterated branch operator this class contains
+(the subdivided complete binary tree it implies certifies only `⌈h/2⌉`); read whole
+in `reports/blockage_literature.md`, which also shows their tightness family
+`T_h^{(t)}` is one this class misses, by `(t−1)h`, since each level there adds `t`
+disjoint paths, not one.
 
 Regenerate every number:
 
