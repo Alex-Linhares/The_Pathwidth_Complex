@@ -79,6 +79,36 @@ Started 2026-10-09. Check items off as they are done.
     and **GT47 Elimination Degree Sequence** (p. 201) — the chordal /
     treewidth side, out.
 
+## The parallel tabu step, proved and run on the hardest instances (owner, 2026-11-07)
+
+- [ ] **Prove it.** The neighbours of one tabu step are independent exact calls
+      on independent minors, so evaluating them on separate cores is sound: the
+      step's outcome (the chosen move, the floor claimed) is the same as the
+      sequential step's, and every claim rests on its own refutation. In Lean,
+      on top of `Search/MinorTabu.lean`: a parallel step is a set of `Justified`
+      claims, one per neighbour, whose union is a `Run.claims`, and
+      `tabu_output_le_pathwidth` / `exists_visited_of_le_output` hold unchanged
+      — the soundness theorems are stated for any list of visited forests, so the
+      parallel step needs only the lemma that evaluation order and concurrency
+      do not enter the claims (no shared state between neighbour calls: each is
+      a fresh engine run on its own minor with its own memo, as in the split of
+      `Search/Split.lean`, where tasks share nothing). State it, check it on the
+      small-graph harness, prove it.
+- [ ] **Build it.** `minor_tabu.c`: evaluate the sampled neighbours of a step in
+      parallel (fork per neighbour with a pipe, or a worker pool over the engine
+      with one memo each; the engine's static state means processes, not
+      threads, unless audited), `-j cores`; a step then costs the slowest
+      neighbour. The chosen minor's climb stays sequential. Measure the steps per
+      budget at 1, 8 and 32 cores on two Rome graphs of known width and on one
+      open class.
+- [ ] **Run it on the hardest open instances**: the residue of the ten-hour
+      seeded run (classes still at `width − 1` after their budget), one class at
+      a time with all the nice-19 cores the machine can give, several hours
+      each, largest-gap-closable first (gap 1); every closure through the
+      independent checker before it is folded; the tally into Appendix G's
+      status paragraph. The 32-core box here first; a 100-core cloud machine
+      changes what is reachable and is the owner's call.
+
 ## From the owner's Zotero comments of 2026-11-07 (high priority, before arXiv)
 
 - [ ] **Upper bounds for the 610 Frinhani instances (400–1,000 customers)**: "at a
