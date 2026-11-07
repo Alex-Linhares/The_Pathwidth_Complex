@@ -98,6 +98,7 @@ def run_one(r: dict, seconds: float, seed: int) -> dict:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--seconds", type=float, default=1800.0)
+    ap.add_argument("--seconds-per-gap", default=None, help='e.g. "1:2400,2:4800,3:7200": CPU seconds by width-minus-floor gap (others use --seconds)')
     ap.add_argument("--procs", type=int, default=8)
     ap.add_argument("--seed", type=int, default=1)
     ap.add_argument("--only", nargs="*", default=None)
@@ -120,7 +121,14 @@ def main() -> None:
         w = csv.DictWriter(fh, fieldnames=FIELDS)
         if new:
             w.writeheader()
-        futs = {pool.submit(run_one, r, a.seconds, a.seed): r["id"] for r in rows}
+        per_gap = {}
+        if a.seconds_per_gap:
+            per_gap = {int(k): float(v) for k, v in (kv.split(":") for kv in a.seconds_per_gap.split(","))}
+        def budget(r):
+            gap = int(float(r["width"])) - int(float(r["m_pathwidth"] or 0))
+            return per_gap.get(gap, a.seconds)
+        print("budgets by gap:", {g: per_gap.get(g, a.seconds) for g in sorted({int(float(r["width"])) - int(float(r["m_pathwidth"] or 0)) for r in rows})}, flush=True)
+        futs = {pool.submit(run_one, r, budget(r), a.seed): r["id"] for r in rows}
         for fut in as_completed(futs):
             row = fut.result(); w.writerow(row); fh.flush(); k += 1; closed += row["status"] == "CLOSED"
             print(f"{time.strftime('%T')} {k}/{len(rows)} {row['id']} {str(row['names'])[:26]:26} n={row['n']:>4} width {row['width']} "
