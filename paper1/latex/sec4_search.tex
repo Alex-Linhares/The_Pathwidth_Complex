@@ -452,7 +452,7 @@ Every one found a solution through another branch and answered correctly.
 
 \paragraph{A wrong optimum.} A targeted search did produce a whole instance on
 which Chu and Stuckey's algorithm gives a wrong answer. It started from
-Counterexample~\ref{cex:definite}, climbed toward graphs on which the previous
+Counterexample~\ref{cex:definite}, climbed toward graphs on which Chu and Stuckey's
 algorithm refutes more and more of the root's solvable branches, and joined two
 copies of a 17-customer near-miss by one edge. On the resulting 34-customer instance (Figure~\ref{fig:wrong}), we ran our
 implementation of Chu and Stuckey's algorithm with its definite move, the subset
@@ -466,7 +466,7 @@ refutes 5, so the optimum is 6. This is a theorem, checked in Lean.
 \begin{theorem}[Chu and Stuckey's algorithm reports a wrong optimum]\label{thm:wrong}
 Let $G_{34}$ be the MOSP graph of the 34-customer instance of
 Figure~\ref{fig:wrong}. Run with its definite move as published, the subset
-rule, the old move and the memo, and with the better move off, the previous
+rule, the old move and the memo, and with the better move off, Chu and Stuckey's
 algorithm refutes $k=6$ on $G_{34}$ and finds a solution at $k=7$, so it
 reports an optimum of 7. The optimum is 6, and the pathwidth of $G_{34}$ is
 5~\leanref{wrong}.
