@@ -146,7 +146,27 @@ sibling that refuted. The split is proved sound~\leanref{split}: a larger
 memo changes nothing a run needs, so a task may start from none, and every
 such run lifts to a run of our corrected search. The lifting is stated for
 the corrected rules; with the published definite and better moves there is no
-sound sequential run to lift onto. Its price is measured and
+sound sequential run to lift onto.
+
+\paragraph{Why our version is parallel.} Because a task is a complete run of
+the search from a state that is fixed when the task is created and never
+changes afterwards. The state is three things: the closed set, the inherited
+old moves, and an empty memo. The first two come from the driver's expansion
+of the top of the tree, which is the sequential search's own expansion, so
+they are exactly what the sequential run would have carried at that node, and
+nothing a sibling does later can alter them. The memo is private, so nothing
+a sibling records can reach the task either. A task therefore reads nothing
+and writes nothing that another task reads: it takes its state, searches,
+and answers \emph{unsat}, \emph{sat} or \emph{over cap}. Tasks can run in any
+order, on any number of workers, on any machines, and a ledger of finished
+tasks is the whole state of the run, which is why a crash loses only the tasks
+in flight. The one global step is the last: a refutation is the conjunction of
+every task's \emph{unsat}, and that conjunction is what the split theorem~\leanref{split}
+lifts to a sequential run. The previous algorithm cannot be run this way as
+published, because its tasks would not be self-contained: their candidate sets
+would depend on siblings still running, and their shared nogoods would cross
+paths with different histories. Making the state explicit, and making the
+rules true, is what makes the search parallel. Its price is measured and
 reported beside each count: the memo hits the tasks cannot share, which make
 the split visit more nodes than one worker would, and the nodes of tasks
 that hit their cap and were split again, which we count as waste. The
