@@ -128,8 +128,18 @@ and 3,756 simulated runs compared with the run theorems; no violation
 \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound} for every
 theorem.
 
-\paragraph{Status.} On five graphs of known pathwidth the search reproduces
-the exact value. On the 91 open classes of the dataset, seeded from each
+\paragraph{Status.} The walk does what it is meant to do where a minor is
+the only route. On 100 Rome graphs of 50 to 80 vertices with certified
+pathwidth 4 to 9, each seeded from a deliberately bad minor (random
+contractions down to 60\% of the vertices, the minor's exact pathwidth as the
+floor, below the width on 97) and with every exact call capped at 3,000
+nodes, so that the whole graph cannot be refuted, 20 seconds of walking
+raised the floor on 59 graphs, by a proper minor on 56, of 56\% of the
+vertices at the median, and reached the width on 39, against 4 for the same
+program with no steps; the floor was never above the certified width. On 120
+smaller certified graphs, unseeded, it reaches the width on all 120, there by
+the exact step on the whole graph. The scripts are
+\path{reports/scratch/minor_tabu/sanity/}. On the 91 open classes of the dataset, seeded from each
 class's best minor certificate on record, with 40, 80 or 120 CPU minutes per
 class by the gap between floor and width, eight walks at a time, it closed no
 class and raised no floor. What its log says is more useful than that count.
