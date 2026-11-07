@@ -36,7 +36,7 @@ re-run, at up to 2,231 core-hours each
   (Appendix~\ref{app:lean}) and an axiom check that covers all of them;
 \item the source of both our solvers, the open-stacks customer search and the
   graph pathwidth solver, in C and in Python, with our corrected rules as the
-  default and the rules of the previous algorithm \citep{ChuStuckey2009} as an
+  default and the rules of Chu and Stuckey's algorithm as an
   option;
 \item the graph pathwidth solver as a standalone package
   (\repofile{pathwidth_solver/}), with the scripts that produced
@@ -45,7 +45,7 @@ re-run, at up to 2,231 core-hours each
   Section~\ref{sec:certs} and the independent checkers of both; the benchmark
   graphs keep the terms of their original distributions;
 \item the 34-customer instance of Figure~\ref{fig:wrong}, with the optimum our
-  implementation of the previous algorithm reports with the better move off and
+  implementation of Chu and Stuckey's algorithm reports with the better move off and
   its order, an optimal order, a checker that uses only the Python standard
   library, and the DRAT refutation of 5 stacks with the script that checks it
   (\repofile{paper1/data/false_refutation/});

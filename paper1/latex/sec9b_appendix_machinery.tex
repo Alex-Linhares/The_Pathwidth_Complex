@@ -149,7 +149,7 @@ moves.
 \subsection{The search for smaller counterexamples}
 \label{app:minimality}
 
-The smallest graph on which the definite move of the previous algorithm, as
+The smallest graph on which the definite move of Chu and Stuckey's algorithm, as
 published \citep[Theorem~1]{ChuStuckey2009}, loses the last solution has 14
 customers:
 there is none on any graph to 9 vertices, by exhaustion, and none on the 88,802
@@ -172,6 +172,55 @@ and on 150 larger ones of their own, \citet{DeGiovanni2013b} used it to
 certify the optimum number of open stacks on every instance of their
 connection-cost benchmark, and \citet{Frinhani2018} ran it to obtain the
 optima that \citet{MartinYanassePinto2022} reuse.
+
+\subsection{The customer search, as published}
+\label{app:algorithm}
+
+Algorithm~\ref{alg:search} is Chu and Stuckey's customer search as Section~\ref{sec:algorithm}
+describes it, with the ingredients named as that section names them.
+
+\begin{algorithm}[t]
+\caption{The customer search \citep{ChuStuckey2009} is a plain depth-first
+search; all its pruning sits in the memo (lines~4 and~12), the filter
+(line~6) and the old moves (line~9). It decides $\Sol_k(S)$ for a graph
+$G=(C,E)$ and a stack bound $k$, and is called as
+$\textsc{Search}(\emptyset,\emptyset)$. $Q$ is the set of old moves the node
+inherits.}
+\label{alg:search}
+\small
+\begin{tabular}{@{}r@{\quad}l@{\qquad}l@{}}
+1 & $\textsc{Search}(S,Q)$: & \\
+2 & \quad $S\gets\cl(S)$ & \textcolor{gray}{free moves (Lemma~\ref{lem:F})} \\
+3 & \quad \textbf{if} $S=C$ \textbf{then return} true & \\
+4 & \quad \textbf{if} $S$ is in the memo \textbf{then return} false & \textcolor{gray}{memo} \\
+5 & \quad $A\gets$ the $c\notin S\cup Q$ with $\cost(S,c)\le k$, in index order & \textcolor{gray}{cost cut} \\
+6 & \quad $L\gets$ filter of $A$: definite move, then subset rule, then better move & \textcolor{gray}{Sections~\ref{sec:definite}--\ref{sec:other-rules}} \\
+7 & \quad $\mathit{seen}\gets Q\setminus S$ & \\
+8 & \quad \textbf{for each} $c\in L$: & \\
+9 & \quad\quad $Q'\gets\{q\in\mathit{seen} : \cost(S\cup\{q\},c)\le k\}$ & \textcolor{gray}{old moves} \\
+10 & \quad\quad \textbf{if} $\textsc{Search}(S\cup\{c\},Q')$ \textbf{then return} true & \\
+11 & \quad\quad $\mathit{seen}\gets\mathit{seen}\cup\{c\}$ & \\
+12 & \quad add $S$ to the memo & \\
+13 & \quad \textbf{return} false & \\
+\end{tabular}
+\end{algorithm}
+
+\subsection{Implementation checks}
+\label{app:implementation}
+
+The theorem is about the search
+as specified; that our C and Python implementations run it is checked, not
+proved. Three checks link them:
+\begin{itemize}
+\item a transcription of the Lean filter agreed with the implemented filter on
+  16,244,090 node checks over graphs on 1 to 17 vertices;
+\item the matching agreed with the hereditary premise on 36,939,226 candidates;
+\item a search written from the theorems agreed with both implementations and
+  an exact oracle on 17,431,232 runs over 52,592 graphs on 1 to 17 vertices.
+\end{itemize}
+Section~\ref{sec:certs} adds a certificate checker for individual
+refutations.
+
 
 \subsection{The filter and the runs are sound}
 \label{app:machinery}

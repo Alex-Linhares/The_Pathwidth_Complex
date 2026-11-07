@@ -79,6 +79,24 @@ Started 2026-10-09. Check items off as they are done.
     and **GT47 Elimination Degree Sequence** (p. 201) — the chordal /
     treewidth side, out.
 
+## From the owner's Zotero comments of 2026-11-07 (high priority, before arXiv)
+
+- [ ] **Upper bounds for the 610 Frinhani instances (400–1,000 customers)**: "at a
+      bare minimum we should do a tabu search here". They are in the dataset with
+      no value at all because exact search is out of reach at that size; run the
+      heuristic side (`satisfiability/heuristics.py`: `rule+cs-dfs`, then tabu
+      seeded by it) on all 610 under a modest budget, record the witness layouts
+      as `solution` provenance (never certified), and update Section 5's dataset
+      paragraph ("None of them has a value yet") and the dataset tables.
+- [x] Applied 2026-11-07: "settled 25 years later"; "the original Linhares--Yanasse
+      table"; "Chu and Stuckey's definite move fails" in the counterexample caption;
+      "(our implementation, …)" deleted from Figure 4.2's caption; the 743 sentence
+      made precise (one Rome class certified by refutation without a layout on file);
+      Chu and Stuckey's search (Algorithm 4.1) and the implementation-check list
+      moved to Appendix B with pointers; and the terminology: "the previous
+      algorithm" is now "Chu and Stuckey's algorithm" and "our corrected search"
+      is "our corrected algorithm" throughout the prose, figure labels included.
+
 ## Before posting on arXiv
 
 Done 2026-10-19: the source bundle builds and compiles standalone

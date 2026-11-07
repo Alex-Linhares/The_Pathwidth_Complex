@@ -199,7 +199,7 @@ but no source we have read states it.
 
 \paragraph{What we find.}
 \begin{itemize}
-\item \emph{The table, settled.} Eight of the twelve rows are exact: on every
+\item \emph{The table, settled 25 years later.} Eight of the twelve rows are exact: on every
   input, outside degenerate cases such as an empty graph, the problem equals
   pathwidth or pathwidth plus one (the pathwidth row itself is one of the
   eight). Two rows, split bandwidth and edge
@@ -216,8 +216,7 @@ but no source we have read states it.
   community, by way of the 2005 Constraint Modelling Challenge
   (Section~\ref{sec:names}).
 \item \emph{Two false theorems, and our correction.} The best exact algorithm
-  for MOSP, the \emph{customer search} of \citet{ChuStuckey2009}, which we call
-  the previous algorithm, branches on the order in which customers' stacks
+  for MOSP, the \emph{customer search} of \citet{ChuStuckey2009}, branches on the order in which customers' stacks
   close, and it is also a pathwidth algorithm. We prove in Lean, however, that
   two of its published dominance theorems, the \emph{definite move} and the
   \emph{better move}, are false, as are their later restatements
@@ -231,9 +230,9 @@ but no source we have read states it.
   definite move was also found by Tamaki as a lemma
   \citep[Lemma~1]{Kitsunai2016}, in the exact pathwidth literature; we show
   that it can be tested by one bipartite matching per candidate, and prove our
-  corrected search sound. Our correction costs at most 2\% more search nodes
+  corrected algorithm sound. Our correction costs at most 2\% more search nodes
   on each group of benchmarks we measured.
-\item \emph{A pathwidth solver.} Ported to graphs, our corrected search is an
+\item \emph{A pathwidth solver.} Ported to graphs, our corrected algorithm is an
   exact pathwidth solver, which we release. Within 600 seconds per graph it
   proves the pathwidth of 11,194 of the 11,534 Rome graphs, a graph-drawing
   benchmark of 10 to 110 vertices, and with the minor step below and no time
@@ -246,7 +245,7 @@ but no source we have read states it.
   Mycielski graph $M_7$ in a fraction of a second, 271 of the 340 Rome graphs
   left open at 600\,s, and MOSP optima that took up to 1,128 core-hours to
   refute (Sections~\ref{sec:minor} and~\ref{sec:results}).
-\item \emph{A parallel refutation, proved sound.} The previous algorithm is
+\item \emph{A parallel refutation, proved sound.} Chu and Stuckey's algorithm is
   sequential, and its two reaching ingredients, the nogood memo and the old
   moves a node inherits from the siblings searched before it, are what stop
   the textbook split of a depth-first search from being a proof. Our split
@@ -255,7 +254,7 @@ but no source we have read states it.
   own worker with the old moves it would have inherited and an empty memo,
   re-splits any task that exceeds its node cap, and claims a refutation only
   when every task has answered. We prove in Lean that every such run lifts to
-  a run of our corrected search \leanref{split}, so the parallel answer is a
+  a run of our corrected algorithm \leanref{split}, so the parallel answer is a
   certificate and not a heuristic, and we measure its price: the memo hits
   the tasks cannot share and the nodes of tasks that were split again. It is
   what certified the two hardest MOSP optima on record, 21 for
@@ -266,9 +265,9 @@ but no source we have read states it.
   neither had been certified before. The split scales with the cores it is
   given, up to those two losses, and the ledger of finished tasks survives a
   crash, so the next harder instance is a budget and not a new method.
-\item \emph{Benchmarks re-certified, and a dataset.} Our corrected search
+\item \emph{Benchmarks re-certified, and a dataset.} Our corrected algorithm
   re-proved all 115 benchmark optima, on 113 distinct graphs, that rested on
-  the previous algorithm, and none changed. We release 17,714 graphs, distinct
+  Chu and Stuckey's algorithm, and none changed. We release 17,714 graphs, distinct
   up to isomorphism, from twenty benchmark collections of MOSP, VLSI layout,
   vertex separation, graph drawing and treewidth; 16,634 have a certified
   pathwidth with a layout that attains it, and so a certified value for every
@@ -279,8 +278,8 @@ but no source we have read states it.
 problems and proves what is true. Section~\ref{sec:names} measures which names
 and communities the literature uses. Section~\ref{sec:search} reads the exact
 open-stacks search as a pathwidth algorithm, finds the two false rules and
-proves our corrected search sound. Section~\ref{sec:results} reports what our
-corrected search costs, how it performs as a pathwidth solver, and the dataset, and Section~\ref{sec:closing} returns to the two questions this paper asks.
+proves our corrected algorithm sound. Section~\ref{sec:results} reports what our
+corrected algorithm costs, how it performs as a pathwidth solver, and the dataset, and Section~\ref{sec:closing} returns to the two questions this paper asks.
 Every theorem we state is machine-checked in the Lean~4 proof assistant, unless
 the text says otherwise. The
 reader need not read Lean: each proof is given or cited in the text, and

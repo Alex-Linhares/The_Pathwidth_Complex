@@ -21,18 +21,18 @@ place MOSP among ``graph path-width and gate matrix layout'', citing
 \citet{LY2002}, but they do not use pathwidth in the search. Any graph is the
 MOSP graph of the instance with one customer per vertex and one pattern per
 edge, so the search decides pathwidth for every graph, and ported to graphs,
-our corrected search is an exact pathwidth solver, which we release (Sections~\ref{sec:names} and~\ref{sec:results}).
+our corrected algorithm is an exact pathwidth solver, which we release (Sections~\ref{sec:names} and~\ref{sec:results}).
 
 The stakes are these. Two of the published dominance theorems, the
 \emph{definite move} and the \emph{better move}, are false, and so are their
 restatements in Chu's thesis \citep{Chu2011} and, with a stronger premise, in
-\citet{Fink2012}. The error rarely shows: on every benchmark the previous algorithm, the search
+\citet{Fink2012}. The error rarely shows: on every benchmark Chu and Stuckey's algorithm, the search
 as \citet{ChuStuckey2009} publish it, answers correctly, and the only whole
 instance we found on which our implementation of it reports a wrong optimum,
 with the better move off, has 34 customers. There the \emph{old move}, a rule
 that lets a failed sibling prune later branches, passes a false refutation on
-(Figure~\ref{fig:wrong}). And when our corrected search re-proved every
-benchmark optimum that rested on the previous algorithm, no value changed (Section~\ref{sec:results}). Our corrected definite
+(Figure~\ref{fig:wrong}). And when our corrected algorithm re-proved every
+benchmark optimum that rested on Chu and Stuckey's algorithm, no value changed (Section~\ref{sec:results}). Our corrected definite
 move was also found by Tamaki, as the commitment lemma \citep[Lemma~1]{Kitsunai2016},
 which says when an exact pathwidth search may commit to one extension of a
 vertex set and try no other (Section~\ref{sec:layouts}). We
@@ -46,7 +46,7 @@ costs at most 2\% more search nodes on each benchmark set
 Section~\ref{sec:search-def} defines the search and shows that it decides
 pathwidth, in both vocabularies. Section~\ref{sec:algorithm} gives the
 algorithm. Sections~\ref{sec:definite} and~\ref{sec:other-rules} take the
-rules one at a time, Section~\ref{sec:theorem} proves our corrected search
+rules one at a time, Section~\ref{sec:theorem} proves our corrected algorithm
 sound, and Section~\ref{sec:layouts} places each rule in the pathwidth
 literature.
 
@@ -149,36 +149,12 @@ definite move, corrected & commitment to the child \\
 \subsection{The algorithm}
 \label{sec:algorithm}
 
-Algorithm~\ref{alg:search} gives the customer search. It is a depth-first
+Algorithm~\ref{alg:search}, in Appendix~\ref{app:algorithm}, gives Chu and
+Stuckey's customer search. It is a depth-first
 search over states. At each node it closes the free customers, consults a
 table of states already refuted, keeps the playable candidates, filters them
 with the dominance rules and recurses on the survivors.
 
-\begin{algorithm}[t]
-\caption{The customer search \citep{ChuStuckey2009} is a plain depth-first
-search; all its pruning sits in the memo (lines~4 and~12), the filter
-(line~6) and the old moves (line~9). It decides $\Sol_k(S)$ for a graph
-$G=(C,E)$ and a stack bound $k$, and is called as
-$\textsc{Search}(\emptyset,\emptyset)$. $Q$ is the set of old moves the node
-inherits.}
-\label{alg:search}
-\small
-\begin{tabular}{@{}r@{\quad}l@{\qquad}l@{}}
-1 & $\textsc{Search}(S,Q)$: & \\
-2 & \quad $S\gets\cl(S)$ & \textcolor{gray}{free moves (Lemma~\ref{lem:F})} \\
-3 & \quad \textbf{if} $S=C$ \textbf{then return} true & \\
-4 & \quad \textbf{if} $S$ is in the memo \textbf{then return} false & \textcolor{gray}{memo} \\
-5 & \quad $A\gets$ the $c\notin S\cup Q$ with $\cost(S,c)\le k$, in index order & \textcolor{gray}{cost cut} \\
-6 & \quad $L\gets$ filter of $A$: definite move, then subset rule, then better move & \textcolor{gray}{Sections~\ref{sec:definite}--\ref{sec:other-rules}} \\
-7 & \quad $\mathit{seen}\gets Q\setminus S$ & \\
-8 & \quad \textbf{for each} $c\in L$: & \\
-9 & \quad\quad $Q'\gets\{q\in\mathit{seen} : \cost(S\cup\{q\},c)\le k\}$ & \textcolor{gray}{old moves} \\
-10 & \quad\quad \textbf{if} $\textsc{Search}(S\cup\{c\},Q')$ \textbf{then return} true & \\
-11 & \quad\quad $\mathit{seen}\gets\mathit{seen}\cup\{c\}$ & \\
-12 & \quad add $S$ to the memo & \\
-13 & \quad \textbf{return} false & \\
-\end{tabular}
-\end{algorithm}
 
 Line~2 is safe by Lemma~\ref{lem:F}, and the cost cut of line~5 is exact,
 since an unplayable move is not a move of $\Sol_k$. The rest is pruning, and
@@ -265,7 +241,7 @@ are reachable from $X$ by moves of cost at most 6, and none is $C$~\leanref{cex}
 \begin{figure}[t]
 \centering
 \includegraphics[width=\linewidth]{definite_counterexample.pdf}
-\caption{The definite move fails because a set between parent and child is
+\caption{Chu and Stuckey's definite move fails because a set between parent and child is
 cheaper than both. (a) The graph of Counterexample~\ref{cex:definite} at the
 state where the rule fires. Customer 2 is closed; 1, 3 and 4 are open. Moving 0
 opens the new stacks 0, 7 and 11 and closes 0, 3 and 4, so open = close = 3 and
@@ -357,7 +333,7 @@ when the hereditary condition holds.
 
 The bipartite graph has at most $\close-1$ customers on one side and $\open$
 stacks on the other, and the matching can stop at $\open-1$ edges. Every $q$
-with $\open(q,S)\le1$ passes at once, so the definite move of the previous algorithm is right
+with $\open(q,S)\le1$ passes at once, so the definite move of Chu and Stuckey's algorithm is right
 there~\leanref{open1}.
 
 \subsection{The other rules}
@@ -434,7 +410,7 @@ record a solvable state~\leanref{fakeold}. Theorem~\ref{thm:runs}
 (Appendix~\ref{app:machinery}) shows that this never happens in a real run,
 because every old move is a refutation completed earlier in the same run.
 
-\subsection{Our corrected search is sound}
+\subsection{Our corrected algorithm is sound}
 \label{sec:theorem}
 
 \paragraph{What a rule must satisfy.} At a state $S$ with old moves $Q$, the
@@ -450,7 +426,7 @@ the corrected filter is node-sound, and Theorem~\ref{thm:runs} that node
 soundness, the memo and the old move together give sound runs; both are in
 Appendix~\ref{app:machinery}. Together they give the main theorem.
 
-\begin{theorem}[our corrected search is sound]\label{thm:main}
+\begin{theorem}[our corrected algorithm is sound]\label{thm:main}
 Run the customer search with free moves, the memo, old moves and the filter
 definite $\to$ subset $\to$ better. Let the definite move fire only on a
 hereditarily definite customer, and the better move cite only under the
@@ -466,37 +442,28 @@ no closing order fits in $k$ stacks.
 
 \paragraph{What is proved and what is tested.} The theorem is about the search
 as specified; that our C and Python implementations run it is checked, not
-proved. Three checks link them:
-\begin{itemize}
-\item a transcription of the Lean filter agreed with the implemented filter on
-  16,244,090 node checks over graphs on 1 to 17 vertices;
-\item the matching agreed with the hereditary premise on 36,939,226 candidates;
-\item a search written from the theorems agreed with both implementations and
-  an exact oracle on 17,431,232 runs over 52,592 graphs on 1 to 17 vertices.
-\end{itemize}
-Section~\ref{sec:certs} adds a certificate checker for individual
-refutations.
+proved. Appendix~\ref{app:implementation} lists the checks that link them.
 
-\paragraph{The previous algorithm.} Under it, the filter is not
+\paragraph{Chu and Stuckey's algorithm.} Under it, the filter is not
 node-sound~\leanref{notsound}. In a check of 570,206 runs with memo and old
 move, it lost the last solution at a node in 58 runs, all on graphs built
 around Counterexample~\ref{cex:definite} and all at $k$ equal to the optimum.
 Every one found a solution through another branch and answered correctly.
 
 \paragraph{A wrong optimum.} A targeted search did produce a whole instance on
-which the previous algorithm \citep{ChuStuckey2009} gives a wrong answer. It started from
+which Chu and Stuckey's algorithm gives a wrong answer. It started from
 Counterexample~\ref{cex:definite}, climbed toward graphs on which the previous
 algorithm refutes more and more of the root's solvable branches, and joined two
 copies of a 17-customer near-miss by one edge. On the resulting 34-customer instance (Figure~\ref{fig:wrong}), we ran our
-implementation of the previous algorithm with its definite move, the subset
+implementation of Chu and Stuckey's algorithm with its definite move, the subset
 rule and the old move, and with the better move off. It answers that 6 stacks
 do not suffice and that 7 do, so it reports an optimum of 7, with a refutation
 as its proof (Figure~\ref{fig:wrong}(a)). Yet the order of
 Figure~\ref{fig:wrong}(b) keeps at most 6 stacks open (6 tracks, in the
-figure's gate matrix reading); our corrected search finds it and
+figure's gate matrix reading); our corrected algorithm finds it and
 refutes 5, so the optimum is 6. This is a theorem, checked in Lean.
 
-\begin{theorem}[the previous algorithm reports a wrong optimum]\label{thm:wrong}
+\begin{theorem}[Chu and Stuckey's algorithm reports a wrong optimum]\label{thm:wrong}
 Let $G_{34}$ be the MOSP graph of the 34-customer instance of
 Figure~\ref{fig:wrong}. Run with its definite move as published, the subset
 rule, the old move and the memo, and with the better move off, the previous
@@ -506,7 +473,7 @@ reports an optimum of 7. The optimum is 6, and the pathwidth of $G_{34}$ is
 \end{theorem}
 
 The proof is a computation checked by the Lean kernel itself, with no
-unverified evaluation. A transcription of the previous algorithm is proved, for
+unverified evaluation. A transcription of Chu and Stuckey's algorithm is proved, for
 every graph and every $k$, to produce runs of the search of
 Section~\ref{sec:search-def} with the published filter. On $G_{34}$ it refutes
 6 in 526 nodes with the memo and in 839 without it, the counts of our C and
@@ -522,7 +489,7 @@ eight mutated traces passed. A SAT solver on our encoding of MOSP
 finds an order with 6 open stacks and proves that 5 do not suffice, with a proof in DRAT, the standard proof format of SAT solvers, which the independent checker drat-trim verifies. The mechanism is the old move: the definite
 move falsely refutes a subtree, and the old move passes that refutation on to
 the later branches, which then skip the moves their solutions need. Without the
-old move, or with the better move switched on, the previous algorithm answers
+old move, or with the better move switched on, Chu and Stuckey's algorithm answers
 this instance correctly; whether it can also fail in that configuration is
 open. The failing configuration separates two rules that Chu and Stuckey run as
 one: ``Our implementation of `better move' subsumes `definite move' so we will
@@ -535,10 +502,9 @@ that needs nothing but Python are in the repository
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=\linewidth]{false_refutation_34.pdf}
-\caption{The previous algorithm \citep{ChuStuckey2009} reports a wrong optimum. A 34-customer instance with 61 patterns, drawn as a gate matrix layout of 34 nets on 61 gates. (a) The layout the previous algorithm (our
-implementation, better move off) returns and certifies as optimal: 7 tracks. (b) A layout with 6 tracks, found
-by our corrected search, which also proves that 5 do not suffice, as do a SAT solver with a DRAT proof checked by drat-trim and Lean (Theorem~\ref{thm:wrong}). (c) The open
-stacks at each gate of the two orders: the previous algorithm's order reaches 7 in the
+\caption{Chu and Stuckey's algorithm reports a wrong optimum. A 34-customer instance with 61 patterns, drawn as a gate matrix layout of 34 nets on 61 gates. (a) The layout Chu and Stuckey's algorithm (better move off) returns and certifies as optimal: 7 tracks. (b) A layout with 6 tracks, found
+by our corrected algorithm, which also proves that 5 do not suffice, as do a SAT solver with a DRAT proof checked by drat-trim and Lean (Theorem~\ref{thm:wrong}). (c) The open
+stacks at each gate of the two orders: Chu and Stuckey's algorithm's order reaches 7 in the
 first copy, where the optimal order never exceeds 6.
 (d) The instance's graph, two copies of a near-miss joined by one edge.}
 \label{fig:wrong}
@@ -598,7 +564,7 @@ papers we have read
 
 \begin{table}[t]
 \centering\small
-\caption{Two rules of the previous algorithm are false; the free move, the memo and the
+\caption{Two rules of Chu and Stuckey's algorithm are false; the free move, the memo and the
 corrected definite move are known pathwidth results; the subset rule, the
 corrected better move and the old move, like the matching test, are proved here.
 Each rule of the customer search against the exact-pathwidth literature.}
@@ -607,8 +573,8 @@ Each rule of the customer search against the exact-pathwidth literature.}
 \toprule
 Rule & Published counterpart & Status \\
 \midrule
-definite move, previous algorithm & endpoint case of a commitment (Lemma~\ref{lem:endpoint}) & false (Cex.~\ref{cex:definite}) \\
-better move, previous algorithm & none found & false \\
+definite move, Chu and Stuckey's & endpoint case of a commitment (Lemma~\ref{lem:endpoint}) & false (Cex.~\ref{cex:definite}) \\
+better move, Chu and Stuckey's & none found & false \\
 \midrule
 free move & full sets \citep{SuchanVillanger2009}; \citet[Prop.~3]{Kitsunai2016} & known \\
 definite move, $\open\le1$ & depth-one commitments; greedy step; push rule & known \\
@@ -667,7 +633,7 @@ then proves $\pw(G)\ge w+1$; on the MOSP graph of an instance, by
 Theorem~\ref{thm:mosp}, it proves that every pattern order opens at least
 $w+2$ stacks~\leanref{minor}.
 
-\paragraph{The minor step.} Before our corrected search refutes the value
+\paragraph{The minor step.} Before our corrected algorithm refutes the value
 below the best known one, $w$, on the whole graph, it tries to refute $w$ on
 minors. It contracts the graph, merging a vertex of least degree into its
 neighbour of least degree (or, as a second rule, into the neighbour it shares

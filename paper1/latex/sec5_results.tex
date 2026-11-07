@@ -7,10 +7,10 @@
 \section{Computational results and a dataset}
 \label{sec:results}
 
-Section~\ref{sec:search} proved our corrected search sound. This section asks
+Section~\ref{sec:search} proved our corrected algorithm sound. This section asks
 five practical questions about it and answers each with a measurement. What
 does our correction cost? At most 2\% more search nodes on each group of benchmarks we measured. Do the published
-benchmark optima survive? All 115 that rested on the previous algorithm
+benchmark optima survive? All 115 that rested on Chu and Stuckey's algorithm
 \citep{ChuStuckey2009} were proved again, and none changed. How good a
 pathwidth solver is it? On every benchmark set with published exact counts it proves as many or more graphs than the published branch and bound of \citet{CoudertMazauricNisse2016}, and it is faster on each of the fourteen graphs whose times they publish. Can a reader check a refutation without
 trusting our code? Yes, up to about 75 customers, through a certificate and an
@@ -28,7 +28,7 @@ its port to graphs, are written in C, compiled with gcc 15.2 using the
 flags \texttt{-O3} and \texttt{-march=native}, and driven from Python~3.12. A Python implementation of the
 same rules serves as a reference for cross-checks and emits the certificates
 of Section~\ref{sec:certs}. Our corrected tests are the default in every
-implementation; the tests of the previous algorithm remain available as an option. The C
+implementation; the tests of Chu and Stuckey's algorithm remain available as an option. The C
 implementation handles components of at most 1,024 vertices; 154 classes of
 the dataset of Section~\ref{sec:dataset} are larger.
 
@@ -38,7 +38,7 @@ answers such questions, one at a time. A \emph{node} is one state visited by
 the search, the unit in which we report effort. Up to 32 workers ran at
 once on the machine, so wall-clock times carry load noise. We therefore
 compare node counts and report time only in \emph{core-hours}, the hours of one core summed over workers (32 workers for one hour make 32 core-hours). A \emph{pair} runs
-the same question twice in the same worker, once under the previous algorithm
+the same question twice in the same worker, once under Chu and Stuckey's algorithm
 and once under our corrected rules, alternating which goes first. A
 \emph{descent} solves a whole graph: it lowers $k$ from an upper bound until a
 refutation proves the last value optimal. Each table states its time or node
@@ -48,7 +48,7 @@ budget.
 rules of Section~\ref{sec:search}, which differ only in the better move. The
 \emph{base} configuration leaves it off. The configuration \emph{with better
 move} switches it on for instances whose customers need at most five patterns on
-average. This is the setting under which our implementation of the previous algorithm certified the benchmark values it proved.
+average. This is the setting under which our implementation of Chu and Stuckey's algorithm certified the benchmark values it proved.
 
 \paragraph{Instances.} The \emph{MOSP corpus} is the 6,376 instance files of
 four public open-stacks collections, one of which is distributed twice. They
@@ -76,7 +76,7 @@ split search of Section~\ref{sec:practice}.
 \subsection{The cost of our correction, and the benchmark values}
 \label{sec:practice}
 
-Our corrected search adds one matching test to the definite move and to the
+Our corrected algorithm adds one matching test to the definite move and to the
 better move (Section~\ref{sec:definite}). A candidate that fails the matching
 is passed over, so the corrected tree can only differ where the matching fails.
 Table~\ref{tab:cost} shows how rarely that matters.
@@ -84,7 +84,7 @@ Table~\ref{tab:cost} shows how rarely that matters.
 \begin{table}[t]
 \centering\small
 \caption{Our correction never changed an answer and costs at most 2\% more
-nodes in total. Each pair runs the same question under the previous algorithm and under the
+nodes in total. Each pair runs the same question under Chu and Stuckey's algorithm and under the
 corrected rules in one worker. Totals are over the pairs that finished under
 both rules; a pair stopped by its budget says nothing about cost.
 \emph{Vertices}: customers in the open-stacks rows (the vertices of $G_M$).
@@ -97,7 +97,7 @@ Rome graphs.}
 \resizebox{\linewidth}{!}{\input{tables/cost}}
 \end{table}
 
-In every row of Table~\ref{tab:cost} our corrected search and the previous algorithm gave
+In every row of Table~\ref{tab:cost} our corrected algorithm and Chu and Stuckey's algorithm gave
 the same answer, and the total node counts differ by at most 2\%. Single
 open-stacks pairs differ by at most 4\%. The time per node also rises, by about 2\% in the C
 implementation, measured on six hard instances at 75 to 125 customers. The
@@ -117,7 +117,7 @@ not depend on the customer search at all. Each was proved in one of four ways:
 \item or by a lower bound equal to the value.
 \end{itemize}
 The other 115 rested on the customer search
-of the previous algorithm. Our corrected search refuted the value minus one on
+of Chu and Stuckey's algorithm. Our corrected algorithm refuted the value minus one on
 all 115, so all 115 values stand. They are 115 benchmark entries on 113
 distinct graphs: SP3 and SP4 are each stored twice.
 
@@ -126,7 +126,7 @@ and 4. They are too large for one worker, so their search was split:
 the top levels of the tree are expanded into independent subtrees, each
 refuted on its own worker, and the value is refuted when every subtree is.
 This is not the textbook split of a depth-first search, and it is worth
-saying exactly where the previous algorithm resists it. Its pruning is a
+saying exactly where Chu and Stuckey's algorithm resists it. Its pruning is a
 property of the path, not of the state: under the old move, their Theorem~3,
 a candidate $q$ is dropped at a node because an ancestor or an earlier
 sibling already searched $q$ and found nothing, so the candidate set depends
@@ -144,7 +144,7 @@ task that exceeds its node cap; and claims nothing until every task has
 answered \emph{unsat}, since an inherited old move is justified only by a
 sibling that refuted. The split is proved sound~\leanref{split}: a larger
 memo changes nothing a run needs, so a task may start from none, and every
-such run lifts to a run of our corrected search. The lifting is stated for
+such run lifts to a run of our corrected algorithm. The lifting is stated for
 the corrected rules; with the published definite and better moves there is no
 sound sequential run to lift onto.
 
@@ -162,15 +162,15 @@ order, on any number of workers, on any machines, and a ledger of finished
 tasks is the whole state of the run, which is why a crash loses only the tasks
 in flight. The one global step is the last: a refutation is the conjunction of
 every task's \emph{unsat}, and that conjunction is what the split theorem~\leanref{split}
-lifts to a sequential run. The previous algorithm cannot be run this way as
+lifts to a sequential run. Chu and Stuckey's algorithm cannot be run this way as
 published, because its tasks would not be self-contained: their candidate sets
 would depend on siblings still running, and their shared nogoods would cross
 paths with different histories. Making the state explicit, and making the
 rules true, is what makes the search parallel. Its price is measured and
 reported beside each count: the memo hits the tasks cannot share, which make
 the split visit more nodes than one worker would, and the nodes of tasks
-that hit their cap and were split again, which we count as waste. The
-previous algorithm has no parallel form in its authors' papers. All seven were refuted at 18 to 369
+that hit their cap and were split again, which we count as waste. Chu and Stuckey's
+algorithm has no parallel form in its authors' papers. All seven were refuted at 18 to 369
 core-hours each, 1,112.6 in total (Table~\ref{tab:split},
 Appendix~\ref{app:split}).
 
@@ -193,10 +193,10 @@ nodes, under a second of search, against
 also equals the optimum on \texttt{Random-125-125-6-1\_0} (81) and SP4 (53),
 which the search refutes on the full instance within a minute.
 
-\subsection{Our corrected search as a pathwidth solver}
+\subsection{Our corrected algorithm as a pathwidth solver}
 \label{sec:pwsolver}
 
-Ported to graphs, our corrected search is an exact pathwidth solver. Table~\ref{tab:graphs} gives what it proves on the 11,915 benchmark graphs it was run on, counted as files, beside the run of the previous
+Ported to graphs, our corrected algorithm is an exact pathwidth solver. Table~\ref{tab:graphs} gives what it proves on the 11,915 benchmark graphs it was run on, counted as files, beside the run of the previous
 algorithm under the same caps and the published counts of
 \citet{CoudertMazauricNisse2016}. Where both runs prove a graph, the widths
 agree on every one. The 24 Rome graphs proved only by the corrected run, and the
@@ -254,14 +254,14 @@ a sample of 120 MOSP corpus instances. The minor bounds for \texttt{myciel6},
 \texttt{myciel7} (the bound 71) and the four MOSP instances below were also refuted by a
 separate exact search that uses no dominance rule and writes out every refuted
 set, which an independent checker verifies; the refutation of 71 on the
-132-vertex minor of \texttt{myciel7} rests on our corrected search alone, its
+132-vertex minor of \texttt{myciel7} rests on our corrected algorithm alone, its
 contraction sequence replayed and checked. Their branch and bound is openly available in SageMath, and a
 head-to-head run on one machine is the comparison that would settle which solver is stronger; we have not yet made it.
 
 \begin{table}[t]
 \centering\small
-\caption{Our corrected search as a pathwidth solver. Graphs whose pathwidth it
-proves, under our corrected rules and under the previous algorithm with the same
+\caption{Our corrected algorithm as a pathwidth solver. Graphs whose pathwidth it
+proves, under our corrected rules and under Chu and Stuckey's algorithm with the same
 caps (Rome: 10, 120 and 600\,s in stages), without the minor step of
 Section~\ref{sec:minor}, and the published counts of
 \citet{CoudertMazauricNisse2016} under a 10-minute cap. \emph{Width differs}:
@@ -344,7 +344,7 @@ budget verifies, 6,275 of 6,286, and none is rejected. All 35.5\,MB of
 certificates check in 147\,s. The base configuration gives the same picture:
 6,276 of 6,286 verify and none is rejected. The checker also catches the error
 of Section~\ref{sec:definite}. On the graph of
-Counterexample~\ref{cex:definite}, rooted at $\{2\}$, the previous algorithm emits
+Counterexample~\ref{cex:definite}, rooted at $\{2\}$, Chu and Stuckey's algorithm emits
 a complete tree that claims there is no solution. A checker of the published
 premises accepts it. Ours rejects it, even with a largest matching attached,
 because the matching has one edge where two are needed. At 125 customers the
@@ -377,7 +377,7 @@ own matrix~\leanref{obstruction}.
 On the 338 instances of the MOSP corpus where the solver's own bound misses
 the optimum by two or more (20 to 134 customers), the best floor on record was
 tight on 81. Searched contraction minors, each refuted on the minor by our
-corrected search under a cap of 2 to 10\,s per call, are tight on 327: at 20
+corrected algorithm under a cap of 2 to 10\,s per call, are tight on 327: at 20
 to 50 customers on 251 of 251, beating the greedy ladder of
 Section~\ref{sec:minor} on 29, always by one; above 60 customers on 76 of 87.
 They reach 93 on \texttt{Random-125-125-8-2\_0}, its optimum, on a 118-customer
@@ -457,7 +457,7 @@ eleven VLSI gate matrix circuits \citep{OliveiraLorena2002}, the VSPLIB sets
 \citep{Duarte2012} and the Small graphs \citep{MartiCamposPinana2008}, the Rome
 graphs \citep{DiBattista1997}, and treewidth collections used as pathwidth
 benchmarks \citep{TreewidthLIB,freetdi,PACE2016,PACE2017}. Of the 17,714
-classes, 16,634 carry a certified pathwidth with a witness layout and 337 a witnessed upper bound, and 743 have no witnessed value yet, one of them with a certified pathwidth. The 610 large instances of \citet{Frinhani2018}, with
+classes, 16,634 carry a certified pathwidth with a witness layout and 337 a witnessed upper bound, and 743 have no witnessed value yet; one of those, a Rome class certified by refutation, has a certified pathwidth but no layout on file. The 610 large instances of \citet{Frinhani2018}, with
 400 to 1,000 customers, are included so that the dataset covers every
 published MOSP collection we have. None of them has a value yet, because an
 exact search at that size is out of reach.
@@ -470,7 +470,7 @@ layout, replays every minor certificate and every stored contraction sequence
 certified by theorem from its edges alone. It reports no failure on the
 16,971 records, the 16,634 certified classes and the 337 with an upper bound. A value certified by search cannot be checked from its record,
 and neither can the refutation on a minor;
-both rest on our corrected search, and for instances within reach of the emitter
+both rest on our corrected algorithm, and for instances within reach of the emitter
 the certificate of Section~\ref{sec:certs} is how a third party can check it.
 
 \paragraph{Agreement with published values.} All 84 Small graphs agree with

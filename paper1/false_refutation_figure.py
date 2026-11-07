@@ -155,15 +155,15 @@ def draw() -> Path:
         ax.set_title(title, loc="left", fontsize=8.5)
 
     layout(ax_p, f["pub_prod"], f["pub_spans"], f["pub_tracks"], k + 1,
-           f"(a) The previous algorithm (Chu and Stuckey 2009), reported as optimal: {k + 1} tracks")
+           f"(a) Chu and Stuckey's algorithm (2009), reported as optimal: {k + 1} tracks")
     layout(ax_a, prod, sp, tracks, k,
-           f"(b) Our corrected search: an optimal layout, {k} tracks")
+           f"(b) Our corrected algorithm: an optimal layout, {k} tracks")
 
     # (c) open stacks along both orders
     ax_b.step(range(1, m + 1), f["pub_profile"], where="mid", color=copy_b, lw=1.1,
-              label=f"previous algorithm (peak {k + 1})")
+              label=f"Chu and Stuckey's algorithm (peak {k + 1})")
     ax_b.step(range(1, m + 1), f["profile"], where="mid", color="0.15", lw=1.1,
-              label=f"our corrected search (peak {k})")
+              label=f"our corrected algorithm (peak {k})")
     ax_b.set_ylim(0, k + 4.2)
     ax_b.set_xlim(0.5, m + 0.5)
     ax_b.set_xlabel("gate (production order)")
@@ -171,7 +171,7 @@ def draw() -> Path:
     ax_b.legend(loc="upper right", fontsize=7.5, frameon=False, ncol=1)
     for s in ("top", "right"):
         ax_b.spines[s].set_visible(False)
-    ax_b.set_title("(c) Open stacks at each gate:\nthe previous algorithm and ours", loc="left", fontsize=8.5)
+    ax_b.set_title("(c) Open stacks at each gate:\nChu and Stuckey's algorithm and ours", loc="left", fontsize=8.5)
 
     # (d) the MOSP graph: two glued copies
     G = nx.Graph()
