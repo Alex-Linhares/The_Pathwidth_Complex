@@ -113,6 +113,26 @@ static void print_sequence_to(FILE *out, const state *s) {
 }
 static void print_sequence(const state *s) { print_sequence_to(stdout, s); }
 
+/* The walk's current forest as a seed file ("v u" per line, v contracted into u, in G's labels), rewritten at
+ * every step so a run can be restarted where it stopped (`-seed FILE -L <last floor>`). */
+static void write_checkpoint(const char *path, const state *s) {
+    if (!path) return;
+    char tmp[4200]; snprintf(tmp, sizeof tmp, "%s.tmp", path);
+    FILE *out = fopen(tmp, "w"); if (!out) return;
+    int n = s->n;
+    int *rep = xmalloc(sizeof(int) * (size_t) n);
+    for (int v = 0; v < n; v++) rep[v] = v;
+    for (int i = 0; i < s->m; i++) if (s->in_forest[i]) {
+        int a = uf_find(rep, s->eu[i]), b = uf_find(rep, s->ev[i]);
+        if (a == b) continue;
+        fprintf(out, "%d %d\n", a, b);
+        rep[a] = b;
+    }
+    free(rep);
+    fclose(out);
+    rename(tmp, path);
+}
+
 /* One JSON line per neighbour refutation: the level refuted, the step, the minor's size and the contraction
  * sequence that produces it (the certificate format of the final output), so the minor can be recovered and
  * re-checked later.  `s` must be the neighbour's forest when this is called. */
@@ -128,7 +148,7 @@ int main(int argc, char **argv) {
     double budget = 1800.0;
     int target = -1, floor_known = 0, tabu_len = 7, max_exact = 90, sample = 400, verbose_improve = 0;
     double lo_frac = 0.4, hi_frac = 0.9, nb_seconds = 2.0;
-    const char *seed_file = NULL, *log_file = NULL;   /* claims log; default <seed_file>.claims.jsonl when seeded */
+    const char *seed_file = NULL, *log_file = NULL, *ckpt_file = NULL;   /* claims log and checkpoint; defaults <seed_file>.claims.jsonl, <seed_file>.last when seeded */
     FILE *claims = NULL;
     long long exact_nodes = 300000, nb_nodes = 20000;   /* node budget: the chosen minor's climb; each neighbour's test */
     unsigned long long seed = 1;
@@ -146,6 +166,7 @@ int main(int argc, char **argv) {
         else if (!strcmp(argv[i], "-nt") && i + 1 < argc) nb_seconds = atof(argv[++i]);
         else if (!strcmp(argv[i], "-seed") && i + 1 < argc) seed_file = argv[++i];
         else if (!strcmp(argv[i], "-log") && i + 1 < argc) log_file = argv[++i];
+        else if (!strcmp(argv[i], "-ckpt") && i + 1 < argc) ckpt_file = argv[++i];
         else if (!strcmp(argv[i], "-lo") && i + 1 < argc) lo_frac = atof(argv[++i]);
         else if (!strcmp(argv[i], "-hi") && i + 1 < argc) hi_frac = atof(argv[++i]);
         else { fprintf(stderr, "unknown option %s\n", argv[i]); return 2; }
@@ -240,8 +261,9 @@ int main(int argc, char **argv) {
         fprintf(stderr, "band [%d, %d] vertices; start minor %d vertices, proxy %d\n", lo_n, hi_n, cur_h, cur_proxy);
     }
     {
-        char derived[4096];
+        static char derived[4096], derived_ckpt[4096];
         if (!log_file && seed_file) { snprintf(derived, sizeof derived, "%s.claims.jsonl", seed_file); log_file = derived; }
+        if (!ckpt_file && seed_file) { snprintf(derived_ckpt, sizeof derived_ckpt, "%s.last", seed_file); ckpt_file = derived_ckpt; }
         if (log_file) { claims = fopen(log_file, "a"); if (!claims) fprintf(stderr, "cannot open the claims log %s\n", log_file); }
     }
     while (now() < deadline && (target < 0 || floor < target)) {
@@ -332,15 +354,22 @@ int main(int argc, char **argv) {
             }
             graph_free(&H);
         }
+        write_checkpoint(ckpt_file, &s);
         if (steps % 50 == 0) fprintf(stderr, "%8.1fs step %lld: minor %d vertices, proxy %d, floor %d (best proxy %d), exact calls %lld\n", now() - t0, steps, cur_h, cur_proxy, floor, best_proxy, exact_calls);
     }
-    /* ---- output ---- */
+    /* ---- output: the best certificate, and the walk's last state for a restart ---- */
+    write_checkpoint(ckpt_file, &s);
+    int last_h = cur_h;
+    unsigned char *last_forest = xmalloc((size_t) (s.m ? s.m : 1)); memcpy(last_forest, s.in_forest, (size_t) s.m);
     memcpy(s.in_forest, best_forest, (size_t) s.m);
     printf("{\"n\":%d,\"m\":%d,\"floor\":%d,\"kind\":\"%s\",\"minor_vertices\":%d,\"refuted\":%d,\"nodes\":%lld,"
            "\"whole_graph_floor\":%d,\"best_proxy\":%d,\"steps\":%lld,\"exact_calls\":%lld,\"exact_nodes\":%lld,\"seconds\":%.1f,"
            "\"reached_target\":%s,\"sequence\":",
            n, s.m, floor, best_kind, best_h, floor - 1, best_nodes, floor_whole, best_proxy, steps, exact_calls, exact_total_nodes,
            now() - t0, (target >= 0 && floor >= target) ? "true" : "false");
+    print_sequence(&s);
+    memcpy(s.in_forest, last_forest, (size_t) s.m); free(last_forest);
+    printf(",\"last_minor_vertices\":%d,\"last_sequence\":", last_h);
     print_sequence(&s);
     printf("}\n");
     if (claims) fclose(claims);

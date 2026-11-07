@@ -12,7 +12,10 @@ level the ladder could not reach.  30 CPU minutes per class, `--procs` at a
 time under nice 19, a JSON per class under `reports/scratch/minor_tabu/`, a
 ledger CSV appended as classes finish (`--resume` skips ids already there).
 A class whose target is reached is a new certificate: the ledger says so, and
-the JSON holds the contraction sequence for the independent checker.  Every
+the JSON holds the contraction sequence for the independent checker.  The
+walk's current forest is checkpointed at every step to `<id>.last` (a seed
+file); `--restart` seeds each class from it with its last floor, so a run
+continues where it stopped (`--seed` changes the random stream).  Every
 neighbour refutation along the walk is logged to `<id>.claims.jsonl` (level,
 step, minor size, contraction sequence); `minor_tabu_claims.py` replays and
 re-checks them.  (Runs started before 2026-11-07 03:40 log to
@@ -65,7 +68,25 @@ def graph6_of(inst: Path) -> tuple[bytes, int, int]:
     return nx.to_graph6_bytes(G, header=False), n, G.number_of_edges()
 
 
-def run_one(r: dict, seconds: float, seed: int) -> dict:
+def checkpoint_of(cid: str) -> Path | None:
+    """The walk's last state from a previous run of this class, if any (the program's -ckpt, default beside the seed)."""
+    for cand in (OUT / f"{cid}.last", OUT / f"{cid}.seed.last"):
+        if cand.exists() and cand.stat().st_size > 0:
+            return cand
+    return None
+
+
+def last_floor(cid: str, ledgers: list[Path]) -> int | None:
+    best = None
+    for led in ledgers:
+        if led.exists():
+            for x in csv.DictReader(open(led)):
+                if x["id"] == cid and x["floor_after"]:
+                    best = max(best or 0, int(x["floor_after"]))
+    return best
+
+
+def run_one(r: dict, seconds: float, seed: int, restart: bool = False, ledgers: list[Path] | None = None) -> dict:
     cid = r["id"]
     cdir = PASS / "certificates_2" / cid
     cert = json.load(open(cdir / "minor.json"))
@@ -75,11 +96,21 @@ def run_one(r: dict, seconds: float, seed: int) -> dict:
     seedfile.write_text("".join(f"{v} {u}\n" for v, u in cert["sequence"] if u is not None and u >= 0))
     width = int(float(r["width"]))
     floor = int(cert.get("pathwidth_proved") or (int(cert["refuted_width"]) + 1))
+    seed_minor = cert.get("m")
+    if restart:   # where the previous run stopped: its last forest and its last floor
+        ck = checkpoint_of(cid)
+        if ck is None:
+            row = {k: "" for k in FIELDS}; row.update(id=cid, names=r["names"], n=n, m=m, width=width, floor_before=floor, status="no checkpoint")
+            return row
+        seedfile = OUT / f"{cid}.restart.seed"
+        seedfile.write_text(ck.read_text())
+        floor = max(floor, last_floor(cid, ledgers or []) or 0)
+        seed_minor = n - sum(1 for line in ck.read_text().split("\n") if line.strip())
     row = {k: "" for k in FIELDS}
-    row.update(id=cid, names=r["names"], n=n, m=m, width=width, floor_before=floor, seed_minor=cert.get("m"))
+    row.update(id=cid, names=r["names"], n=n, m=m, width=width, floor_before=floor, seed_minor=seed_minor)
     cmd = ["nice", "-n", "19", str(CLI), "-t", str(seconds), "-w", str(width), "-L", str(floor), "-seed", str(seedfile),
            "-S", "40", "-nb", "400000", "-nt", "1.5", "-b", "3000000", "-m", "120", "-lo", "0.3", "-hi", "0.95",
-           "-c", "7", "-s", str(seed), "-p", "-log", str(OUT / f"{cid}.claims.jsonl")]
+           "-c", "7", "-s", str(seed), "-p", "-log", str(OUT / f"{cid}.claims.jsonl"), "-ckpt", str(OUT / f"{cid}.last")]
     t0 = time.monotonic()
     try:
         proc = subprocess.run(cmd, input=g6, capture_output=True, timeout=seconds * 1.5 + 120)
@@ -107,8 +138,12 @@ def main() -> None:
     ap.add_argument("--seed", type=int, default=1)
     ap.add_argument("--only", nargs="*", default=None)
     ap.add_argument("--out", type=Path, default=OUT / "ledger.csv")
-    ap.add_argument("--resume", action="store_true")
+    ap.add_argument("--resume", action="store_true", help="skip classes already in the ledger")
+    ap.add_argument("--restart", action="store_true", help="restart each class's walk where its previous run stopped (its .last checkpoint and last floor); ledger defaults to ledger_restart.csv")
     a = ap.parse_args()
+    if a.restart and a.out == OUT / "ledger.csv":
+        a.out = OUT / "ledger_restart.csv"
+    ledgers = [OUT / "ledger.csv", OUT / "ledger_restart.csv"]
     OUT.mkdir(parents=True, exist_ok=True)
     rows = targets()
     if a.only:
@@ -132,7 +167,7 @@ def main() -> None:
             gap = int(float(r["width"])) - int(float(r["m_pathwidth"] or 0))
             return per_gap.get(gap, a.seconds)
         print("budgets by gap:", {g: per_gap.get(g, a.seconds) for g in sorted({int(float(r["width"])) - int(float(r["m_pathwidth"] or 0)) for r in rows})}, flush=True)
-        futs = {pool.submit(run_one, r, budget(r), a.seed): r["id"] for r in rows}
+        futs = {pool.submit(run_one, r, budget(r), a.seed, a.restart, ledgers): r["id"] for r in rows}
         for fut in as_completed(futs):
             row = fut.result(); w.writerow(row); fh.flush(); k += 1; closed += row["status"] == "CLOSED"
             print(f"{time.strftime('%T')} {k}/{len(rows)} {row['id']} {str(row['names'])[:26]:26} n={row['n']:>4} width {row['width']} "
