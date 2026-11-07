@@ -273,7 +273,7 @@ class BlockageCNF:
         return {X for X in self.sm if self.b[X] in pos}
 
     def minimise(self, kind: str = "frame", time_limit: float | None = None,
-                 solver: str | None = None) -> dict:
+                 solver: str | None = None, log=None) -> dict:
         """``min size(B)`` over the blockages of order ``k``; ``kind`` is ``frame``
         (size₁), ``maximal`` (size₃) or ``generators`` (size₂).
 
@@ -331,6 +331,8 @@ class BlockageCNF:
             out["members"] = self.members_of(model)
             out["ub"] = best
             lb = 1
+            if log:
+                log(f"first blockage: size {best} ({time.time() - t0:.1f}s)")
             if best > lb:
                 tot = ITotalizer(lits=lits, ubound=best - 1, top_id=self.top)
                 s.append_formula(tot.cnf.clauses)
@@ -347,6 +349,8 @@ class BlockageCNF:
                         pos = set(l for l in model if l > 0)
                         best = sum(1 for l in lits if l in pos)
                         out["members"] = self.members_of(model)
+                    if log:
+                        log(f"asked <= {target}: {'unsat' if r is False else 'sat'}; lb={lb} ub={best} ({time.time() - t0:.1f}s)")
             out["lb"] = lb
             out["ub"] = best
             if lb == best:
@@ -361,9 +365,10 @@ class BlockageCNF:
         return out
 
 
-def min_size(adj: list[int], k: int, kind: str = "frame", time_limit: float | None = None) -> dict:
+def min_size(adj: list[int], k: int, kind: str = "frame", time_limit: float | None = None,
+             solver: str | None = None, log=None) -> dict:
     cnf = BlockageCNF(adj, k, want_maximal=(kind == "maximal"), want_generators=(kind == "generators"))
-    return cnf.minimise(kind, time_limit=time_limit)
+    return cnf.minimise(kind, time_limit=time_limit, solver=solver, log=log)
 
 
 # ----------------------------------------------------------------------------
@@ -512,7 +517,7 @@ def pathwidth_of(adj: list[int]) -> int:
     proc = subprocess.run([str(ROOT / "pathwidth_solver" / "cli" / "pathwidth"), "-t", "600"],
                           input=graph6_of(adj) + "\n", capture_output=True, text=True, check=True)
     tok = proc.stdout.split()
-    if tok[2] != "proved" and tok[2] != "exact":
+    if tok[0] != "pathwidth" or tok[2] not in ("refutation", "bound", "minor"):
         raise RuntimeError(f"pathwidth not proved: {proc.stdout}")
     return int(tok[1])
 
@@ -753,6 +758,31 @@ def run_named(time_limit: float = 600.0, workers: int = 8, only: str | None = No
     log(f"{len(rows)} rows, {time.time() - t0:.0f} s -> {out}")
 
 
+def run_big(ns=(18, 20), seeds=(0, 1), degree: int = 3, time_limit: float = 1800.0,
+            orders_below: int = 1, out: Path | None = None, log=print) -> None:
+    """Random regular graphs above the subset DP's comfort (pathwidth by the C
+    program `pathwidth_solver/cli/pathwidth` when n > 18), one at a time, the
+    frame minimum at orders pw .. pw − orders_below with a time limit."""
+    import networkx as nx
+
+    SCRATCH.mkdir(parents=True, exist_ok=True)
+    out = SCRATCH / f"big_d{degree}.csv" if out is None else out
+    rows = []
+    for n in ns:
+        for seed in seeds:
+            g = nx.random_regular_graph(degree, n, seed=seed)
+            if not nx.is_connected(g):
+                continue
+            adj = adj_from_nx(g)
+            name = f"{'cubic' if degree == 3 else f'reg{degree}_'}{n}_s{seed}"
+            rows += named_row(name, adj, time_limit, min_order=None, log=log)[: orders_below + 1]
+            with out.open("w", newline="") as fh:
+                w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
+                w.writeheader()
+                w.writerows(rows)
+    log(f"{len(rows)} rows -> {out}")
+
+
 # ----------------------------------------------------------------------------
 # report tables
 # ----------------------------------------------------------------------------
@@ -867,7 +897,11 @@ def family_table(path: Path | None = None) -> str:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    ap.add_argument("--stage", choices=["census", "named", "report", "one"], required=True)
+    ap.add_argument("--stage", choices=["census", "named", "report", "one", "big"], required=True)
+    ap.add_argument("--ns", default="18,20")
+    ap.add_argument("--seeds", default="0,1")
+    ap.add_argument("--degree", type=int, default=3)
+    ap.add_argument("--orders-below", type=int, default=1)
     ap.add_argument("--max-n", type=int, default=8)
     ap.add_argument("--alt-max-n", type=int, default=8, help="compute size₂ and size₃ up to this n")
     ap.add_argument("--workers", type=int, default=8)
@@ -878,18 +912,27 @@ def main() -> None:
     ap.add_argument("--out", default=None)
     ap.add_argument("--graph6", default=None)
     ap.add_argument("--order", type=int, default=None)
+    ap.add_argument("--kind", default="frame", choices=["frame", "generators", "maximal"])
+    ap.add_argument("--solver", default=None, help="a pysat solver name; untimed runs default to CaDiCaL")
     a = ap.parse_args()
     if a.stage == "census":
         run_census(a.max_n, a.workers, a.alt_max_n, a.limit)
     elif a.stage == "named":
         run_named(a.time_limit, a.workers, a.only, a.min_order, Path(a.out) if a.out else None)
+    elif a.stage == "big":
+        run_big(tuple(int(x) for x in a.ns.split(",")), tuple(int(x) for x in a.seeds.split(",")),
+                a.degree, a.time_limit, a.orders_below, Path(a.out) if a.out else None)
     elif a.stage == "one":
-        adj = adj_of_graph6(a.graph6)
+        if a.graph6:
+            adj = adj_of_graph6(a.graph6)
+        else:
+            adj = dict(named_graphs())[a.only]
         pw = pathwidth_of(adj)
         for k in ([a.order] if a.order else range(pw, 0, -1)):
-            r = min_size(adj, k, "frame", time_limit=a.time_limit)
+            r = min_size(adj, k, a.kind, time_limit=a.time_limit if a.time_limit > 0 else None,
+                         solver=a.solver, log=lambda m: print(m, flush=True))
             print(k, r["status"], r["lb"], r["ub"], f"{r['seconds']:.1f}s",
-                  [sorted(bits(F)) for F in (r["frame"] or [])][:20])
+                  [sorted(bits(F)) for F in (r["frame"] or [])][:20], flush=True)
     else:
         print(census_tables(a.max_n))
         print()

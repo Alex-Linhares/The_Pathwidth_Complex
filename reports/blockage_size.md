@@ -146,3 +146,61 @@ Disclosure: the model was developed on Petersen, `K_{5,5}`, the 3×3 and 4×4 gr
 and one random cubic graph at 12, 14 and 16 vertices (seed 0), so those six numbers
 were seen before the criteria were written; the criteria were fixed before any
 other family graph was run.
+
+## §2. Exhaustive: every connected graph to 9 vertices
+
+`nice -n 19 python3 -m learning.blockage_size --stage census --max-n 9 --alt-max-n 9 --workers 8`
+(3.6 h on 8 workers, almost all of it the 261,080 graphs at 9 vertices;
+`reports/scratch/blockage_size/census_n{1..9}.csv`, the 9-vertex file gzipped;
+`--stage report` prints the tables). For each of the 273,193 connected graphs
+on 1–9 vertices: `pw` (subset DP), `tw` (C DP), and at every order `1..pw` the
+exact minimum of size₁, size₂ and size₃ over all blockages of that order, each
+minimiser re-verified against the all-pairs axiom checker at ≤ 7 vertices and
+the absence of a blockage of order `pw + 1` confirmed on every graph (the
+duality, both halves, on all 273,193).
+
+CENSUS_TABLES
+
+**What the census says.**
+
+* **The minimum at order `pw` is small, and its maximum grows like `1.5 n`, not
+  faster, to 9 vertices**: 12 at 8 vertices (the cube `Q₃`, `pw 4`, `tw 3`), 13 at
+  9 (`HCrbbqi`, 4-regular but for two vertices, `pw = tw = 5`). At 9 vertices
+  78.9% of graphs have a blockage of order `pw` with at most 2 minimal big sets,
+  96.2% with at most 3, and 16 of 261,080 need more than 9. The mean at order
+  `pw` rises slowly with `n` (1.36, 1.49, 1.71, 1.97 at 6, 7, 8, 9).
+* **The large frames are co-pair frames.** On the cube every one of the 12
+  minimal big sets is `V` minus a pair (`V \ {u, v}`); on the two 9-vertex
+  record graphs likewise (13 and 9 pairs, edges and non-edges mixed). These are
+  the co-singleton frames of `reports/blockage_class.md` §4 one level up: the
+  blockage says "every separation of order ≤ `pw` leaves one side with at most a
+  pair outside it".
+* **size₂ is shorter than the frame on a quarter of the graphs, by a factor up
+  to 4.** `size₂ < size₁` at some order on 64,375 of 261,080 graphs at 9
+  vertices (24.7%; 15.3% at 8). The largest `min size₂` at order `pw` is 7
+  against 13 for size₁; the cube's 12 co-pairs are 6 generators of 5 vertices,
+  and the 4-regular `HCrfbo{` (`pw 5`) needs 9 frame sets but 3 generators —
+  three 6-sets with attachment 6, pairwise meeting in 3 vertices, whose
+  complements partition `V` into three triples. The saving always comes from
+  generators with attachment `> k`, which are never members and never frame sets.
+* **size₃ is never the short description**: the number of maximal members is
+  `≥ size₁` on every graph and order (`size₃ > size₁` somewhere on every one of
+  the 273,193 graphs), up to 81 at 9 vertices. It is dropped from here on.
+* **Every graph with `pw > tw` needs at least 3 minimal big sets at order `pw`**
+  — on all 13,548 such graphs to 9 vertices (1 + 14 + 340 + 13,193), against
+  1.8–16.9% of the `pw = tw` graphs. For one generator this is a theorem: a
+  blockage of order `k` whose frame is a single set `F` says that every
+  separation of order `≤ k` has exactly one side containing `F`; orienting the
+  edges of a tree decomposition of width `< k` towards that side gives a sink
+  whose bag contains `F` (the sides at the sink intersect in the bag), so
+  `|bag| ≥ k + 1`, `tw ≥ k`. For two generators the same orientation is still
+  well-defined (axiom (b) forbids the two generators on opposite sides) but the
+  sink bag need not contain either; the data say two never suffice where
+  `pw > tw`, and we have no proof. Three is the branch lemma's count (two of
+  three branches big: three minimal sets).
+* **The frame is concentrated at the top order.** `min size₁` at order `pw − 1`
+  is at most 4 on every graph to 9 vertices and `≥ 3` on only 1,274 of 265,693
+  graphs with `pw ≥ 3`; the ratio `size₁(pw) / size₁(pw − 1)` is 1 on 33.8% of
+  them and up to 6.5. The minimum is not monotone in the order on 1.7% of the
+  graphs (e.g. `F~_Q?`: 1, 3, 1 at orders 1, 2, 3), while `min size₂` is
+  non-decreasing in the order on every graph.

@@ -1,0 +1,282 @@
+K3             n= 3 pw=2 tw=2 order=2 exact    lb=1 ub=1 |Sm|=8 0.0s
+K3             n= 3 pw=2 tw=2 order=1 exact    lb=1 ub=1 |Sm|=5 0.0s
+P3             n= 3 pw=1 tw=1 order=1 exact    lb=1 ub=1 |Sm|=7 0.0s
+C4             n= 4 pw=2 tw=2 order=2 exact    lb=2 ub=2 |Sm|=16 0.0s
+C4             n= 4 pw=2 tw=2 order=1 exact    lb=1 ub=1 |Sm|=6 0.0s
+K2,2           n= 4 pw=2 tw=2 order=2 exact    lb=2 ub=2 |Sm|=16 0.0s
+K2,2           n= 4 pw=2 tw=2 order=1 exact    lb=1 ub=1 |Sm|=6 0.0s
+K4             n= 4 pw=3 tw=3 order=3 exact    lb=1 ub=1 |Sm|=16 0.0s
+K4             n= 4 pw=3 tw=3 order=2 exact    lb=1 ub=1 |Sm|=12 0.0s
+K4             n= 4 pw=3 tw=3 order=1 exact    lb=1 ub=1 |Sm|=6 0.0s
+C5             n= 5 pw=2 tw=2 order=2 exact    lb=2 ub=2 |Sm|=27 0.0s
+C5             n= 5 pw=2 tw=2 order=1 exact    lb=1 ub=1 |Sm|=7 0.0s
+K5             n= 5 pw=4 tw=4 order=4 exact    lb=1 ub=1 |Sm|=32 0.0s
+K5             n= 5 pw=4 tw=4 order=3 exact    lb=1 ub=1 |Sm|=27 0.0s
+K5             n= 5 pw=4 tw=4 order=2 exact    lb=1 ub=1 |Sm|=17 0.0s
+K5             n= 5 pw=4 tw=4 order=1 exact    lb=1 ub=1 |Sm|=7 0.0s
+Mycielski3     n= 5 pw=2 tw=2 order=2 exact    lb=2 ub=2 |Sm|=27 0.0s
+Mycielski3     n= 5 pw=2 tw=2 order=1 exact    lb=1 ub=1 |Sm|=7 0.0s
+C6             n= 6 pw=2 tw=2 order=2 exact    lb=2 ub=2 |Sm|=41 0.0s
+C6             n= 6 pw=2 tw=2 order=1 exact    lb=1 ub=1 |Sm|=8 0.0s
+K3,3           n= 6 pw=3 tw=3 order=3 exact    lb=2 ub=2 |Sm|=55 0.0s
+K3,3           n= 6 pw=3 tw=3 order=2 exact    lb=1 ub=1 |Sm|=23 0.0s
+K3,3           n= 6 pw=3 tw=3 order=1 exact    lb=1 ub=1 |Sm|=8 0.0s
+K6             n= 6 pw=5 tw=5 order=5 exact    lb=1 ub=1 |Sm|=64 0.0s
+K6             n= 6 pw=5 tw=5 order=4 exact    lb=1 ub=1 |Sm|=58 0.0s
+K6             n= 6 pw=5 tw=5 order=3 exact    lb=1 ub=1 |Sm|=43 0.0s
+K6             n= 6 pw=5 tw=5 order=2 exact    lb=1 ub=1 |Sm|=23 0.0s
+K6             n= 6 pw=5 tw=5 order=1 exact    lb=1 ub=1 |Sm|=8 0.0s
+grid2x3        n= 6 pw=2 tw=2 order=2 exact    lb=2 ub=2 |Sm|=33 0.0s
+grid2x3        n= 6 pw=2 tw=2 order=1 exact    lb=1 ub=1 |Sm|=8 0.0s
+K7             n= 7 pw=6 tw=6 order=6 exact    lb=1 ub=1 |Sm|=128 0.0s
+K7             n= 7 pw=6 tw=6 order=5 exact    lb=1 ub=1 |Sm|=121 0.0s
+K7             n= 7 pw=6 tw=6 order=4 exact    lb=1 ub=1 |Sm|=100 0.0s
+K7             n= 7 pw=6 tw=6 order=3 exact    lb=1 ub=1 |Sm|=65 0.0s
+K7             n= 7 pw=6 tw=6 order=2 exact    lb=1 ub=1 |Sm|=30 0.0s
+K7             n= 7 pw=6 tw=6 order=1 exact    lb=1 ub=1 |Sm|=9 0.0s
+bintree_h2     n= 7 pw=1 tw=1 order=1 exact    lb=1 ub=1 |Sm|=23 0.0s
+spider3x2      n= 7 pw=2 tw=1 order=2 exact    lb=3 ub=3 |Sm|=72 0.0s
+spider3x2      n= 7 pw=2 tw=1 order=1 exact    lb=1 ub=1 |Sm|=21 0.0s
+C8             n= 8 pw=2 tw=2 order=2 exact    lb=2 ub=2 |Sm|=78 0.0s
+C8             n= 8 pw=2 tw=2 order=1 exact    lb=1 ub=1 |Sm|=10 0.0s
+K4,4           n= 8 pw=4 tw=4 order=4 exact    lb=2 ub=2 |Sm|=192 0.0s
+K4,4           n= 8 pw=4 tw=4 order=3 exact    lb=1 ub=1 |Sm|=94 0.0s
+K4,4           n= 8 pw=4 tw=4 order=2 exact    lb=1 ub=1 |Sm|=38 0.0s
+K4,4           n= 8 pw=4 tw=4 order=1 exact    lb=1 ub=1 |Sm|=10 0.0s
+K8             n= 8 pw=7 tw=7 order=7 exact    lb=1 ub=1 |Sm|=256 0.0s
+K8             n= 8 pw=7 tw=7 order=6 exact    lb=1 ub=1 |Sm|=248 0.0s
+K8             n= 8 pw=7 tw=7 order=5 exact    lb=1 ub=1 |Sm|=220 0.0s
+K8             n= 8 pw=7 tw=7 order=4 exact    lb=1 ub=1 |Sm|=164 0.0s
+K8             n= 8 pw=7 tw=7 order=3 exact    lb=1 ub=1 |Sm|=94 0.0s
+K8             n= 8 pw=7 tw=7 order=2 exact    lb=1 ub=1 |Sm|=38 0.0s
+K8             n= 8 pw=7 tw=7 order=1 exact    lb=1 ub=1 |Sm|=10 0.0s
+cubic8_s0      n= 8 pw=3 tw=3 order=3 exact    lb=2 ub=2 |Sm|=122 0.0s
+cubic8_s0      n= 8 pw=3 tw=3 order=2 exact    lb=1 ub=1 |Sm|=38 0.0s
+cubic8_s0      n= 8 pw=3 tw=3 order=1 exact    lb=1 ub=1 |Sm|=10 0.0s
+cubic8_s1      n= 8 pw=3 tw=3 order=3 exact    lb=2 ub=2 |Sm|=122 0.0s
+cubic8_s1      n= 8 pw=3 tw=3 order=2 exact    lb=1 ub=1 |Sm|=38 0.0s
+cubic8_s1      n= 8 pw=3 tw=3 order=1 exact    lb=1 ub=1 |Sm|=10 0.0s
+cubic8_s2      n= 8 pw=3 tw=3 order=3 exact    lb=2 ub=2 |Sm|=122 0.0s
+cubic8_s2      n= 8 pw=3 tw=3 order=2 exact    lb=1 ub=1 |Sm|=38 0.0s
+cubic8_s2      n= 8 pw=3 tw=3 order=1 exact    lb=1 ub=1 |Sm|=10 0.0s
+grid2x4        n= 8 pw=2 tw=2 order=2 exact    lb=2 ub=2 |Sm|=54 0.0s
+grid2x4        n= 8 pw=2 tw=2 order=1 exact    lb=1 ub=1 |Sm|=10 0.0s
+grid3x3        n= 9 pw=3 tw=3 order=3 exact    lb=4 ub=4 |Sm|=199 0.0s
+grid3x3        n= 9 pw=3 tw=3 order=2 exact    lb=1 ub=1 |Sm|=55 0.0s
+grid3x3        n= 9 pw=3 tw=3 order=1 exact    lb=1 ub=1 |Sm|=11 0.0s
+C10            n=10 pw=2 tw=2 order=2 exact    lb=2 ub=2 |Sm|=127 0.0s
+C10            n=10 pw=2 tw=2 order=1 exact    lb=1 ub=1 |Sm|=12 0.0s
+K5,5           n=10 pw=5 tw=5 order=5 exact    lb=2 ub=2 |Sm|=699 0.0s
+K5,5           n=10 pw=5 tw=5 order=4 exact    lb=1 ub=1 |Sm|=387 0.0s
+K5,5           n=10 pw=5 tw=5 order=3 exact    lb=1 ub=1 |Sm|=177 0.0s
+K5,5           n=10 pw=5 tw=5 order=2 exact    lb=1 ub=1 |Sm|=57 0.0s
+K5,5           n=10 pw=5 tw=5 order=1 exact    lb=1 ub=1 |Sm|=12 0.0s
+Petersen       n=10 pw=5 tw=4 order=5 exact    lb=15 ub=15 |Sm|=919 0.05s
+Petersen       n=10 pw=5 tw=4 order=4 exact    lb=5 ub=5 |Sm|=487 0.0s
+Petersen       n=10 pw=5 tw=4 order=3 exact    lb=2 ub=2 |Sm|=197 0.0s
+Petersen       n=10 pw=5 tw=4 order=2 exact    lb=1 ub=1 |Sm|=57 0.0s
+Petersen       n=10 pw=5 tw=4 order=1 exact    lb=1 ub=1 |Sm|=12 0.0s
+cubic10_s0     n=10 pw=3 tw=3 order=3 exact    lb=2 ub=2 |Sm|=235 0.0s
+cubic10_s0     n=10 pw=3 tw=3 order=2 exact    lb=1 ub=1 |Sm|=65 0.0s
+cubic10_s0     n=10 pw=3 tw=3 order=1 exact    lb=1 ub=1 |Sm|=12 0.0s
+cubic10_s1     n=10 pw=3 tw=3 order=3 exact    lb=2 ub=2 |Sm|=241 0.0s
+cubic10_s1     n=10 pw=3 tw=3 order=2 exact    lb=1 ub=1 |Sm|=65 0.0s
+cubic10_s1     n=10 pw=3 tw=3 order=1 exact    lb=1 ub=1 |Sm|=12 0.0s
+cubic10_s2     n=10 pw=4 tw=4 order=4 exact    lb=5 ub=5 |Sm|=523 0.01s
+cubic10_s2     n=10 pw=4 tw=4 order=3 exact    lb=2 ub=2 |Sm|=205 0.0s
+cubic10_s2     n=10 pw=4 tw=4 order=2 exact    lb=1 ub=1 |Sm|=57 0.0s
+cubic10_s2     n=10 pw=4 tw=4 order=1 exact    lb=1 ub=1 |Sm|=12 0.0s
+grid2x5        n=10 pw=2 tw=2 order=2 exact    lb=2 ub=2 |Sm|=79 0.0s
+grid2x5        n=10 pw=2 tw=2 order=1 exact    lb=1 ub=1 |Sm|=12 0.0s
+pwtw2_10       n=10 pw=5 tw=3 order=5 exact    lb=3 ub=3 |Sm|=757 0.0s
+pwtw2_10       n=10 pw=5 tw=3 order=4 exact    lb=3 ub=3 |Sm|=442 0.0s
+pwtw2_10       n=10 pw=5 tw=3 order=3 exact    lb=1 ub=1 |Sm|=191 0.0s
+pwtw2_10       n=10 pw=5 tw=3 order=2 exact    lb=1 ub=1 |Sm|=57 0.0s
+pwtw2_10       n=10 pw=5 tw=3 order=1 exact    lb=1 ub=1 |Sm|=12 0.0s
+quartic10_s0   n=10 pw=4 tw=4 order=4 exact    lb=2 ub=2 |Sm|=443 0.0s
+quartic10_s0   n=10 pw=4 tw=4 order=3 exact    lb=1 ub=1 |Sm|=189 0.0s
+quartic10_s0   n=10 pw=4 tw=4 order=2 exact    lb=1 ub=1 |Sm|=57 0.0s
+quartic10_s0   n=10 pw=4 tw=4 order=1 exact    lb=1 ub=1 |Sm|=12 0.0s
+quartic10_s1   n=10 pw=5 tw=5 order=5 exact    lb=7 ub=7 |Sm|=735 0.01s
+quartic10_s1   n=10 pw=5 tw=5 order=4 exact    lb=2 ub=2 |Sm|=409 0.0s
+quartic10_s1   n=10 pw=5 tw=5 order=3 exact    lb=1 ub=1 |Sm|=177 0.0s
+quartic10_s1   n=10 pw=5 tw=5 order=2 exact    lb=1 ub=1 |Sm|=57 0.0s
+quartic10_s1   n=10 pw=5 tw=5 order=1 exact    lb=1 ub=1 |Sm|=12 0.0s
+Mycielski4     n=11 pw=5 tw=5 order=5 exact    lb=6 ub=6 |Sm|=1267 0.01s
+Mycielski4     n=11 pw=5 tw=5 order=4 exact    lb=3 ub=3 |Sm|=623 0.01s
+Mycielski4     n=11 pw=5 tw=5 order=3 exact    lb=1 ub=1 |Sm|=243 0.0s
+Mycielski4     n=11 pw=5 tw=5 order=2 exact    lb=1 ub=1 |Sm|=68 0.0s
+Mycielski4     n=11 pw=5 tw=5 order=1 exact    lb=1 ub=1 |Sm|=13 0.0s
+K6,6           n=12 pw=6 tw=6 order=6 exact    lb=2 ub=2 |Sm|=2635 0.02s
+K6,6           n=12 pw=6 tw=6 order=5 exact    lb=1 ub=1 |Sm|=1587 0.01s
+K6,6           n=12 pw=6 tw=6 order=4 exact    lb=1 ub=1 |Sm|=795 0.01s
+K6,6           n=12 pw=6 tw=6 order=3 exact    lb=1 ub=1 |Sm|=300 0.01s
+K6,6           n=12 pw=6 tw=6 order=2 exact    lb=1 ub=1 |Sm|=80 0.01s
+K6,6           n=12 pw=6 tw=6 order=1 exact    lb=1 ub=1 |Sm|=14 0.01s
+cubic12_s0     n=12 pw=4 tw=4 order=4 exact    lb=3 ub=3 |Sm|=1005 0.01s
+cubic12_s0     n=12 pw=4 tw=4 order=3 exact    lb=2 ub=2 |Sm|=332 0.01s
+cubic12_s0     n=12 pw=4 tw=4 order=2 exact    lb=1 ub=1 |Sm|=80 0.01s
+cubic12_s0     n=12 pw=4 tw=4 order=1 exact    lb=1 ub=1 |Sm|=14 0.01s
+cubic12_s1     n=12 pw=3 tw=3 order=3 exact    lb=2 ub=2 |Sm|=384 0.01s
+cubic12_s1     n=12 pw=3 tw=3 order=2 exact    lb=1 ub=1 |Sm|=88 0.01s
+cubic12_s1     n=12 pw=3 tw=3 order=1 exact    lb=1 ub=1 |Sm|=14 0.01s
+cubic12_s2     n=12 pw=3 tw=3 order=3 exact    lb=2 ub=2 |Sm|=404 0.01s
+cubic12_s2     n=12 pw=3 tw=3 order=2 exact    lb=1 ub=1 |Sm|=96 0.01s
+cubic12_s2     n=12 pw=3 tw=3 order=1 exact    lb=1 ub=1 |Sm|=14 0.01s
+grid3x4        n=12 pw=3 tw=3 order=3 exact    lb=2 ub=2 |Sm|=396 0.01s
+grid3x4        n=12 pw=3 tw=3 order=2 exact    lb=1 ub=1 |Sm|=88 0.01s
+grid3x4        n=12 pw=3 tw=3 order=1 exact    lb=1 ub=1 |Sm|=14 0.01s
+quartic12_s0   n=12 pw=5 tw=5 order=5 exact    lb=4 ub=4 |Sm|=1717 0.02s
+quartic12_s0   n=12 pw=5 tw=5 order=4 exact    lb=2 ub=2 |Sm|=819 0.01s
+quartic12_s0   n=12 pw=5 tw=5 order=3 exact    lb=1 ub=1 |Sm|=300 0.01s
+quartic12_s0   n=12 pw=5 tw=5 order=2 exact    lb=1 ub=1 |Sm|=80 0.01s
+quartic12_s0   n=12 pw=5 tw=5 order=1 exact    lb=1 ub=1 |Sm|=14 0.01s
+quartic12_s1   n=12 pw=5 tw=5 order=5 exact    lb=5 ub=5 |Sm|=1755 0.02s
+quartic12_s1   n=12 pw=5 tw=5 order=4 exact    lb=2 ub=2 |Sm|=827 0.01s
+quartic12_s1   n=12 pw=5 tw=5 order=3 exact    lb=1 ub=1 |Sm|=300 0.01s
+quartic12_s1   n=12 pw=5 tw=5 order=2 exact    lb=1 ub=1 |Sm|=80 0.01s
+quartic12_s1   n=12 pw=5 tw=5 order=1 exact    lb=1 ub=1 |Sm|=14 0.01s
+quintic12_s0   n=12 pw=6 tw=6 order=6 exact    lb=5 ub=5 |Sm|=2625 0.03s
+quintic12_s0   n=12 pw=6 tw=6 order=5 exact    lb=2 ub=2 |Sm|=1615 0.02s
+quintic12_s0   n=12 pw=6 tw=6 order=4 exact    lb=1 ub=1 |Sm|=795 0.01s
+quintic12_s0   n=12 pw=6 tw=6 order=3 exact    lb=1 ub=1 |Sm|=300 0.01s
+quintic12_s0   n=12 pw=6 tw=6 order=2 exact    lb=1 ub=1 |Sm|=80 0.01s
+quintic12_s0   n=12 pw=6 tw=6 order=1 exact    lb=1 ub=1 |Sm|=14 0.01s
+Paley13        n=13 pw=8 tw=8 order=8 exact    lb=15 ub=15 |Sm|=7386 1.61s
+Paley13        n=13 pw=8 tw=8 order=7 exact    lb=13 ub=13 |Sm|=5904 0.07s
+Paley13        n=13 pw=8 tw=8 order=6 exact    lb=3 ub=3 |Sm|=4123 0.05s
+Paley13        n=13 pw=8 tw=8 order=5 exact    lb=1 ub=1 |Sm|=2381 0.02s
+Paley13        n=13 pw=8 tw=8 order=4 exact    lb=1 ub=1 |Sm|=1094 0.02s
+Paley13        n=13 pw=8 tw=8 order=3 exact    lb=1 ub=1 |Sm|=379 0.01s
+Paley13        n=13 pw=8 tw=8 order=2 exact    lb=1 ub=1 |Sm|=93 0.01s
+Paley13        n=13 pw=8 tw=8 order=1 exact    lb=1 ub=1 |Sm|=15 0.01s
+tertree_h2     n=13 pw=2 tw=1 order=2 exact    lb=3 ub=3 |Sm|=681 0.06s
+tertree_h2     n=13 pw=2 tw=1 order=1 exact    lb=1 ub=1 |Sm|=63 0.01s
+Heawood        n=14 pw=6 tw=5 order=6 bounded  lb=16 ub=31 |Sm|=9984 600.04s
+Heawood        n=14 pw=6 tw=5 order=5 exact    lb=6 ub=6 |Sm|=4454 0.24s
+Heawood        n=14 pw=6 tw=5 order=4 exact    lb=3 ub=3 |Sm|=1668 0.24s
+Heawood        n=14 pw=6 tw=5 order=3 exact    lb=2 ub=2 |Sm|=499 0.58s
+Heawood        n=14 pw=6 tw=5 order=2 exact    lb=1 ub=1 |Sm|=107 0.12s
+Heawood        n=14 pw=6 tw=5 order=1 exact    lb=1 ub=1 |Sm|=16 0.12s
+K7,7           n=14 pw=7 tw=7 order=7 exact    lb=2 ub=2 |Sm|=10161 0.08s
+K7,7           n=14 pw=7 tw=7 order=6 exact    lb=1 ub=1 |Sm|=6477 0.05s
+K7,7           n=14 pw=7 tw=7 order=5 exact    lb=1 ub=1 |Sm|=3474 0.04s
+K7,7           n=14 pw=7 tw=7 order=4 exact    lb=1 ub=1 |Sm|=1472 0.04s
+K7,7           n=14 pw=7 tw=7 order=3 exact    lb=1 ub=1 |Sm|=471 0.04s
+K7,7           n=14 pw=7 tw=7 order=2 exact    lb=1 ub=1 |Sm|=107 0.03s
+K7,7           n=14 pw=7 tw=7 order=1 exact    lb=1 ub=1 |Sm|=16 0.03s
+cubic14_s0     n=14 pw=4 tw=4 order=4 exact    lb=3 ub=3 |Sm|=1834 0.07s
+cubic14_s0     n=14 pw=4 tw=4 order=3 exact    lb=2 ub=2 |Sm|=515 0.05s
+cubic14_s0     n=14 pw=4 tw=4 order=2 exact    lb=1 ub=1 |Sm|=107 0.04s
+cubic14_s0     n=14 pw=4 tw=4 order=1 exact    lb=1 ub=1 |Sm|=16 0.04s
+cubic14_s1     n=14 pw=4 tw=4 order=4 exact    lb=3 ub=3 |Sm|=1728 0.08s
+cubic14_s1     n=14 pw=4 tw=4 order=3 exact    lb=2 ub=2 |Sm|=499 0.06s
+cubic14_s1     n=14 pw=4 tw=4 order=2 exact    lb=1 ub=1 |Sm|=107 0.04s
+cubic14_s1     n=14 pw=4 tw=4 order=1 exact    lb=1 ub=1 |Sm|=16 0.04s
+cubic14_s2     n=14 pw=4 tw=3 order=4 exact    lb=5 ub=5 |Sm|=1976 0.06s
+cubic14_s2     n=14 pw=4 tw=3 order=3 exact    lb=2 ub=2 |Sm|=587 0.05s
+cubic14_s2     n=14 pw=4 tw=3 order=2 exact    lb=1 ub=1 |Sm|=115 0.04s
+cubic14_s2     n=14 pw=4 tw=3 order=1 exact    lb=1 ub=1 |Sm|=16 0.03s
+quartic14_s0   n=14 pw=5 tw=5 order=5 exact    lb=4 ub=4 |Sm|=3660 0.08s
+quartic14_s0   n=14 pw=5 tw=5 order=4 exact    lb=2 ub=2 |Sm|=1502 0.06s
+quartic14_s0   n=14 pw=5 tw=5 order=3 exact    lb=1 ub=1 |Sm|=471 0.04s
+quartic14_s0   n=14 pw=5 tw=5 order=2 exact    lb=1 ub=1 |Sm|=107 0.04s
+quartic14_s0   n=14 pw=5 tw=5 order=1 exact    lb=1 ub=1 |Sm|=16 0.04s
+quartic14_s1   n=14 pw=5 tw=5 order=5 exact    lb=4 ub=4 |Sm|=3664 0.08s
+quartic14_s1   n=14 pw=5 tw=5 order=4 exact    lb=2 ub=2 |Sm|=1502 0.04s
+quartic14_s1   n=14 pw=5 tw=5 order=3 exact    lb=1 ub=1 |Sm|=471 0.04s
+quartic14_s1   n=14 pw=5 tw=5 order=2 exact    lb=1 ub=1 |Sm|=107 0.04s
+quartic14_s1   n=14 pw=5 tw=5 order=1 exact    lb=1 ub=1 |Sm|=16 0.04s
+bintree_h3     n=15 pw=2 tw=1 order=2 exact    lb=3 ub=3 |Sm|=620 0.11s
+bintree_h3     n=15 pw=2 tw=1 order=1 exact    lb=1 ub=1 |Sm|=55 0.06s
+Clebsch        n=16 pw=9 tw=8 order=9 exact    lb=32 ub=32 |Sm|=55040 99.18s
+Clebsch        n=16 pw=9 tw=8 order=8 exact    lb=10 ub=10 |Sm|=41440 328.91s
+Clebsch        n=16 pw=9 tw=8 order=7 exact    lb=16 ub=16 |Sm|=27070 0.62s
+Clebsch        n=16 pw=9 tw=8 order=6 exact    lb=16 ub=16 |Sm|=15070 0.43s
+Clebsch        n=16 pw=9 tw=8 order=5 exact    lb=2 ub=2 |Sm|=6918 0.3s
+Clebsch        n=16 pw=9 tw=8 order=4 exact    lb=1 ub=1 |Sm|=2518 0.24s
+Clebsch        n=16 pw=9 tw=8 order=3 exact    lb=1 ub=1 |Sm|=698 0.24s
+Clebsch        n=16 pw=9 tw=8 order=2 exact    lb=1 ub=1 |Sm|=138 0.23s
+Clebsch        n=16 pw=9 tw=8 order=1 exact    lb=1 ub=1 |Sm|=18 0.24s
+K8,8           n=16 pw=8 tw=8 order=8 exact    lb=2 ub=2 |Sm|=39712 0.47s
+K8,8           n=16 pw=8 tw=8 order=7 exact    lb=1 ub=1 |Sm|=26334 0.43s
+K8,8           n=16 pw=8 tw=8 order=6 exact    lb=1 ub=1 |Sm|=14894 0.35s
+K8,8           n=16 pw=8 tw=8 order=5 exact    lb=1 ub=1 |Sm|=6886 0.24s
+K8,8           n=16 pw=8 tw=8 order=4 exact    lb=1 ub=1 |Sm|=2518 0.23s
+K8,8           n=16 pw=8 tw=8 order=3 exact    lb=1 ub=1 |Sm|=698 0.22s
+K8,8           n=16 pw=8 tw=8 order=2 exact    lb=1 ub=1 |Sm|=138 0.24s
+K8,8           n=16 pw=8 tw=8 order=1 exact    lb=1 ub=1 |Sm|=18 0.24s
+MoebiusKantor  n=16 pw=6 tw=5 order=6 bounded  lb=11 ub=20 |Sm|=21566 600.36s
+MoebiusKantor  n=16 pw=6 tw=5 order=5 exact    lb=6 ub=6 |Sm|=8390 4.48s
+MoebiusKantor  n=16 pw=6 tw=5 order=4 exact    lb=3 ub=3 |Sm|=2774 0.33s
+MoebiusKantor  n=16 pw=6 tw=5 order=3 exact    lb=2 ub=2 |Sm|=730 0.38s
+MoebiusKantor  n=16 pw=6 tw=5 order=2 exact    lb=1 ub=1 |Sm|=138 0.2s
+MoebiusKantor  n=16 pw=6 tw=5 order=1 exact    lb=1 ub=1 |Sm|=18 0.2s
+Q4             n=16 pw=7 tw=6 order=7 bounded  lb=1 ub=47 |Sm|=30046 600.27s
+Q4             n=16 pw=7 tw=6 order=6 exact    lb=7 ub=7 |Sm|=15966 15.83s
+Q4             n=16 pw=7 tw=6 order=5 exact    lb=16 ub=16 |Sm|=7078 0.28s
+Q4             n=16 pw=7 tw=6 order=4 exact    lb=2 ub=2 |Sm|=2550 0.23s
+Q4             n=16 pw=7 tw=6 order=3 exact    lb=1 ub=1 |Sm|=698 0.2s
+Q4             n=16 pw=7 tw=6 order=2 exact    lb=1 ub=1 |Sm|=138 0.19s
+Q4             n=16 pw=7 tw=6 order=1 exact    lb=1 ub=1 |Sm|=18 0.19s
+Shrikhande     n=16 pw=9 tw=9 order=9 exact    lb=22 ub=22 |Sm|=52416 24.81s
+Shrikhande     n=16 pw=9 tw=9 order=8 exact    lb=9 ub=9 |Sm|=39904 24.41s
+Shrikhande     n=16 pw=9 tw=9 order=7 exact    lb=16 ub=16 |Sm|=26494 0.56s
+Shrikhande     n=16 pw=9 tw=9 order=6 exact    lb=3 ub=3 |Sm|=14926 0.4s
+Shrikhande     n=16 pw=9 tw=9 order=5 exact    lb=1 ub=1 |Sm|=6886 0.25s
+Shrikhande     n=16 pw=9 tw=9 order=4 exact    lb=1 ub=1 |Sm|=2518 0.23s
+Shrikhande     n=16 pw=9 tw=9 order=3 exact    lb=1 ub=1 |Sm|=698 0.22s
+Shrikhande     n=16 pw=9 tw=9 order=2 exact    lb=1 ub=1 |Sm|=138 0.22s
+Shrikhande     n=16 pw=9 tw=9 order=1 exact    lb=1 ub=1 |Sm|=18 0.22s
+cubic16_s0     n=16 pw=4 tw=4 order=4 exact    lb=3 ub=3 |Sm|=2910 0.23s
+cubic16_s0     n=16 pw=4 tw=4 order=3 exact    lb=2 ub=2 |Sm|=738 0.46s
+cubic16_s0     n=16 pw=4 tw=4 order=2 exact    lb=1 ub=1 |Sm|=138 0.23s
+cubic16_s0     n=16 pw=4 tw=4 order=1 exact    lb=1 ub=1 |Sm|=18 0.23s
+cubic16_s1     n=16 pw=4 tw=4 order=4 exact    lb=5 ub=5 |Sm|=3072 0.33s
+cubic16_s1     n=16 pw=4 tw=4 order=3 exact    lb=2 ub=2 |Sm|=766 0.37s
+cubic16_s1     n=16 pw=4 tw=4 order=2 exact    lb=1 ub=1 |Sm|=138 0.23s
+cubic16_s1     n=16 pw=4 tw=4 order=1 exact    lb=1 ub=1 |Sm|=18 0.24s
+cubic16_s2     n=16 pw=5 tw=4 order=5 exact    lb=8 ub=8 |Sm|=9392 0.38s
+cubic16_s2     n=16 pw=5 tw=4 order=4 exact    lb=3 ub=3 |Sm|=2994 0.3s
+cubic16_s2     n=16 pw=5 tw=4 order=3 exact    lb=2 ub=2 |Sm|=758 0.4s
+cubic16_s2     n=16 pw=5 tw=4 order=2 exact    lb=1 ub=1 |Sm|=138 0.15s
+cubic16_s2     n=16 pw=5 tw=4 order=1 exact    lb=1 ub=1 |Sm|=18 0.17s
+grid2x8        n=16 pw=2 tw=2 order=2 exact    lb=2 ub=2 |Sm|=178 0.22s
+grid2x8        n=16 pw=2 tw=2 order=1 exact    lb=1 ub=1 |Sm|=18 0.19s
+grid4x4        n=16 pw=4 tw=4 order=4 exact    lb=3 ub=3 |Sm|=3310 0.23s
+grid4x4        n=16 pw=4 tw=4 order=3 exact    lb=2 ub=2 |Sm|=794 0.17s
+grid4x4        n=16 pw=4 tw=4 order=2 exact    lb=1 ub=1 |Sm|=146 0.15s
+grid4x4        n=16 pw=4 tw=4 order=1 exact    lb=1 ub=1 |Sm|=18 0.16s
+quartic16_s0   n=16 pw=5 tw=5 order=5 exact    lb=4 ub=4 |Sm|=7202 0.36s
+quartic16_s0   n=16 pw=5 tw=5 order=4 exact    lb=2 ub=2 |Sm|=2562 0.29s
+quartic16_s0   n=16 pw=5 tw=5 order=3 exact    lb=1 ub=1 |Sm|=698 0.15s
+quartic16_s0   n=16 pw=5 tw=5 order=2 exact    lb=1 ub=1 |Sm|=138 0.21s
+quartic16_s0   n=16 pw=5 tw=5 order=1 exact    lb=1 ub=1 |Sm|=18 0.23s
+quartic16_s1   n=16 pw=6 tw=6 order=6 exact    lb=5 ub=5 |Sm|=16154 0.93s
+quartic16_s1   n=16 pw=6 tw=6 order=5 exact    lb=4 ub=4 |Sm|=7124 0.32s
+quartic16_s1   n=16 pw=6 tw=6 order=4 exact    lb=2 ub=2 |Sm|=2552 0.38s
+quartic16_s1   n=16 pw=6 tw=6 order=3 exact    lb=1 ub=1 |Sm|=698 0.24s
+quartic16_s1   n=16 pw=6 tw=6 order=2 exact    lb=1 ub=1 |Sm|=138 0.22s
+quartic16_s1   n=16 pw=6 tw=6 order=1 exact    lb=1 ub=1 |Sm|=18 0.23s
+quintic16_s0   n=16 pw=7 tw=7 order=7 exact    lb=7 ub=7 |Sm|=27358 2.39s
+quintic16_s0   n=16 pw=7 tw=7 order=6 exact    lb=4 ub=4 |Sm|=15112 0.43s
+quintic16_s0   n=16 pw=7 tw=7 order=5 exact    lb=2 ub=2 |Sm|=6922 0.31s
+quintic16_s0   n=16 pw=7 tw=7 order=4 exact    lb=1 ub=1 |Sm|=2518 0.16s
+quintic16_s0   n=16 pw=7 tw=7 order=3 exact    lb=1 ub=1 |Sm|=698 0.15s
+quintic16_s0   n=16 pw=7 tw=7 order=2 exact    lb=1 ub=1 |Sm|=138 0.15s
+quintic16_s0   n=16 pw=7 tw=7 order=1 exact    lb=1 ub=1 |Sm|=18 0.22s
+cubic18_s0     n=18 pw=5 tw=4 order=5 exact    lb=5 ub=5 |Sm|=16533 1.36s
+cubic18_s0     n=18 pw=5 tw=4 order=4 exact    lb=3 ub=3 |Sm|=4673 1.68s
+cubic18_s0     n=18 pw=5 tw=4 order=3 exact    lb=2 ub=2 |Sm|=1053 2.35s
+cubic18_s0     n=18 pw=5 tw=4 order=2 exact    lb=1 ub=1 |Sm|=173 1.19s
+cubic18_s0     n=18 pw=5 tw=4 order=1 exact    lb=1 ub=1 |Sm|=20 0.93s
+cubic18_s1     n=18 pw=5 tw=5 order=5 exact    lb=5 ub=5 |Sm|=15437 5.89s
+cubic18_s1     n=18 pw=5 tw=5 order=4 exact    lb=3 ub=3 |Sm|=4447 2.44s
+cubic18_s1     n=18 pw=5 tw=5 order=3 exact    lb=2 ub=2 |Sm|=1025 2.04s
+cubic18_s1     n=18 pw=5 tw=5 order=2 exact    lb=1 ub=1 |Sm|=173 1.24s
+cubic18_s1     n=18 pw=5 tw=5 order=1 exact    lb=1 ub=1 |Sm|=20 1.21s
+cubic18_s2     n=18 pw=4 tw=4 order=4 exact    lb=3 ub=3 |Sm|=4547 1.66s
+cubic18_s2     n=18 pw=4 tw=4 order=3 exact    lb=2 ub=2 |Sm|=1033 1.58s
+cubic18_s2     n=18 pw=4 tw=4 order=2 exact    lb=1 ub=1 |Sm|=173 0.85s
+cubic18_s2     n=18 pw=4 tw=4 order=1 exact    lb=1 ub=1 |Sm|=20 0.9s
+281 rows, 1922 s -> /home/al/dev/MOSP/reports/scratch/blockage_size/named.csv
