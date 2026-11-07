@@ -500,6 +500,13 @@ lean/
         CliqueCoverMoment.lean          the same first moment on random clique covers (the Chu & Stuckey model: independent uniform
                                         patterns of given sizes): P(mospValue ≤ k+1) ≤ C(n,t)·C(n−t,t−1)·∏_j avoidCount(s_j)/C(n,s_j),
                                         in MOSP vocabulary via coverInstance; sorry-free (2026-10-31)
+        Search/MinorTabu.lean           The tabu search's certificates are sound (2026-11-07): the printed union-find contraction
+                                        sequence is a legal contraction sequence and its replay is the forest quotient; refutation
+                                        and contraction-degeneracy floors are lower bounds; a run's output is a floor and reaches w
+                                        iff a visited minor refuted w − 1; MOSP units too. 45 theorems, no sorry, no axiom.
+        Blockage.lean                   Bienstock–Robertson–Seymour–Thomas blockages (1991 §2, axioms (i)–(iii)) and the weak half of
+                                        their min-max theorem: a blockage of order n forces pathwidth ≥ n (`pathwidth_ge_of_isBlockage`),
+                                        by the paper's prefix-union argument; Lemma (2.2) too; the converse not attempted.
         ForMathlib/                     Candidates for Mathlib contribution
         Complex/                        Linhares & Yanasse (2002) Table 1 in Lean (loop0005, 2026-09-30):
             GateMatrix.lean                 gate matrix layout = MOSP = pathwidth + 1

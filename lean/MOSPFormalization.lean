@@ -11,6 +11,7 @@ import MOSPFormalization.Reduction
 import MOSPFormalization.MOSPGraph
 import MOSPFormalization.Minor
 import MOSPFormalization.ObstructionCertificate
+import MOSPFormalization.Blockage
 import MOSPFormalization.Examples
 import MOSPFormalization.MOSPGraphExamples
 import MOSPFormalization.ForMathlib.PathDecomposition
@@ -65,6 +66,7 @@ import MOSPFormalization.Search.Layout
 import MOSPFormalization.Search.TamakiCommitment
 import MOSPFormalization.Search.WrongOptimum
 import MOSPFormalization.Search.WrongOptimumData
+import MOSPFormalization.Search.MinorTabu
 import MOSPFormalization.DegreeBound.Weights
 import MOSPFormalization.DegreeBound.CutLemma
 import MOSPFormalization.DegreeBound.Potential

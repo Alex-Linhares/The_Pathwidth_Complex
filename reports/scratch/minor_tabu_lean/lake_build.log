@@ -1,0 +1,42 @@
+⚠ [1640/2143] Replayed MOSPFormalization.Encoding
+warning: MOSPFormalization/Encoding.lean:176:4: Unused tactic linter: `simp [Finset.filter_congr_decidable]` does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: MOSPFormalization/Encoding.lean:184:6: `dif_neg` has been deprecated: Use `dite_eq_right` instead
+⚠ [2318/2768] Replayed MOSPFormalization.TreeBound
+warning: MOSPFormalization/TreeBound.lean:688:5: Variable name `hSR` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hSR
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: MOSPFormalization/TreeBound.lean:774:22: `if_pos` has been deprecated: Use `ite_eq_left` instead
+warning: MOSPFormalization/TreeBound.lean:779:6: `if_neg` has been deprecated: Use `ite_eq_right` instead
+warning: MOSPFormalization/TreeBound.lean:779:25: `if_neg` has been deprecated: Use `ite_eq_right` instead
+warning: MOSPFormalization/TreeBound.lean:784:6: `if_neg` has been deprecated: Use `ite_eq_right` instead
+warning: MOSPFormalization/TreeBound.lean:784:25: `if_pos` has been deprecated: Use `ite_eq_left` instead
+warning: MOSPFormalization/TreeBound.lean:922:22: `if_pos` has been deprecated: Use `ite_eq_left` instead
+warning: MOSPFormalization/TreeBound.lean:927:22: `if_neg` has been deprecated: Use `ite_eq_right` instead
+warning: MOSPFormalization/TreeBound.lean:927:41: `if_neg` has been deprecated: Use `ite_eq_right` instead
+⚠ [2326/2768] Replayed MOSPFormalization.Hypercube.Order
+warning: MOSPFormalization/Hypercube/Order.lean:126:23: Variable name `y` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _y
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: MOSPFormalization/Hypercube/Order.lean:262:6: Variable name `y` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _y
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+✔ [8983/8990] Built MOSPFormalization.Blockage (1.3s)
+✔ [8984/8990] Built MOSPFormalization.Search.MinorTabu (1.4s)
+✔ [8989/8990] Built MOSPFormalization (3.2s)
+Build completed successfully (8990 jobs).
+
+real	0m6.310s
+user	0m9.635s
+sys	0m2.592s
+exit 0

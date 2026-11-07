@@ -1,0 +1,57 @@
+'MOSPFormalization.MinorTabu.Idem.mergeRep' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.Idem.ufRep' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.mergeRep_ne_self' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.ufRep_ne_self' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.quotient_id' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.quotient_adj_rep' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.contractEdge_quotient' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.applySeq_ufSeq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.isContractionSeq_ufSeq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.mem_removed_ufSeq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.applySeq_ufSeq_id' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.isContractionSeq_ufSeq_id' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.mem_removed_ufSeq_id' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.tabuMinor_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.removed_ufSeq_id_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.pathwidth_tabuMinor_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.IsForest.isContractionSeq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.IsForest.pathwidth_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.floor_sound_of_refutation' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.floor_sound_of_degeneracy' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.degeneracy_tabuMinor_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.Justified.edgesOf' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.Justified.le_pathwidth_tabuMinor' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.MinorTabu.Justified.le_pathwidth' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.Run.le_output_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.Run.given_le_output' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.tabu_output_le_pathwidth' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.tabu_output_ge_of_visited_refutation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.MinorTabu.tabu_output_ge_of_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.exists_visited_of_le_output' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.reaches_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MinorTabu.output_eq_pathwidth_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.MOSPInstance.floor_sound_of_refutation_mosp' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.MOSPInstance.tabu_output_lt_mospValue' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Blockage.complementary_compl' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Blockage.inter_compl' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Blockage.complementary_union_compl' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Blockage.union_inter_compl' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Blockage.IsBlockage.mem_of_mem' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Blockage.IsBlockage.empty_mem_and_univ_not_mem' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Blockage.att_prefixUnion_subset' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Blockage.att_prefixUnion_succ_subset' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Blockage.prefixUnion_succ_sdiff_subset' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Blockage.prefixUnion_last' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Blockage.pathwidth_ge_of_isBlockage' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+real	0m3.901s
+user	0m2.764s
+sys	0m1.484s

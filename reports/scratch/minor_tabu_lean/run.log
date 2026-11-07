@@ -1,0 +1,27 @@
+minor_tabu_lean check: atlas graphs to 7 vertices, seed 0, 31.6 s
+  graphs               1252
+  forests              15024
+  acyclic              11642
+  cyclic               3382
+  walks                15024
+  pairs                68333
+  A_viol               0
+  B_viol               0
+  B_iso_viol           0
+  C_viol               0
+  C_tight              1614
+  D_seqs               104390
+  D_viol               0
+  D_mmd_viol           0
+  D_degen_viol         0
+  D_mmd_ge_degen       15024
+  E_runs               3756
+  E_viol               0
+  F_skipped_acyclic    0
+  F_size_viol          0
+  F_cyclic_skipped     3382
+VIOLATIONS: 0
+
+real	0m31.754s
+user	0m28.047s
+sys	0m0.053s
