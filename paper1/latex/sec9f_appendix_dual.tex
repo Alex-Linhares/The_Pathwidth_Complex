@@ -1,0 +1,100 @@
+\section{The dual: blockages}
+\label{app:dual}
+
+Every lower bound this paper uses reads one object at a time: a clique, a
+vertex of large minimum degree in a minor, a prefix of a layout in Harper's
+bound, a contracted copy of the graph in Theorem~\ref{thm:minor}. Each is a
+certificate that pathwidth is at least some value, and each family has a
+ceiling on what it can certify. The question of whether there is a single
+family with no ceiling, a \emph{dual} of pathwidth in the sense that linear
+programming has a dual, with weak duality giving certificates and strong
+duality saying the best certificate meets the optimum, was answered by
+\citet{BRST1991}: the \emph{blockage}. It is to pathwidth what the brambles of
+Seymour and Thomas are to treewidth, and this appendix states it, proves the
+half that certificates need, and places the paper's bounds inside it. The
+definitions and the proof are formalised in \texttt{Blockage.lean}, with no
+\texttt{sorry}~\leanref{blockage}.
+
+\paragraph{Definitions.} Let $G=(V,E)$ be a finite simple graph. For
+$X\subseteq V$, the \emph{attachments} of $X$ are its vertices with a
+neighbour outside $X$,
+\[
+\att(X) \;=\; \{\,v\in X : \exists u\notin X,\ uv\in E\,\},
+\]
+and $\alpha(X)=|\att(X)|$. The paper's complement of $X$ is
+$X^{c}=(V\setminus X)\cup\att(X)$. Two sets $X_1,X_2$ are \emph{complementary}
+if $X_1\cup X_2=V$ and $\att(X_1)\subseteq X_2$; equivalently, no edge joins
+$X_1\setminus X_2$ to $X_2\setminus X_1$, so a complementary pair is a
+separation of $G$ with $X_1\cap X_2$ as its separator. A \emph{blockage of
+order $n$} is a family $\mathcal B$ of subsets of $V$ such that
+\begin{enumerate}
+\item[(i)] every $X\in\mathcal B$ has $\alpha(X)<n$;
+\item[(ii)] if $X\in\mathcal B$, $Y\subseteq X$ and $\alpha(Y)<n$, then $Y\in\mathcal B$;
+\item[(iii)] if $X_1,X_2$ are complementary and $|X_1\cap X_2|<n$, then
+  exactly one of $X_1,X_2$ lies in $\mathcal B$.
+\end{enumerate}
+Read as a game, $\mathcal B$ is the strategy of an invisible fugitive against
+$n$ searchers: for every way the searchers can cut the graph with fewer than
+$n$ of them, (iii) says which side the fugitive is on, and (i), (ii) make
+those choices consistent. Theorem~(2.1) of \citet{BRST1991} is the min-max
+statement: \emph{there is a blockage of order $n$ in $G$ if and only if
+$\pw(G)\ge n$}.
+
+\paragraph{The half that certificates need.}
+
+\begin{theorem}[a blockage is a lower bound]\label{thm:blockage}
+If $G$ has a blockage of order $n$, then $\pw(G)\ge n$~\leanref{blockage}.
+\end{theorem}
+\begin{proof}
+Suppose $\mathcal B$ is a blockage of order $n$ and, for a contradiction,
+that $W_0,\dots,W_r$ is a path decomposition of $G$ of width less than $n$,
+so every bag has fewer than $n$ vertices. Let $X_i=W_0\cup\dots\cup W_{i-1}$
+be the prefix unions, with $X_0=\emptyset$ and $X_{r+1}=V$. Two facts follow
+from the interval property of a path decomposition: $\att(X_i)\subseteq W_i$,
+since a vertex of $X_i$ with a neighbour outside $X_i$ shares a bag with that
+neighbour, which lies at or after $W_i$, so the vertex's interval of bags
+reaches $W_i$; and $X_{i+1}\setminus X_i\subseteq W_i$ by definition. Hence
+$\alpha(X_i)<n$ for every $i$.
+
+Now $\emptyset\in\mathcal B$ and $V\notin\mathcal B$, because $(\emptyset,V)$
+is a complementary pair with empty intersection, and (iii) puts exactly one of
+the two in $\mathcal B$, while (ii) with $Y=\emptyset$ rules out the second
+choice. Lemma~(2.2) of the paper, proved in Lean as
+\texttt{IsBlockage.mem\_of\_mem}, says: if $X\in\mathcal B$, $\alpha(Y)<n$ and
+$|(Y\setminus X)\cup\att(X)|<n$, then $Y\in\mathcal B$. Apply it to
+$X=X_i\in\mathcal B$ and $Y=X_{i+1}$: $\alpha(X_{i+1})<n$, and
+$(X_{i+1}\setminus X_i)\cup\att(X_i)\subseteq W_i$ has fewer than $n$
+vertices, so $X_{i+1}\in\mathcal B$. By induction $V=X_{r+1}\in\mathcal B$, a
+contradiction.
+\end{proof}
+
+The Lean proof follows this argument step by step, with the two interval facts
+as \texttt{att\_prefixUnion\_subset} and \texttt{prefixUnion\_succ\_sdiff\_subset}
+and the climb as an induction over $i$. Before the statement was written, both
+halves of~(2.1) were checked by exhaustive enumeration of every set family on
+every graph with at most four vertices (108 cases, 39 blockages, consistent
+both ways, which is a check on the transcription of the axioms), and the two
+interval facts on every layout of every graph with at most seven vertices
+(5,378,453 layouts), with no violation
+(\texttt{reports/scratch/minor\_tabu\_lean/check\_blockage.py}). The converse
+of~(2.1), that $\pw(G)\ge n$ yields a blockage, goes through the paper's
+partial blockages and fractures and is not formalised here.
+
+\paragraph{The paper's bounds as blockages.} Weak duality is what makes a
+bottom-up search for lower bounds possible: exhibit any blockage of order $n$
+and $\pw(G)\ge n$ follows, and strong duality says that maximising $n$ over
+blockages reaches $\pw(G)$ exactly, so a search on this side has no ceiling.
+Every lower-bound family in this paper is a restricted class of blockages. A
+clique of size $n+1$ gives one: let $\mathcal B$ be the sets with fewer than
+$n$ attachments that miss some vertex of the clique on the far side. Harper's
+vertex-isoperimetric bound at one prefix size is a blockage built from the
+separations at that size alone. A minor $H$ with $\pw(H)\ge n$ gives a
+blockage of $G$ by pulling $H$'s back along the branch sets, which is
+Theorem~\ref{thm:minor} read from the dual side. The duality gaps measured in
+Section~\ref{sec:certs}, family by family, are the gaps of these restricted
+classes; the finding there that the residual's obstruction is a band of
+consecutive prefix sizes says, in this vocabulary, that the blockages of those
+instances need separations at many consecutive orders at once, which no
+single-prefix class supplies. The search of Appendix~\ref{app:tabu} looks for
+blockages of the minor kind, the one class whose members are small enough to
+exhibit and cheap enough to check.

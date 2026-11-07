@@ -1,0 +1,134 @@
+\section{A tabu search over minors, and its certificates}
+\label{app:tabu}
+
+The minor step of Section~\ref{sec:minor} builds one contracted copy of the
+graph per size by a greedy rule and tests it. On the classes of the dataset
+that it leaves open, the greedy minor typically certifies one less than the
+recorded width: the contraction has cost one unit of pathwidth, and the
+obstruction of the full width, if the recorded width is the truth, was crushed
+by one of its merges. The ladder never varies the minor. This appendix
+describes a search that does, states what it certifies, and proves the
+certificates sound in Lean~\leanref{tabu}. The program is
+\texttt{pathwidth\_solver/cli/minor\_tabu.c}, built on the same engine as the
+solver.
+
+\paragraph{The search.} The state is a set $F$ of edges of $G$ forming a
+forest; its components are the branch sets of a minor $H=G/F$, the graph on
+the components with an edge between two of them whenever $G$ has one. A move
+adds an edge of $G$ joining two different components, one more contraction,
+or removes an edge of $F$, one contraction undone, after which the component
+splits into two connected halves. The search is a tabu search in the plain
+sense: at every step every neighbour is evaluated, or a random sample of a
+fixed size when there are too many, the best non-tabu neighbour is taken, the
+reverse of the last seven moves is tabu, and a move that certifies the target
+width is always allowed. The walk is kept inside a band of minor sizes around
+its starting point, since a minor that keeps too few vertices has lost the
+obstruction and one that keeps too many cannot be decided within the budget.
+Two starting points are used: the greedy rung of the ladder, or, on an open
+class, the best minor certificate on record, from which the walk explores
+alternatives to the greedy contractions at that size.
+
+A neighbour is scored by what it certifies. First, whether our corrected
+algorithm refutes the target width $w-1$ on it within a small node budget,
+which is the event that closes the class; then, whether it still refutes the
+width the floor rests on, which says the known obstruction survived the move;
+then its contraction degeneracy; ties go to the larger minor when seeded,
+since a minor closer to $G$ has lost less. The chosen minor is then climbed
+by the engine under a larger budget, each refutation of a width $v$ raising
+the floor to $v+1$. The floor only rises, and the best certificate found is
+what the program reports.
+
+\paragraph{The certificate.} The output is the floor, how it was obtained,
+the minor's size, and a contraction sequence: the forest's edges are walked
+with a union-find, and for every edge whose ends are still in different
+components the pair (representative of one end, representative of the other)
+is emitted, meaning ``contract the first into the second''. Every pair is an
+edge of the contracted graph at the moment it is emitted, so the sequence is
+a contraction sequence in the sense of Theorem~\ref{thm:minor} and the
+checker of Section~\ref{sec:certs} replays it. The floor is of one of two
+kinds: \emph{refutation}, the engine refuted width $w$ on the minor, so the
+floor is $w+1$; or \emph{contraction degeneracy}, the minor step's bound on
+the minor.
+
+\paragraph{What is proved.} The Lean development models the walk and the
+certificate exactly (\texttt{Search/MinorTabu.lean}, 45 theorems, no
+\texttt{sorry}, no axiom beyond the three standard ones). Write $r$ for the
+representative map the union-find maintains, idempotent on $V$; merging an
+edge $pq$ replaces $r$ by $r'$ with $r'(x)=r(q)$ when $r(x)=r(p)$ and $r(x)$
+otherwise; the quotient $G/r$ is the graph on the representatives with an
+edge between $r(p)$ and $r(q)$ whenever $pq\in E$ and $r(p)\neq r(q)$.
+
+\begin{theorem}[the emitted sequence is a legal contraction sequence, and
+replays to the quotient]\label{thm:tabu-seq}
+For any list of edges of $G$ in any order, the sequence emitted by the walk
+is a contraction sequence of $G$ in the sense of Theorem~\ref{thm:minor},
+and applying it to $G$ yields $G/r$ for the final representative map $r$,
+restricted to the surviving representatives. In particular
+$\pw(G/F)\le\pw(G)$~\leanref{tabu}.
+\end{theorem}
+
+The proof rests on one identity that needs no edge at all: contracting
+$r(p)$ into $r(q)$ in $G/r$ is the same graph as $G/r'$ for the merged map
+$r'$, so one step of the walk is one contraction; the edge $pq$ only makes
+the step legal. Acyclicity of $F$ is defined and never used: it is the
+program's bookkeeping, by which an addition shrinks the minor by exactly one
+vertex, and the theorems hold for any list of edges, cyclic or not.
+
+\begin{theorem}[both floors are sound]\label{thm:tabu-floor}
+Let $F$ be a set of edges of $G$ and $H=G/F$. If no layout of $H$ has width
+at most $w$, then $\pw(G)\ge w+1$. For every further contraction sequence
+on $H$ and every vertex set $S$ of the result, the minimum degree inside $S$
+is at most $\pw(G)$; in particular the contraction degeneracy of $H$, which
+is the largest minimum degree the minor step reads along its own
+contractions, is at most $\pw(G)$~\leanref{tabu}.
+\end{theorem}
+
+The second statement is quantified over every sequence because the minor
+step does not emit the contractions behind its degeneracy value
+(Section~\ref{sec:certs}); each value it reads is a minimum degree of some
+contracted copy, and the theorem bounds every such value, so soundness needs
+no emitted sequence.
+
+\begin{theorem}[a run reports a floor, and reaches $w$ exactly by a certified
+minor]\label{thm:tabu-run}
+Model a run as a starting floor $g$ (the program's \texttt{-L} input, trusted
+by hypothesis) and a list of visited forests each with a claimed floor
+justified by one of the two kinds; the output is the largest claim, or $g$.
+Then the output is at most $\pw(G)$; and for $w>g$, the output is at least
+$w$ if and only if some visited minor carries a claim of at least $w$, in
+which case that minor has pathwidth at least $w$. In particular, if the
+output equals the recorded width $w$, some visited minor refuted
+$w-1$~\leanref{tabu}.
+\end{theorem}
+
+The theorems are stated for an arbitrary list of visited forests: the tabu
+rule, the band, the sampling, the aspiration and the seeding decide which
+forests are visited and are irrelevant to soundness. One direction is
+deliberately not claimed: a visited minor whose pathwidth is $w$ but on which
+the engine's budget ran out is not reported, so the hypothesis is the
+certified claim and not the bare property; the check below confirmed that the
+stronger statement is false. On the MOSP side, a refutation of width $w$ on
+a minor of the customer graph proves that every pattern order opens more than
+$w+1$ stacks, with no hypothesis on the instance.
+
+\paragraph{Checked before stated.} Every statement was checked by brute
+force before it was written: on every graph of the atlas with at most seven
+vertices (1,252 graphs) and 15,024 edge subsets, forests and cyclic sets
+alike, a quarter in shuffled order, the walk was replayed exactly as the
+program prints it, every emitted pair verified to be an edge of the current
+graph, the replay verified to equal the quotient, the quotient's pathwidth
+computed over all orderings and compared with the graph's (tight on 1,614),
+every degeneracy value re-derived from the program's own rule and bounded,
+and 3,756 simulated runs compared with the run theorems; no violation
+(\texttt{reports/scratch/minor\_tabu\_lean/check.py}). The axiom audit lists
+\texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound} for every
+theorem.
+
+\paragraph{Status.} On five graphs of known pathwidth the search reproduces
+the exact value. On the open classes of the dataset the first run, seeded
+from each class's best certificate on record, is in progress at the time of
+writing; its tally, the classes closed and the floors raised, with every new
+certificate passed through the independent checker, will be reported here.
+What the search cannot do is what no minor search can: where no minor of the
+sizes it visits refutes $w-1$, as on \texttt{Random-125-125-2-2\_0}, the
+certificate is the whole graph.
