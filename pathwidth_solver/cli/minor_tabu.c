@@ -116,7 +116,8 @@ int main(int argc, char **argv) {
     double budget = 1800.0;
     int target = -1, floor_known = 0, tabu_len = 7, max_exact = 90, sample = 400, verbose_improve = 0;
     double lo_frac = 0.4, hi_frac = 0.9, nb_seconds = 2.0;
-    const char *seed_file = NULL;   /* the walk stays on minors with between lo and hi of the vertices */
+    const char *seed_file = NULL;
+    int seed_h = -1;                      /* the seed minor's size; ties prefer minors near it */   /* the walk stays on minors with between lo and hi of the vertices */
     long long exact_nodes = 300000, nb_nodes = 20000;   /* node budget: the chosen minor's climb; each neighbour's test */
     unsigned long long seed = 1;
     for (int i = 1; i < argc; i++) {
@@ -216,6 +217,11 @@ int main(int argc, char **argv) {
         }
         if (cur_proxy > best_proxy) best_proxy = cur_proxy;
         if (cur_proxy > floor) { floor = cur_proxy; best_kind = "contraction_degeneracy"; best_h = cur_h; memcpy(best_forest, s.in_forest, (size_t) s.m); }
+        if (seed_file && best_kind != NULL && strcmp(best_kind, "refutation") != 0 && floor == floor_known) {
+            /* nothing improved on the given floor: report the seed's minor as the certificate behind it */
+            best_kind = "seed"; best_h = cur_h; memcpy(best_forest, s.in_forest, (size_t) s.m);
+        }
+        seed_h = cur_h;
         fprintf(stderr, "band [%d, %d] vertices; start minor %d vertices, proxy %d\n", lo_n, hi_n, cur_h, cur_proxy);
     }
     while (now() < deadline && (target < 0 || floor < target)) {
@@ -263,8 +269,10 @@ int main(int argc, char **argv) {
             int val = refutes * 100000 + proxy;
             int aspire = refutes == 2;
             if (is_tabu && !aspire) continue;
-            /* ties toward the larger minor when seeded (closer to G), the smaller otherwise (cheaper exact step) */
-            int better = val > best_val || (val == best_val && (seed_file ? h > best_val_h : h < best_val_h));
+            /* ties: when seeded, the minor whose size is nearest the seed's (where the obstruction is known to survive);
+             * otherwise the smaller minor (cheaper exact step) */
+            int dist_new = seed_h >= 0 ? abs(h - seed_h) : h, dist_best = seed_h >= 0 ? abs(best_val_h - seed_h) : best_val_h;
+            int better = val > best_val || (val == best_val && dist_new < dist_best);
             if (better) { best_move = i; best_val = val; best_val_h = h; ties = 1; }
             else if (val == best_val && h == best_val_h && (rnd() % (unsigned long long) (++ties)) == 0) best_move = i;
         }
