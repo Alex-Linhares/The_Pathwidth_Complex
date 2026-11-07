@@ -9,7 +9,97 @@ most 8 workers.*
 
 ## §0. Summary
 
-(filled in below once the runs are in; see §4)
+**The question.** Pathwidth's exact dual is the blockage of Bienstock,
+Robertson, Seymour & Thomas (1991). The owner asked, before any theorem is
+attempted, for the shape of one quantity: the *size* of the smallest blockage of
+each order on small graphs and on expander-like families — the pathwidth
+analogue of Grohe & Marx's bramble-size question (brambles of order near the
+treewidth are exponentially large on expanders; polynomial brambles of order
+`Ω̃(√tw)` always exist).
+
+**The measure (§1).** A blockage `B` of order `k` is a down-set of the sets with
+at most `k` attachments; it is determined by the ⊆-minimal non-members among
+them, its **frame**. Three sizes: size₁ = the number of frame sets (the
+"minimal big sets" of the brief, with `big` the up-closure of the small-attachment
+non-members — the only reading that is upward closed and determined by `B`);
+size₂ = the shortest list of *arbitrary* generators `g_i` with
+`B = {X : |att X| ≤ k, no g_i ⊆ X}`; size₃ = the number of maximal members.
+A generator list is a certificate of `pw ≥ k`: the verifier checks that every
+separation of order `≤ k` has exactly one side containing a generator — the
+"not both" half is a Menger computation per pair (polynomial in `r² · poly(n)`),
+the "at least one" half is a search over separations (`n^{2r} · poly(n)`,
+polynomial for bounded `r`, not in `r × poly(n)`). So `r` is a certificate
+*length*, with a verifier that is polynomial only for bounded length, which is
+as it must be since `pw ≥ k` is coNP-complete. Both size₁ and size₂ were
+measured; size₃ is never the shorter one (`≥ size₁` on every graph and order)
+and was dropped. Measured: **`min size(B)` over every blockage of order `k`**,
+by an exact SAT model (memberships of the small-attachment sets; down-closure,
+single-vertex step closure, the minimal pairs `X xor X^c`; proved equivalent to
+axioms (i)–(iii) in §1.5), minimised by binary search on a totalizer, and
+checked against an enumeration of every family of subsets to 4 vertices and
+every up-set of `2^V` to 5 vertices, and against the independent all-pairs
+axiom checker to 12 vertices.
+
+**Exhaustive to 9 vertices (§2).** All 273,193 connected graphs, every order
+`1..pw`, all three sizes, 3.6 h on 8 workers. At order `pw` the minimum is 1 on
+28.5%, `≤ 2` on 78.9% and `≤ 3` on 96.2% of the 261,080 graphs on 9 vertices;
+its maximum is 12 at 8 vertices (the cube) and 13 at 9 — about `1.5 n`. Its
+mean grows slowly (1.36, 1.49, 1.71, 1.97 at 6–9 vertices). The large frames
+are **co-pair frames** (`V` minus a pair). size₂ is shorter than size₁ on a
+quarter of the graphs, by a factor up to 4. **Every graph with `pw > tw` needs
+at least 3 minimal big sets at order `pw`** (13,548 of 13,548; one set is a
+theorem by the sink of an oriented tree decomposition, two is open).
+
+**Families to 22 vertices (§3).**
+
+| graph | n | pw | tw | min size₁ at pw | at pw−1 | at pw−2 | size₂ at pw |
+|:--|--:|--:|--:|--:|--:|--:|--:|
+| `K_{k,k}`, k = 2..8 | 2k | k | k | **2** | 1 | 1 | 2 |
+| grids 3×3, 4×4 | 9, 16 | 3, 4 | 3, 4 | **4**, **3** | 1, 2 | 1, 1 | 3 |
+| trees (spider, ternary h2, binary h3) | 7, 13, 15 | 2 | 1 | **3** | 1 | — | 3 |
+| the 10-vertex `pw − tw = 2` graph | 10 | 5 | 3 | **3** | 3 | 1 | 3 |
+| random cubic, pw 3 / 4 / 5 / 6 | 8–22 | 3–6 | 3–5 | **2** / **3–5** / **4–8** / [6, 11] | 1 / 2 / 3 / 4 | 1 / 1 / 2 / 3 | 2–4 |
+| random quartic, quintic | 10–16 | 4–7 | 4–7 | **2–7** | 1–4 | 1–2 | 2–4 |
+| Mycielski `M₄` | 11 | 5 | 5 | **6** | 3 | 1 | 5 |
+| Petersen | 10 | 5 | 4 | **15** | 5 | 2 | 8 |
+| Paley 13 | 13 | 8 | 8 | **15** | 13 | 3 | 9 |
+| Heawood | 14 | 6 | 5 | [HEAWOOD] | 6 | 3 | — |
+| Möbius–Kantor | 16 | 6 | 5 | [MK] | 6 | 3 | — |
+| `Q₄` | 16 | 7 | 6 | [Q4] | 7 | 16 | — |
+| Shrikhande | 16 | 9 | 9 | **22** | 9 | 16 | — |
+| Clebsch | 16 | 9 | 8 | **32** | 10 | 16 | — |
+
+Bold exact; brackets `[lb, ub]` after the time cap (sizes `< lb` refuted, `ub`
+constructed). Random cubic graphs reach `pw 6` only at 22 vertices, where the
+model has 4.2 M principal variables.
+
+**Verdict (§4).** The kill criteria stated in §1.6 are **met**: no family's
+minimum at order `pw` exceeds `n²` or grows faster than quadratically in `n`
+(random cubic: 2 at 8 vertices to 8 at 22, against an allowed 7.6×), the record
+is Clebsch at `2 n`, and at orders `≤ ⌈√pw⌉` the minimum is `≤ 3` everywhere.
+**Every graph tried has a blockage of order `pw` with at most about `2 n`
+minimal big sets**, so the "exponential on expanders" half has no support in
+this measure at these sizes. The shape that *is* visible: the minimum is a
+function of the **order**, flat in `n` at fixed `pw` on random regular graphs
+and growing ×1.5–2 per unit of `pw` (2, 3–5, 4–8, 5–11, 7 at `pw = 3..7`);
+on the vertex-transitive graphs it is 1–3 up to about the treewidth and jumps
+in the last two orders (Petersen 2, 5, 15; Clebsch 16, 10, 32). The large
+frames are co-small sets `V \ S`, `|S| = 2..4`, one per local configuration.
+`size ≈ c · 2^{pw}` and `size ≈ 2 n` both fit every exact number; with `pw ≤ 9`
+they cannot be separated. If the first is the law and `pw = Θ(n)` on
+expanders, the conjecture's hard half follows — the data show the first factor
+to `pw = 9` and cannot see the second. The measure is well-posed, not
+canonical: size₂ is a constant factor below size₁, and the minor-pullback
+language of `reports/blockage_class.md` is shorter still for clique-minor
+blockages; any theorem has to name its language.
+
+**Regenerate:** `python3 -m learning.blockage_size --stage census --max-n 9
+--alt-max-n 9 --workers 8`; `--stage named --workers 7 --time-limit 600`;
+`--stage big --ns 20 --seeds 0,1`; `--stage big --ns 22 --seeds 0,1,2
+--time-limit 1800 --out reports/scratch/blockage_size/big_d3_22.csv`;
+`--stage one --only Heawood --order 6 --time-limit 0` (and Möbius–Kantor,
+`Q₄`, Paley13 `--kind generators`); `--stage report`;
+`python3 -m pytest tests/test_blockage_size.py -q` (8 tests, 13 s).
 
 ## §1. The measure, decided before measuring
 
@@ -256,3 +346,260 @@ duality, both halves, on all 273,193).
   them and up to 6.5. The minimum is not monotone in the order on 1.7% of the
   graphs (e.g. `F~_Q?`: 1, 3, 1 at orders 1, 2, 3), while `min size₂` is
   non-decreasing in the order on every graph.
+
+## §3. Structured families and expander-like graphs
+
+`nice -n 19 python3 -m learning.blockage_size --stage named --workers 7 --time-limit 600`
+(68 graphs, 281 rows, 32 min on 7 workers; `reports/scratch/blockage_size/named.csv`);
+`--stage big --ns 20 --seeds 0,1` and `--ns 22 --seeds 0,1,2 --time-limit 1800`
+(`big_d3.csv`, `big_d3_22.csv`; the 22-vertex model has 4.2 M principal
+variables and takes 1–5 min per solve); the four minima the 10-minute Glucose
+runs left bracketed were re-run untimed on CaDiCaL under a 2-hour cap
+(`--stage one --time-limit 0`, logs under `scratch/blockage_size/long/`).
+Pathwidths by the subset DP to 18 vertices and by `pathwidth_solver/cli/pathwidth`
+(status `refutation`) above; every minimiser at ≤ 12 vertices re-checked against
+the all-pairs axiom checker; size₂ to 14 vertices, size₃ to 12.
+
+### 3.1 The table: minimum size₁ at orders `pw`, `pw − 1`, `pw − 2`, `pw − 3`
+
+Bold is exact (a blockage of that size exists and one smaller was refuted);
+brackets `[lb, ub]` mean a blockage of size `ub` was found and sizes `< lb`
+refuted when the budget ran out. size₂ is the shortest generator list at order `pw`.
+
+| graph | n | m | pw | tw | pw | pw−1 | pw−2 | pw−3 | size₂ at pw | size₁(pw)/n |
+|:--|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|
+| K3 | 3 | 3 | 2 | 2 | **1** | **1** |  |  | 1 | 0.33 |
+| P3 | 3 | 2 | 1 | 1 | **1** |  |  |  | 1 | 0.33 |
+| C4 | 4 | 4 | 2 | 2 | **2** | **1** |  |  | 2 | 0.50 |
+| K2,2 | 4 | 4 | 2 | 2 | **2** | **1** |  |  | 2 | 0.50 |
+| K4 | 4 | 6 | 3 | 3 | **1** | **1** | **1** |  | 1 | 0.25 |
+| C5 | 5 | 5 | 2 | 2 | **2** | **1** |  |  | 2 | 0.40 |
+| K5 | 5 | 10 | 4 | 4 | **1** | **1** | **1** | **1** | 1 | 0.20 |
+| Mycielski3 | 5 | 5 | 2 | 2 | **2** | **1** |  |  | 2 | 0.40 |
+| C6 | 6 | 6 | 2 | 2 | **2** | **1** |  |  | 2 | 0.33 |
+| K3,3 | 6 | 9 | 3 | 3 | **2** | **1** | **1** |  | 2 | 0.33 |
+| K6 | 6 | 15 | 5 | 5 | **1** | **1** | **1** | **1** | 1 | 0.17 |
+| grid2x3 | 6 | 7 | 2 | 2 | **2** | **1** |  |  | 2 | 0.33 |
+| K7 | 7 | 21 | 6 | 6 | **1** | **1** | **1** | **1** | 1 | 0.14 |
+| bintree_h2 | 7 | 6 | 1 | 1 | **1** |  |  |  | 1 | 0.14 |
+| spider3x2 | 7 | 6 | 2 | 1 | **3** | **1** |  |  | 3 | 0.43 |
+| C8 | 8 | 8 | 2 | 2 | **2** | **1** |  |  | 2 | 0.25 |
+| K4,4 | 8 | 16 | 4 | 4 | **2** | **1** | **1** | **1** | 2 | 0.25 |
+| K8 | 8 | 28 | 7 | 7 | **1** | **1** | **1** | **1** | 1 | 0.12 |
+| cubic8_s0 | 8 | 12 | 3 | 3 | **2** | **1** | **1** |  | 2 | 0.25 |
+| cubic8_s1 | 8 | 12 | 3 | 3 | **2** | **1** | **1** |  | 2 | 0.25 |
+| cubic8_s2 | 8 | 12 | 3 | 3 | **2** | **1** | **1** |  | 2 | 0.25 |
+| grid2x4 | 8 | 10 | 2 | 2 | **2** | **1** |  |  | 2 | 0.25 |
+| grid3x3 | 9 | 12 | 3 | 3 | **4** | **1** | **1** |  | 3 | 0.44 |
+| C10 | 10 | 10 | 2 | 2 | **2** | **1** |  |  | 2 | 0.20 |
+| K5,5 | 10 | 25 | 5 | 5 | **2** | **1** | **1** | **1** | 2 | 0.20 |
+| Petersen | 10 | 15 | 5 | 4 | **15** | **5** | **2** | **1** | 8 | 1.50 |
+| cubic10_s0 | 10 | 15 | 3 | 3 | **2** | **1** | **1** |  | 2 | 0.20 |
+| cubic10_s1 | 10 | 15 | 3 | 3 | **2** | **1** | **1** |  | 2 | 0.20 |
+| cubic10_s2 | 10 | 15 | 4 | 4 | **5** | **2** | **1** | **1** | 4 | 0.50 |
+| grid2x5 | 10 | 13 | 2 | 2 | **2** | **1** |  |  | 2 | 0.20 |
+| pwtw2_10 | 10 | 21 | 5 | 3 | **3** | **3** | **1** | **1** | 3 | 0.30 |
+| quartic10_s0 | 10 | 20 | 4 | 4 | **2** | **1** | **1** | **1** | 2 | 0.20 |
+| quartic10_s1 | 10 | 20 | 5 | 5 | **7** | **2** | **1** | **1** | 3 | 0.70 |
+| Mycielski4 | 11 | 20 | 5 | 5 | **6** | **3** | **1** | **1** | 5 | 0.55 |
+| K6,6 | 12 | 36 | 6 | 6 | **2** | **1** | **1** | **1** | 2 | 0.17 |
+| cubic12_s0 | 12 | 18 | 4 | 4 | **3** | **2** | **1** | **1** | 3 | 0.25 |
+| cubic12_s1 | 12 | 18 | 3 | 3 | **2** | **1** | **1** |  | 2 | 0.17 |
+| cubic12_s2 | 12 | 18 | 3 | 3 | **2** | **1** | **1** |  | 2 | 0.17 |
+| grid3x4 | 12 | 17 | 3 | 3 | **2** | **1** | **1** |  | 2 | 0.17 |
+| quartic12_s0 | 12 | 24 | 5 | 5 | **4** | **2** | **1** | **1** | 3 | 0.33 |
+| quartic12_s1 | 12 | 24 | 5 | 5 | **5** | **2** | **1** | **1** | 4 | 0.42 |
+| quintic12_s0 | 12 | 30 | 6 | 6 | **5** | **2** | **1** | **1** | 3 | 0.42 |
+| Paley13 | 13 | 39 | 8 | 8 | **15** | **13** | **3** | **1** | [8, 10] | 1.15 |
+| tertree_h2 | 13 | 12 | 2 | 1 | **3** | **1** |  |  | 3 | 0.23 |
+| Heawood | 14 | 21 | 6 | 5 | [16, 31] | **6** | **3** | **2** | [1, 60] |  |
+| K7,7 | 14 | 49 | 7 | 7 | **2** | **1** | **1** | **1** | 2 | 0.14 |
+| cubic14_s0 | 14 | 21 | 4 | 4 | **3** | **2** | **1** | **1** | 3 | 0.21 |
+| cubic14_s1 | 14 | 21 | 4 | 4 | **3** | **2** | **1** | **1** | 3 | 0.21 |
+| cubic14_s2 | 14 | 21 | 4 | 3 | **5** | **2** | **1** | **1** | 3 | 0.36 |
+| quartic14_s0 | 14 | 28 | 5 | 5 | **4** | **2** | **1** | **1** | 2 | 0.29 |
+| quartic14_s1 | 14 | 28 | 5 | 5 | **4** | **2** | **1** | **1** | 3 | 0.29 |
+| bintree_h3 | 15 | 14 | 2 | 1 | **3** | **1** |  |  |  | 0.20 |
+| Clebsch | 16 | 40 | 9 | 8 | **32** | **10** | **16** | **16** |  | 2.00 |
+| K8,8 | 16 | 64 | 8 | 8 | **2** | **1** | **1** | **1** |  | 0.12 |
+| MoebiusKantor | 16 | 24 | 6 | 5 | [11, 20] | **6** | **3** | **2** |  |  |
+| Q4 | 16 | 32 | 7 | 6 | [1, 47] | **7** | **16** | **2** |  |  |
+| Shrikhande | 16 | 48 | 9 | 9 | **22** | **9** | **16** | **3** |  | 1.38 |
+| cubic16_s0 | 16 | 24 | 4 | 4 | **3** | **2** | **1** | **1** |  | 0.19 |
+| cubic16_s1 | 16 | 24 | 4 | 4 | **5** | **2** | **1** | **1** |  | 0.31 |
+| cubic16_s2 | 16 | 24 | 5 | 4 | **8** | **3** | **2** | **1** |  | 0.50 |
+| grid2x8 | 16 | 22 | 2 | 2 | **2** | **1** |  |  |  | 0.12 |
+| grid4x4 | 16 | 24 | 4 | 4 | **3** | **2** | **1** | **1** |  | 0.19 |
+| quartic16_s0 | 16 | 32 | 5 | 5 | **4** | **2** | **1** | **1** |  | 0.25 |
+| quartic16_s1 | 16 | 32 | 6 | 6 | **5** | **4** | **2** | **1** |  | 0.31 |
+| quintic16_s0 | 16 | 40 | 7 | 7 | **7** | **4** | **2** | **1** |  | 0.44 |
+| cubic18_s0 | 18 | 27 | 5 | 4 | **5** | **3** | **2** | **1** |  | 0.28 |
+| cubic18_s1 | 18 | 27 | 5 | 5 | **5** | **3** | **2** | **1** |  | 0.28 |
+| cubic18_s2 | 18 | 27 | 4 | 4 | **3** | **2** | **1** | **1** |  | 0.17 |
+
+Random regular graphs, grouped by degree and by the order `pw` (the 22-vertex
+rows from `--stage big`):
+
+| degree | graph | n | pw | tw | min size₁ at order pw | at pw−1 | size₂ at pw |
+|--:|:--|--:|--:|--:|--:|--:|--:|
+| 3 | cubic8_s0 | 8 | 3 | 3 | **2** | **1** | 2 |
+| 3 | cubic8_s1 | 8 | 3 | 3 | **2** | **1** | 2 |
+| 3 | cubic8_s2 | 8 | 3 | 3 | **2** | **1** | 2 |
+| 3 | cubic10_s0 | 10 | 3 | 3 | **2** | **1** | 2 |
+| 3 | cubic10_s1 | 10 | 3 | 3 | **2** | **1** | 2 |
+| 3 | cubic10_s2 | 10 | 4 | 4 | **5** | **2** | 4 |
+| 3 | cubic12_s1 | 12 | 3 | 3 | **2** | **1** | 2 |
+| 3 | cubic12_s2 | 12 | 3 | 3 | **2** | **1** | 2 |
+| 3 | cubic12_s0 | 12 | 4 | 4 | **3** | **2** | 3 |
+| 3 | cubic14_s0 | 14 | 4 | 4 | **3** | **2** | 3 |
+| 3 | cubic14_s1 | 14 | 4 | 4 | **3** | **2** | 3 |
+| 3 | cubic14_s2 | 14 | 4 | 3 | **5** | **2** | 3 |
+| 3 | cubic16_s0 | 16 | 4 | 4 | **3** | **2** |  |
+| 3 | cubic16_s1 | 16 | 4 | 4 | **5** | **2** |  |
+| 3 | cubic16_s2 | 16 | 5 | 4 | **8** | **3** |  |
+| 3 | cubic18_s2 | 18 | 4 | 4 | **3** | **2** |  |
+| 3 | cubic18_s0 | 18 | 5 | 4 | **5** | **3** |  |
+| 3 | cubic18_s1 | 18 | 5 | 5 | **5** | **3** |  |
+| 3 | cubic20_s0 | 20 | 4 | 4 | **5** | **2** |  |
+| 3 | cubic20_s1 | 20 | 4 | 3 | **3** | **2** |  |
+| 3 | cubic22_s1 | 22 | 5 | 4 | **8** | **3** |  |
+| 3 | cubic22_s2 | 22 | 5 | 5 | **4** | **3** |  |
+| 3 | cubic22_s0 | 22 | 6 | 5 | [6, 11] | **4** |  |
+| 4 | quartic10_s0 | 10 | 4 | 4 | **2** | **1** | 2 |
+| 4 | quartic10_s1 | 10 | 5 | 5 | **7** | **2** | 3 |
+| 4 | quartic12_s0 | 12 | 5 | 5 | **4** | **2** | 3 |
+| 4 | quartic12_s1 | 12 | 5 | 5 | **5** | **2** | 4 |
+| 4 | quartic14_s0 | 14 | 5 | 5 | **4** | **2** | 2 |
+| 4 | quartic14_s1 | 14 | 5 | 5 | **4** | **2** | 3 |
+| 4 | quartic16_s0 | 16 | 5 | 5 | **4** | **2** |  |
+| 4 | quartic16_s1 | 16 | 6 | 6 | **5** | **4** |  |
+| 5 | quintic12_s0 | 12 | 6 | 6 | **5** | **2** | 3 |
+| 5 | quintic16_s0 | 16 | 7 | 7 | **7** | **4** |  |
+
+Grouped by `pw`, exact values only, as `(n, min size₁ at order pw)`:
+
+| pw | random cubic / quartic / quintic graphs |
+|--:|:--|
+| 3 | (8, 2) ×3, (10, 2) ×2, (12, 2) ×2 |
+| 4 | (10, 2), (10, 5), (12, 3), (14, 3), (14, 3), (14, 5), (16, 3), (16, 5), (18, 3), (20, 3), (20, 5) |
+| 5 | (10, 7), (12, 4), (12, 5), (14, 4), (14, 4), (16, 4), (16, 8), (18, 5), (18, 5), (22, 4), (22, 8) |
+| 6 | (12, 5), (16, 5); (22, [6, 11]) |
+| 7 | (16, 7) |
+
+### 3.2 What the families say
+
+* **Complete bipartite graphs: 2 at every order `pw`, for all `k` from 2 to 8.**
+  `K_{k,k}` has `pw = k`, and the two minimal big sets are the two sides each
+  with one vertex of the other side added (complements of size `k − 1`): "every
+  separation of order ≤ `k` leaves a side that misses at most `k − 1` vertices of
+  one class". Constant size at `pw = n / 2`: the densest graphs tried have the
+  shortest blockages after the cliques (size 1).
+* **Grids, trees, cycles, the `pw − tw = 2` graph: 2–4.** Cycles 2 at order 2 for
+  every length; the 3×3 grid 4 (sizes 4, 5, 5, 7), the 4×4 grid 3; the spider,
+  the complete ternary tree of height 2 and the complete binary tree of height 3
+  exactly 3 (the three branches of the branch lemma, as disconnected minimal
+  sets: two of three legs); the 10-vertex `pw − tw = 2` graph 3 at order 5 *and*
+  3 at order 4 (three 7-sets whose complements are the three non-hub triples).
+* **Random regular graphs: the minimum is a function of the order, not of `n`.**
+  At `pw = 4` it is 2–5 from 10 to 20 vertices with no trend; at `pw = 5` it is
+  4–8 from 10 to 22; it is 2 at every `pw = 3` graph. Across the orders it grows
+  by about a factor 1.5–2 per unit: 2 at 3, 3–5 at 4, 4–8 at 5, 5–11 at 6, 7 at
+  7. The frames are co-sets again: the minimal big sets of `cubic16_s2` (`pw 5`)
+  are 8 sets of 7–11 vertices, each with attachment exactly 5, connected; of
+  `cubic18_s0` 5 sets of 7–9 vertices.
+* **The vertex-transitive graphs are where the minimum is large.** Petersen 15
+  (`1.5 n`), Paley13 15, Shrikhande 22, Clebsch 32 (`2 n`), and the three still
+  bracketed: Heawood `[HEAWOOD]` of 14 vertices, Möbius–Kantor `[MK]` of 16, `Q₄`
+  `[Q4]` of 16. In every case the frame is a family of **co-small sets**:
+  `V` minus a 3-vertex path on Petersen (15 of its 30 such paths), `V` minus a
+  triple (13) or a pair (2) on Paley13, `V` minus a 4-set spanning two edges (30)
+  or a pair (2) on Clebsch, `V` minus a 4-set on Shrikhande (22); every one
+  connected, with attachment `pw − 1` or `pw`. Read as a statement about
+  separations: *every separation of order ≤ `pw` has a side whose complement is
+  at most a path of three* (Petersen) — the co-singleton frames of
+  `reports/blockage_class.md` §4 at one or two more vertices.
+* **The size is concentrated at the top one or two orders**, and not monotone in
+  the order. Petersen 1, 1, 2, 5, 15; Paley13 1 ×5, 3, 13, 15; Clebsch 1 ×4, 2,
+  16, 16, 10, 32; Shrikhande 1 ×5, 3, 16, 9, 22; `Q₄` 1, 1, 1, 2, 16, 7, then
+  the bracketed top; Heawood and Möbius–Kantor 1, 1, 2, 3, 6, then the top. The
+  jump sits at or just above the treewidth (Petersen `tw 4`, Clebsch `tw 8`,
+  Paley13 `tw 8`): below it a clique or clique-minor frame of one or two sets
+  suffices, above it the co-small-set frames take over.
+* **size₂ is a constant factor shorter where it differs.** Petersen 8 against
+  15, Paley13 9 against 15, `Q₃` 6 against 12, Mycielski's `M₄` 5 against 6;
+  equal to size₁ on `K_{k,k}`, grids, trees and 11 of the 19 random regular
+  graphs where it was computed (on the other 8 it is 2–4 against 4–7; the
+  largest gap `quartic10_s1`, 3 against 7). Nothing in the data has size₂
+  growing differently from size₁.
+
+### 3.3 Lower bounds
+
+Every lower bound here is a SAT refutation of "a blockage of order `k` with
+`≤ s` minimal big sets exists" — exact where it meets the construction. For the
+bracketed cases the refuted side is the lower bound shown. No counting argument
+was found that beats the solver: the natural one — each frame set lies on one
+side of every separation `(X, X^c)`, so the frame must "cover" the set of small
+separations — gives at best a constant on these graphs, because one co-small set
+lies on the large side of almost every separation.
+
+## §4. Verdict: the shape of the data
+
+**The kill criteria.** *K-hard* is **met by its letter**: on the random cubic
+graphs the exact minimum at order `pw` goes from 2 (8 vertices) to 8 (22
+vertices), a factor 4 against the allowed `(22 / 8)² = 7.6`, and no family
+exceeds `n²` — the record is Clebsch at `2 n` (and the bracketed Heawood / `Q₄`
+at most `2.3 n` / `2.9 n`). *K-easy* is **met**: at orders `≤ ⌈√pw⌉ ≤ 3` the
+minimum is at most 3 on every graph tried. So in this measure, at these sizes,
+**every graph tried has a blockage of order `pw` with at most `2 n`–`3 n`
+minimal big sets**, and the "exponential on expanders" half has no support.
+
+**What the data show instead**, and why that verdict is weaker than it reads:
+
+1. The minimum at order `pw` is governed by the **order**, not by `n`. On random
+   regular graphs it is flat in `n` at fixed `pw` and grows ×1.5–2 per unit of
+   `pw` (2, 3–5, 4–8, 5–11, 7 at `pw = 3 … 7`); on the vertex-transitive graphs
+   the sequence over the orders ends 5, 15 (Petersen), 13, 15 (Paley13), 10, 32
+   (Clebsch), 9, 22 (Shrikhande). A law `size ≈ c · 2^{pw}` is *consistent*
+   with every exact number here; so is `size ≈ 2 n` on the vertex-transitive
+   graphs. The two cannot be told apart below 22 vertices, where `pw ≤ 9`, and
+   random cubic graphs reach `pw 6` only at 22 vertices (where the model has
+   `4 M` variables and one minimum is still bracketed after 30 minutes of
+   Glucose). **If** the minimum is exponential in the order and the order is a
+   positive fraction of `n` on expanders, the conjecture's hard half follows; the
+   measurement shows the first factor to `pw = 9` and cannot see the second.
+2. The large frames have one shape: **co-small sets** `V \ S` with `|S| = 2, 3,
+   4` on the symmetric graphs and co-sets of `n − 7 … n − 11` vertices on the
+   random cubic ones. A blockage of this shape says "no separation of order
+   ≤ `pw` is balanced". Its size is the number of small sets `S` that have to be
+   named — a count of *local* configurations, which on a vertex-transitive graph
+   is a multiple of `n` and on an expander with `pw = Θ(n)` would have to name
+   sets of size `Θ(n)`, which is where the exponential would come from. That is
+   a reading, not a measurement.
+3. The measure is well-posed but not canonical: size₂ (any generators) is up to
+   4× shorter than size₁ (the frame) to 9 vertices and ~2× on Petersen and
+   Paley13, and the minor-pullback language of `reports/blockage_class.md` is
+   shorter still for clique-minor blockages. Any statement about "the size of a
+   blockage" has to name the language; the frame language is the pathwidth
+   analogue of a bramble's set count and is what was measured.
+4. Three facts came out clean and could be stated: every graph with `pw > tw`
+   to 9 vertices needs at least 3 minimal big sets at order `pw` (13,548 of
+   13,548; one is a theorem — a one-set frame forces `tw ≥ k` through the sink
+   of an oriented tree decomposition — two is open); `K_{k,k}` has a 2-set
+   blockage of order `k` for every `k ≤ 8`; and `min size₂` is non-decreasing
+   in the order on all 273,193 graphs while `min size₁` is not.
+
+**What is exact and what is bounded.** Every number in §2 is exact (273,193
+graphs, 3 measures, every order; two brute-force enumerations and the all-pairs
+checker behind the model). In §3 every value in bold is exact; four are
+brackets after a time limit (Heawood, Möbius–Kantor and `Q₄` at order `pw`,
+`cubic22_s0` at order 6), each with the refuted side as its lower bound; no
+number is an unverified upper bound. The treewidths are exact (C DP); the
+pathwidths exact (subset DP to 18, the C program's `refutation` status above).
+Compute: about 29 core-hours for the census, 4 for the families, 3 for the
+22-vertex graphs and the long re-runs; nothing under `solutions/` was touched
+and nothing from the corpus was re-solved.
+
+**Literature.** We found no prior statement of the pathwidth analogue of Grohe &
+Marx's bramble-size theorem, and no prior measurement of the number of minimal
+sets of a blockage; BRST (1991), Diestel & Oum (2019) and Erde (2017) say
+nothing about the size of a blockage (`reports/pathwidth_np_conp.md` §0).
