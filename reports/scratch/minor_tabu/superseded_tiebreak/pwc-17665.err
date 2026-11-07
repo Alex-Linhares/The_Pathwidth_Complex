@@ -1,0 +1,20 @@
+minor_tabu: n=221 m=425 floor=13 (whole-graph bounds 8) target=14 tabu=7 budget=2400s
+seed: 133 contractions read
+band [66, 119] vertices; start minor 88 vertices, proxy 8
+  1006.7s step 50: minor 118 vertices, proxy 8, floor 13 (best proxy 8), exact calls 4050
+  1047.9s step 100: minor 118 vertices, proxy 9, floor 13 (best proxy 9), exact calls 8100
+  1067.1s step 150: minor 118 vertices, proxy 9, floor 13 (best proxy 9), exact calls 12150
+  1090.5s step 200: minor 118 vertices, proxy 9, floor 13 (best proxy 9), exact calls 16200
+  1122.4s step 250: minor 118 vertices, proxy 9, floor 13 (best proxy 9), exact calls 20250
+  1228.7s step 300: minor 118 vertices, proxy 9, floor 13 (best proxy 9), exact calls 24300
+  1337.6s step 350: minor 118 vertices, proxy 9, floor 13 (best proxy 9), exact calls 28350
+  1345.9s step 400: minor 118 vertices, proxy 9, floor 13 (best proxy 9), exact calls 32400
+  1718.4s step 450: minor 118 vertices, proxy 9, floor 13 (best proxy 9), exact calls 36450
+  2122.1s step 500: minor 118 vertices, proxy 9, floor 13 (best proxy 9), exact calls 40500
+  2344.4s step 550: minor 118 vertices, proxy 9, floor 13 (best proxy 9), exact calls 44550
+  2373.3s step 600: minor 118 vertices, proxy 9, floor 13 (best proxy 9), exact calls 48600
+  2379.5s step 650: minor 118 vertices, proxy 9, floor 13 (best proxy 9), exact calls 52650
+  2384.3s step 700: minor 118 vertices, proxy 9, floor 13 (best proxy 9), exact calls 56700
+  2392.2s step 750: minor 118 vertices, proxy 9, floor 13 (best proxy 9), exact calls 60750
+  2394.8s step 800: minor 118 vertices, proxy 9, floor 13 (best proxy 9), exact calls 64800
+  2397.3s step 850: minor 118 vertices, proxy 9, floor 13 (best proxy 9), exact calls 68850

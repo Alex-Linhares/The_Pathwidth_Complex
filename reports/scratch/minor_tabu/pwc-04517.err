@@ -1,0 +1,4 @@
+minor_tabu: n=494 m=586 floor=8 (whole-graph bounds 2) target=10 tabu=7 budget=4800s
+seed: 296 contractions read
+band [120, 120] vertices; start minor 198 vertices, proxy 5
+no move keeps the minor inside the band [120, 120]; stopping

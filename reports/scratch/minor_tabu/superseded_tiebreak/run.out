@@ -1,0 +1,18 @@
+2026-11-07 02:00:20 minor_tabu_open: 91 classes (0 done), 1800 s each, 8 at a time
+budgets by gap: {1: 2400.0, 2: 4800.0, 3: 7200.0}
+02:40:20 1/91 pwc-17705 jgiraldezlevy.2200.9086.08 n= 100 width 37 floor 36 -> 36 (contraction_degeneracy, 100 v) steps 135412 exact 10968366 2400.0s ok  closed so far 0
+02:40:20 2/91 pwc-03679 Random-150-150-2-10        n= 150 width 25 floor 24 -> 24 (contraction_degeneracy, 150 v) steps 40194 exact 3255669 2400.0s ok  closed so far 0
+02:40:20 3/91 pwc-17693 SAT_dat.k80-24_1_rule_1.ga n= 130 width 23 floor 22 -> 22 (contraction_degeneracy, 130 v) steps 844 exact 68343 2400.0s ok  closed so far 0
+02:40:20 4/91 pwc-03678 Random-150-150-2-1         n= 150 width 22 floor 21 -> 21 (contraction_degeneracy, 150 v) steps 777 exact 62932 2400.0s ok  closed so far 0
+02:40:20 5/91 pwc-17622 GTFS_VBB_EndeApr_Dez2016.z n= 190 width 15 floor 14 -> 14 (contraction_degeneracy, 190 v) steps 198 exact 15979 2400.0s ok  closed so far 0
+02:40:20 6/91 pwc-03682 Random-150-150-2-4         n= 150 width 27 floor 26 -> 26 (contraction_degeneracy, 150 v) steps 38044 exact 3081535 2400.0s ok  closed so far 0
+02:40:20 7/91 pwc-03686 Random-150-150-2-8         n= 150 width 21 floor 20 -> 20 (contraction_degeneracy, 150 v) steps 52239 exact 4231306 2400.0s ok  closed so far 0
+02:40:20 8/91 pwc-15911 coloring/myciel7.dgf       n= 191 width 72 floor 71 -> 71 (contraction_degeneracy, 191 v) steps 52166 exact 4225443 2400.0s ok  closed so far 0
+03:20:20 9/91 pwc-17620 GTFS_VBB_EndeApr_Dez2016.z n= 192 width 15 floor 14 -> 14 (contraction_degeneracy, 192 v) steps 121 exact 9792 2400.0s ok  closed so far 0
+03:20:20 10/91 pwc-17665 Promedas_55_9.gr.xz        n= 221 width 14 floor 13 -> 13 (contraction_degeneracy, 221 v) steps 893 exact 72272 2400.0s ok  closed so far 0
+03:20:20 11/91 pwc-17369 ex127.gr.xz                n= 228 width 12 floor 11 -> 11 (contraction_degeneracy, 228 v) steps 99 exact 7944 2400.0s ok  closed so far 0
+03:20:20 12/91 pwc-04432 W4                         n= 202 width 27 floor 26 -> 26 (contraction_degeneracy, 202 v) steps 222 exact 17907 2400.0s ok  closed so far 0
+03:20:20 13/91 pwc-17321 ex077.gr.xz                n= 237 width 11 floor 10 -> 10 (contraction_degeneracy, 237 v) steps 104 exact 8411 2400.0s ok  closed so far 0
+03:20:20 14/91 pwc-17492 he052.gr.xz                n= 193 width 25 floor 24 -> 24 (contraction_degeneracy, 193 v) steps 2456 exact 198921 2400.0s ok  closed so far 0
+03:20:20 15/91 pwc-17363 ex121.gr.xz                n= 204 width 35 floor 34 -> 34 (contraction_degeneracy, 204 v) steps 226 exact 18285 2400.0s ok  closed so far 0
+03:20:20 16/91 pwc-17436 ex195.gr.xz                n= 216 width 11 floor 10 -> 10 (contraction_degeneracy, 216 v) steps 113 exact 9138 2400.0s ok  closed so far 0

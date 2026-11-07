@@ -1,0 +1,18 @@
+minor_tabu: n=150 m=406 floor=21 (whole-graph bounds 12) target=22 tabu=7 budget=2400s
+seed: 75 contractions read
+band [60, 96] vertices; start minor 75 vertices, proxy 11
+  1073.8s step 50: minor 95 vertices, proxy 13, floor 21 (best proxy 13), exact calls 4050
+  1621.9s step 100: minor 95 vertices, proxy 13, floor 21 (best proxy 13), exact calls 8100
+  1778.0s step 150: minor 95 vertices, proxy 13, floor 21 (best proxy 13), exact calls 12150
+  1860.2s step 200: minor 95 vertices, proxy 13, floor 21 (best proxy 13), exact calls 16200
+  1863.1s step 250: minor 95 vertices, proxy 13, floor 21 (best proxy 13), exact calls 20250
+  1865.4s step 300: minor 95 vertices, proxy 13, floor 21 (best proxy 13), exact calls 24300
+  1874.1s step 350: minor 95 vertices, proxy 13, floor 21 (best proxy 13), exact calls 28350
+  1879.6s step 400: minor 95 vertices, proxy 13, floor 21 (best proxy 13), exact calls 32400
+  1881.7s step 450: minor 95 vertices, proxy 13, floor 21 (best proxy 13), exact calls 36450
+  1886.6s step 500: minor 95 vertices, proxy 13, floor 21 (best proxy 13), exact calls 40500
+  1896.8s step 550: minor 95 vertices, proxy 13, floor 21 (best proxy 13), exact calls 44550
+  1907.0s step 600: minor 95 vertices, proxy 13, floor 21 (best proxy 13), exact calls 48600
+  1922.7s step 650: minor 95 vertices, proxy 13, floor 21 (best proxy 13), exact calls 52650
+  1973.2s step 700: minor 95 vertices, proxy 13, floor 21 (best proxy 13), exact calls 56700
+  2162.8s step 750: minor 95 vertices, proxy 13, floor 21 (best proxy 13), exact calls 60750

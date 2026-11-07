@@ -84,3 +84,7 @@ literature/1979-Garey-Johnson-Computers-and-Intractability-NP-Completeness.djvu
 literature/de_giovanni_massi_pezzella_2013_adaptive_genetic_algorithm_open_stack_ijpr.pdf
 literature/de_giovanni_massi_pezzella_pfetsch_rinaldi_ventura_2013_gate_matrix_connection_cost_itor.pdf
 literature/de_giovanni_massi_pezzella_2010_genetic_algorithm_open_stack_report.pdf
+reports/scratch/minor_tabu/*.claims.jsonl
+reports/scratch/minor_tabu/*.last
+reports/scratch/minor_tabu/*.seed
+reports/scratch/minor_tabu/*.restart.seed

@@ -86,7 +86,7 @@ def last_floor(cid: str, ledgers: list[Path]) -> int | None:
     return best
 
 
-def run_one(r: dict, seconds: float, seed: int, restart: bool = False, ledgers: list[Path] | None = None) -> dict:
+def run_one(r: dict, seconds: float, seed: int, restart: bool = False, ledgers: list[Path] | None = None, max_exact: int = 120) -> dict:
     cid = r["id"]
     cdir = PASS / "certificates_2" / cid
     cert = json.load(open(cdir / "minor.json"))
@@ -109,7 +109,7 @@ def run_one(r: dict, seconds: float, seed: int, restart: bool = False, ledgers: 
     row = {k: "" for k in FIELDS}
     row.update(id=cid, names=r["names"], n=n, m=m, width=width, floor_before=floor, seed_minor=seed_minor)
     cmd = ["nice", "-n", "19", str(CLI), "-t", str(seconds), "-w", str(width), "-L", str(floor), "-seed", str(seedfile),
-           "-S", "40", "-nb", "400000", "-nt", "1.5", "-b", "3000000", "-m", "120", "-lo", "0.3", "-hi", "0.95",
+           "-S", "40", "-nb", "400000", "-nt", "1.5", "-b", "3000000", "-m", str(max_exact), "-lo", "0.3", "-hi", "0.95",
            "-c", "7", "-s", str(seed), "-p", "-log", str(OUT / f"{cid}.claims.jsonl"), "-ckpt", str(OUT / f"{cid}.last")]
     t0 = time.monotonic()
     try:
@@ -139,6 +139,7 @@ def main() -> None:
     ap.add_argument("--only", nargs="*", default=None)
     ap.add_argument("--out", type=Path, default=OUT / "ledger.csv")
     ap.add_argument("--resume", action="store_true", help="skip classes already in the ledger")
+    ap.add_argument("--max-exact", type=int, default=120, help="the program's -m: largest minor the exact step and the band admit (a seed minor above it makes the band empty and the walk stops at step 1; lift it for such classes, the node budgets still bound the cost)")
     ap.add_argument("--restart", action="store_true", help="restart each class's walk where its previous run stopped (its .last checkpoint and last floor); ledger defaults to ledger_restart.csv")
     a = ap.parse_args()
     if a.restart and a.out == OUT / "ledger.csv":
@@ -167,7 +168,7 @@ def main() -> None:
             gap = int(float(r["width"])) - int(float(r["m_pathwidth"] or 0))
             return per_gap.get(gap, a.seconds)
         print("budgets by gap:", {g: per_gap.get(g, a.seconds) for g in sorted({int(float(r["width"])) - int(float(r["m_pathwidth"] or 0)) for r in rows})}, flush=True)
-        futs = {pool.submit(run_one, r, budget(r), a.seed, a.restart, ledgers): r["id"] for r in rows}
+        futs = {pool.submit(run_one, r, budget(r), a.seed, a.restart, ledgers, a.max_exact): r["id"] for r in rows}
         for fut in as_completed(futs):
             row = fut.result(); w.writerow(row); fh.flush(); k += 1; closed += row["status"] == "CLOSED"
             print(f"{time.strftime('%T')} {k}/{len(rows)} {row['id']} {str(row['names'])[:26]:26} n={row['n']:>4} width {row['width']} "

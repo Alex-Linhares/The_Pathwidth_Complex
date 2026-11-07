@@ -1,0 +1,5 @@
+minor_tabu: n=237 m=423 floor=10 (whole-graph bounds 6) target=11 tabu=7 budget=2400s
+seed: 142 contractions read
+band [72, 120] vertices; start minor 95 vertices, proxy 7
+  1376.4s step 50: minor 119 vertices, proxy 8, floor 10 (best proxy 8), exact calls 4050
+  2331.5s step 100: minor 119 vertices, proxy 8, floor 10 (best proxy 8), exact calls 8100
