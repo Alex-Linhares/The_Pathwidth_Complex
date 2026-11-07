@@ -1,0 +1,31 @@
+2026-11-07 10:37:21 minor_tabu_open: 42 classes (0 done), 1800 s each, 8 at a time
+budgets by gap: {1: 2400.0, 2: 4800.0, 3: 7200.0}
+11:17:22 1/42 pwc-17401 ex160.gr.xz                n= 320 width 14 floor 13 -> 13 (seed, 128 v) steps 233 exact 18861 2400.1s ok  closed so far 0
+11:17:22 2/42 pwc-17427 ex186.gr.xz                n= 316 width 11 floor 10 -> 10 (seed, 126 v) steps 215 exact 17393 2400.1s ok  closed so far 0
+11:17:22 3/42 pwc-17378 ex136.gr.xz                n= 338 width 35 floor 34 -> 34 (seed, 148 v) steps 63102 exact 5111212 2400.1s ok  closed so far 0
+11:17:22 4/42 pwc-17649 Promedas_28_10.gr.xz       n= 333 width 12 floor 11 -> 11 (seed, 133 v) steps 266 exact 21506 2400.2s ok  closed so far 0
+11:17:22 5/42 pwc-17423 ex182.gr.xz                n= 394 width 11 floor 10 -> 10 (seed, 158 v) steps 226 exact 18260 2400.1s ok  closed so far 0
+11:17:22 6/42 pwc-17411 ex170.gr.xz                n= 361 width 11 floor 10 -> 10 (seed, 144 v) steps 198 exact 16032 2400.2s ok  closed so far 0
+11:17:22 7/42 pwc-17342 ex098.gr.xz                n= 342 width 10 floor 9 -> 9 (seed, 137 v) steps 241 exact 19445 2400.5s ok  closed so far 0
+11:17:22 8/42 pwc-04560 vsplib/hb/dwt__346.mtx.rnd n= 346 width 23 floor 22 -> 22 (seed, 171 v) steps 12889 exact 1044001 2400.6s ok  closed so far 0
+11:57:22 9/42 pwc-04562 vsplib/hb/dwt__419.mtx.rnd n= 419 width 20 floor 19 -> 19 (seed, 168 v) steps 134 exact 10850 2400.0s ok  closed so far 0
+11:57:22 10/42 pwc-04526 vsplib/hb/bcspwr05.mtx.rnd n= 443 width 10 floor 9 -> 9 (seed, 177 v) steps 57 exact 4593 2400.1s ok  closed so far 0
+11:57:22 11/42 pwc-17337 ex093.gr.xz                n= 454 width 10 floor 9 -> 9 (seed, 182 v) steps 91 exact 7309 2400.1s ok  closed so far 0
+11:57:23 12/42 pwc-04532 vsplib/hb/bcsstk06.mtx.rnd n= 420 width 42 floor 41 -> 41 (seed, 297 v) steps 208 exact 16786 2400.1s ok  closed so far 0
+11:57:23 13/42 pwc-04564 vsplib/hb/dwt__503.mtx.rnd n= 503 width 30 floor 29 -> 29 (seed, 217 v) steps 10954 exact 887240 2400.0s ok  closed so far 0
+11:57:23 14/42 pwc-17257 ex009.gr.xz                n= 466 width 9 floor 8 -> 8 (seed, 186 v) steps 100 exact 8074 2400.3s ok  closed so far 0
+11:57:23 15/42 pwc-17409 ex168.gr.xz                n= 572 width 16 floor 15 -> 15 (seed, 229 v) steps 86 exact 6940 2400.1s ok  closed so far 0
+11:57:23 16/42 pwc-17359 ex116.gr.xz                n= 453 width 10 floor 9 -> 9 (seed, 181 v) steps 70 exact 5664 2400.4s ok  closed so far 0
+12:37:22 17/42 pwc-17043 fuzix_vfscanf_vfscanf.gr   n= 587 width 8 floor 7 -> 7 (seed, 235 v) steps 96 exact 7716 2400.0s ok  closed so far 0
+12:37:23 18/42 pwc-04566 vsplib/hb/dwt__592.mtx.rnd n= 592 width 25 floor 24 -> 24 (seed, 237 v) steps 8195 exact 663749 2400.1s ok  closed so far 0
+12:37:23 19/42 pwc-17343 ex099.gr.xz                n= 616 width 10 floor 9 -> 9 (seed, 246 v) steps 100 exact 8026 2400.2s ok  closed so far 0
+12:37:23 20/42 pwc-17412 ex171.gr.xz                n= 647 width 16 floor 15 -> 15 (seed, 259 v) steps 59 exact 4767 2400.1s ok  closed so far 0
+12:37:23 21/42 pwc-16471 contiki_shell-netperf_proc n= 666 width 7 floor 6 -> 6 (seed, 266 v) steps 54 exact 4300 2400.2s ok  closed so far 0
+12:37:23 22/42 pwc-17270 ex023.gr.xz                n= 690 width 12 floor 11 -> 11 (seed, 276 v) steps 99 exact 8019 2400.2s ok  closed so far 0
+12:37:23 23/42 pwc-17317 ex073.gr.xz                n= 712 width 10 floor 9 -> 9 (seed, 285 v) steps 42 exact 3332 2400.1s ok  closed so far 0
+12:37:23 24/42 pwc-17390 ex149.gr.xz                n= 698 width 15 floor 14 -> 14 (seed, 279 v) steps 47 exact 3747 2400.2s ok  closed so far 0
+14:53:45 25/42 pwc-17371 ex129.gr.xz                n= 737 width 17 floor 16 -> 16 (seed, 295 v) steps 31 exact 2499 2400.1s ok  closed so far 0
+14:53:45 26/42 pwc-17389 ex148.gr.xz                n= 746 width 16 floor 15 -> 15 (seed, 298 v) steps 46 exact 3682 2400.2s ok  closed so far 0
+14:53:45 27/42 pwc-04568 vsplib/hb/dwt__758.mtx.rnd n= 758 width 20 floor 19 -> 19 (seed, 303 v) steps 1231 exact 99635 2400.3s ok  closed so far 0
+14:53:46 28/42 pwc-15880 coloring/inithx.i.1.dgf    n= 864 width 57 floor 56 -> 56 (seed, 691 v) steps 33 exact 2667 2400.4s ok  closed so far 0
+14:53:46 29/42 pwc-04570 vsplib/hb/dwt__878.mtx.rnd n= 878 width 23 floor 22 -> 22 (seed, 351 v) steps 36 exact 2846 2400.1s ok  closed so far 0

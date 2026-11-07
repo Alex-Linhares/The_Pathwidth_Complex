@@ -1,4 +1,27 @@
 minor_tabu: n=758 m=2618 floor=19 (whole-graph bounds 4) target=20 tabu=7 budget=2400s
 seed: 455 contractions read
-band [120, 120] vertices; start minor 303 vertices, proxy 11
-no move keeps the minor inside the band [120, 120]; stopping
+band [228, 411] vertices; start minor 303 vertices, proxy 11
+  2203.5s step 50: minor 283 vertices, proxy 11, floor 19 (best proxy 11), exact calls 4051
+  2212.7s step 100: minor 255 vertices, proxy 11, floor 19 (best proxy 11), exact calls 8101
+  2219.9s step 150: minor 233 vertices, proxy 11, floor 19 (best proxy 11), exact calls 12151
+  2225.4s step 200: minor 229 vertices, proxy 11, floor 19 (best proxy 11), exact calls 16201
+  2230.0s step 250: minor 229 vertices, proxy 11, floor 19 (best proxy 11), exact calls 20251
+  2235.0s step 300: minor 229 vertices, proxy 11, floor 19 (best proxy 11), exact calls 24301
+  2240.6s step 350: minor 229 vertices, proxy 11, floor 19 (best proxy 11), exact calls 28351
+  2245.8s step 400: minor 229 vertices, proxy 11, floor 19 (best proxy 11), exact calls 32401
+  2251.4s step 450: minor 229 vertices, proxy 11, floor 19 (best proxy 11), exact calls 36451
+  2257.1s step 500: minor 229 vertices, proxy 11, floor 19 (best proxy 11), exact calls 40501
+  2262.9s step 550: minor 229 vertices, proxy 11, floor 19 (best proxy 11), exact calls 44551
+  2269.0s step 600: minor 229 vertices, proxy 11, floor 19 (best proxy 11), exact calls 48601
+  2275.1s step 650: minor 229 vertices, proxy 11, floor 19 (best proxy 11), exact calls 52651
+  2292.7s step 700: minor 229 vertices, proxy 11, floor 19 (best proxy 11), exact calls 56701
+  2309.6s step 750: minor 229 vertices, proxy 11, floor 19 (best proxy 11), exact calls 60751
+  2331.5s step 800: minor 231 vertices, proxy 11, floor 19 (best proxy 11), exact calls 64801
+  2341.4s step 850: minor 229 vertices, proxy 11, floor 19 (best proxy 11), exact calls 68851
+  2347.2s step 900: minor 229 vertices, proxy 11, floor 19 (best proxy 11), exact calls 72901
+  2354.1s step 950: minor 229 vertices, proxy 11, floor 19 (best proxy 11), exact calls 76951
+  2364.5s step 1000: minor 233 vertices, proxy 11, floor 19 (best proxy 11), exact calls 81001
+  2370.8s step 1050: minor 229 vertices, proxy 11, floor 19 (best proxy 11), exact calls 85051
+  2375.8s step 1100: minor 229 vertices, proxy 11, floor 19 (best proxy 11), exact calls 89101
+  2381.4s step 1150: minor 233 vertices, proxy 11, floor 19 (best proxy 11), exact calls 93151
+  2392.6s step 1200: minor 229 vertices, proxy 11, floor 19 (best proxy 11), exact calls 97201
