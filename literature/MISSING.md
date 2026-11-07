@@ -675,21 +675,25 @@ setup's Crossref check.
 
 Looked for a published analogue, for pathwidth and blockages, of brambles built as
 treewidth lower bounds (Bodlaender, Grigoriev & Koster 2005). We found no prior
-statement of a blockage class used as a computed lower bound. What the search did find:
+statement of a blockage class used as a computed lower bound. What the search did find
+(**all three obtained 2026-11-07, in `literature/`**; the third was first recorded here
+under the wrong authors, "Kim, Kim & Kwon": arXiv 1711.00718 is by Joshua Erde):
 
 - **Diestel, R. & Oum, S.** (2019). Tangle-tree duality: in graphs, matroids and beyond.
   *Combinatorica*, 39, 879–910; arXiv 1701.02651 (open). Names the blockages of
   Bienstock, Robertson, Seymour & Thomas as the tangle-like structures dual to
   path-width, inside the general duality framework. Not held; the arXiv version is
-  free. Relevant to the dual side of Appendix F, not to computation.
+  free. Relevant to the dual side of Appendix F, not to computation. **Held**:
+  `2019-Diestel-Oum-Tangle-Tree-Duality-Graphs-Matroids-Beyond-Combinatorica-arXiv1701.02651.pdf`.
 - **Groenland, C., Joret, G., Nadara, W. & Walczak, B.** (2023). Approximating pathwidth
   for graphs of small treewidth. *ACM Transactions on Algorithms*, 19(2), 16 (SODA 2021).
   arXiv 2008.00779 (open). Its certificate that `pw ≥ h` is a subdivision of a complete
   binary tree of height `h` found inside a tree decomposition — a *branching*
   certificate, the one kind the class of `BlockageClass.lean` contains, and the one
   the census shows is almost never the obstruction on graphs with `pw > tw` at ≤ 11
-  vertices. Not held.
-- **Kim, R., Kim, S. & Kwon, O.** (2017, Hamburg preprint). Directed path-decompositions.
-  arXiv 1711.00718 (open). Defines directed blockages and proves the directed min-max
+  vertices. **Held**:
+  `2023-Groenland-Joret-Nadara-Walczak-Approximating-Pathwidth-Small-Treewidth-TALG-arXiv2008.00779.pdf`.
+- **Erde, J.** (2017). Directed path-decompositions. arXiv 1711.00718 (open; the
+  Hamburg preprint). Defines directed blockages and proves the directed min-max
   theorem; it is the only other place the blockage axioms are restated in print.
-  Not held.
+  **Held**: `2017-Erde-Directed-Path-Decompositions-arXiv1711.00718.pdf`.
