@@ -224,10 +224,13 @@ int main(int argc, char **argv) {
         int nmoves = s.m;
         int *cand = xmalloc(sizeof(int) * (size_t) (nmoves ? nmoves : 1)); int nc = 0;
         for (int i = 0; i < nmoves; i++) {
+            /* a forest-preserving addition shrinks the minor by one; a removal grows it by one */
+            int h_after = s.in_forest[i] ? cur_h + 1 : cur_h - 1;
+            if (h_after < lo_n || h_after > hi_n) continue;
             if (!s.in_forest[i] && forest_would_cycle(&s, i)) continue;   /* only forest-preserving additions */
             cand[nc++] = i;
         }
-        if (nc == 0) break;
+        if (nc == 0) { free(cand); fprintf(stderr, "no move keeps the minor inside the band [%d, %d]; stopping\n", lo_n, hi_n); break; }
         /* sample if too many */
         if (nc > sample) { for (int i = 0; i < sample; i++) { int j = i + (int) (rnd() % (unsigned long long) (nc - i)); int t = cand[i]; cand[i] = cand[j]; cand[j] = t; } nc = sample; }
         int best_move = -1, best_val = -1, best_val_h = 0, ties = 0;
@@ -264,6 +267,14 @@ int main(int argc, char **argv) {
             int better = val > best_val || (val == best_val && (seed_file ? h > best_val_h : h < best_val_h));
             if (better) { best_move = i; best_val = val; best_val_h = h; ties = 1; }
             else if (val == best_val && h == best_val_h && (rnd() % (unsigned long long) (++ties)) == 0) best_move = i;
+        }
+        /* every sampled neighbour was tabu (and none refuted the target): take a random non-tabu in-band move instead */
+        if (best_move < 0) {
+            for (int tries = 0; tries < 50 && best_move < 0; tries++) {
+                int i = cand[rnd() % (unsigned long long) nc], is_tabu = 0;
+                for (int t = 0; t < tabu_len; t++) if (tabu[t] == i) { is_tabu = 1; break; }
+                if (!is_tabu) { best_move = i; best_val = cur_proxy; best_val_h = s.in_forest[i] ? cur_h + 1 : cur_h - 1; }
+            }
         }
         free(cand);
         if (best_move < 0) break;
