@@ -12,7 +12,11 @@ level the ladder could not reach.  30 CPU minutes per class, `--procs` at a
 time under nice 19, a JSON per class under `reports/scratch/minor_tabu/`, a
 ledger CSV appended as classes finish (`--resume` skips ids already there).
 A class whose target is reached is a new certificate: the ledger says so, and
-the JSON holds the contraction sequence for the independent checker.
+the JSON holds the contraction sequence for the independent checker.  Every
+neighbour refutation along the walk is logged to `<id>.claims.jsonl` (level,
+step, minor size, contraction sequence); `minor_tabu_claims.py` replays and
+re-checks them.  (Runs started before 2026-11-07 03:40 log to
+`<id>.seed.claims.jsonl`, the program's default beside the seed file.)
 """
 from __future__ import annotations
 
@@ -75,7 +79,7 @@ def run_one(r: dict, seconds: float, seed: int) -> dict:
     row.update(id=cid, names=r["names"], n=n, m=m, width=width, floor_before=floor, seed_minor=cert.get("m"))
     cmd = ["nice", "-n", "19", str(CLI), "-t", str(seconds), "-w", str(width), "-L", str(floor), "-seed", str(seedfile),
            "-S", "40", "-nb", "400000", "-nt", "1.5", "-b", "3000000", "-m", "120", "-lo", "0.3", "-hi", "0.95",
-           "-c", "7", "-s", str(seed), "-p"]
+           "-c", "7", "-s", str(seed), "-p", "-log", str(OUT / f"{cid}.claims.jsonl")]
     t0 = time.monotonic()
     try:
         proc = subprocess.run(cmd, input=g6, capture_output=True, timeout=seconds * 1.5 + 120)

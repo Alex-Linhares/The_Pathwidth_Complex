@@ -95,29 +95,41 @@ static int proxy_of(const graph *g, const state *s, int *h_out) {
 
 /* Print the contraction sequence for the forest as (v, u) pairs in G's labels,
  * each a current edge at the time it is applied (parent-pointer order). */
-static void print_sequence(const state *s) {
+static void print_sequence_to(FILE *out, const state *s) {
     int n = s->n;
     int *rep = xmalloc(sizeof(int) * (size_t) n);
     for (int v = 0; v < n; v++) rep[v] = v;
-    printf("[");
+    fputs("[", out);
     int first = 1;
     for (int i = 0; i < s->m; i++) if (s->in_forest[i]) {
         int a = uf_find(rep, s->eu[i]), b = uf_find(rep, s->ev[i]);
         if (a == b) continue;
-        printf("%s[%d,%d]", first ? "" : ",", a, b);   /* contract a into b: both are current representatives, adjacent in the current minor */
+        fprintf(out, "%s[%d,%d]", first ? "" : ",", a, b);   /* contract a into b: both are current representatives, adjacent in the current minor */
         first = 0;
         rep[a] = b;
     }
-    printf("]");
+    fputs("]", out);
     free(rep);
+}
+static void print_sequence(const state *s) { print_sequence_to(stdout, s); }
+
+/* One JSON line per neighbour refutation: the level refuted, the step, the minor's size and the contraction
+ * sequence that produces it (the certificate format of the final output), so the minor can be recovered and
+ * re-checked later.  `s` must be the neighbour's forest when this is called. */
+static void log_claim(FILE *out, const state *s, int level, const char *kind, int h, long long step) {
+    if (!out) return;
+    fprintf(out, "{\"step\":%lld,\"level\":%d,\"kind\":\"%s\",\"minor_vertices\":%d,\"sequence\":", step, level, kind, h);
+    print_sequence_to(out, s);
+    fputs("}\n", out);
+    fflush(out);
 }
 
 int main(int argc, char **argv) {
     double budget = 1800.0;
     int target = -1, floor_known = 0, tabu_len = 7, max_exact = 90, sample = 400, verbose_improve = 0;
     double lo_frac = 0.4, hi_frac = 0.9, nb_seconds = 2.0;
-    const char *seed_file = NULL;
-    int seed_h = -1;                      /* the seed minor's size; ties prefer minors near it */   /* the walk stays on minors with between lo and hi of the vertices */
+    const char *seed_file = NULL, *log_file = NULL;   /* claims log; default <seed_file>.claims.jsonl when seeded */
+    FILE *claims = NULL;
     long long exact_nodes = 300000, nb_nodes = 20000;   /* node budget: the chosen minor's climb; each neighbour's test */
     unsigned long long seed = 1;
     for (int i = 1; i < argc; i++) {
@@ -133,6 +145,7 @@ int main(int argc, char **argv) {
         else if (!strcmp(argv[i], "-nb") && i + 1 < argc) nb_nodes = atoll(argv[++i]);
         else if (!strcmp(argv[i], "-nt") && i + 1 < argc) nb_seconds = atof(argv[++i]);
         else if (!strcmp(argv[i], "-seed") && i + 1 < argc) seed_file = argv[++i];
+        else if (!strcmp(argv[i], "-log") && i + 1 < argc) log_file = argv[++i];
         else if (!strcmp(argv[i], "-lo") && i + 1 < argc) lo_frac = atof(argv[++i]);
         else if (!strcmp(argv[i], "-hi") && i + 1 < argc) hi_frac = atof(argv[++i]);
         else { fprintf(stderr, "unknown option %s\n", argv[i]); return 2; }
@@ -213,7 +226,10 @@ int main(int argc, char **argv) {
         cur_proxy = proxy_of(&g, &s, &cur_h);
         if (seed_file) {   /* stay near the seed's size: it is where the obstruction survived */
             lo_n = cur_h - n / 10; hi_n = cur_h + n / 7;
-            if (lo_n < 2) lo_n = 2; if (hi_n > n) hi_n = n; if (hi_n > max_exact) hi_n = max_exact; if (lo_n > hi_n) lo_n = hi_n;
+            if (lo_n < 2) lo_n = 2;
+            if (hi_n > n) hi_n = n;
+            if (hi_n > max_exact) hi_n = max_exact;
+            if (lo_n > hi_n) lo_n = hi_n;
         }
         if (cur_proxy > best_proxy) best_proxy = cur_proxy;
         if (cur_proxy > floor) { floor = cur_proxy; best_kind = "contraction_degeneracy"; best_h = cur_h; memcpy(best_forest, s.in_forest, (size_t) s.m); }
@@ -221,8 +237,12 @@ int main(int argc, char **argv) {
             /* nothing improved on the given floor: report the seed's minor as the certificate behind it */
             best_kind = "seed"; best_h = cur_h; memcpy(best_forest, s.in_forest, (size_t) s.m);
         }
-        seed_h = cur_h;
         fprintf(stderr, "band [%d, %d] vertices; start minor %d vertices, proxy %d\n", lo_n, hi_n, cur_h, cur_proxy);
+    }
+    {
+        char derived[4096];
+        if (!log_file && seed_file) { snprintf(derived, sizeof derived, "%s.claims.jsonl", seed_file); log_file = derived; }
+        if (log_file) { claims = fopen(log_file, "a"); if (!claims) fprintf(stderr, "cannot open the claims log %s\n", log_file); }
     }
     while (now() < deadline && (target < 0 || floor < target)) {
         steps++;
@@ -271,8 +291,11 @@ int main(int argc, char **argv) {
             if (is_tabu && !aspire) continue;
             /* ties: random within the band (no size preference; which sizes certify is measured, not assumed) */
             int better = val > best_val;
-            if (refutes) fprintf(stderr, "claim: level %d (%s) refuted on a %d-vertex neighbour at step %lld\n",
-                                 refutes == 2 ? floor + 1 : floor, refutes == 2 ? "target" : "floor", h, steps);
+            if (refutes) {
+                int level = refutes == 2 ? floor + 1 : floor; const char *kind = refutes == 2 ? "target" : "floor";
+                fprintf(stderr, "claim: level %d (%s) refuted on a %d-vertex neighbour at step %lld\n", level, kind, h, steps);
+                s.in_forest[i] ^= 1; log_claim(claims, &s, level, kind, h, steps); s.in_forest[i] ^= 1;
+            }
             if (better) { best_move = i; best_val = val; best_val_h = h; ties = 1; }
             else if (val == best_val && (rnd() % (unsigned long long) (++ties)) == 0) { best_move = i; best_val_h = h; }
         }
@@ -320,5 +343,6 @@ int main(int argc, char **argv) {
            now() - t0, (target >= 0 && floor >= target) ? "true" : "false");
     print_sequence(&s);
     printf("}\n");
+    if (claims) fclose(claims);
     return 0;
 }

@@ -33,9 +33,11 @@ algorithm refutes the target width $w-1$ on it within a small node budget,
 which is the event that closes the class; then, whether it still refutes the
 width the floor rests on, which says the known obstruction survived the move;
 then its contraction degeneracy; ties are broken at random within the band,
-with no preference for a size, and the program logs the size of every minor
-on which a neighbour refuted either level, so where certificates occur in
-the band is measured rather than assumed. The chosen minor is then climbed
+with no preference for a size, and the program writes every minor on which a
+neighbour refuted either level to a log, as a contraction sequence in the
+certificate format below with the level and the step, so each such minor can
+be recovered and re-checked afterwards and where certificates occur in the
+band is measured rather than assumed. The chosen minor is then climbed
 by the engine under a larger budget, each refutation of a width $v$ raising
 the floor to $v+1$. The floor only rises, and the best certificate found is
 what the program reports.
