@@ -22,7 +22,7 @@ challenge file, which is 220 lines long:
 \clonefile{lean/ComparatorChallenges/SubexponentialSAT.lean} at commit
 \texttt{4eaee875} of the collection. This section reads that
 file and says what the theorem asserts and what it does not. Line
-numbers are those of the file. We quote nothing from memory.
+numbers are those of the file.
 
 A few words first, each in one sentence.
 \emph{Lean} is a proof assistant: a program that checks every step of a
@@ -47,7 +47,9 @@ the same theorem and that the proof uses only three standard axioms. An axiom is
 The file we read is the challenge file. It carries the statement with
 the placeholder \texttt{sorry} where the proof would go (line 218). The
 solution proves the same statement in 3,091 files
-(Section~\ref{sec:proof}). We rebuilt that proof ourselves and the
+(Section~\ref{sec:proof}). We rebuilt that proof ourselves, compiling
+every one of its files from source on our own machine, in isolation from
+the rest of their repository, and the
 kernel reported the three standard axioms and nothing else
 (Section~\ref{sec:replay}).
 
@@ -77,7 +79,7 @@ that is, $n$ is written as $n$ ones and a zero. Each clause becomes a
 sorted list of such numbers, the formula becomes a list of clauses, and
 the number of variables is written in front. Two things matter. First,
 the number of variables is part of the input, so a variable used in no
-clause still counts. Second, the string is not long: its length is a polynomial in $n$ and $m$, which means it grows like a fixed power of them and not like $2^n$. A formula with $m$ clauses of width $k$ on $n$ variables takes at most about $8\,k\,n\,m$ bits. In symbols, with $L$ the length of the string,
+clause still counts. Second, the string is not long: its length is a polynomial in $n$ and $m$ ($m$ is the number of clauses), which means it grows like a fixed power of them and not like $2^n$. A formula with $m$ clauses of width $k$ on $n$ variables takes at most about $8\,k\,n\,m$ bits. In symbols, with $L$ the length of the string,
 \[
   L \;\le\; n + 2 + m\,\bigl(2k(4n+1) + 4\bigr) \;=\; O(k\,n\,m),
 \]
@@ -172,7 +174,7 @@ that possible.
 
 \paragraph{The constants exist, and that is all.}
 The theorem says that values of $C, A, S, d, e$ exist. It names none
-of them. The proof obtains them from other existence lemmas (a lemma is a small theorem proved on the way to a larger one) and never writes a number down. We read the proof for the values it does pin:
+of them. The proof obtains them from other existence lemmas and never writes a number down. We read the proof for the values it does pin:
 at the point where the main run is assembled, the exponent constant is
 set to $A = 256 + A_t$ with $A_t$ at least $1$
 (\clonefile{SqrtLogSpace/NativeLargeEntry.lean}, line 51;
@@ -240,7 +242,7 @@ guarantee worse than that. Top: the whole range, the horizontal axis
 being the number of digits of $n$, from $n = 10$ to $n = 10^{3000}$.
 The solid curve is the verified exponent $\rhon/n$; the two curves
 beneath it are the manuscript's two sharper exponents,
-$n\ln\ln n/\sqrt{\ln n}$ (the manuscript's Theorem~1.1, general case) and $n/\sqrt{\ln n}$ (its fixed-clause-density case), which are not in the Lean library
+$n\ln\ln n/\sqrt{\ln n}$ (the manuscript's Theorem~1.1, general case) and $n/\sqrt{\ln n}$ (its fixed-clause-density case), which \textbf{\emph{are not in the Lean library}}
 (Section~\ref{sec:beyond}). Bottom: the same three curves over the
 practical range $n = 10$ to $10^6$, with $\rhon/n$ marked at $n = 50,
 125, 10^3, 10^4, 10^6$. All curves take the constant $A$ to be $1$; the
@@ -307,7 +309,7 @@ means the following four things, and nothing more.
 None of this is a defect of the formalisation or of the proof. It is
 what a theorem of this shape means when the constants in it are not
 tracked. The manuscript itself calls $\rhon$ ``the weaker exponent''
-(p.~2, line~63), and its sharper exponents are not in the Lean library
+(p.~2, line~63), and its sharper exponents \textbf{\emph{are not in the Lean library}}
 (Section~\ref{sec:beyond}). One detail of bookkeeping: inside the
 solution the exponent is written with base-2 logarithms, and a lemma shows the two forms differ only by a fixed multiplier, which can be folded into the constant $A$ (Appendix~\ref{app:tech-theorem}); nothing above depends on it.
 
@@ -360,7 +362,7 @@ and never assumed there (Section~\ref{sec:lean}).
   subject.
 \item \textbf{No claim about sizes beyond $e^{5504}$.} Past
   $n \approx 10^{2390}$ the verified exponent is below $n$ again at
-  $A = 1$; we say nothing about that range except that it is not a
-  practical one.
+  $A = 1$; we say nothing about that range except that \emph{it is not a
+  practical one}.
 \end{itemize}
 \par\endgroup
