@@ -17,6 +17,6 @@ floor = the certified level, target = the recorded width; budgets 40 / 80 / 120 
   `<id>.last` / `<id>.seed` are kept on disk and git-ignored.
 - `superseded_tiebreak/`: the first launch (02:00 to 03:50) under the "largest minor" tie-break, 16 classes, not comparable.
 - `ledger_uncapped.csv`, `run_uncapped.out`: the re-run of the 42 capped classes with `--max-exact 1000`, 10:37 to
-  the owner's stop at about 15:30: 24 finished (gap 1), 0 closed, 0 raised; the 18 gap-2/3 classes were interrupted
+  the owner's stop at about 15:30: 29 finished, 0 closed, 0 raised; the 13 others were interrupted
   (their checkpoints `<id>.last` hold the walks' last state; `--restart` resumes them). Floor-level claims on 14 of
   the 42, none of the target level.
