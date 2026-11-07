@@ -115,7 +115,8 @@ static void print_sequence(const state *s) {
 int main(int argc, char **argv) {
     double budget = 1800.0;
     int target = -1, floor_known = 0, tabu_len = 7, max_exact = 90, sample = 400, verbose_improve = 0;
-    double lo_frac = 0.4, hi_frac = 0.9;   /* the walk stays on minors with between lo and hi of the vertices */
+    double lo_frac = 0.4, hi_frac = 0.9, nb_seconds = 2.0;
+    const char *seed_file = NULL;   /* the walk stays on minors with between lo and hi of the vertices */
     long long exact_nodes = 300000, nb_nodes = 20000;   /* node budget: the chosen minor's climb; each neighbour's test */
     unsigned long long seed = 1;
     for (int i = 1; i < argc; i++) {
@@ -129,6 +130,8 @@ int main(int argc, char **argv) {
         else if (!strcmp(argv[i], "-s") && i + 1 < argc) seed = strtoull(argv[++i], NULL, 10);
         else if (!strcmp(argv[i], "-p")) verbose_improve = 1;
         else if (!strcmp(argv[i], "-nb") && i + 1 < argc) nb_nodes = atoll(argv[++i]);
+        else if (!strcmp(argv[i], "-nt") && i + 1 < argc) nb_seconds = atof(argv[++i]);
+        else if (!strcmp(argv[i], "-seed") && i + 1 < argc) seed_file = argv[++i];
         else if (!strcmp(argv[i], "-lo") && i + 1 < argc) lo_frac = atof(argv[++i]);
         else if (!strcmp(argv[i], "-hi") && i + 1 < argc) hi_frac = atof(argv[++i]);
         else { fprintf(stderr, "unknown option %s\n", argv[i]); return 2; }
@@ -184,9 +187,16 @@ int main(int argc, char **argv) {
     if (hi_n < lo_n) hi_n = lo_n;
     if (hi_n > max_exact) hi_n = max_exact;          /* every minor visited can get the exact step */
     if (lo_n > hi_n) lo_n = hi_n;
-    {   /* greedy min-degree contractions down to hi_n vertices, as the ladder's first rung */
+    {   /* the seed sequence (a certificate's contractions) if given, else greedy min-degree contractions down to hi_n */
         int *seq = xmalloc(sizeof(int) * 2 * (size_t) (n ? n : 1));
-        int len = contraction_sequence(&g, hi_n, RULE_MIN_D, seq);
+        int len = 0;
+        if (seed_file) {
+            FILE *f = fopen(seed_file, "r"); if (!f) fatal("cannot open the seed file");
+            int a, b;
+            while (fscanf(f, "%d %d", &a, &b) == 2) { if (len < n) { seq[2 * len] = a; seq[2 * len + 1] = b; len++; } }
+            fclose(f);
+            fprintf(stderr, "seed: %d contractions read\n", len);
+        } else len = contraction_sequence(&g, hi_n, RULE_MIN_D, seq);
         for (int t = 0; t < len; t++) {
             int v = seq[2 * t], u = seq[2 * t + 1];
             if (u < 0) continue;
@@ -200,6 +210,10 @@ int main(int argc, char **argv) {
         }
         free(seq);
         cur_proxy = proxy_of(&g, &s, &cur_h);
+        if (seed_file) {   /* stay near the seed's size: it is where the obstruction survived */
+            lo_n = cur_h - n / 10; hi_n = cur_h + n / 7;
+            if (lo_n < 2) lo_n = 2; if (hi_n > n) hi_n = n; if (hi_n > max_exact) hi_n = max_exact; if (lo_n > hi_n) lo_n = hi_n;
+        }
         if (cur_proxy > best_proxy) best_proxy = cur_proxy;
         if (cur_proxy > floor) { floor = cur_proxy; best_kind = "contraction_degeneracy"; best_h = cur_h; memcpy(best_forest, s.in_forest, (size_t) s.m); }
         fprintf(stderr, "band [%d, %d] vertices; start minor %d vertices, proxy %d\n", lo_n, hi_n, cur_h, cur_proxy);
@@ -229,18 +243,25 @@ int main(int argc, char **argv) {
             /* the neighbour's value: does it refute the current floor within a small budget (the dual objective),
              * then its contraction degeneracy, then the smaller minor */
             int proxy = contraction_degeneracy(&Hc);
-            int refutes = 0;
+            int refutes = 0;    /* 2: refutes the target level; 1: still refutes the floor's level (keeps the known obstruction); 0: neither */
             if (now() < deadline) {
-                long long nd = 0; double dl = now() + 2.0; if (dl > deadline) dl = deadline;
+                long long nd = 0; double dl = now() + nb_seconds; if (dl > deadline) dl = deadline;
                 int ans = decide(&Hc, floor + 1, 0, nb_nodes, dl, order, &nd);
                 exact_calls++; exact_total_nodes += nd;
-                refutes = ans == UNSAT;
+                if (ans == UNSAT) refutes = 2;
+                else if (floor >= 1) {
+                    nd = 0; dl = now() + nb_seconds; if (dl > deadline) dl = deadline;
+                    ans = decide(&Hc, floor, 0, nb_nodes, dl, order, &nd);
+                    exact_calls++; exact_total_nodes += nd;
+                    if (ans == UNSAT) refutes = 1;
+                }
             }
             graph_free(&Hc);
             int val = refutes * 100000 + proxy;
-            int aspire = refutes;
+            int aspire = refutes == 2;
             if (is_tabu && !aspire) continue;
-            int better = val > best_val || (val == best_val && h < best_val_h);
+            /* ties toward the larger minor when seeded (closer to G), the smaller otherwise (cheaper exact step) */
+            int better = val > best_val || (val == best_val && (seed_file ? h > best_val_h : h < best_val_h));
             if (better) { best_move = i; best_val = val; best_val_h = h; ties = 1; }
             else if (val == best_val && h == best_val_h && (rnd() % (unsigned long long) (++ties)) == 0) best_move = i;
         }
