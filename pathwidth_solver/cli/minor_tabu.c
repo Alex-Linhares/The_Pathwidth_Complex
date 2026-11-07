@@ -269,12 +269,12 @@ int main(int argc, char **argv) {
             int val = refutes * 100000 + proxy;
             int aspire = refutes == 2;
             if (is_tabu && !aspire) continue;
-            /* ties: when seeded, the minor whose size is nearest the seed's (where the obstruction is known to survive);
-             * otherwise the smaller minor (cheaper exact step) */
-            int dist_new = seed_h >= 0 ? abs(h - seed_h) : h, dist_best = seed_h >= 0 ? abs(best_val_h - seed_h) : best_val_h;
-            int better = val > best_val || (val == best_val && dist_new < dist_best);
+            /* ties: random within the band (no size preference; which sizes certify is measured, not assumed) */
+            int better = val > best_val;
+            if (refutes) fprintf(stderr, "claim: level %d (%s) refuted on a %d-vertex neighbour at step %lld\n",
+                                 refutes == 2 ? floor + 1 : floor, refutes == 2 ? "target" : "floor", h, steps);
             if (better) { best_move = i; best_val = val; best_val_h = h; ties = 1; }
-            else if (val == best_val && h == best_val_h && (rnd() % (unsigned long long) (++ties)) == 0) best_move = i;
+            else if (val == best_val && (rnd() % (unsigned long long) (++ties)) == 0) { best_move = i; best_val_h = h; }
         }
         /* every sampled neighbour was tabu (and none refuted the target): take a random non-tabu in-band move instead */
         if (best_move < 0) {
