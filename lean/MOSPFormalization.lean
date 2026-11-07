@@ -12,6 +12,7 @@ import MOSPFormalization.MOSPGraph
 import MOSPFormalization.Minor
 import MOSPFormalization.ObstructionCertificate
 import MOSPFormalization.Blockage
+import MOSPFormalization.BlockageClass
 import MOSPFormalization.Examples
 import MOSPFormalization.MOSPGraphExamples
 import MOSPFormalization.ForMathlib.PathDecomposition
