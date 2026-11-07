@@ -193,6 +193,23 @@ pass (the hypercube and Mycielski theorems were missing from
       works on MOSP instances, so either an adapter that writes a graph as a
       MOSP instance with one pattern per edge (its customer graph is the graph,
       Theorem~thm:mosp) or a graph-side split in `pathwidth_solver/`.
+- [ ] **Appendix F: the NP ∩ coNP paragraph and two citations** (from
+      `reports/pathwidth_np_conp.md` §7, 2026-11-07): write the six safe
+      sentences (pw ≥ k+1 is coNP-complete, so a short certificate on every
+      graph gives NP = coNP; the blockage is the fugitive's strategy, BRST (5.1);
+      Grohe & Marx 2009 Thm 8 on bramble size and Hatzel et al. 2022; the
+      fixed-k obstruction view, Kinnersley & Langston 1994 p. 199; GJNW 2023
+      polynomial approximate certificates; "we found no published lower bound
+      with an independently checked proof object", PACE validators check
+      decompositions only). Cite **Tamaki (SEA 2022, arXiv 2202.07793)** beside
+      the minor certificates of Section 5 — he ships treewidth lower bounds as
+      minors (≤ 49 vertices) verified by Bouchitté–Todinca — and soften
+      Section 5's "we found no prior report of a searched contraction-minor"
+      accordingly (searched on *pathwidth* benchmark instances is what remains
+      unreported). Bib entries needed: Lengauer 1981, Kashiwabara & Fujisawa
+      1979, Grohe & Marx 2009, Hatzel et al. 2022, Kinnersley & Langston 1994,
+      Megiddo et al. 1988, Tamaki 2022, Dell et al. 2016/2017; open links in
+      `literature/MISSING.md` under "Pathwidth lower bounds and NP ∩ coNP".
 - [ ] **Dataset table drifted from the prose**: regenerating `tables/dataset.tex`
       on 2026-11-07 (after loop0013's pass 2 closed classes) moved PACE 2016
       open 37 -> 36, PACE 2017 open 54 -> 49, Rome open 1 -> 0, minor-certified
