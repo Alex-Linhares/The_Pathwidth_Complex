@@ -193,6 +193,11 @@ pass (the hypercube and Mycielski theorems were missing from
       works on MOSP instances, so either an adapter that writes a graph as a
       MOSP instance with one pattern per edge (its customer graph is the graph,
       Theorem~thm:mosp) or a graph-side split in `pathwidth_solver/`.
+- [ ] **Dataset table drifted from the prose**: regenerating `tables/dataset.tex`
+      on 2026-11-07 (after loop0013's pass 2 closed classes) moved PACE 2016
+      open 37 -> 36, PACE 2017 open 54 -> 49, Rome open 1 -> 0, minor-certified
+      counts up; the regenerated table is committed, the Section 5 prose that
+      quotes the open counts has not been re-read against it.
 - [x] **The solver claim: head-to-head against SageMath** — done 2026-11-07
       (run 2026-11-06 22:10 to 2026-11-07 09:20, the paired, pinned, CPU-capped
       protocol of `pathwidth_solver/bench/sage_paired.py`, 881 graphs, load 8-84

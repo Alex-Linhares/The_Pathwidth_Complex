@@ -580,7 +580,11 @@ pathwidth_solver/               → Exact graph pathwidth solver, Chu & Stuckey'
                                     (transferred from ~/dev/pathwidth 2026-09-30, see TRANSFER.md; since
                                     October every one of the 11,534 Rome graphs is proved, VSPLIB trees 50 / 50,
                                     HB 43 / 73 — the bench/results/rome*.csv files are the stale September state;
-                                    the record is the dataset's provenance, by member name)
+                                    the record is the dataset's provenance, by member name). Head to head with
+                                    SageMath's branch and bound (Coudert, Mazauric & Nisse 2016), 2026-11-07, paired
+                                    and CPU-capped at 600 s on a busy machine (`bench/sage_paired.py`,
+                                    `bench/results/sage_paired_600s.csv`, 881 graphs): ours proves 768, SageMath 550,
+                                    all 550 among ours with equal widths, SageMath-only 0; paper 1 §5
 
 reports/                        → Analysis documents
 tools/drat-trim/                → DRAT proof checker, built from source (loop0003 item 03)
