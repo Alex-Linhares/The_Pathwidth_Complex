@@ -698,3 +698,93 @@ under the wrong authors, "Kim, Kim & Kwon": arXiv 1711.00718 is by Joshua Erde):
   Hamburg preprint). Defines directed blockages and proves the directed min-max
   theorem; it is the only other place the blockage axioms are restated in print.
   **Held**: `2017-Erde-Directed-Path-Decompositions-arXiv1711.00718.pdf`.
+
+## Pathwidth lower bounds and NP ∩ coNP (2026-11-07)
+
+Literature session behind `reports/pathwidth_np_conp.md` (is a pathwidth lower bound
+short to check?). Verdict there: `pw ≥ k+1` is coNP-complete, so a short checkable
+blockage on every graph would give NP = coNP; Grohe & Marx say this for brambles and
+prove brambles exponential on expanders; nothing in print bounds the size of a blockage.
+Six papers were read from a scratch directory and not kept. Worth obtaining, with open
+links where they exist (nothing downloaded into `literature/`):
+
+- **Grohe, M. & Marx, D.** (2009). On tree width, bramble size, and expansion. *JCTB*,
+  99(1), 218–228. DOI 10.1016/j.jctb.2008.06.004. No arXiv version; open preprint at
+  `https://www.cs.bme.hu/~dmarx/papers/grohe-marx-brambles.pdf`. The key reference:
+  Theorem 8 (polynomial brambles of order Ω(k^{1/2}/log² k); order k^{1/2+ε} forces size
+  2^{Ω(k^ε)}) and the introduction's coNP sentence. Read, not kept.
+- **Hatzel, M., Komosa, P., Pilipczuk, M. & Sorge, M.** (2022). Constant congestion
+  brambles. *DMTCS* 24:1, #6. arXiv 2008.02133 (open). Theorems 1.1–1.2 sharpen
+  Grohe–Marx (congestion 2; the exponential bound tight). Read, not kept.
+- **Kreutzer, S. & Tazari, S.** (2010). On brambles, grid-like minors, and parameterized
+  intractability of MSO. SODA 2010; arXiv 0907.3076 (open). Polynomial-time bramble
+  construction at the Grohe–Marx order. Read, not kept.
+- **Seymour, P. D. & Thomas, R.** (1993). Graph searching and a min-max theorem for
+  tree-width. *JCTB* 58, 22–33. DOI 10.1006/jctb.1993.1027. Not open. Brambles and havens.
+- **Chekuri, C. & Chuzhoy, J.** (2016). Polynomial bounds for the grid-minor theorem.
+  *J. ACM* 63(5), 40. arXiv 1305.6577 (open).
+- **Kawarabayashi, K. & Rossman, B.** (2018). A polynomial excluded-minor approximation
+  of treedepth. SODA 2018; *J. Eur. Math. Soc.* 2022. Open at
+  `https://www.math.utoronto.ca/rossman/treedepth.pdf`. Conjecture 8.1 (pathwidth) is
+  settled by GJNW 2023 Theorem 1.1 (held). Read, not kept.
+- **Tamaki, H.** (2022). Heuristic computation of exact treewidth. SEA 2022, LIPIcs 233;
+  arXiv 2202.07793 (open). The one solver found that ships a lower-bound certificate (a
+  minor of ≤ 49 vertices, verified by running an exact algorithm on it). Read, not kept.
+- **Grohe, M. & Schweitzer, P.** (2016). Computing with tangles. *SIDMA* 30(2),
+  1213–1247; STOC 2015; arXiv 1503.00190 (open). Tangles "may be exponentially large";
+  all algorithms n^{O(k)}. Read, not kept.
+- **Elbracht, C., Kneip, J. & Teegen, M.** (2020). Tangles are decided by weighted vertex
+  sets. *Advances in Combinatorics* 2020:9; arXiv 1811.06821 (open). (Not
+  "Diestel, Elbracht & Jacobs".) Read, not kept.
+- **Seibt, A.** (2025). Witnessing and guiding sets of tangles. arXiv 2507.04394 (open).
+  Witnessing sets of size ≤ (3^k − 1)/2. Read, not kept.
+- **Arnborg, S., Corneil, D. G. & Proskurowski, A.** (1987). Complexity of finding
+  embeddings in a k-tree. *SIAM J. Alg. Disc. Meth.* 8(2), 277–284. DOI 10.1137/0608024.
+  Not open. The treewidth NP-completeness theorem, cited for pathwidth too.
+- **Monien, B. & Sudborough, I. H.** (1988). Min cut is NP-complete for edge weighted
+  trees. *TCS* 58, 209–229. DOI 10.1016/0304-3975(88)90028-X (Elsevier open archive).
+  Vertex separation NP-complete on planar graphs of maximum degree 3.
+- **Kashiwabara, T. & Fujisawa, T.** (1979). Two ISCAS 1979 titles circulate: "An
+  NP-complete problem on interval graphs", pp. 82–83, and "NP-completeness of the problem
+  of finding a minimum-clique-number interval graph containing a given graph as a
+  subgraph", pp. 657–660. IEEE; not open. The pathwidth NP-completeness theorem in
+  interval-graph form. (The held 1979 Ohtsuki–Mori–Kuh–Kashiwabara–Fujisawa paper is the
+  companion, not this.)
+- **Bodlaender, H. L., Bonnet, É., Jaffke, L., Knop, D., Lima, P. T., Milanič, M.,
+  Ordyniak, S., Pandey, S. & Suchý, O.** (2023). Treewidth is NP-complete on cubic graphs.
+  IPEC 2023; arXiv 2301.10031 (open). States Monien–Sudborough's pathwidth theorem as its
+  Theorem 2.4. Read, not kept.
+- **Ding, G. & Dziobiak, S.** (2013). On 3-connected graphs of path-width at most three.
+  *SIDMA* 27(3), 1514–1526. DOI 10.1137/100800452; open preprint
+  `https://www.math.lsu.edu/~ding/pathwidth.pdf`. Repeats the "at least 122 million"
+  obstructions for pathwidth 3.
+- **Takahashi, A., Ueno, S. & Kajitani, Y.** (1994). Minimal acyclic forbidden minors for
+  the family of graphs with bounded path-width. *Discrete Math.* 127, 293–304 (Elsevier
+  open archive).
+- **Kinnersley, N. G.** (1989). Obstruction set isolation for layout permutation problems.
+  PhD thesis, Washington State University. The source of the 122 million count
+  (Kinnersley & Langston 1994, p. 199). Not located online.
+- **Fomin, F. V. & Thilikos, D. M.** (2008). An annotated bibliography on guaranteed graph
+  searching. *TCS* 399(3), 236–245. Open reprint in the GRASTA 2009 booklet,
+  `https://kam.mff.cuni.cz/kamserie/clanky/2009/s939.pdf`, pp. 10–13. Monotonicity as the
+  NP-membership certificate; brambles as "certificates of escaping strategies", blockages
+  their invisible-fugitive analogue. Read, not kept.
+- **LaPaugh, A. S.** (1993). Recontamination does not help to search a graph. *J. ACM*
+  40(2), 224–245. DOI 10.1145/151261.151263.
+- **Bodlaender, H. L.** (1996). A linear-time algorithm for finding tree-decompositions of
+  small treewidth. *SIAM J. Comput.* 25(6), 1305–1317. DOI 10.1137/S0097539793251219.
+- **Dell, H., Komusiewicz, C., Talmon, N. & Weller, M.** (2017). The PACE 2017
+  Parameterized Algorithms and Computational Experiments Challenge: The Second Iteration.
+  IPEC 2017, LIPIcs 89, 30. DOI 10.4230/LIPIcs.IPEC.2017.30 (open). Read, not kept.
+- **Dell, H., Husfeldt, T., Jansen, B. M. P., Kaski, P., Komusiewicz, C. & Rosamond, F. A.**
+  (2016). The First Parameterized Algorithms and Computational Experiments Challenge.
+  IPEC 2016, LIPIcs 63, 30. DOI 10.4230/LIPIcs.IPEC.2016.30 (open). Read, not kept.
+- **Bodlaender, H. L., Grigoriev, A. & Koster, A. M. C. A.** (2008). Treewidth lower bounds
+  with brambles. *Algorithmica* 51(1), 81–98 (the UU-CS-2005-051 report is held).
+- **Bodlaender, H. L. & Koster, A. M. C. A.** (2011). Treewidth computations II. Lower
+  bounds. *Information and Computation* 209(7), 1103–1119 (the UU-CS-2010-022 report is
+  held).
+- **Samer, M. & Veith, H.** (2009). Encoding treewidth into SAT. SAT 2009, LNCS 5584,
+  45–50. DOI 10.1007/978-3-642-02777-2_6.
+- **Grohe, M.** (2016). Tangled up in blue (a survey on connectivity, decompositions, and
+  tangles). arXiv 1605.06704 (open). Not read; optional.
