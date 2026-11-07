@@ -14,10 +14,16 @@ WARN    = -std=c99 -D_POSIX_C_SOURCE=200809L -Wall -Wextra -pedantic
 ENGINE_WORDS = 2 4 8 16
 ENGINE_OBJS = $(foreach W,$(ENGINE_WORDS),engine_w$(W).o)
 
-all: pathwidth
+all: pathwidth minor_tabu
 
 pathwidth: pathwidth.o $(ENGINE_OBJS)
 	$(CC) $(CFLAGS) $(ARCH) -o $@ $^ -lm
+
+minor_tabu: minor_tabu.o $(ENGINE_OBJS)
+	$(CC) $(CFLAGS) $(ARCH) -o $@ $^ -lm
+
+minor_tabu.o: minor_tabu.c pathwidth.c engine.h
+	$(CC) $(CFLAGS) $(ARCH) $(WARN) -Wno-unused-function -c -o $@ minor_tabu.c
 
 pathwidth.o: pathwidth.c engine.h
 	$(CC) $(CFLAGS) $(ARCH) $(WARN) -c -o $@ pathwidth.c
