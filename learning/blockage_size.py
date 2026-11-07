@@ -764,20 +764,22 @@ def census_tables(max_n: int = 9) -> str:
     frames = []
     for n in range(1, max_n + 1):
         p = SCRATCH / f"census_n{n}.csv"
+        if not p.exists():
+            p = SCRATCH / f"census_n{n}.csv.gz"      # the 9-vertex file is committed gzipped
         if p.exists():
             frames.append(pd.read_csv(p))
     df = pd.concat(frames, ignore_index=True)
     for c in ("size1", "size2", "size3"):
         df[c + "_list"] = df[c].apply(lambda s: json.loads(s) if isinstance(s, str) else [])
     lines = []
-    lines.append("| n | graphs | pw range | max min-size₁ at order pw | mean | share = 1 | max min-size₁ at pw−1 | max size₁ any order | max frame-set count ≤ n |")
+    lines.append("| n | graphs | pw range | max min-size₁ at order pw | mean | share = 1 | max min-size₁ at pw−1 | max size₁ any order | graphs with min-size₁ > n |")
     lines.append("|--:|--:|:--|--:|--:|--:|--:|--:|--:|")
     for n, g in df.groupby("n"):
         s_pw = g["size1_pw"]
         s_pw1 = g["size1_list"].apply(lambda l: l[-2] if len(l) >= 2 else 0)
         s_any = g["size1_list"].apply(lambda l: max(l) if l else 0)
         lines.append(f"| {n} | {len(g)} | {g.pw.min()}–{g.pw.max()} | {s_pw.max()} | {s_pw.mean():.2f} | "
-                     f"{(s_pw == 1).mean():.3f} | {s_pw1.max()} | {s_any.max()} | {(s_any <= n).mean():.3f} |")
+                     f"{(s_pw == 1).mean():.3f} | {s_pw1.max()} | {s_any.max()} | {int((s_any > n).sum())} |")
     out = "\n".join(lines)
     # alternatives where available
     alt = df[df["size2_list"].apply(len) > 0]

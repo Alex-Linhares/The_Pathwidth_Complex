@@ -1,0 +1,9 @@
+n=1: 1 connected graphs, 0.1 s -> /home/al/dev/MOSP/reports/scratch/blockage_size/census_n1.csv
+n=2: 1 connected graphs, 0.0 s -> /home/al/dev/MOSP/reports/scratch/blockage_size/census_n2.csv
+n=3: 2 connected graphs, 0.0 s -> /home/al/dev/MOSP/reports/scratch/blockage_size/census_n3.csv
+n=4: 6 connected graphs, 0.0 s -> /home/al/dev/MOSP/reports/scratch/blockage_size/census_n4.csv
+n=5: 21 connected graphs, 0.0 s -> /home/al/dev/MOSP/reports/scratch/blockage_size/census_n5.csv
+n=6: 112 connected graphs, 0.1 s -> /home/al/dev/MOSP/reports/scratch/blockage_size/census_n6.csv
+n=7: 853 connected graphs, 2.0 s -> /home/al/dev/MOSP/reports/scratch/blockage_size/census_n7.csv
+n=8: 11117 connected graphs, 98.8 s -> /home/al/dev/MOSP/reports/scratch/blockage_size/census_n8.csv
+n=9: 261080 connected graphs, 12972.2 s -> /home/al/dev/MOSP/reports/scratch/blockage_size/census_n9.csv

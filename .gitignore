@@ -88,3 +88,5 @@ reports/scratch/minor_tabu/*.claims.jsonl
 reports/scratch/minor_tabu/*.last
 reports/scratch/minor_tabu/*.seed
 reports/scratch/minor_tabu/*.restart.seed
+# blockage size census at 9 vertices: 27 MB raw, committed as census_n9.csv.gz
+reports/scratch/blockage_size/census_n9.csv
