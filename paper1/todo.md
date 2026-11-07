@@ -193,44 +193,18 @@ pass (the hypercube and Mycielski theorems were missing from
       works on MOSP instances, so either an adapter that writes a graph as a
       MOSP instance with one pattern per edge (its customer graph is the graph,
       Theorem~thm:mosp) or a graph-side split in `pathwidth_solver/`.
-- [ ] **The solver claim: head-to-head against SageMath** — **running since
-      2026-11-06 22:05** as the paired, pinned, CPU-capped protocol of
-      `pathwidth_solver/bench/sage_paired.py` (both solvers start together, one
-      physical core each, `RLIMIT_CPU` 600 s, nice 19, 6 pairs at once; output
-      `results/sage_paired_600s.csv`); a 50-graph variance sample (`--sample 50`)
-      to be run again on a busy afternoon. (high priority; ready to run: `pathwidth_solver/bench/sage_headtohead.py`, SageMath 10.8 in the `sage` conda env; needs a quiet machine). "Best" would hold
-      after a few hours of running SageMath's solver against ours on this
-      machine, which is better done once the split run finishes. SageMath's
-      `vertex_separation(algorithm="BAB")` is Coudert, Mazauric & Nisse's (2016)
-      branch and bound, the one openly available exact competitor of known
-      strength; run both on the same graphs (Rome sample, VSPLIB, TreewidthLIB
-      colouring, Mycielski), same caps. Until then the abstract's closing
-      sentence should read "strongest exact ... openly available", with the
-      published comparison, the hardware caveat and the Mycielski loss
-      (`myciel6` = M7, 95 vertices, pw 38: they prove it in about 10 minutes,
-      we do not in 1,500 s) printed in Section 5
-      (`abstract_nudge_review_2.md` §3).
-
-- [x] **Rome graphs, a longer timeframe.** Done before 2026-10-19 (all 11,534 proved:
-      292 by the minor step, 48 without a time limit, Section 5.3). The one Rome
-      class proved without a stored witness, grafo10809.99 (width 9), got its
-      layout on 2026-10-21 from the C program (`dataset_open/results_unlimited.csv`);
-      the fold now carries a same-width witness onto a proved row that has none.
-      *(The original item follows.)* The Rome graphs (Di Battista et
-      al. 1997, a graph-drawing benchmark: 11,534 graphs of 10–110 vertices)
-      were run in stages of 10, 120 and 600 s per graph; 11,194 are proved and
-      340 are open, all at n ≥ 86. Rerun the 340 with a much longer cap (hours
-      per graph, after the split run) and report the count at each cap.
-
-## The 34-customer instance under every configuration (2026-10-12)
-
-Our implementation (definite move on throughout; better move, old move, memo
-switched): the reported optimum is wrong (7) only with the better move off and
-the old move on, memo either way. All four configurations with the better move
-on, including Chu & Stuckey's published one, report 6; so do the two without
-the old move. (Their p. 6: "Our implementation of 'better move' subsumes
-'definite move' so we will simply consider them as one improvement.")
-
+- [x] **The solver claim: head-to-head against SageMath** — done 2026-11-07
+      (run 2026-11-06 22:10 to 2026-11-07 09:20, the paired, pinned, CPU-capped
+      protocol of `pathwidth_solver/bench/sage_paired.py`, 881 graphs, load 8-84
+      at launch): ours proves 768, SageMath 550, every one of the 550 among ours
+      with equal widths, **SageMath-only 0**, ours-only 218, neither 113; median
+      CPU ratio 34 where SageMath needs >= 1 s, ours slower on none. Section 5
+      "Head to head with SageMath", Table `tables/sage_paired.tex` from
+      `paper1/data/sage_paired_600s.csv` (`make_tables.py`). The 50-graph
+      variance sample (`--sample 50 --seed 0`) ran on the busy machine from
+      09:22 (`results/sage_paired_sample50_busy.csv`); its comparison with the
+      main run's rows for the same graphs goes into the subsection's last
+      paragraph when it ends.
 - [ ] **Add the configuration table to Section 4**, beside Theorem 4.9, so the
       claim is exact and fair: which configurations fail, which do not, and
       that "answers correctly here" is not soundness (the published better move

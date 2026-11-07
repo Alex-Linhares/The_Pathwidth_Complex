@@ -201,8 +201,8 @@ algorithm under the same caps and the published counts of
 \citet{CoudertMazauricNisse2016}. Where both runs prove a graph, the widths
 agree on every one. The 24 Rome graphs proved only by the corrected run, and the
 13 proved only by the previous one, sit near the 600\,s cap. The comparison with
-\citet{CoudertMazauricNisse2016} is with published numbers obtained on other
-hardware, not a head-to-head run. On the fourteen graph-colouring benchmarks of TreewidthLIB whose times
+\citet{CoudertMazauricNisse2016} in this table is with published numbers obtained on other
+hardware; the head-to-head run on one machine is Section~\ref{sec:sage}. On the fourteen graph-colouring benchmarks of TreewidthLIB whose times
 \citet[Table~4]{CoudertMazauricNisse2016} report, our search proves the same
 pathwidth and is faster on every one: by 150 to 1,800 times on \texttt{david},
 \texttt{miles750} and \texttt{mulsol.i.5}, by 70 to 80 times on
@@ -255,8 +255,8 @@ a sample of 120 MOSP corpus instances. The minor bounds for \texttt{myciel6},
 separate exact search that uses no dominance rule and writes out every refuted
 set, which an independent checker verifies; the refutation of 71 on the
 132-vertex minor of \texttt{myciel7} rests on our corrected algorithm alone, its
-contraction sequence replayed and checked. Their branch and bound is openly available in SageMath, and a
-head-to-head run on one machine is the comparison that would settle which solver is stronger; we have not yet made it.
+contraction sequence replayed and checked. Their branch and bound is openly available in SageMath, and the
+head-to-head run on one machine is Section~\ref{sec:sage}.
 
 \begin{table}[t]
 \centering\small
@@ -304,6 +304,80 @@ Rome graphs, $\text{nodes}=10^{1.75+0.00705\,nw}$. The structured benchmark
 sets fall far below it, and size alone gives no single law.}
 \label{fig:cost}
 \end{figure}
+
+\subsection{Head to head with SageMath}
+\label{sec:sage}
+
+The comparisons above are with published numbers. The branch and bound of
+\citet{CoudertMazauricNisse2016} is openly available as SageMath's exact vertex
+separation (\texttt{vertex\_separation(G, algorithm="BAB")}, SageMath 10.8), so
+the two solvers can be run on the same graphs on the same machine. The
+machine is the one of Section~\ref{sec:setup}, and it was not idle: other work
+of ours ran beside the comparison throughout, with a one-minute load average
+between 8 and 84 at the moments the pairs were launched (median 18, on 16
+physical cores). The protocol takes that into account rather than waiting for
+quiet. For every graph the two solvers start at the same moment, each pinned to
+its own physical core, both at the lowest scheduling priority, and each with
+the same cap of 600 seconds of \emph{CPU time}, enforced by the operating
+system rather than by the clock, so that whatever the rest of the machine does
+it does to both, and what is recorded is the processor time each solver
+consumed, not the time of day. Six such pairs ran at once. SageMath's solver is
+exact when it returns, so a returned value counts as a proof; ours counts a
+proof when it reports a refutation, a lower bound meeting the width, or a
+minor, and reports a verified upper bound otherwise. The graphs are the sets
+of Table~\ref{tab:graphs}, with the Rome graphs represented by a random sample
+of 500: 881 graphs in all. The program is
+\path{pathwidth_solver/bench/sage_paired.py}; every row of
+\path{paper1/data/sage_paired_600s.csv} holds both widths, both statuses,
+both CPU and wall times, our node count and the load at launch, and
+Table~\ref{tab:sage} is generated from it.
+
+\begin{table}[t]
+\centering\small
+\caption{Head to head with SageMath's branch and bound
+\citep{CoudertMazauricNisse2016} on one machine, both solvers started together
+on the same graph, each on its own physical core with a cap of 600 CPU
+seconds. \emph{Ours} and \emph{SageMath}: graphs whose pathwidth each proved
+within the cap; \emph{both}, \emph{ours only}, \emph{SageMath only},
+\emph{neither}: the four cells of that pair of counts. The widths agree on
+every graph both proved. \emph{Ratio}: the median, over the graphs both proved
+on which SageMath needed at least one second, of SageMath's CPU time divided
+by ours; on the trees SageMath proved, it needed less than a second.}
+\label{tab:sage}
+\resizebox{\linewidth}{!}{\input{tables/sage_paired}}
+\end{table}
+
+Three things are in the table. First, there is no graph that SageMath proves
+and ours does not: the set of graphs it proves within the cap, 550 of the 881,
+is contained in the 768 ours proves, and on every one of the 550 the two
+widths are equal. The 113 graphs that neither proves are the large grids, half
+of the Harwell--Boeing matrices, the dense colouring graphs and 18 of the named
+graphs; on each, ours ends at the cap holding a verified layout and SageMath
+ends at the cap holding nothing. Second, where both prove the width, ours is
+faster on every graph on which SageMath needs at least half a second, by a
+median factor of 34 over the 83 graphs where it needs at least a second and of
+226 over the 29 where it needs five, the largest ratio being above $10^5$;
+over the 550 graphs both prove, SageMath spends 4,182 CPU seconds and ours 20.
+Third, the margin is in the proofs, not only in the time: on the 500 Rome
+graphs ours proves all and SageMath 386; on the 50 VSPLIB trees, all against
+15, with ours taking a median of 2.2 seconds on the 35 trees SageMath does not
+finish; on the colouring graphs 33 against 10. The minor step of
+Section~\ref{sec:minor} is a large part of this: it is the proof on 179 of our
+768, including the 153 Rome graphs and the 13 Harwell--Boeing matrices on
+which the search alone would have run to the cap, and on \texttt{myciel6},
+which \citet{CoudertMazauricNisse2016} report proving in about ten minutes on
+their machine, SageMath did not finish within the cap here while the minor
+step proved $\pw=38$ in 0.2 seconds. What the comparison does not measure is
+our parallel refutation (Section~\ref{sec:practice}): both solvers ran on one
+core, which is the only fair unit, and the split is a separate claim.
+
+Because the machine was loaded, the CPU-time cap is what makes the comparison
+fair, but it cannot make it exact: a process that is descheduled loses its
+cache, and the same graph can cost either solver more or fewer processor
+seconds on a busy machine than on a quiet one. To measure the variance this
+adds, a 50-graph sample drawn from the same sets was run a second time under
+the same protocol; its rows are published with the data
+(Section~\ref{sec:data}).
 
 \subsection{A checkable proof of a refutation}
 \label{sec:certs}

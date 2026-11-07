@@ -19,7 +19,9 @@ comment which records it was made from.
 - `certificates.tex` section 4: certificates under our corrected rules
                      (`paper1/data/certificates/repaired.csv`);
 - `dataset.tex`      section 4: the dataset by collection
-                     (`paper1/data/dataset/classes.csv.gz`, `index.csv.gz`).
+                     (`paper1/data/dataset/classes.csv.gz`, `index.csv.gz`);
+- `sage_paired.tex`  section 5: the paired head-to-head against SageMath's branch and bound
+                     (`paper1/data/sage_paired_600s.csv`, written by `pathwidth_solver/bench/sage_paired.py`).
 """
 
 from __future__ import annotations
@@ -359,9 +361,38 @@ def excess_table() -> str:
     return _write("excess_beta.tex", "paper1/latex/data/excess_phase_diagram.csv (series and beta_plus rows at mu = 1)", body)
 
 
+def sage_paired_table() -> str:
+    """Section 5: the paired, CPU-capped head-to-head against SageMath, per graph set."""
+    import statistics
+    rows = list(csv.DictReader(open(DATA / "sage_paired_600s.csv")))
+    proved = ("refutation", "bound", "minor")
+    sets = [("rome-sample", "Rome (sample)"), ("vsplib-tree", "VSPLIB trees"), ("vsplib-hb", "Harwell--Boeing"),
+            ("vsplib-grids", "VSPLIB grids"), ("coloring", "Colouring (TreewidthLIB)"), ("named", "Named graphs")]
+    body = ["% One row per graph set: graphs, our proofs, SageMath's, proved by both, by ours only, by SageMath only,",
+            "% by neither, and the median ratio of SageMath's CPU time to ours on the graphs both prove where",
+            "% SageMath needed at least one second (-- where no such graph). Widths agree on every graph both prove.",
+            r"\begin{tabular}{@{}lrrrrrrrr@{}}", r"\toprule",
+            r"set & graphs & ours & SageMath & both & ours only & SageMath only & neither & ratio \\", r"\midrule"]
+
+    def line(label, xs):
+        o = [x for x in xs if x["ours_proof"] in proved]
+        sg = [x for x in xs if x["sage_status"] == "ok"]
+        b = [x for x in sg if x["ours_proof"] in proved]
+        assert all(x["ours_width"] == x["sage_width"] for x in b), label
+        rat = [float(x["sage_cpu"]) / max(float(x["ours_cpu"]), 0.001) for x in b if float(x["sage_cpu"]) >= 1]
+        r = f"{statistics.median(rat):.0f}" if rat else "--"
+        return (f"{label} & {_n(len(xs))} & {_n(len(o))} & {_n(len(sg))} & {_n(len(b))} & {_n(len(o) - len(b))} & "
+                f"{_n(len(sg) - len(b))} & {_n(len(xs) - len(o) - len(sg) + len(b))} & {r} \\\\")
+
+    for key, label in sets:
+        body.append(line(label, [x for x in rows if x["set"] == key]))
+    body += [r"\midrule", line("all", rows), r"\bottomrule", r"\end{tabular}"]
+    return _write("sage_paired.tex", "paper1/data/sage_paired_600s.csv (pathwidth_solver/bench/sage_paired.py, 2026-11-06/07)", body)
+
+
 def main() -> None:
     for f in (names_table, periods_table, communities_table, cost_table, split_table, certificates_table, dataset_table,
-              excess_table):
+              excess_table, sage_paired_table):
         text = f()
         print(text.splitlines()[0])
 

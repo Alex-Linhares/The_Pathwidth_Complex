@@ -92,11 +92,12 @@ to be wrong, but their refutations are not proved.
   interval thickness, is proved from two other
   references of the table
   (Section~\ref{sec:true}).
-\item The comparisons of the graph solver are with published numbers obtained
-  on other hardware, not head-to-head runs, and only against
-  \citet{CoudertMazauricNisse2016}. On one graph they report, the Mycielski
-  graph $M_7$ (95 vertices, pathwidth 38), their tuned branch and bound proves
-  the pathwidth in about ten minutes, and our search did not within 25 minutes.
+\item The head-to-head comparison of the graph solver
+  (Section~\ref{sec:sage}) is against one competitor, the branch and bound of
+  \citet{CoudertMazauricNisse2016} as shipped in SageMath, on one machine that
+  was busy with other work, under a cap on processor time rather than on the
+  clock; the comparisons with the other published numbers are with numbers
+  obtained on other hardware.
 \item The census of names covers the twelve names of the table; the three
   members we add, and the wider treewidth and pebbling literatures, are not
   counted (Section~\ref{sec:names}).
