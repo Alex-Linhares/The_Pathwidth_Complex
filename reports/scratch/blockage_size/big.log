@@ -1,0 +1,9 @@
+cubic20_s0 n=20 pw=4 tw=4 order=4: exact lb=5 ub=5 |Sm|=7511 16.3s
+cubic20_s0 n=20 pw=4 tw=4 order=3: exact lb=2 ub=2 |Sm|=1524 16.4s
+cubic20_s0 n=20 pw=4 tw=4 order=2: exact lb=1 ub=1 |Sm|=220 13.3s
+cubic20_s0 n=20 pw=4 tw=4 order=1: exact lb=1 ub=1 |Sm|=22 13.9s
+cubic20_s1 n=20 pw=4 tw=3 order=4: exact lb=3 ub=3 |Sm|=7411 17.8s
+cubic20_s1 n=20 pw=4 tw=3 order=3: exact lb=2 ub=2 |Sm|=1476 22.5s
+cubic20_s1 n=20 pw=4 tw=3 order=2: exact lb=1 ub=1 |Sm|=212 31.2s
+cubic20_s1 n=20 pw=4 tw=3 order=1: exact lb=1 ub=1 |Sm|=22 53.5s
+4 rows -> /home/al/dev/MOSP/reports/scratch/blockage_size/big_d3.csv

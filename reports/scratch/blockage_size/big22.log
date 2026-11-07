@@ -1,0 +1,17 @@
+cubic22_s0 n=22 pw=6 tw=5 order=6: bounded lb=6 ub=11 |Sm|=142529 1890.3s
+cubic22_s0 n=22 pw=6 tw=5 order=5: exact lb=4 ub=4 |Sm|=40948 265.0s
+cubic22_s0 n=22 pw=6 tw=5 order=4: exact lb=3 ub=3 |Sm|=9724 102.6s
+cubic22_s0 n=22 pw=6 tw=5 order=3: exact lb=2 ub=2 |Sm|=1847 139.8s
+cubic22_s0 n=22 pw=6 tw=5 order=2: exact lb=1 ub=1 |Sm|=255 90.3s
+cubic22_s0 n=22 pw=6 tw=5 order=1: exact lb=1 ub=1 |Sm|=24 55.8s
+cubic22_s1 n=22 pw=5 tw=4 order=5: exact lb=8 ub=8 |Sm|=49108 190.7s
+cubic22_s1 n=22 pw=5 tw=4 order=4: exact lb=3 ub=3 |Sm|=11656 78.1s
+cubic22_s1 n=22 pw=5 tw=4 order=3: exact lb=2 ub=2 |Sm|=2195 184.1s
+cubic22_s1 n=22 pw=5 tw=4 order=2: exact lb=1 ub=1 |Sm|=303 58.0s
+cubic22_s1 n=22 pw=5 tw=4 order=1: exact lb=1 ub=1 |Sm|=28 54.9s
+cubic22_s2 n=22 pw=5 tw=5 order=5: exact lb=4 ub=4 |Sm|=41736 76.4s
+cubic22_s2 n=22 pw=5 tw=5 order=4: exact lb=3 ub=3 |Sm|=9838 127.5s
+cubic22_s2 n=22 pw=5 tw=5 order=3: exact lb=2 ub=2 |Sm|=1855 139.4s
+cubic22_s2 n=22 pw=5 tw=5 order=2: exact lb=1 ub=1 |Sm|=255 62.9s
+cubic22_s2 n=22 pw=5 tw=5 order=1: exact lb=1 ub=1 |Sm|=24 79.5s
+6 rows -> reports/scratch/blockage_size/big_d3_22.csv
