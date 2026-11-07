@@ -9,7 +9,7 @@ obstruction of the full width, if the recorded width is the truth, was crushed
 by one of its merges. The ladder never varies the minor. This appendix
 describes a search that does, states what it certifies, and proves the
 certificates sound in Lean~\leanref{tabu}. The program is
-\texttt{pathwidth\_solver/cli/minor\_tabu.c}, built on the same engine as the
+\path{pathwidth_solver/cli/minor_tabu.c}, built on the same engine as the
 solver.
 
 \paragraph{The search.} The state is a set $F$ of edges of $G$ forming a
@@ -51,7 +51,7 @@ floor is $w+1$; or \emph{contraction degeneracy}, the minor step's bound on
 the minor.
 
 \paragraph{What is proved.} The Lean development models the walk and the
-certificate exactly (\texttt{Search/MinorTabu.lean}, 45 theorems, no
+certificate exactly (\path{Search/MinorTabu.lean}, 45 theorems, no
 \texttt{sorry}, no axiom beyond the three standard ones). Write $r$ for the
 representative map the union-find maintains, idempotent on $V$; merging an
 edge $pq$ replaces $r$ by $r'$ with $r'(x)=r(q)$ when $r(x)=r(p)$ and $r(x)$
@@ -120,7 +120,7 @@ graph, the replay verified to equal the quotient, the quotient's pathwidth
 computed over all orderings and compared with the graph's (tight on 1,614),
 every degeneracy value re-derived from the program's own rule and bounded,
 and 3,756 simulated runs compared with the run theorems; no violation
-(\texttt{reports/scratch/minor\_tabu\_lean/check.py}). The axiom audit lists
+(the script \path{reports/scratch/minor_tabu_lean/check.py}). The axiom audit lists
 \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound} for every
 theorem.
 
