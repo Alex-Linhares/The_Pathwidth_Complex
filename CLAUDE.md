@@ -1670,6 +1670,31 @@ of the $4,000 budget. Nothing under `solutions/` touched;
 no MOSP or pathwidth run; the only compute on random 3-CNF the script
 generates and the sandboxed build.
 
+**The dual of pathwidth, 2026-11-07/08** (three agent sessions and one writing
+session; paper 1's Appendix F rewritten as *The dual of pathwidth*). Blockages
+(BRST 1991) are the dual: every blockage is an *avoidance family* determined by
+its frame (the minimal big sets); a compact class of frames — clique, minor
+pullback, linked branches — is proved to give blockages in
+`lean/MOSPFormalization/BlockageClass.lean` (no sorry), and its ceiling is
+measured (`reports/blockage_class.md`): never above the searched minor on the
+197 gap instances at 20–40 customers, kill met. Three papers read whole
+(`reports/blockage_literature.md`: Diestel–Oum 2019, Groenland–Joret–Nadara–
+Walczak 2023, Erde 2017 — the last caught an off-by-one in Appendix F's axioms,
+`< n` for `≤ n`); the NP ∩ coNP question settled with citations
+(`reports/pathwidth_np_conp.md`: pw ≥ k is coNP-complete, so a short dual
+certificate on every graph gives NP = coNP; Grohe & Marx 2009 say it for
+brambles, nobody for blockages); and the size of the smallest blockage of each
+order measured exactly by a SAT model on every connected graph to 9 vertices
+and families to 22 (`reports/blockage_size.md`): at order pw the minimum frame
+is ≤ 2n on every graph tried, grows ×1.5–2 per unit of order, ≥ 3 on every
+graph with pw > tw; the Grohe–Marx analogue (exponential on expanders) is
+stated as Conjecture F.9 with the data, not supported and not refuted at these
+sizes. Appendix F proves: weak duality (Lean), strong duality cited with the
+orientation route, no efficient maximisation unless P = NP, no short
+certificate unless NP = coNP, the unconditional binomial floor of a top-down
+lattice search (complementation identifies the two good directions), and that
+connected frames are blind to pw > tw. Nothing re-solved; about 45 core-hours.
+
 **Unrelated to the plan:**
 - Fix the pathwidth SAT encoding variable ID collision bug in `encoding.py`.
 - ~~Becceneri, Yanasse & Soma (2004) is still missing~~ — **obtained 2026-09-27**,
