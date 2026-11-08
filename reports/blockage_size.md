@@ -58,30 +58,32 @@ theorem by the sink of an oriented tree decomposition, two is open).
 | grids 3×3, 4×4 | 9, 16 | 3, 4 | 3, 4 | **4**, **3** | 1, 2 | 1, 1 | 3 |
 | trees (spider, ternary h2, binary h3) | 7, 13, 15 | 2 | 1 | **3** | 1 | — | 3 |
 | the 10-vertex `pw − tw = 2` graph | 10 | 5 | 3 | **3** | 3 | 1 | 3 |
-| random cubic, pw 3 / 4 / 5 / 6 | 8–22 | 3–6 | 3–5 | **2** / **3–5** / **4–8** / [6, 11] | 1 / 2 / 3 / 4 | 1 / 1 / 2 / 3 | 2–4 |
+| random cubic, pw 3 / 4 / 5 / 6 | 8–22 | 3–6 | 3–5 | **2** / **3–5** / **4–8** / **9** | 1 / 2 / 3 / 4 | 1 / 1 / 2 / 3 | 2–4 |
 | random quartic, quintic | 10–16 | 4–7 | 4–7 | **2–7** | 1–4 | 1–2 | 2–4 |
 | Mycielski `M₄` | 11 | 5 | 5 | **6** | 3 | 1 | 5 |
 | Petersen | 10 | 5 | 4 | **15** | 5 | 2 | 8 |
 | Paley 13 | 13 | 8 | 8 | **15** | 13 | 3 | 9 |
-| Heawood | 14 | 6 | 5 | [HEAWOOD] | 6 | 3 | — |
-| Möbius–Kantor | 16 | 6 | 5 | [MK] | 6 | 3 | — |
-| `Q₄` | 16 | 7 | 6 | [Q4] | 7 | 16 | — |
+| Heawood | 14 | 6 | 5 | [25, 32] | 6 | 3 | — |
+| Möbius–Kantor | 16 | 6 | 5 | [16, 22] | 6 | 3 | — |
+| `Q₄` | 16 | 7 | 6 | **26** | 7 | 16 | — |
 | Shrikhande | 16 | 9 | 9 | **22** | 9 | 16 | — |
 | Clebsch | 16 | 9 | 8 | **32** | 10 | 16 | — |
 
-Bold exact; brackets `[lb, ub]` after the time cap (sizes `< lb` refuted, `ub`
-constructed). Random cubic graphs reach `pw 6` only at 22 vertices, where the
-model has 4.2 M principal variables.
+Bold exact; brackets `[lb, ub]` where the 2-hour CaDiCaL cap killed the run
+(sizes `< lb` refuted, `ub` constructed). Random cubic graphs reach `pw 6` only
+at 22 vertices, where the model has 4.2 M principal variables and the order-6
+minimum took 57 min.
 
 **Verdict (§4).** The kill criteria stated in §1.6 are **met**: no family's
 minimum at order `pw` exceeds `n²` or grows faster than quadratically in `n`
 (random cubic: 2 at 8 vertices to 8 at 22, against an allowed 7.6×), the record
 is Clebsch at `2 n`, and at orders `≤ ⌈√pw⌉` the minimum is `≤ 3` everywhere.
-**Every graph tried has a blockage of order `pw` with at most about `2 n`
-minimal big sets**, so the "exponential on expanders" half has no support in
-this measure at these sizes. The shape that *is* visible: the minimum is a
+**Every graph tried has a blockage of order `pw` with at most `2 n` minimal
+big sets** — Clebsch 32 of 16 is the largest ratio (exact), Heawood is
+`≥ 1.8 n` and `≤ 2.3 n` (bracketed), `Q₄` 26 of 16 — so the "exponential on
+expanders" half has no support in this measure at these sizes. The shape that *is* visible: the minimum is a
 function of the **order**, flat in `n` at fixed `pw` on random regular graphs
-and growing ×1.5–2 per unit of `pw` (2, 3–5, 4–8, 5–11, 7 at `pw = 3..7`);
+and growing ×1.5–2 per unit of `pw` (2, 3–5, 4–8, 5–9, 7 at `pw = 3..7`);
 on the vertex-transitive graphs it is 1–3 up to about the treewidth and jumps
 in the last two orders (Petersen 2, 5, 15; Clebsch 16, 10, 32). The large
 frames are co-small sets `V \ S`, `|S| = 2..4`, one per local configuration.
@@ -355,7 +357,9 @@ duality, both halves, on all 273,193).
 (`big_d3.csv`, `big_d3_22.csv`; the 22-vertex model has 4.2 M principal
 variables and takes 1–5 min per solve); the four minima the 10-minute Glucose
 runs left bracketed were re-run untimed on CaDiCaL under a 2-hour cap
-(`--stage one --time-limit 0`, logs under `scratch/blockage_size/long/`).
+(`--stage one --time-limit 0`, logs under `scratch/blockage_size/long/`; two
+closed — `Q₄` 26, `cubic22_s0` 9 — and two were killed by the cap, Heawood at
+`[25, 32]` and Möbius–Kantor at `[16, 22]`; the CSVs carry the long-run values).
 Pathwidths by the subset DP to 18 vertices and by `pathwidth_solver/cli/pathwidth`
 (status `refutation`) above; every minimiser at ≤ 12 vertices re-checked against
 the all-pairs axiom checker; size₂ to 14 vertices, size₃ to 12.
@@ -412,7 +416,7 @@ refuted when the budget ran out. size₂ is the shortest generator list at order
 | quintic12_s0 | 12 | 30 | 6 | 6 | **5** | **2** | **1** | **1** | 3 | 0.42 |
 | Paley13 | 13 | 39 | 8 | 8 | **15** | **13** | **3** | **1** | [8, 10] | 1.15 |
 | tertree_h2 | 13 | 12 | 2 | 1 | **3** | **1** |  |  | 3 | 0.23 |
-| Heawood | 14 | 21 | 6 | 5 | [16, 31] | **6** | **3** | **2** | [1, 60] |  |
+| Heawood | 14 | 21 | 6 | 5 | [25, 32] | **6** | **3** | **2** | [1, 60] |  |
 | K7,7 | 14 | 49 | 7 | 7 | **2** | **1** | **1** | **1** | 2 | 0.14 |
 | cubic14_s0 | 14 | 21 | 4 | 4 | **3** | **2** | **1** | **1** | 3 | 0.21 |
 | cubic14_s1 | 14 | 21 | 4 | 4 | **3** | **2** | **1** | **1** | 3 | 0.21 |
@@ -422,8 +426,8 @@ refuted when the budget ran out. size₂ is the shortest generator list at order
 | bintree_h3 | 15 | 14 | 2 | 1 | **3** | **1** |  |  |  | 0.20 |
 | Clebsch | 16 | 40 | 9 | 8 | **32** | **10** | **16** | **16** |  | 2.00 |
 | K8,8 | 16 | 64 | 8 | 8 | **2** | **1** | **1** | **1** |  | 0.12 |
-| MoebiusKantor | 16 | 24 | 6 | 5 | [11, 20] | **6** | **3** | **2** |  |  |
-| Q4 | 16 | 32 | 7 | 6 | [1, 47] | **7** | **16** | **2** |  |  |
+| MoebiusKantor | 16 | 24 | 6 | 5 | [16, 22] | **6** | **3** | **2** |  |  |
+| Q4 | 16 | 32 | 7 | 6 | **26** | **7** | **16** | **2** |  | 1.62 |
 | Shrikhande | 16 | 48 | 9 | 9 | **22** | **9** | **16** | **3** |  | 1.38 |
 | cubic16_s0 | 16 | 24 | 4 | 4 | **3** | **2** | **1** | **1** |  | 0.19 |
 | cubic16_s1 | 16 | 24 | 4 | 4 | **5** | **2** | **1** | **1** |  | 0.31 |
@@ -464,7 +468,7 @@ rows from `--stage big`):
 | 3 | cubic20_s1 | 20 | 4 | 3 | **3** | **2** |  |
 | 3 | cubic22_s1 | 22 | 5 | 4 | **8** | **3** |  |
 | 3 | cubic22_s2 | 22 | 5 | 5 | **4** | **3** |  |
-| 3 | cubic22_s0 | 22 | 6 | 5 | [6, 11] | **4** |  |
+| 3 | cubic22_s0 | 22 | 6 | 5 | **9** | **4** |  |
 | 4 | quartic10_s0 | 10 | 4 | 4 | **2** | **1** | 2 |
 | 4 | quartic10_s1 | 10 | 5 | 5 | **7** | **2** | 3 |
 | 4 | quartic12_s0 | 12 | 5 | 5 | **4** | **2** | 3 |
@@ -483,7 +487,7 @@ Grouped by `pw`, exact values only, as `(n, min size₁ at order pw)`:
 | 3 | (8, 2) ×3, (10, 2) ×2, (12, 2) ×2 |
 | 4 | (10, 2), (10, 5), (12, 3), (14, 3), (14, 3), (14, 5), (16, 3), (16, 5), (18, 3), (20, 3), (20, 5) |
 | 5 | (10, 7), (12, 4), (12, 5), (14, 4), (14, 4), (16, 4), (16, 8), (18, 5), (18, 5), (22, 4), (22, 8) |
-| 6 | (12, 5), (16, 5); (22, [6, 11]) |
+| 6 | (12, 5), (16, 5), (22, 9) |
 | 7 | (16, 7) |
 
 ### 3.2 What the families say
@@ -503,14 +507,17 @@ Grouped by `pw`, exact values only, as `(n, min size₁ at order pw)`:
 * **Random regular graphs: the minimum is a function of the order, not of `n`.**
   At `pw = 4` it is 2–5 from 10 to 20 vertices with no trend; at `pw = 5` it is
   4–8 from 10 to 22; it is 2 at every `pw = 3` graph. Across the orders it grows
-  by about a factor 1.5–2 per unit: 2 at 3, 3–5 at 4, 4–8 at 5, 5–11 at 6, 7 at
+  by about a factor 1.5–2 per unit: 2 at 3, 3–5 at 4, 4–8 at 5, 5–9 at 6, 7 at
   7. The frames are co-sets again: the minimal big sets of `cubic16_s2` (`pw 5`)
   are 8 sets of 7–11 vertices, each with attachment exactly 5, connected; of
   `cubic18_s0` 5 sets of 7–9 vertices.
 * **The vertex-transitive graphs are where the minimum is large.** Petersen 15
-  (`1.5 n`), Paley13 15, Shrikhande 22, Clebsch 32 (`2 n`), and the three still
-  bracketed: Heawood `[HEAWOOD]` of 14 vertices, Möbius–Kantor `[MK]` of 16, `Q₄`
-  `[Q4]` of 16. In every case the frame is a family of **co-small sets**:
+  (`1.5 n`), Paley13 15, Shrikhande 22, Clebsch 32 (`2 n`), `Q₄` 26 (`1.6 n`,
+  exact after 47 min of CaDiCaL), and two still bracketed when the 2-hour cap
+  killed their runs: Heawood `[25, 32]` of 14 vertices (`≥ 1.8 n`, `≤ 2.3 n`;
+  sizes `≤ 24` refuted at 56 min, the `≤ 28` query unanswered) and
+  Möbius–Kantor `[16, 22]` of 16 (`≤ 15` refuted at 108 min). In every case the
+  frame is a family of **co-small sets**:
   `V` minus a 3-vertex path on Petersen (15 of its 30 such paths), `V` minus a
   triple (13) or a pair (2) on Paley13, `V` minus a 4-set spanning two edges (30)
   or a pair (2) on Clebsch, `V` minus a 4-set on Shrikhande (22); every one
@@ -520,8 +527,8 @@ Grouped by `pw`, exact values only, as `(n, min size₁ at order pw)`:
   `reports/blockage_class.md` §4 at one or two more vertices.
 * **The size is concentrated at the top one or two orders**, and not monotone in
   the order. Petersen 1, 1, 2, 5, 15; Paley13 1 ×5, 3, 13, 15; Clebsch 1 ×4, 2,
-  16, 16, 10, 32; Shrikhande 1 ×5, 3, 16, 9, 22; `Q₄` 1, 1, 1, 2, 16, 7, then
-  the bracketed top; Heawood and Möbius–Kantor 1, 1, 2, 3, 6, then the top. The
+  16, 16, 10, 32; Shrikhande 1 ×5, 3, 16, 9, 22; `Q₄` 1, 1, 1, 2, 16, 7, 26;
+  Heawood and Möbius–Kantor 1, 1, 2, 3, 6, then `[25, 32]` and `[16, 22]`. The
   jump sits at or just above the treewidth (Petersen `tw 4`, Clebsch `tw 8`,
   Paley13 `tw 8`): below it a clique or clique-minor frame of one or two sets
   suffices, above it the co-small-set frames take over.
@@ -547,17 +554,20 @@ lies on the large side of almost every separation.
 **The kill criteria.** *K-hard* is **met by its letter**: on the random cubic
 graphs the exact minimum at order `pw` goes from 2 (8 vertices) to 8 (22
 vertices), a factor 4 against the allowed `(22 / 8)² = 7.6`, and no family
-exceeds `n²` — the record is Clebsch at `2 n` (and the bracketed Heawood / `Q₄`
-at most `2.3 n` / `2.9 n`). *K-easy* is **met**: at orders `≤ ⌈√pw⌉ ≤ 3` the
+exceeds `n²` — the largest ratio to `n` is Clebsch's `32 / 16 = 2.0` (exact),
+then Heawood at `≥ 25 / 14 = 1.8` and `≤ 2.3` (bracketed), `Q₄` at
+`26 / 16 = 1.6` (exact), Petersen 1.5, Shrikhande 1.4, Paley13 1.15; every
+other graph is below `0.7 n`. *K-easy* is **met**: at orders `≤ ⌈√pw⌉ ≤ 3` the
 minimum is at most 3 on every graph tried. So in this measure, at these sizes,
-**every graph tried has a blockage of order `pw` with at most `2 n`–`3 n`
-minimal big sets**, and the "exponential on expanders" half has no support.
+**every graph tried has a blockage of order `pw` with at most `2 n` minimal big
+sets** (`2.3 n` if Heawood's bracket closes at its top), and the "exponential
+on expanders" half has no support.
 
 **What the data show instead**, and why that verdict is weaker than it reads:
 
 1. The minimum at order `pw` is governed by the **order**, not by `n`. On random
    regular graphs it is flat in `n` at fixed `pw` and grows ×1.5–2 per unit of
-   `pw` (2, 3–5, 4–8, 5–11, 7 at `pw = 3 … 7`); on the vertex-transitive graphs
+   `pw` (2, 3–5, 4–8, 5–9, 7 at `pw = 3 … 7`); on the vertex-transitive graphs
    the sequence over the orders ends 5, 15 (Petersen), 13, 15 (Paley13), 10, 32
    (Clebsch), 9, 22 (Shrikhande). A law `size ≈ c · 2^{pw}` is *consistent*
    with every exact number here; so is `size ≈ 2 n` on the vertex-transitive
@@ -590,14 +600,18 @@ minimal big sets**, and the "exponential on expanders" half has no support.
 
 **What is exact and what is bounded.** Every number in §2 is exact (273,193
 graphs, 3 measures, every order; two brute-force enumerations and the all-pairs
-checker behind the model). In §3 every value in bold is exact; four are
-brackets after a time limit (Heawood, Möbius–Kantor and `Q₄` at order `pw`,
-`cubic22_s0` at order 6), each with the refuted side as its lower bound; no
-number is an unverified upper bound. The treewidths are exact (C DP); the
-pathwidths exact (subset DP to 18, the C program's `refutation` status above).
-Compute: about 29 core-hours for the census, 4 for the families, 3 for the
-22-vertex graphs and the long re-runs; nothing under `solutions/` was touched
-and nothing from the corpus was re-solved.
+checker behind the model). In §3 every value in bold is exact; the four minima
+the 10-minute Glucose runs left bracketed were re-run untimed on CaDiCaL under a
+2-hour cap: `Q₄` at order 7 closed at **26** (47 min) and `cubic22_s0` at order
+6 at **9** (57 min), while Heawood (order 6) and Möbius–Kantor (order 6) were
+killed by the cap at `[25, 32]` and `[16, 22]` — their processes are gone and
+their logs end without a final line, so these two are brackets, each with the
+refuted side as its lower bound; no number is an unverified upper bound. The
+treewidths are exact (C DP); the pathwidths exact (subset DP to 18, the C
+program's `refutation` status above). Compute: about 29 core-hours for the
+census, 4 for the families, 3 for the 22-vertex graphs and 8 for the five long
+re-runs; nothing under `solutions/` was touched and nothing from the corpus
+was re-solved.
 
 **Literature.** We found no prior statement of the pathwidth analogue of Grohe &
 Marx's bramble-size theorem, and no prior measurement of the number of minimal

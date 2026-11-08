@@ -1,0 +1,4 @@
+first blockage: size 66 (0.3s)
+asked <= 33: sat; lb=1 ub=32 (20.6s)
+asked <= 16: unsat; lb=17 ub=32 (21.5s)
+asked <= 24: unsat; lb=25 ub=32 (3359.5s)
