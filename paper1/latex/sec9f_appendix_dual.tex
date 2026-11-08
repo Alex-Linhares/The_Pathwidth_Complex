@@ -1,48 +1,125 @@
-\section{The dual: blockages}
+\section{The dual of pathwidth}
 \label{app:dual}
 
 Every lower bound this paper uses reads one object at a time: a clique, a
 vertex of large minimum degree in a minor, a prefix of a layout in Harper's
-bound, a contracted copy of the graph in Theorem~\ref{thm:minor}. Each is a
-certificate that pathwidth is at least some value, and each family has a
-ceiling on what it can certify. The question of whether there is a single
-family with no ceiling, a \emph{dual} of pathwidth in the sense that linear
-programming has a dual, with weak duality giving certificates and strong
-duality saying the best certificate meets the optimum, was answered by
-\citet{BRST1991}: the \emph{blockage}. It is to pathwidth what the brambles of
-Seymour and Thomas are to treewidth, and this appendix states it, proves the
-half that certificates need, and places the paper's bounds inside it. The
-definitions and the proof are formalised in \texttt{Blockage.lean}, with no
-\texttt{sorry}~\leanref{blockage}.
+bound, a contracted copy of the graph in Theorem~\ref{thm:minor}, a minor
+found by the search of Appendix~\ref{app:tabu}. Each is a certificate that
+the pathwidth is at least some value, and each family has a ceiling on what
+it can certify. This appendix asks the question behind all of them: is there
+a single family with no ceiling, a \emph{dual} of pathwidth in the sense that
+linear programming has a dual, and if so, why can it not simply be maximised?
+The answer to the first question is yes, the blockages of
+\citet{BRST1991}; the answer to the second is three theorems and one
+conjecture. Throughout, $n$ is the order of a blockage, never the number of
+vertices, which is written $|V|$. The definitions and the weak half of the
+duality are formalised in \texttt{Blockage.lean} and
+\texttt{BlockageClass.lean}, with no
+\texttt{sorry}~\leanref{blockage}~\leanref{blockageclass}.
 
-\paragraph{Definitions.} Let $G=(V,E)$ be a finite simple graph. For
-$X\subseteq V$, the \emph{attachments} of $X$ are its vertices with a
-neighbour outside $X$,
+\subsection{The problem of the dual}
+
+Pathwidth is a minimum: over all orderings of the vertices, the largest
+number of vertices that a prefix has in common with the neighbourhood of its
+complement, minimised. An ordering is therefore a short proof of an upper
+bound: $|V|$ numbers, checked in linear time, and the search of
+Section~\ref{sec:search} finds one in milliseconds on most instances. A lower
+bound has no such object. The statement $\pw(G)\ge w$ is proved, in the body
+of this paper, by exhausting a search at width $w-1$, and the proof is the
+search tree, $10^{11}$ nodes on the hardest instances of Section~\ref{sec:practice}.
+
+Linear programming resolves the same asymmetry by a second optimisation
+problem: a maximisation whose every feasible point is a lower bound on the
+minimum (weak duality) and whose optimum equals it (strong duality). A
+feasible dual point is then a certificate of the lower bound, and the best
+certificate is tight. For treewidth the dual object is the bramble of
+\citet{SeymourThomas1993}: a family of connected, pairwise touching vertex
+sets, whose order is the size of the smallest set meeting all of them, and
+treewidth plus one is the largest order of a bramble. For pathwidth it is the
+blockage. This appendix states the object, proves that it is the dual, and
+then proves why maximising it is not an algorithm: not in polynomial time
+unless $\mathrm P=\mathrm{NP}$, not with a short certificate unless
+$\mathrm{NP}=\mathrm{coNP}$, and not by the two concrete dual searches one
+would write first, whose cost is provably at least a binomial where the
+primal's is small.
+
+\subsection{Blockages}
+
+Let $G=(V,E)$ be a finite simple graph. For $X\subseteq V$ the
+\emph{attachments} of $X$ are its vertices with a neighbour outside $X$,
 \[
 \att(X) \;=\; \{\,v\in X : \exists u\notin X,\ uv\in E\,\},
 \]
-and $\alpha(X)=|\att(X)|$. The paper's complement of $X$ is
-$X^{c}=(V\setminus X)\cup\att(X)$. Two sets $X_1,X_2$ are \emph{complementary}
-if $X_1\cup X_2=V$ and $\att(X_1)\subseteq X_2$; equivalently, no edge joins
+and $\alpha(X)=|\att(X)|$. Two sets $X_1,X_2$ are \emph{complementary} if
+$X_1\cup X_2=V$ and $\att(X_1)\subseteq X_2$; equivalently no edge joins
 $X_1\setminus X_2$ to $X_2\setminus X_1$, so a complementary pair is a
-separation of $G$ with $X_1\cap X_2$ as its separator. A \emph{blockage of
-order $n$} is a family $\mathcal B$ of subsets of $V$ such that
+separation of $G$ with separator $X_1\cap X_2$, and every $X$ has the
+canonical partner $X^{c}=(V\setminus X)\cup\att(X)$.
+
+\begin{definition}[blockage, \citealp{BRST1991}]\label{def:blockage}
+A \emph{blockage of order $n$} is a family $\mathcal B$ of subsets of $V$
+such that
 \begin{enumerate}
 \item[(i)] every $X\in\mathcal B$ has $\alpha(X)\le n$;
 \item[(ii)] if $X\in\mathcal B$, $Y\subseteq X$ and $\alpha(Y)\le n$, then $Y\in\mathcal B$;
 \item[(iii)] if $X_1,X_2$ are complementary and $|X_1\cap X_2|\le n$, then
   exactly one of $X_1,X_2$ lies in $\mathcal B$.
 \end{enumerate}
+\end{definition}
+
 Read as a game, $\mathcal B$ is the strategy of an invisible fugitive against
 $n+1$ searchers: for every way the searchers can cut the graph with at most
 $n$ of them, (iii) says which side the fugitive is on, and (i), (ii) make
-those choices consistent. Theorem~(2.1) of \citet{BRST1991} is the min-max
-statement: \emph{there is a blockage of order $n$ in $G$ if and only if
-$\pw(G)\ge n$}.
+those choices consistent; this is Theorem~(5.1) of the paper. The bounds are
+$\le n$ throughout, as in the paper's proof of its Theorem~(2.1) and in the
+Lean statement; with strict bounds the family
+$\{\emptyset,\{a\},\{b\},\{c\},\{a,b\}\}$ on the path $a$--$b$--$c$ would be a
+``blockage of order 2'' on a graph of pathwidth~1.
 
-\paragraph{The half that certificates need.}
+A blockage is a large object, but it is determined by a small part of
+itself. Call $X$ \emph{big} if $\alpha(X)\le n$ and $X\notin\mathcal B$.
 
-\begin{theorem}[a blockage is a lower bound]\label{thm:blockage}
+\begin{lemma}[a blockage is an avoidance family]\label{lem:frame}
+Let $\mathcal B$ be a blockage of order $n$. Bigness is upward closed among
+the sets with $\alpha\le n$, and
+\[
+\mathcal B \;=\; \{\,X\subseteq V : \alpha(X)\le n\ \text{and no big set is contained in } X\,\}.
+\]
+Hence $\mathcal B$ is determined by its \emph{frame}, the $\subseteq$-minimal
+big sets $F_1,\dots,F_r$. For such a frame, axioms (i) and (ii) hold
+automatically, and (iii) reads:
+\begin{enumerate}
+\item[(a)] every separation of order at most $n$ has a side containing some $F_j$;
+\item[(b)] no separation of order at most $n$ has $F_i$ inside one side and $F_j$ inside the other.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+If $X$ is big and $X\subseteq Y$ with $\alpha(Y)\le n$, then $Y\notin\mathcal B$,
+for otherwise (ii) would put $X$ in $\mathcal B$; so bigness is upward
+closed. A set with $\alpha\le n$ is in $\mathcal B$ or big, and it is big
+exactly when it contains a minimal big set, which gives the display. For the
+reading of (iii): a complementary pair $(X_1,X_2)$ with $|X_1\cap X_2|\le n$
+has $\att(X_i)\subseteq X_1\cap X_2$, so both sides satisfy (i); ``exactly
+one in $\mathcal B$'' says exactly one side contains no frame set, which is
+(a) and (b) together. Condition (b) is a Menger condition and is checked
+pair by pair in polynomial time; condition (a) is the whole difficulty.
+\end{proof}
+
+Three frames are proved to give blockages in \texttt{BlockageClass.lean}: a
+clique $K$ of $n+1$ vertices, with the single frame set $K$
+(\texttt{isBlockageIn\_clique}); the pullback of a blockage of $H$ along a
+minor model of $H$ in $G$, each frame set pulled back along its branch sets
+(\texttt{isBlockageIn\_minor}); and three disjoint connected branches each
+carrying a frame of order $k$, pairwise joined by connected connectors
+missing the third, whose union carries a frame of order $k+1$
+(\texttt{isBlockageIn\_branch}), the blockage form of the corrected branch
+lemma of Section~\ref{sec:minor}. Every statement was checked by exhaustive
+enumeration on every graph with at most six vertices before it was
+stated~\leanref{blockageclass}.
+
+\subsection{Why it is the dual}
+
+\begin{theorem}[weak duality: a blockage is a lower bound]\label{thm:blockage}
 If $G$ has a blockage of order $n$, then $\pw(G)\ge n$~\leanref{blockage}.
 \end{theorem}
 \begin{proof}
@@ -68,33 +145,228 @@ vertices, so $X_{i+1}\in\mathcal B$. By induction $V=X_{r+1}\in\mathcal B$, a
 contradiction.
 \end{proof}
 
-The Lean proof follows this argument step by step, with the two interval facts
-as \texttt{att\_prefixUnion\_subset} and \texttt{prefixUnion\_succ\_sdiff\_subset}
-and the climb as an induction over $i$. Before the statement was written, both
-halves of~(2.1) were checked by exhaustive enumeration of every set family on
-every graph with at most four vertices (108 cases, 39 blockages, consistent
-both ways, which is a check on the transcription of the axioms), and the two
-interval facts on every layout of every graph with at most seven vertices
-(5,378,453 layouts), with no violation
-(the script \path{reports/scratch/minor_tabu_lean/check_blockage.py}). The converse
-of~(2.1), that $\pw(G)\ge n$ yields a blockage, goes through the paper's
-partial blockages and fractures and is not formalised here.
+\begin{theorem}[strong duality, \citealp{BRST1991}, Theorem~(2.1)]\label{thm:blockage-strong}
+$G$ has a blockage of order $n$ if and only if $\pw(G)\ge n$. Consequently
+\[
+\pw(G)\;=\;\max\{\,n : G \text{ has a blockage of order } n\,\},
+\]
+and the feasible orders form an interval: a blockage of order $n$ restricted
+to its members with $\alpha\le n-1$ is a blockage of order $n-1$.
+\end{theorem}
 
-\paragraph{The paper's bounds as blockages.} Weak duality is what makes a
-bottom-up search for lower bounds possible: exhibit any blockage of order $n$
-and $\pw(G)\ge n$ follows, and strong duality says that maximising $n$ over
-blockages reaches $\pw(G)$ exactly, so a search on this side has no ceiling.
-Every lower-bound family in this paper is a restricted class of blockages. A
-clique of size $n+1$ gives one: let $\mathcal B$ be the sets with at most
-$n$ attachments that miss some vertex of the clique on the far side. Harper's
+The ``if'' direction is the paper's Sections~3 and~4, through partial
+blockages and fractures, and it is not formalised here. A shorter route,
+which we record because it is the one a formalisation would take, goes
+through orientations: \citet{Erde2017}, Theorem~12, proves by induction on
+the set of separations that a graph has either a path decomposition of
+small width or a consistent orientation of its small separations with no two
+chosen sides covering the graph, never both; and \citet{DiestelOum2019},
+Theorem~7.2, shows that such an orientation is exactly a blockage, the
+``two sides'' clause being the paper's stoppage condition. Strengthening
+``two'' to ``three'' gives the tangle axioms, which is why blockages are
+stronger than tangles and $\pw\ge\tw$. The restriction claim is immediate
+from the axioms: the separations of order at most $n-1$ are among those of
+order at most $n$, and both sides of such a separation have $\alpha\le n-1$.
+
+Weak duality is what makes a bottom-up search for lower bounds possible, and
+strong duality is what says such a search has no ceiling. Every lower-bound
+family in this paper is a restricted class of blockages. A clique of size
+$n+1$ gives one, with the clique as its only frame set. Harper's
 vertex-isoperimetric bound at one prefix size is a blockage built from the
 separations at that size alone. A minor $H$ with $\pw(H)\ge n$ gives a
 blockage of $G$ by pulling $H$'s back along the branch sets, which is
 Theorem~\ref{thm:minor} read from the dual side. The duality gaps measured in
 Section~\ref{sec:certs}, family by family, are the gaps of these restricted
-classes; the finding there that the residual's obstruction is a band of
+classes, and the finding there that the residual's obstruction is a band of
 consecutive prefix sizes says, in this vocabulary, that the blockages of those
 instances need separations at many consecutive orders at once, which no
-single-prefix class supplies. The search of Appendix~\ref{app:tabu} looks for
-blockages of the minor kind, the one class whose members are small enough to
-exhibit and cheap enough to check.
+single-prefix class supplies.
+
+\subsection{Three theorems on maximising the dual}
+
+Strong duality invites an algorithm: maximise the order over blockages, from
+below, and stop when the order meets the width of the best layout. The
+following three results say, in increasing concreteness, why that is not an
+algorithm. The first two are standard complexity theory applied to one
+hardness theorem; we state them because they are exactly what the dual is
+being asked to do.
+
+\begin{theorem}[no efficient maximisation]\label{thm:dual-np}
+If there is a polynomial-time algorithm that, given $G$, returns the largest
+order of a blockage of $G$, then $\mathrm P=\mathrm{NP}$. The same holds for
+an algorithm that returns, for given $G$ and $n$, whether a blockage of order
+$n$ exists.
+\end{theorem}
+\begin{proof}
+By Theorem~\ref{thm:blockage-strong} the largest order of a blockage is
+$\pw(G)$, and a blockage of order $n$ exists if and only if $\pw(G)\ge n$. So
+either algorithm decides, in polynomial time, whether $\pw(G)\le k$ for a
+given $k$. That problem is NP-complete: \citet{LY2002ref5} prove it in the
+form of interval graph completion, and \citet{LY2002ref14}, Theorem~7, in
+the form of the vertex separation game, which equals pathwidth by
+\citet{LY2002ref13}. A polynomial-time algorithm for an NP-complete problem
+gives $\mathrm P=\mathrm{NP}$.
+\end{proof}
+
+\begin{theorem}[no short certificate]\label{thm:dual-conp}
+Suppose there is a polynomial $p$ and a polynomial-time verifier $\mathcal V$
+such that for every graph $G$ and every $n\le\pw(G)$ there is a string $c$ of
+length at most $p(|V|)$ with $\mathcal V(G,n,c)=1$, while
+$\mathcal V(G,n,c)=0$ for every $c$ whenever $n>\pw(G)$. Then
+$\mathrm{NP}=\mathrm{coNP}$. In particular, no representation of blockages
+can be both polynomial in size and polynomial to check on every graph unless
+$\mathrm{NP}=\mathrm{coNP}$.
+\end{theorem}
+\begin{proof}
+Let $L=\{(G,n):\pw(G)\ge n\}$. Its complement, $\{(G,k):\pw(G)\le k\}$ with
+$k=n-1$, is NP-complete by the theorems cited above, so $L$ is
+coNP-complete: every language in coNP reduces to $L$ in polynomial time. The
+verifier $\mathcal V$ with its short strings $c$ is by definition a
+nondeterministic polynomial-time acceptor of $L$, so $L\in\mathrm{NP}$. Then
+every coNP language reduces to a language in NP, and NP is closed under
+polynomial-time reductions, so $\mathrm{coNP}\subseteq\mathrm{NP}$; taking
+complements, $\mathrm{NP}\subseteq\mathrm{coNP}$. The last sentence is the
+case in which $c$ encodes a blockage of order $n$ in any fixed representation
+and $\mathcal V$ checks the axioms
+\citep[Chapter~7]{GareyJohnson1979}.
+\end{proof}
+
+The theorem is conditional and cannot be otherwise: an unconditional proof
+that blockages have no short representation would separate NP from coNP.
+What it rules out is representation-independent. A frame of $r$ sets
+(Lemma~\ref{lem:frame}) is a certificate whose verifier runs in time
+$|V|^{O(r)}$, polynomial for bounded $r$, and the theorem says that no
+scheme makes $r$ bounded on every graph. For treewidth the same statement is
+in print: \citet{GroheMarx2009} write that a bramble ``is not a good
+characterization of tree width in the coNP sense'' for exactly this reason,
+and prove the unconditional form in a fixed representation, to which we
+return in Conjecture~\ref{conj:blockage-size}. We found no statement of
+either kind for pathwidth and blockages.
+
+The third theorem is about the two dual searches one would actually write,
+and it is unconditional. Fix a width $w$ and let
+\[
+\mathcal F_w \;=\; \{\,S\subseteq V : |N(S)\setminus S|\le w\,\},
+\]
+the sets whose outer boundary has at most $w$ vertices. A layout of width at
+most $w$ is a chain $\emptyset=S_0\subset S_1\subset\dots\subset S_{|V|}=V$
+of sets in $\mathcal F_w$, each obtained from the last by adding one vertex,
+so $\pw(G)\le w$ exactly when $\emptyset$ and $V$ lie in the same connected
+component of the graph on $\mathcal F_w$ whose edges are single additions.
+Our corrected algorithm explores the component of $\emptyset$; its states
+are the sets of that component, within a factor of about two
+(Section~\ref{sec:certs}). The natural dual search explores the component of
+$V$ instead, removing vertices one at a time; a refutation by either search
+is the exhaustion of its component.
+
+\begin{theorem}[the lattice floor of a top-down search]\label{thm:dual-lattice}
+Let $w<|V|$. Every set $S$ with $|V\setminus S|\le w$ lies in $\mathcal F_w$
+and in the component of $V$. Hence a refutation of width $w$ that exhausts
+the component of $V$ visits at least $\sum_{j=0}^{w}\binom{|V|}{j}$ states,
+on every graph. Moreover, complementation $S\mapsto V\setminus S$ is an
+order-reversing bijection from $\mathcal F_w$ onto
+$\mathcal F'_w=\{T : \alpha(T)\le w\}$, the sets whose inner boundary has at
+most $w$ vertices, carrying single additions to single removals; so the
+top-down search on $\mathcal F'_w$ is the bottom-up search on
+$\mathcal F_w$, and the two directions that avoid the binomial region are
+the same algorithm.
+\end{theorem}
+\begin{proof}
+If $|V\setminus S|\le w$ then $N(S)\setminus S\subseteq V\setminus S$ has at
+most $w$ vertices, so $S\in\mathcal F_w$; and removing the vertices of
+$V\setminus S$ from $V$ one at a time passes only through sets with still
+smaller complements, each in $\mathcal F_w$ by the same argument, so $S$ is
+in the component of $V$. There are $\sum_{j\le w}\binom{|V|}{j}$ such sets.
+For the second claim, $\att(V\setminus S)$ is the set of vertices outside
+$S$ with a neighbour in $S$, which is $N(S)\setminus S$; so
+$S\in\mathcal F_w$ if and only if $V\setminus S\in\mathcal F'_w$, and adding
+a vertex to $S$ removes it from $V\setminus S$.
+\end{proof}
+
+The theorem places the free region, where every set is feasible before any
+constraint bites, at the top of the lattice under the outer boundary and at
+the bottom under the inner one, and says that a search avoiding it is the
+primal search under the other name. What it does not say is how the two
+components compare; that is a measurement, and it was made
+(Section~\ref{sec:certs}, the two-ended enumeration): on 64 bound-gap
+instances at 30 to 50 customers the component of $\emptyset$ has between
+2,000 and 281,000 states, while the component of $V$ exceeded 3,000,000 on
+61 of them and was 300 to 1,000 times the other on the three where it was
+enumerated to the end. A dual search in this lattice would need a rule that
+discards most of that component, of a kind no primal rule is: the rules of
+Section~\ref{sec:search} bring the visited states to within a factor of
+about two of the component, not orders of magnitude below it.
+
+A second concrete dual search maximises over a compact class of frames. The
+class we built, cliques, minor pullbacks and linked branches, has its ceiling
+measured in Section~\ref{sec:certs}; here is the one statement about such
+classes that is a theorem rather than a measurement.
+
+\begin{proposition}[connected frames are blind to $\pw>\tw$]\label{prop:connected-frames}
+Let $F_1,\dots,F_r$ be connected vertex sets with $|F_i|\ge n+1$, pairwise
+inseparable by fewer than $n+1$ vertices, and such that no set of at most
+$n$ vertices meets every $F_i$. Then the frame $F_1,\dots,F_r$ generates a
+blockage of order $n$, and $\tw(G)\ge n$. In particular such a frame
+certifies $\pw(G)\ge n$ only on graphs with $\tw(G)\ge n$.
+\end{proposition}
+\begin{proof}
+For the blockage, check (a) and (b) of Lemma~\ref{lem:frame}. A separation
+of order at most $n$ that splits every $F_j$ has, since each $F_j$ is
+connected, a separator meeting every $F_j$, which is a set of at most $n$
+vertices meeting all of them; so some $F_j$ lies inside a side, which is
+(a). Two frame sets on opposite sides of a separation of order at most $n$
+would be separated by at most $n$ vertices, against the hypothesis; this is
+(b). For the treewidth, take a tree decomposition of width $\tw(G)$. Each
+connected $F_i$ induces a subtree of the decomposition tree. If two of these
+subtrees are disjoint, some bag separates $F_i$ from $F_j$, so
+$\tw(G)+1\ge n+1$. Otherwise the subtrees pairwise intersect, and subtrees
+of a tree have the Helly property, so some bag meets every $F_i$; that bag
+has at most $\tw(G)+1$ vertices, so $\tw(G)+1\ge n+1$.
+\end{proof}
+
+This is the pathwidth copy of a bramble, and the proposition says it is only
+a bramble: it certifies what treewidth certifies. The ingredient that sees
+$\pw>\tw$ is branching, and the census of Section~\ref{sec:certs} measures
+how rarely branching is the obstruction.
+
+\subsection{What is open: the size of a blockage}
+
+Theorem~\ref{thm:dual-conp} is conditional. For treewidth,
+\citet{GroheMarx2009} proved the unconditional version in a fixed
+representation: on bounded-degree expanders every bramble of order at least
+$k^{1/2+\varepsilon}$ has $2^{\Omega(k^{\varepsilon})}$ sets, while every
+graph of treewidth $k$ has a bramble of order
+$\Omega(k^{1/2}/\log^2 k)$ with polynomially many sets; see also
+\citet{HatzelKomosaPilipczukSorge2022}. The analogue for blockages, in the
+frame representation of Lemma~\ref{lem:frame}, is the natural open
+question, and we state it as a conjecture with the data beside it.
+
+\begin{conjecture}[blockage size]\label{conj:blockage-size}
+There is a family of bounded-degree graphs on $|V|$ vertices with
+$\pw=\Theta(|V|)$ on which every blockage of order at least
+$|V|^{1/2+\varepsilon}$ has a frame of $2^{\Omega(|V|^{\varepsilon})}$ sets;
+and every graph has a blockage of order $\pw^{\Omega(1)}$ whose frame has
+polynomially many sets.
+\end{conjecture}
+
+The second half follows, with a small exponent, from the certificate of
+\citet{GroenlandJoretNadaraWalczak2023}, which is the iterated branch
+operator above. For the first we have measurements and no proof. The
+minimum frame size over all blockages of each order was computed exactly, by
+a SAT model of the axioms, on every connected graph with at most nine
+vertices and on structured and expander-like families to 22 vertices. At
+order equal to the pathwidth the minimum is one on 28\% of the graphs on
+nine vertices and at most three on 96\%, never above 13; on every graph with
+$\pw>\tw$ it is at least three, on 13,548 of 13,548 such graphs; on random
+cubic graphs it is flat in $|V|$ at fixed pathwidth and grows by a factor of
+1.5 to 2 per unit of pathwidth, from 2 at pathwidth 3 to between 6 and 11 at
+pathwidth 6; the largest values are 15 on the Petersen graph, 22 on the
+Shrikhande graph and 32 on the Clebsch graph, about twice the number of
+vertices. Two laws fit every exact number, a constant times $2^{\pw}$ and
+$2|V|$, and with pathwidth at most nine they cannot be told apart. If the
+first is the law, the conjecture's hard half follows on expanders, where
+pathwidth is linear in $|V|$; the data show the factor per unit of order and
+cannot see the exponent. A proof would need the expansion argument of
+\citet{GroheMarx2009} redone for the invisible-fugitive game, since
+strategies transfer only from the visible robber to the invisible fugitive
+and not back. We found no prior statement about the size of a blockage.
