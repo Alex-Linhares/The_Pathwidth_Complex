@@ -137,7 +137,7 @@ def decide(
     memo: bool = True,
     max_nodes: int | None = None,
     deadline: float | None = None,
-    memo_limit: int = 4_000_000,
+    memo_limit: int = 64_000_000,
     native: bool = True,
     branch: "Callable[[int, int, list[tuple[int, int]]], list[tuple[int, int]]] | None" = None,
     expansion_prune: bool = False,
@@ -166,7 +166,13 @@ def decide(
             budget actually has.
         memo_limit: stop growing the memo past this many states. The table is
             what bounds memory here, and an unbounded one on a 125-customer
-            refutation will take the machine down.
+            refutation will take the machine down. Default 64,000,000 since
+            2026-11-09 (it was 4,000,000, which is 64 MB in the C table, the
+            size of this CPU's L3 cache, and saturated on hard refutations:
+            8-25x the nodes on Rome graphs of pathwidth 10; the C table is 16
+            bytes a slot, capped at 2^26 slots, about 1.1 GB, and costs up to
+            40% per node where the memo saves nothing). The pure-Python set is
+            far heavier per entry; pass a smaller limit when forcing it.
         native: use the C port when it applies. It visits the same nodes in the
             same order -- the counts match exactly on every instance measured --
             about 120x faster. Set False to force the Python, which is the

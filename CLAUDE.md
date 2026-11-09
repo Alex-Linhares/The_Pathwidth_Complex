@@ -1707,8 +1707,12 @@ graph 2.5x (one root task at its cap); on the Rome graphs the gain is mostly **m
 the engine's default memo limit of 4,000,000 states is saturated on hard refutations
 (grafo8793.100: 8.4e8 nodes at 4M, 4.9e7 at 64M — 254 s -> 33 s on one core, 1.1 GB;
 grafo11458.100: 3,585 s recorded -> 60 s), so every hard count on record is an upper
-bound on the search's work with an adequate memo. Raising the default is proposed in
-`paper1/todo.md`, not applied. Widths and proofs unaffected (the memo changes cost, never
+bound on the search's work with an adequate memo. **The default is 64,000,000 since 2026-11-09**
+(owner's decision on the measurement) in `pathwidth_solver/cli/pathwidth.c`,
+`satisfiability/native.py` and `satisfiability/customer_search.py`; the C table is capped at
+2^26 slots (1.1 GB); a larger table costs up to 40% per node where the memo saves nothing
+(Higman–Sims). Node counts recorded before that date were taken at 4,000,000 and are not
+comparable to new ones on hard refutations. Widths and proofs unaffected (the memo changes cost, never
 the answer, `Search/Split.lean`).
 
 **Unrelated to the plan:**

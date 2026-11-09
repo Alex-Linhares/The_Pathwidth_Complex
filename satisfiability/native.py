@@ -196,7 +196,7 @@ def decide_native(
     better_move_dominators: int = 4,
     max_nodes: int | None = None,
     seconds: float | None = None,
-    memo_limit: int = 4_000_000,
+    memo_limit: int = 64_000_000,
     fan_order: str = "index",
     old_close_count: bool = False,
     old_rule_order: bool = False,
@@ -347,7 +347,7 @@ def split_expand(instance: MOSPInstance, k: int, closed: int, opened: int, seen:
 
 
 def split_decide(instance: MOSPInstance, k: int, closed: int, opened: int, seen: int,
-                 prefix: list[int], *, memo: bool = True, memo_limit: int = 4_000_000,
+                 prefix: list[int], *, memo: bool = True, memo_limit: int = 64_000_000,
                  max_nodes: int | None = None, seconds: float | None = None,
                  **flags) -> Decision | None:
     """`search` from `(closed, opened, seen)` with an empty memo, the closing

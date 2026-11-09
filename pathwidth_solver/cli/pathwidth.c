@@ -128,10 +128,14 @@ static void graph_free(graph *g) { free(g->m); g->m = NULL; }
 #define UNKNOWN (-1)
 
 static long long engine_calls = 0;
+#define MEMO_LIMIT 64000000LL   /* memo states; see decide() below */
 
 /* search.decide -> native.decide_native with the solver's default flags:
  * subset rule, definite move, old move and memo on, better move off,
- * dominators 4, fan order "index", memo_limit 4,000,000, repaired rules on.
+ * dominators 4, fan order "index", memo_limit MEMO_LIMIT (64,000,000 states since
+ * 2026-11-09: the former 4,000,000 — 64 MB, this CPU's L3 — saturated on hard
+ * refutations and cost 8-25x the nodes on Rome graphs; the table is 16 bytes a
+ * slot, capped at 2^26 slots, so about 1.1 GB; paper 1 Section 5), repaired rules on.
  * `order` receives the closing order on SAT (n entries). */
 static int decide(const graph *g, int k, int restrict_frontier, long long max_nodes,
                   double deadline, int *order, long long *nodes) {
@@ -157,7 +161,7 @@ static int decide(const graph *g, int k, int restrict_frontier, long long max_no
     int *path = xmalloc(sizeof(int) * (size_t) n);
     switch (words) {
 #define CALL(W) status = csw_decide_##W(n, k, packed, max_nodes, seconds, 1, 1, 1, restrict_frontier, \
-                                        4000000, 0, 4, 1, 0, 0, 1, path, nodes, &len); break
+                                        MEMO_LIMIT, 0, 4, 1, 0, 0, 1, path, nodes, &len); break
     case 2: CALL(2);
     case 4: CALL(4);
     case 8: CALL(8);
