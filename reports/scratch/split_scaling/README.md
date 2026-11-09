@@ -14,3 +14,12 @@ task rows per run under `<id>_p<p>/tasks.csv`. All at nice 19; the machine carri
   (as `Search/Split.lean` says); memo on, sequential 8.42e8 but the 87 tasks with a fresh 4M-entry memo each
   1.19e8 — the single memo saturates on a hard refutation; the memo-limit sweep on the sequential run says how much
   of the split's gain is memory rather than parallelism.
+
+## The budgeted split on the nine open named graphs within the split's reach (2026-11-09 20:21–21:52)
+
+`split_budget.py`: one graph at a time, 16 workers at nice 19, ten minutes of wall clock, every task with the
+new 64M memo, root opened into 90–120 tasks. **All nine stopped at the deadline with no root task finished**:
+Foster, Biggs–Smith, Balaban 11-cage, Dejter, Ljubljana, BubbleSort_5, NStar_5, OddGraph_5, Tutte 12-cage —
+each 7–13 × 10⁹ nodes cut off, floors unchanged (`results/split_budget.csv`, `split_budget.out`). The memo
+change does not bring these cages within reach: their root subtrees are hours each, as the Foster run of the
+morning (153 core-hours, no root subtree finished) already said.
