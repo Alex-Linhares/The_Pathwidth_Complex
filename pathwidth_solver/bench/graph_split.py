@@ -408,7 +408,8 @@ def main() -> None:
     if a.list:
         for r in targets(a.order):
             lg = law_log10_nodes(r["n"], r["width"])
-            print(f"{r['id']} {r['names'][:40]:40} n={r['n']:4} m={r['m']:5} w={r['width']:3} law log10 nodes {lg:5.1f} core-days {10**lg*0.65e-6/86400:9.3g}")
+            days = f"{10**lg*0.65e-6/86400:9.3g}" if lg < 300 else "   >1e290"
+            print(f"{r['id']} {r['names'][:40]:40} n={r['n']:4} m={r['m']:5} w={r['width']:3} law log10 nodes {lg:6.1f} core-days {days}")
         return
     drive(a.workers, int(a.cap), a.target, a.only, dt.datetime.fromisoformat(a.until) if a.until else None, a.order)
 
