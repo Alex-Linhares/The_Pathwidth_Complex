@@ -1,0 +1,3 @@
+pathwidth 10 refutation
+line 1: n=100 width=10 status=refutation lower=9 upper_start=10 nodes=101059674 minor_nodes=1072496 upper_bound_nodes=5438 engine_calls=26 seconds=65.798
+pwc-06210 default (2GB cap): 65.79 s wall, 2097664 KB peak
