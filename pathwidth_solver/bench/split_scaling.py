@@ -38,7 +38,7 @@ import pathwidth_solver.bench.graph_split as gs  # noqa: E402
 
 OUT = ROOT / "pathwidth_solver" / "bench" / "results" / "split_scaling.csv"
 SCRATCH = ROOT / "reports" / "scratch" / "split_scaling"
-FIELDS = ["id", "name", "n", "m", "width", "k", "mode", "workers", "target", "cap", "answer", "nodes", "tasks", "expanded", "waste",
+FIELDS = ["id", "name", "n", "m", "width", "k", "mode", "workers", "memo_limit", "target", "cap", "answer", "nodes", "tasks", "expanded", "waste",
           "wall_s", "cpu_s", "load_start", "load_end", "started", "finished"]
 
 
@@ -63,10 +63,10 @@ def append(row: dict) -> None:
         w.writerow({f: row.get(f, "") for f in FIELDS})
 
 
-def sequential(t: dict, k: int) -> dict:
+def sequential(t: dict, k: int, memo_limit: int = 4_000_000) -> dict:
     from paper1.solver_fix_split import root, run_task, csearch_flags
     inst = gs.graph_to_instance(t["n"], t["edges"], t["id"])
-    flags = csearch_flags(inst)
+    flags = dict(csearch_flags(inst), memo_limit=memo_limit)
     t0 = time.monotonic(); c0 = time.process_time()
     ans = run_task(inst, k, root(), flags, memo=True, max_nodes=None, seconds=None)
     return dict(answer=ans.status, nodes=ans.nodes, wall_s=time.monotonic() - t0, cpu_s=time.process_time() - c0)
@@ -79,17 +79,19 @@ def main() -> None:
     ap.add_argument("--target", type=int, default=64)
     ap.add_argument("--cap", type=float, default=3e9)
     ap.add_argument("--skip-sequential", action="store_true")
+    ap.add_argument("--sequential-only", action="store_true")
+    ap.add_argument("--memo-limit", type=int, default=4_000_000, help="the sequential run's memo limit (the engine default is 4,000,000; the C table is capped at 2^26 slots)")
     a = ap.parse_args()
-    workers = [int(x) for x in a.workers.split(",")]
+    workers = [] if a.sequential_only else [int(x) for x in a.workers.split(",")]
     SCRATCH.mkdir(parents=True, exist_ok=True)
     for t in load(a.ids):
         k = t["width"]
-        base = dict(id=t["id"], name=t["names"][:60], n=t["n"], m=t["m"], width=t["width"], k=k, target=a.target, cap=int(a.cap))
+        base = dict(id=t["id"], name=t["names"][:60], n=t["n"], m=t["m"], width=t["width"], k=k, target=a.target, cap=int(a.cap), memo_limit=4_000_000)
         print(f"{dt.datetime.now():%F %T} === {t['id']} {t['names'][:40]} n={t['n']} m={t['m']} width {t['width']}: refuting k={k}", flush=True)
         if not a.skip_sequential:
             l0 = os.getloadavg()[0]; started = dt.datetime.now()
-            r = sequential(t, k)
-            append(dict(base, mode="sequential", workers=1, answer=r["answer"], nodes=r["nodes"], tasks=1, expanded=0, waste=0,
+            r = sequential(t, k, a.memo_limit)
+            append(dict(base, mode="sequential", workers=1, memo_limit=a.memo_limit, answer=r["answer"], nodes=r["nodes"], tasks=1, expanded=0, waste=0,
                         wall_s=round(r["wall_s"], 1), cpu_s=round(r["cpu_s"], 1), load_start=l0, load_end=os.getloadavg()[0],
                         started=started.isoformat(timespec="seconds"), finished=dt.datetime.now().isoformat(timespec="seconds")))
             print(f"{dt.datetime.now():%F %T} sequential: {r['answer']} {r['nodes']:.4g} nodes, {r['wall_s']:.0f} s wall, {r['cpu_s']:.0f} s cpu", flush=True)

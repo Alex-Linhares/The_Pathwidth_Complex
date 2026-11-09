@@ -1,0 +1,1 @@
+pwc-15987 named/gr/HigmanSimsGraph.gr n=100 w=74 memo_limit=64,000,000: unsat 8.032e+08 nodes 716 s; peak RSS 1.11 GB (before 0.06)

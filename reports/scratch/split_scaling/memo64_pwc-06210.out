@@ -1,0 +1,1 @@
+pwc-06210 rome/rome/grafo11458.100.graph n=100 w=10 memo_limit=64,000,000: unsat 7.912e+07 nodes 60 s; peak RSS 1.10 GB (before 0.06)

@@ -1,0 +1,4 @@
+sequential memo_limit=  4,000,000: unsat 8.419e+08 nodes 439 s
+sequential memo_limit= 16,000,000: unsat 6.913e+08 nodes 208 s
+sequential memo_limit= 64,000,000: unsat 4.929e+07 nodes 34 s
+sequential memo_limit=256,000,000: unsat 4.929e+07 nodes 32 s
