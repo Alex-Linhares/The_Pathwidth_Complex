@@ -1,0 +1,35 @@
+2026-11-09 20:00:51 rerun_neither: 70 graphs, cap 600 s CPU, 16 at a time
+20:10:52 1/70 fpsol2.i.3.dgf                     n= 425 w=  43 upper      (was 43 upper) nodes    413175278 600.179 s  proved so far 0
+20:10:53 2/70 fpsol2.i.2.dgf                     n= 451 w=  43 upper      (was 43 upper) nodes    371679090 600.427 s  proved so far 0
+20:10:53 3/70 le450_25b.dgf                      n= 450 w= 233 upper      (was 233 upper) nodes    165224002 600.766 s  proved so far 0
+20:10:53 4/70 homer.dgf                          n= 561 w=  36 upper      (was 36 upper) nodes    179968098 600.835 s  proved so far 0
+20:10:53 5/70 le450_15b.dgf                      n= 450 w= 273 upper      (was 273 upper) nodes    149107996 600.908 s  proved so far 0
+20:10:53 6/70 le450_5b.dgf                       n= 450 w= 261 upper      (was 261 upper) nodes    149119105 600.954 s  proved so far 0
+20:10:53 7/70 le450_5a.dgf                       n= 450 w= 245 upper      (was 245 upper) nodes    142524041 601.068 s  proved so far 0
+20:10:53 8/70 le450_25a.dgf                      n= 450 w= 228 upper      (was 228 upper) nodes    141479202 601.064 s  proved so far 0
+20:10:53 9/70 le450_25d.dgf                      n= 450 w= 334 upper      (was 334 upper) nodes    131755298 601.089 s  proved so far 0
+20:10:53 10/70 le450_15d.dgf                      n= 450 w= 356 upper      (was 356 upper) nodes    120085794 601.085 s  proved so far 0
+20:10:53 11/70 le450_25c.dgf                      n= 450 w= 321 upper      (was 321 upper) nodes    129741569 601.117 s  proved so far 0
+20:10:54 12/70 inithx.i.3.dgf                     n= 621 w=  40 upper      (was 40 upper) nodes    190278419 601.100 s  proved so far 0
+20:10:54 13/70 inithx.i.1.dgf                     n= 864 w=  57 upper      (was 57 upper) nodes    301101765 601.090 s  proved so far 0
+20:10:54 14/70 le450_15c.dgf                      n= 450 w= 354 upper      (was 354 upper) nodes    119293170 601.099 s  proved so far 0
+20:10:54 15/70 inithx.i.2.dgf                     n= 645 w=  40 upper      (was 40 upper) nodes    173707148 601.101 s  proved so far 0
+20:10:54 16/70 le450_15a.dgf                      n= 450 w= 264 upper      (was 264 upper) nodes    135687458 601.100 s  proved so far 0
+20:10:57 17/70 DorogovtsevGoltsevMendesGraph.gr   n=3282 w= 222 upper      (was 222 upper) nodes            0 0.128 s  proved so far 0
+20:20:52 18/70 le450_5c.dgf                       n= 450 w= 267 upper      (was 267 upper) nodes    159702306 600.183 s  proved so far 0
+20:20:53 19/70 le450_5d.dgf                       n= 450 w= 270 upper      (was 270 upper) nodes    171470114 600.200 s  proved so far 0
+20:20:53 20/70 myciel7.dgf                        n= 191 w=  72 upper      (was 72 upper) nodes    681066932 600.252 s  proved so far 0
+20:20:53 21/70 queen13_13.dgf                     n= 169 w= 121 upper      (was 121 upper) nodes    371381932 600.319 s  proved so far 0
+20:20:54 22/70 queen14_14.dgf                     n= 196 w= 140 upper      (was 140 upper) nodes    326980064 600.380 s  proved so far 0
+20:20:54 23/70 queen15_15.dgf                     n= 225 w= 162 upper      (was 162 upper) nodes    321278407 600.409 s  proved so far 0
+20:20:54 24/70 queen16_16.dgf                     n= 256 w= 184 upper      (was 184 upper) nodes    288351340 600.865 s  proved so far 0
+20:20:54 25/70 school1.dgf                        n= 385 w= 182 upper      (was 182 upper) nodes    224363497 600.888 s  proved so far 0
+20:20:55 26/70 Balaban11Cage.gr                   n= 112 w=  24 upper      (was 24 upper) nodes    869973282 600.954 s  proved so far 0
+20:20:55 27/70 BiggsSmithGraph.gr                 n= 102 w=  19 upper      (was 19 upper) nodes    900291942 600.945 s  proved so far 0
+20:20:55 28/70 school1_nsh.dgf                    n= 352 w= 156 upper      (was 156 upper) nodes    220141748 600.942 s  proved so far 0
+20:20:55 29/70 BubbleSortGraph_5.gr               n= 120 w=  23 upper      (was 23 upper) nodes    900549922 600.944 s  proved so far 0
+20:20:55 30/70 CameronGraph.gr                    n= 231 w= 161 upper      (was 161 upper) nodes    296336674 600.912 s  proved so far 0
+20:20:55 31/70 DejterGraph.gr                     n= 112 w=  33 upper      (was 33 upper) nodes    759791062 600.796 s  proved so far 0
+20:20:55 32/70 Cell120.gr                         n= 600 w=  67 upper      (was 67 upper) nodes    181038552 600.790 s  proved so far 0
+20:20:57 33/70 FosterGraph.gr                     n=  90 w=  20 upper      (was 20 upper) nodes    880999735 600.303 s  proved so far 0
+20:21:17 34/70 can__292.mtx.rnd                   n= 292 w=  22 minor      (was 23 upper) nodes      8161840 19.182 s  proved so far 1

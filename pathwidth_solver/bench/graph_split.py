@@ -158,10 +158,10 @@ def _init(n, edges, name):
 
 def _task(args):
     from paper1.solver_fix_split import Node, run_task
-    k, key, closed, opened, seen, prefix, flags, cap = args
+    k, key, closed, opened, seen, prefix, flags, cap, seconds = args
     started = dt.datetime.now().isoformat(timespec="seconds")
     t0 = time.monotonic(); c0 = time.process_time()
-    ans = run_task(_W["inst"], k, Node(key, closed, opened, seen, prefix), flags, max_nodes=cap, seconds=None)
+    ans = run_task(_W["inst"], k, Node(key, closed, opened, seen, prefix), flags, max_nodes=cap, seconds=seconds)
     return dict(key=key, status=ans.status, nodes=ans.nodes, seconds=round(time.monotonic() - t0, 3),
                 cpu=round(time.process_time() - c0, 3),
                 witness=ans.order, started=started, finished=dt.datetime.now().isoformat(timespec="seconds"))
@@ -272,7 +272,8 @@ def split_decide_parallel(target: dict, k: int, workers: int, base_cap: int, tas
                 if until is not None and (until - dt.datetime.now()).total_seconds() < 60:
                     return
                 node = pending.pop(0)
-                fut = pool.submit(_task, (k, node.key, node.closed, node.opened, node.seen, node.prefix, flags, cap_at(node)))
+                left = None if until is None else max(1.0, (until - dt.datetime.now()).total_seconds())
+                fut = pool.submit(_task, (k, node.key, node.closed, node.opened, node.seen, node.prefix, flags, cap_at(node), left))
                 flying[fut] = node
         submit()
         while flying:
