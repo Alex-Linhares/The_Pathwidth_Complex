@@ -108,16 +108,36 @@ def vertex_separation(n: int, edges, layout: list[int]) -> int:
 
 # ---------------------------------------------------------------- the targets
 
-def targets() -> list[dict]:
+CLOSED_ON_RECORD = {
+    # proved after the dataset was built; certificates in reports/scratch/obstruction_search/ (loop0013 and pass 2)
+    "pwc-15933": "BalancedTree_3_5: branch lemma, loop0013 (reports/obstruction_search.md)",
+    "pwc-17631": "NY_11 (pass 2)", "pwc-17668": "Promedas_59_10 (pass 2)", "pwc-17264": "ex017 (pass 2)",
+    "pwc-17384": "ex142 (pass 2)",
+}
+# NY_13 (pwc id in 07_open/results_obstruction.csv) is also closed on record; it is excluded by name below.
+CLOSED_NAMES = ("NY_13.gr",)
+
+
+def law_log10_nodes(n: int, w: int) -> float:
+    """Section 5's cost law on the Rome graphs: log10(nodes to refute w-1) ~ 1.75 + 0.00705 n w."""
+    return 1.75 + 0.00705 * n * w
+
+
+def targets(order: str = "size") -> list[dict]:
     rows = []
     for line in gzip.open(DATASET, "rt"):
         d = json.loads(line)
         if d["provenance"].startswith("certified"):
             continue
+        if d["id"] in CLOSED_ON_RECORD or any(any(c in str(mm.get("name", "")) for c in CLOSED_NAMES) for mm in d["members"]):
+            continue
         rows.append(dict(id=d["id"], n=d["n"], m=d["m"], width=int(d["width"]),
                          edges=[tuple(e) for e in d["edges"]], layout=d.get("layout"),
                          names="; ".join(str(mm.get("name", "")) for mm in d["members"])[:120]))
-    rows.sort(key=lambda r: (r["n"], r["m"], r["id"]))
+    if order == "law":
+        rows.sort(key=lambda r: (law_log10_nodes(r["n"], r["width"]), r["n"], r["id"]))
+    else:
+        rows.sort(key=lambda r: (r["n"], r["m"], r["id"]))
     return rows
 
 
@@ -303,11 +323,12 @@ def split_decide_parallel(target: dict, k: int, workers: int, base_cap: int, tas
 
 # ---------------------------------------------------------------- the driver
 
-def drive(workers: int, base_cap: int, task_target: int, only: list[str] | None, until: dt.datetime | None) -> None:
+def drive(workers: int, base_cap: int, task_target: int, only: list[str] | None, until: dt.datetime | None,
+          order: str = "size") -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "witnesses").mkdir(exist_ok=True)
     done_ids = {r["id"] for r in _rows(RESULTS) if r["answer"] == "unsat"}
-    rows = targets()
+    rows = targets(order)
     if only:
         rows = [r for r in rows if r["id"] in only]
     rows = [r for r in rows if r["id"] not in done_ids]
@@ -377,11 +398,19 @@ def main() -> None:
     ap.add_argument("--target", type=int, default=64, help="tasks to open before running (breadth first)")
     ap.add_argument("--only", nargs="*")
     ap.add_argument("--until", help="ISO time: submit nothing that cannot run a minute")
+    ap.add_argument("--order", choices=["size", "law"], default="size",
+                    help="size: vertices then edges; law: Section 5's cost law 1.75 + 0.00705 n w (predicted nodes), cheapest first")
     ap.add_argument("--summary", action="store_true")
+    ap.add_argument("--list", action="store_true", help="print the queue in the chosen order with the law's prediction")
     a = ap.parse_args()
     if a.summary:
         summary(); return
-    drive(a.workers, int(a.cap), a.target, a.only, dt.datetime.fromisoformat(a.until) if a.until else None)
+    if a.list:
+        for r in targets(a.order):
+            lg = law_log10_nodes(r["n"], r["width"])
+            print(f"{r['id']} {r['names'][:40]:40} n={r['n']:4} m={r['m']:5} w={r['width']:3} law log10 nodes {lg:5.1f} core-days {10**lg*0.65e-6/86400:9.3g}")
+        return
+    drive(a.workers, int(a.cap), a.target, a.only, dt.datetime.fromisoformat(a.until) if a.until else None, a.order)
 
 
 if __name__ == "__main__":
