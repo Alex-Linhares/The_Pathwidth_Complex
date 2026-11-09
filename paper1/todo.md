@@ -199,6 +199,16 @@ pass (the hypercube and Mycielski theorems were missing from
       2026-11-09 when the scaling run on Random-200-200-10-5 (200 vertices) crashed
       and the graph split's open-class queue would have crashed at its first class
       above 128 (most of the 325 are). Until then `graph_split.py` filters n <= 128.
+- [ ] **Find the memo optimum before raising the default** (owner, 2026-11-09): a sweep
+      of the memo limit over about ten proved graphs of the kinds on record (Rome, PACE,
+      HB, named) at 2^22, 2^24, 2^26 and, with the C table's 2^26-slot cap raised, 2^28,
+      recording nodes, time and peak RSS; the questions are whether the knee always sits
+      near the refutation's distinct-state count (49M on grafo8793.100; the saving
+      saturates there) and whether a fixed default or an adaptive one (double the table
+      when it fills) is the better rule. Known so far: 4M x 16 B = 64 MB = this CPU's L3,
+      which is why the default is fast per node; a 1.1 GB table is 40% slower per node
+      where it saves nothing (Higman–Sims) and 8-11x faster where it does (two Rome
+      graphs). A few single-core hours on proved instances: needs the owner's go.
 - [ ] **Raise the default memo limit** (proposed, not applied; owner's decision): from
       4,000,000 to 64,000,000 states in `pathwidth_solver/cli/pathwidth.c`,
       `satisfiability/native.py` (`decide_native`, `split_decide`) and
