@@ -1,0 +1,5 @@
+flags {'subset_rule': True, 'definite_move': True, 'restrict': False, 'better_move': True, 'better_move_dominators': 0, 'old_move': True, 'fan_order': 'index', 'repaired_rules': True}
+sequential memo=False: unsat 9.021e+08 nodes 453 s
+sequential memo=True: unsat 8.419e+08 nodes 270 s
+split(64 tasks) memo=False: unsat 9.021e+08 nodes (tasks 87, edges 88) 264 s
+split(64 tasks) memo=True: unsat 1.191e+08 nodes (tasks 87, edges 88) 64 s
