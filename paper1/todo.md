@@ -248,6 +248,12 @@ pass (the hypercube and Mycielski theorems were missing from
       1979, Grohe & Marx 2009, Hatzel et al. 2022, Kinnersley & Langston 1994,
       Megiddo et al. 1988, Tamaki 2022, Dell et al. 2016/2017; open links in
       `literature/MISSING.md` under "Pathwidth lower bounds and NP ∩ coNP".
+- [ ] **Dataset rebuild: three closures on record not yet in the dataset** — BalancedTree_3_5
+      (branch lemma, loop0013), NY_13 (85-vertex minor, loop0013; the dataset row is
+      `certified:minor` already — check) and **can_292 = 22** (2026-11-09, the rebuilt program;
+      `reports/scratch/graph_split/can292/`, verified certificate; the dataset says `solution 23`,
+      so the recorded width was one too high). Section 5's graph table (`tables/graphs.tex`, written
+      by hand) and the open-class counts should move with it.
 - [ ] **Dataset table drifted from the prose**: regenerating `tables/dataset.tex`
       on 2026-11-07 (after loop0013's pass 2 closed classes) moved PACE 2016
       open 37 -> 36, PACE 2017 open 54 -> 49, Rome open 1 -> 0, minor-certified
