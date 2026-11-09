@@ -199,6 +199,16 @@ pass (the hypercube and Mycielski theorems were missing from
       2026-11-09 when the scaling run on Random-200-200-10-5 (200 vertices) crashed
       and the graph split's open-class queue would have crashed at its first class
       above 128 (most of the 325 are). Until then `graph_split.py` filters n <= 128.
+- [ ] **Raise the default memo limit** (proposed, not applied; owner's decision): from
+      4,000,000 to 64,000,000 states in `pathwidth_solver/cli/pathwidth.c`,
+      `satisfiability/native.py` (`decide_native`, `split_decide`) and
+      `satisfiability/customer_search.py`; 1.1 GB per process at the C table's
+      2^26-slot cap (raise the cap too if the limit is to mean anything above 33M).
+      Measured 2026-11-09 (Section 5, Table tab:splitscale): grafo8793.100 254 s ->
+      33 s, grafo11458.100 3,585 s recorded -> 60 s, Higman–Sims and the PACE Gaifman
+      graph unchanged. Then: re-time (not re-prove) a sample of the hard Rome
+      refutations and the 125x125 split tasks to say how much of the recorded
+      core-hours was the memo.
 - [ ] **The memo limit is the sequential search's bottleneck on hard refutations**
       (2026-11-09, `reports/scratch/split_scaling/memo_diag.out`): on grafo8793.100
       (width 10) memo off gives 9.02e8 nodes sequential and split alike (as proved);

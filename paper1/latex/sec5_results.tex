@@ -174,6 +174,61 @@ algorithm has no parallel form in its authors' papers. All seven were refuted at
 core-hours each, 1,112.6 in total (Table~\ref{tab:split},
 Appendix~\ref{app:split}).
 
+\paragraph{Measured on graphs, and what the memo was hiding.} The split runs
+on graphs through the one-pattern-per-edge instance (Section~\ref{sec:pwsolver}),
+and Table~\ref{tab:splitscale} measures it on four graphs of proved pathwidth
+whose refutation takes minutes to an hour on one core: two Rome graphs, a PACE
+Gaifman graph and the Higman--Sims graph. Each is refuted three ways by the same
+engine under the same rules: on one core with the memo at its default limit of
+four million states, on one core with the limit raised to 64 million, and split
+at the root into about ninety tasks on sixteen workers, each task with a default
+memo of its own. The decomposition does not depend on the number of workers, so
+the split's node count is the same on one worker as on sixteen (checked on the
+first graph at 1, 2, 4, 8 and 16: identical nodes, wall time 58, 30, 15, 13 and
+14 seconds), and only the scheduling changes.
+
+The table says two things, and the second qualifies the first. On the dense
+Higman--Sims graph the split is parallelism and nothing else: the memo size
+changes neither the node count nor the time, and sixteen workers finish in 64
+seconds what one core finishes in 716, with ten of them busy on average. On
+the PACE graph the gain is a factor of 2.5, bounded not by the workers but by
+one root task that ran to its three-billion-node cap before it was split; the
+granularity of the split, not the core count, sets the speed-up there. On the
+two sparse Rome graphs, however, most of what the split gains is memory, not
+parallelism. With the default memo the sequential search revisits states it
+has already refuted: on \texttt{grafo8793.100} it visits $8.4\cdot10^{8}$
+nodes, on $4.9\cdot10^{7}$ distinct states, and raising the memo to 64
+million states, which costs 1.1~GB, brings the one-core time from 254 to 33
+seconds, against the split's 14; on \texttt{grafo11458.100} one core with the
+large memo is faster than sixteen workers with default memos. The memo table
+is open addressing at 16 bytes a slot, capped at $2^{26}$ slots in the C, so
+64 million is also its ceiling; the knee of the curve lies between 16 and 64
+million on these graphs. Every hard count in this paper, including the
+Rome refutations of Section~\ref{sec:pwsolver} and the 125-customer refutations
+of Table~\ref{tab:split}, was run with the default limit, and the recorded
+node counts are upper bounds on what the same search does with an adequate
+memo; the widths and proofs are unaffected, since the memo changes the cost
+of a run and never its answer~\leanref{split}. Raising the default is a change
+to the solver that we record here as measured and leave to the next version.
+What the table establishes about the split is therefore the honest form of the
+claim: it divides the wall-clock time of a refutation by the number of
+workers up to the granularity of its tasks, on top of, not instead of, an
+adequately sized memo, and on graphs where the memo is irrelevant the two
+coincide.
+
+\begin{table}[t]
+\centering\small
+\caption{The root split on graphs. The refutation of width minus one by one
+core with the engine's default memo limit (four million states), by one core
+with the limit raised to 64 million states (1.1~GB), and by the split on
+sixteen workers with a default memo per task: nodes and wall seconds, the
+split's summed task CPU seconds in brackets, and the two one-core times
+divided by the split's. The split's node count is identical at every worker
+count. Same engine, same rules, nice~19, other work on the machine.}
+\label{tab:splitscale}
+\resizebox{\linewidth}{!}{\input{tables/split_scaling}}
+\end{table}
+
 \paragraph{Two values never certified before.} The corpus also held two values that
 no method had certified: 25 for \texttt{Random-125-125-2-2\_0} and 21 for
 \texttt{Random-125-125-2-3\_0}. The same split refutes the value minus one on
@@ -368,8 +423,9 @@ which the search alone would have run to the cap, and on \texttt{myciel6},
 which \citet{CoudertMazauricNisse2016} report proving in about ten minutes on
 their machine, SageMath did not finish within the cap here while the minor
 step proved $\pw=38$ in 0.2 seconds. What the comparison does not measure is
-our parallel refutation (Section~\ref{sec:practice}): both solvers ran on one
-core, which is the only fair unit, and the split is a separate claim.
+our parallel refutation: both solvers ran on one core, which is the only fair
+unit, and the split is a separate claim, measured in Table~\ref{tab:splitscale}
+of Section~\ref{sec:practice}.
 
 Because the machine was loaded, the CPU-time cap is what makes the comparison
 fair, but it cannot make it exact: a process that is descheduled loses its

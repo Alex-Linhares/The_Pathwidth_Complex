@@ -21,7 +21,9 @@ comment which records it was made from.
 - `dataset.tex`      section 4: the dataset by collection
                      (`paper1/data/dataset/classes.csv.gz`, `index.csv.gz`);
 - `sage_paired.tex`  section 5: the paired head-to-head against SageMath's branch and bound
-                     (`paper1/data/sage_paired_600s.csv`, written by `pathwidth_solver/bench/sage_paired.py`).
+                     (`paper1/data/sage_paired_600s.csv`, written by `pathwidth_solver/bench/sage_paired.py`);
+- `split_scaling.tex` section 5: the root split on graphs, one core (two memo sizes) against 16 workers
+                     (`pathwidth_solver/bench/results/split_scaling.csv`, `pathwidth_solver/bench/split_scaling.py`).
 """
 
 from __future__ import annotations
@@ -390,9 +392,61 @@ def sage_paired_table() -> str:
     return _write("sage_paired.tex", "paper1/data/sage_paired_600s.csv (pathwidth_solver/bench/sage_paired.py, 2026-11-06/07)", body)
 
 
+def split_scaling_table() -> str:
+    """Section 5: the root split on graphs — one core (default memo, large memo) against 16 workers."""
+    rows = list(csv.DictReader(open(ROOT / "pathwidth_solver" / "bench" / "results" / "split_scaling.csv")))
+    names = {"pwc-14619": "\\texttt{grafo8793.100} (Rome)", "pwc-06210": "\\texttt{grafo11458.100} (Rome)",
+             "pwc-17699": "\\texttt{atco\\_enc2} Gaifman (PACE)", "pwc-15987": "Higman--Sims"}
+    order = ["pwc-14619", "pwc-06210", "pwc-17699", "pwc-15987"]
+
+    def pick(cid, mode, workers=None, memo=None):
+        for r in rows:
+            if r["id"] != cid or r["mode"] != mode:
+                continue
+            if workers is not None and int(r["workers"]) != workers:
+                continue
+            if memo is not None and int(float(r["memo_limit"] or 0)) not in memo:
+                continue
+            return r
+        return None
+
+    def cell(r, what):
+        if r is None:
+            return "--"
+        if what == "nodes":
+            return f"${float(r['nodes']):.2g}$".replace("e+0", r"\cdot10^{").replace("e+", r"\cdot10^{") + ("}" if "10^{" in f"${float(r['nodes']):.2g}$".replace("e+0", r"\cdot10^{") else "")
+        if what == "s":
+            return _n(int(round(float(r["wall_s"]))))
+        if what == "cpu":
+            return _n(int(round(float(r["cpu_s"]))))
+
+    def sci(x):
+        m, e = f"{x:.2e}".split("e")
+        return f"${m}\\cdot10^{{{int(e)}}}$"
+
+    body = ["% One row per graph: the refutation of width-1 by one core with the engine's default memo (4,000,000 states), by one core",
+            "% with a 64,000,000-state memo (1.1 GB), and by the root split on 16 workers (default memo per task): nodes and seconds",
+            "% (wall; the split's summed task CPU in brackets). Speed-up columns: wall of the one-core runs over the split's wall.",
+            r"\begin{tabular}{@{}lrrrrrrrrr@{}}", r"\toprule",
+            r"graph & $|V|$ & $\pw$ & \multicolumn{2}{c}{one core, memo $4\cdot10^6$} & \multicolumn{2}{c}{one core, memo $6.4\cdot10^7$} & \multicolumn{2}{c}{16 workers} & speed-up \\",
+            r" & & & nodes & s & nodes & s & nodes & s (CPU) & default / large \\", r"\midrule"]
+    for cid in order:
+        s4 = pick(cid, "sequential", memo={4000000, 4194304})
+        s64 = pick(cid, "sequential", memo={64000000, 67108864})
+        sp = pick(cid, "split", workers=16)
+        n = (s4 or s64 or sp)["n"]; w = (s4 or s64 or sp)["width"]
+        su4 = f"{float(s4['wall_s'])/float(sp['wall_s']):.0f}" if s4 and sp else "--"
+        su64 = f"{float(s64['wall_s'])/float(sp['wall_s']):.1f}" if s64 and sp else "--"
+        body.append(f"{names[cid]} & {n} & {w} & {sci(float(s4['nodes'])) if s4 else '--'} & {cell(s4,'s')} & "
+                    f"{sci(float(s64['nodes'])) if s64 else '--'} & {cell(s64,'s')} & {sci(float(sp['nodes'])) if sp else '--'} & "
+                    f"{cell(sp,'s')} ({cell(sp,'cpu')}) & {su4} / {su64} \\\\")
+    body += [r"\bottomrule", r"\end{tabular}"]
+    return _write("split_scaling.tex", "pathwidth_solver/bench/results/split_scaling.csv (pathwidth_solver/bench/split_scaling.py, 2026-11-09)", body)
+
+
 def main() -> None:
     for f in (names_table, periods_table, communities_table, cost_table, split_table, certificates_table, dataset_table,
-              excess_table, sage_paired_table):
+              excess_table, sage_paired_table, split_scaling_table):
         text = f()
         print(text.splitlines()[0])
 

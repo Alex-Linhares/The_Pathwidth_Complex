@@ -1695,6 +1695,22 @@ certificate unless NP = coNP, the unconditional binomial floor of a top-down
 lattice search (complementation identifies the two good directions), and that
 connected frames are blind to pw > tw. Nothing re-solved; about 45 core-hours.
 
+**The root split on graphs, and the memo (2026-11-09).** `pathwidth_solver/bench/graph_split.py`
+(adapter: one customer per vertex, one pattern per edge, so a refutation of MOSP <= k is
+pw >= k; the proved split of `paper1/solver_fix_split.py`; the native split takes at most
+128 vertices). The open classes smallest first: the Foster graph (90 vertices, width 20)
+absorbed 153 core-hours on 16 workers with none of its 90 root subtrees finished,
+consistent with Section 5's cost law (1e14 nodes; every open class >= 1e14); stopped by
+the owner. The speed-up measured instead (`bench/split_scaling.py`, Section 5 Table
+tab:splitscale): on Higman–Sims 16 workers = 11x (pure parallelism); on the PACE Gaifman
+graph 2.5x (one root task at its cap); on the Rome graphs the gain is mostly **memory**:
+the engine's default memo limit of 4,000,000 states is saturated on hard refutations
+(grafo8793.100: 8.4e8 nodes at 4M, 4.9e7 at 64M — 254 s -> 33 s on one core, 1.1 GB;
+grafo11458.100: 3,585 s recorded -> 60 s), so every hard count on record is an upper
+bound on the search's work with an adequate memo. Raising the default is proposed in
+`paper1/todo.md`, not applied. Widths and proofs unaffected (the memo changes cost, never
+the answer, `Search/Split.lean`).
+
 **Unrelated to the plan:**
 - Fix the pathwidth SAT encoding variable ID collision bug in `encoding.py`.
 - ~~Becceneri, Yanasse & Soma (2004) is still missing~~ — **obtained 2026-09-27**,
