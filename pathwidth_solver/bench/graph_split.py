@@ -123,12 +123,17 @@ def law_log10_nodes(n: int, w: int) -> float:
     return 1.75 + 0.00705 * n * w
 
 
+MAX_SPLIT_VERTICES = 128   # native.split_expand / split_decide exist only for the two-word (<= 128 customer) engine
+
+
 def targets(order: str = "size") -> list[dict]:
     rows = []
     for line in gzip.open(DATASET, "rt"):
         d = json.loads(line)
         if d["provenance"].startswith("certified"):
             continue
+        if d["n"] > MAX_SPLIT_VERTICES:
+            continue   # beyond the native split's reach; see paper1/todo.md (extend cs_split_* to the wider engines)
         if d["id"] in CLOSED_ON_RECORD or any(any(c in str(mm.get("name", "")) for c in CLOSED_NAMES) for mm in d["members"]):
             continue
         rows.append(dict(id=d["id"], n=d["n"], m=d["m"], width=int(d["width"]),
@@ -181,6 +186,8 @@ def split_decide_parallel(target: dict, k: int, workers: int, base_cap: int, tas
     from paper1.solver_fix_split import Node, root, expand, csearch_flags
     from satisfiability.heuristics import _neighbour_masks
     n, edges, cid = target["n"], target["edges"], target["id"]
+    if n > MAX_SPLIT_VERTICES:
+        raise ValueError(f"{cid}: {n} vertices; the native split handles at most {MAX_SPLIT_VERTICES}")
     inst = graph_to_instance(n, edges, cid)
     flags = csearch_flags(inst)
     masks = _neighbour_masks(inst)

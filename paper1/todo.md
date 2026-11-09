@@ -193,6 +193,20 @@ pass (the hypercube and Mycielski theorems were missing from
       works on MOSP instances, so either an adapter that writes a graph as a
       MOSP instance with one pattern per edge (its customer graph is the graph,
       Theorem~thm:mosp) or a graph-side split in `pathwidth_solver/`.
+- [ ] **Extend the native split to graphs above 128 vertices.** `cs_split_expand` /
+      `cs_split_decide` (`satisfiability/native.py`, `_MAX_CUSTOMERS = 128`) exist only
+      for the two-word engine; `decide` has the w4/w8/w16 variants to 1,024. Found
+      2026-11-09 when the scaling run on Random-200-200-10-5 (200 vertices) crashed
+      and the graph split's open-class queue would have crashed at its first class
+      above 128 (most of the 325 are). Until then `graph_split.py` filters n <= 128.
+- [ ] **The memo limit is the sequential search's bottleneck on hard refutations**
+      (2026-11-09, `reports/scratch/split_scaling/memo_diag.out`): on grafo8793.100
+      (width 10) memo off gives 9.02e8 nodes sequential and split alike (as proved);
+      memo on gives 8.42e8 sequential but 1.19e8 for the split's 87 tasks with a
+      fresh 4M-entry memo each — the single memo saturates. A sweep of
+      `memo_limit` on the sequential run is in `memo_limit.out`. If a larger memo
+      recovers the split's count, the paper's "speed-up" must separate the two
+      effects (memory and parallelism), and the sequential default should change.
 - [ ] **Appendix F: the NP ∩ coNP paragraph and two citations** (from
       `reports/pathwidth_np_conp.md` §7, 2026-11-07): write the six safe
       sentences (pw ≥ k+1 is coNP-complete, so a short certificate on every
