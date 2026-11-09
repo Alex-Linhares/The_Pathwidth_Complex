@@ -129,6 +129,12 @@ static void graph_free(graph *g) { free(g->m); g->m = NULL; }
 
 static long long engine_calls = 0;
 #define MEMO_LIMIT 64000000LL   /* memo states; see decide() below */
+/* -b: the better move (Chu & Stuckey's Theorem 2, our corrected form). 0 = off (the
+ * program's historical configuration, every count on record); 1 = on, every earlier
+ * survivor a dominator (the `csearch` configuration of the MOSP runs); 2 = auto, on
+ * when the mean degree is at most 5 (`sparse_enough_for_better_move` on the
+ * one-pattern-per-edge instance: patterns per customer = degree). */
+static int better_move_mode = 0;
 
 /* search.decide -> native.decide_native with the solver's default flags:
  * subset rule, definite move, old move and memo on, better move off,
@@ -145,8 +151,11 @@ static int decide(const graph *g, int k, int restrict_frontier, long long max_no
     int words = n <= 128 ? 2 : n <= 256 ? 4 : n <= 512 ? 8 : n <= 1024 ? 16 : 0;
     if (!words) fatal("decide called on more than 1024 vertices");
     uint64_t *packed = xcalloc((size_t) n * (size_t) words, sizeof(uint64_t));
+    long long degsum = 0;
     for (int v = 0; v < n; v++)
-        for (int w = 0; w < g->nw; w++) packed[(size_t) v * words + w] = row(g, v)[w];
+        for (int w = 0; w < g->nw; w++) { packed[(size_t) v * words + w] = row(g, v)[w]; degsum += __builtin_popcountll(row(g, v)[w]); }
+    int bm = better_move_mode == 1 ? 1 : better_move_mode == 2 ? ((double) degsum / n <= 5.0) : 0;
+    int dominators = bm ? 0 : 4;
     /* The Python passes max(0, deadline - now) seconds, and the engine reads
      * 0 as "no deadline", so a call made after its deadline would run without
      * one. The smallest positive budget is used instead: the engine then
@@ -161,7 +170,7 @@ static int decide(const graph *g, int k, int restrict_frontier, long long max_no
     int *path = xmalloc(sizeof(int) * (size_t) n);
     switch (words) {
 #define CALL(W) status = csw_decide_##W(n, k, packed, max_nodes, seconds, 1, 1, 1, restrict_frontier, \
-                                        MEMO_LIMIT, 0, 4, 1, 0, 0, 1, path, nodes, &len); break
+                                        MEMO_LIMIT, bm, dominators, 1, 0, 0, 1, path, nodes, &len); break
     case 2: CALL(2);
     case 4: CALL(4);
     case 8: CALL(8);
@@ -1035,7 +1044,7 @@ static int parse_graph6(const char *s, size_t len, graph *out, const char **err)
 
 static void usage(FILE *f) {
     fprintf(f,
-        "usage: pathwidth [-t seconds] [-n nodes] [-l] [-v] < graphs.g6\n"
+        "usage: pathwidth [-t seconds] [-n nodes] [-l] [-v] [-b|-B] < graphs.g6\n"
         "  Reads graph6 strings, one per line, and prints for each graph\n"
         "    pathwidth <w> <status>\n"
         "  with status refutation | bound | minor (w is proved) or upper (budget ran\n"
@@ -1045,6 +1054,8 @@ static void usage(FILE *f) {
         "  -l          also print 'layout v1 ... vn', a vertex order (0-based) of\n"
         "              vertex separation w, checked before printing\n"
         "  -v          lower bound, starting upper bound, nodes and seconds on stderr\n"
+        "  -b          better move on (Theorem 2, corrected form; off by default, as in\n"
+        "              every count on record); -B: on when the mean degree is <= 5\n"
         "  -u file     start from this closing order (0-based, the vertex closed\n"
         "              first first); its width, recomputed, is the starting upper\n"
         "              bound; connected graphs only\n"
@@ -1124,6 +1135,10 @@ int main(int argc, char **argv) {
             max_nodes = strtoll(argv[++i], &end, 10);
             if (*end || max_nodes < 0) { usage(stderr); return 1; }
             if (max_nodes == 0) max_nodes = NO_LIMIT;
+        } else if (!strcmp(a, "-b")) {
+            better_move_mode = 1;
+        } else if (!strcmp(a, "-B")) {
+            better_move_mode = 2;
         } else if (!strcmp(a, "-l")) {
             print_layout = 1;
         } else if (!strcmp(a, "-v")) {

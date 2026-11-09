@@ -206,14 +206,20 @@ nodes and the time, and one core with the large memo, at 60 seconds, is faster
 than sixteen workers with default memos, at 69. The memo table
 is open addressing at 16 bytes a slot, capped at $2^{26}$ slots in the C, so
 64 million is also its ceiling; the knee of the curve lies between 16 and 64
-million on these graphs. Every hard count in this paper, including the
-Rome refutations of Section~\ref{sec:pwsolver} and the 125-customer refutations
-of Table~\ref{tab:split}, was run with the default limit, and the recorded
-node counts are upper bounds on what the same search does with an adequate
-memo; the widths and proofs are unaffected, since the memo changes the cost
-of a run and never its answer~\leanref{split}. On this measurement the default is now 64 million states in every entry
-point of the solver, the C program, the native layer and the Python search,
-with the 40 percent on dense graphs as its known price.
+million on these graphs. Every hard count in this paper was run under such a limit: the MOSP
+refutations of Table~\ref{tab:split} with the default of four million states,
+and the graph program of Section~\ref{sec:pwsolver} with a table capped at
+512~MB, which at its load rule holds 23.5 million states on graphs of up to
+128 vertices and fewer above, whatever the limit says. The recorded node
+counts are therefore upper bounds on what the same search does with an
+adequate memo; the widths and proofs are unaffected, since the memo changes
+the cost of a run and never its answer~\leanref{split}. On this measurement
+the default is now 64 million states in every entry point of the solver and
+the graph program's table cap is 2~GB. The shipped program then refutes
+\texttt{grafo8793.100} in 40 seconds and 53 million nodes with its default
+rules, where its recorded run took 2,678 seconds and $8.9\cdot10^{9}$
+nodes, and the better move, on or off, makes no difference to it there; the
+40 percent on dense graphs is the known price.
 What the table establishes about the split is therefore the honest form of the
 claim: it divides the wall-clock time of a refutation by the number of
 workers up to the granularity of its tasks, on top of, not instead of, an

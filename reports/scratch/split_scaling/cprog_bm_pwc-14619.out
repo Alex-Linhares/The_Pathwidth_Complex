@@ -1,0 +1,3 @@
+pathwidth 10 refutation
+line 1: n=100 width=10 status=refutation lower=9 upper_start=10 nodes=294628290 minor_nodes=19395 upper_bound_nodes=6524 engine_calls=17 seconds=243.621
+pwc-14619 -b: 243.62 s wall, 525924 KB peak

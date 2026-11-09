@@ -1709,9 +1709,16 @@ the engine's default memo limit of 4,000,000 states is saturated on hard refutat
 grafo11458.100: 3,585 s recorded -> 60 s), so every hard count on record is an upper
 bound on the search's work with an adequate memo. **The default is 64,000,000 since 2026-11-09**
 (owner's decision on the measurement) in `pathwidth_solver/cli/pathwidth.c`,
-`satisfiability/native.py` and `satisfiability/customer_search.py`; the C table is capped at
-2^26 slots (1.1 GB); a larger table costs up to 40% per node where the memo saves nothing
-(Higman–Sims). Node counts recorded before that date were taken at 4,000,000 and are not
+`satisfiability/native.py` and `satisfiability/customer_search.py`; the MOSP engine's table is
+capped at 2^26 slots (1.1 GB); **the graph engine (`cli/closing_search_w.c`) had its table
+capped at 512 MB — 23.5M states at 16-byte slots, fewer for the wider word counts — so the
+shipped `pathwidth` program never held more than that whatever the limit; the cap is 2 GB
+since the same day** (`MEMO_BYTES_CAP`), and the program refutes grafo8793.100 in 40 s / 5.3e7
+nodes against 2,678 s / 8.9e9 recorded (the better move, now `-b`/`-B` options, off by
+default, changes nothing there). A larger table costs up to 40% per node where the memo
+saves nothing (Higman–Sims). The cost law of Section 5 (1.75 + 0.00705 n w) was fitted on
+counts taken under the 512 MB cap and overstates the new solver; the Foster run of this
+morning used 4M memos per task. Node counts recorded before that date were taken at 4,000,000 and are not
 comparable to new ones on hard refutations. Widths and proofs unaffected (the memo changes cost, never
 the answer, `Search/Split.lean`).
 

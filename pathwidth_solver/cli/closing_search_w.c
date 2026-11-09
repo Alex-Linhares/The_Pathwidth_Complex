@@ -25,6 +25,9 @@
 #include <string.h>
 #include <time.h>
 
+#ifndef MEMO_BYTES_CAP
+#define MEMO_BYTES_CAP ((size_t) 2 << 30)   /* 2 GB per search; 2^27 slots of 16 bytes */
+#endif
 #ifndef WORDS
 #define WORDS 2
 #endif
@@ -431,10 +434,14 @@ int csw_decide(int n, int k,
 
     if (use_memo) {
         /* sized as the 128-bit version, then capped so the table stays under
-         * ~512 MB whatever the word count */
+         * MEMO_BYTES_CAP whatever the word count. The cap was 512 MB until
+         * 2026-11-09, which with 16-byte slots is 2^25 slots and, at the 70%
+         * load rule below, 23.5M states: the shipped program never held more
+         * than that whatever memo_limit said, and a Rome refutation of 49M
+         * distinct states ran 6x the nodes (paper 1, Section 5). */
         size_t capacity = 1u << 20;
-        while (capacity < (size_t) memo_limit * 2 && capacity < (1u << 26)) capacity <<= 1;
-        size_t max_slots = ((size_t) 512 << 20) / sizeof(set_t);
+        while (capacity < (size_t) memo_limit * 2 && capacity < ((size_t) 1 << 28)) capacity <<= 1;
+        size_t max_slots = MEMO_BYTES_CAP / sizeof(set_t);
         while (capacity > max_slots && capacity > (1u << 16)) capacity >>= 1;
         size_t limit = (size_t) memo_limit;
         if (limit * 10 > capacity * 7) limit = capacity * 7 / 10;
