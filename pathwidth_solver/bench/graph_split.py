@@ -54,7 +54,7 @@ OUT = ROOT / "reports" / "scratch" / "graph_split"
 TASKS = OUT / "tasks.csv"
 RESULTS = OUT / "results.csv"
 DATASET = ROOT / "paper1" / "data" / "dataset" / "pathwidth_dataset.jsonl.gz"
-TASK_FIELDS = ["id", "k", "kind", "key", "children", "cap", "status", "nodes", "seconds", "started", "finished", "witness"]
+TASK_FIELDS = ["id", "k", "kind", "key", "children", "cap", "status", "nodes", "seconds", "cpu", "started", "finished", "witness"]
 RESULT_FIELDS = ["id", "names", "n", "m", "width_recorded", "k", "answer", "pathwidth", "new_width", "tasks", "expanded",
                  "edges", "task_nodes", "waste", "core_seconds", "wall_seconds", "started", "finished"]
 
@@ -155,9 +155,10 @@ def _task(args):
     from paper1.solver_fix_split import Node, run_task
     k, key, closed, opened, seen, prefix, flags, cap = args
     started = dt.datetime.now().isoformat(timespec="seconds")
-    t0 = time.monotonic()
+    t0 = time.monotonic(); c0 = time.process_time()
     ans = run_task(_W["inst"], k, Node(key, closed, opened, seen, prefix), flags, max_nodes=cap, seconds=None)
     return dict(key=key, status=ans.status, nodes=ans.nodes, seconds=round(time.monotonic() - t0, 3),
+                cpu=round(time.process_time() - c0, 3),
                 witness=ans.order, started=started, finished=dt.datetime.now().isoformat(timespec="seconds"))
 
 
@@ -274,7 +275,9 @@ def split_decide_parallel(target: dict, k: int, workers: int, base_cap: int, tas
                 out = fut.result()
                 counts["core_seconds"] += out["seconds"]
                 base = dict(id=cid, k=k, kind="task", key=key_of(node), cap=cap_at(node), status=out["status"],
-                            nodes=out["nodes"], seconds=out["seconds"], started=out["started"], finished=out["finished"])
+                            nodes=out["nodes"], seconds=out["seconds"], cpu=out.get("cpu", ""), started=out["started"],
+                            finished=out["finished"])
+                counts["cpu_seconds"] = counts.get("cpu_seconds", 0.0) + float(out.get("cpu") or 0)
                 if out["status"] == "unsat":
                     done[key_of(node)] = out["nodes"]
                     counts["task_nodes"] += out["nodes"]; counts["tasks"] += 1
