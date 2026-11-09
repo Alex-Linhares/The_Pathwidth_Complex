@@ -189,8 +189,10 @@ first graph at 1, 2, 4, 8 and 16: identical nodes, wall time 58, 30, 15, 13 and
 
 The table says two things, and the second qualifies the first. On the dense
 Higman--Sims graph the split is parallelism and nothing else: the memo size
-changes neither the node count nor the time, and sixteen workers finish in 64
-seconds what one core finishes in 716, with ten of them busy on average. On
+does not change the node count, and changes the time only through the larger
+table's cache misses, 519 seconds with the default against 716 with the large
+one, while sixteen workers finish in 64 seconds, with ten of them busy on
+average. On
 the PACE graph the gain is a factor of 2.5, bounded not by the workers but by
 one root task that ran to its three-billion-node cap before it was split; the
 granularity of the split, not the core count, sets the speed-up there. On the
@@ -199,8 +201,9 @@ parallelism. With the default memo the sequential search revisits states it
 has already refuted: on \texttt{grafo8793.100} it visits $8.4\cdot10^{8}$
 nodes, on $4.9\cdot10^{7}$ distinct states, and raising the memo to 64
 million states, which costs 1.1~GB, brings the one-core time from 254 to 33
-seconds, against the split's 14; on \texttt{grafo11458.100} one core with the
-large memo is faster than sixteen workers with default memos. The memo table
+seconds, against the split's 14; on \texttt{grafo11458.100} the default memo costs one core eleven times the
+nodes and the time, and one core with the large memo, at 60 seconds, is faster
+than sixteen workers with default memos, at 69. The memo table
 is open addressing at 16 bytes a slot, capped at $2^{26}$ slots in the C, so
 64 million is also its ceiling; the knee of the curve lies between 16 and 64
 million on these graphs. Every hard count in this paper, including the
