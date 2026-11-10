@@ -248,6 +248,16 @@ pass (the hypercube and Mycielski theorems were missing from
       1979, Grohe & Marx 2009, Hatzel et al. 2022, Kinnersley & Langston 1994,
       Megiddo et al. 1988, Tamaki 2022, Dell et al. 2016/2017; open links in
       `literature/MISSING.md` under "Pathwidth lower bounds and NP ∩ coNP".
+- [ ] **`_lower_bound`: the expansion bound runs on every call although the docstring, CLAUDE.md
+      and the paper say "off by default"** (found by the integration agent, 2026-11-10): the
+      code calls `mosp_lower_bound(instance, max_t=8, time_budget=None)` unconditionally (no
+      `if expansion_budget is not None` guard), so the September decision (off: slower on every
+      one of the 25 hardest, `reports/expansion_bound.md` §6) is not what runs; it attains the
+      floor on 1,329 corpus instances, and the 77.0% tightness and the spectral numbers of
+      `reports/spectral_floor_integration.md` were measured with it on. Owner's call: restore
+      "off by default" (guard on the budget) or change the record to "on"; either way the
+      docstring, CLAUDE.md and Section 5 must agree with the code. Correctness unaffected
+      (validated, zero violations); only time.
 - [ ] **Formalise the spectral lower bound in Lean** (owner, 2026-11-10). The component
       entering `_lower_bound` and the dataset's `bound:spectral` floors rests on cited
       theorems and the corpus validation only: (i) the prefix-separator argument — a layout
