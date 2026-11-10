@@ -1,0 +1,3 @@
+{'instance_name': 'Random-100-100-4-1_0', 'n': 100, 'edges': 788, 'optimum': 46, 'harper_floor_max': 28, 'lp_harper': 27.999999999999993, 'status': 'optimal', 'n_vars': 19801, 'n_rows': 166059, 'seconds': 41.7}
+{'instance_name': 'Random-100-100-4-2_0', 'n': 100, 'edges': 952, 'optimum': 50, 'harper_floor_max': 34, 'lp_harper': 34.00000000000008, 'status': 'optimal', 'n_vars': 19801, 'n_rows': 198538, 'seconds': 138.2}
+{'instance_name': 'Random-125-125-4-1_0', 'n': 125, 'edges': 1063, 'optimum': 57, 'harper_floor_max': 29, 'lp_harper': 29.0, 'status': 'optimal', 'n_vars': 31001, 'n_rows': 279285, 'seconds': 125.7}

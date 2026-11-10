@@ -1,0 +1,1 @@
+atlas: 1253 graphs, 240 s; IP != DP on 0; IP with all cuts != DP on 0; a layout violating a cut on 0; LP (no cuts) max 0; |LP_harper - Harper| max 1.78e-15; |LP_all - Harper| max 7.99e-15; L exact on 1251: L > Harper + 1e-6 on 489, ceil(L) > Harper on 489, Harper < vs on 516, L = vs on 735

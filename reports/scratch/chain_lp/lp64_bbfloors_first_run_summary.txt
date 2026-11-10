@@ -1,0 +1,1 @@
+lp64: 64 instances in 372 s; provenance {'certified:refutation': 64}; LP no cuts max 0.00e+00; per-level floors reach Harper (max floor == harper_ref) on 0; |LP_harper - max floor| max 2.13e-14; |LP_all - max floor| max 4.11e-13; ceil(LP_all) > harper_ref on 0; reaches optimum on 0; median LP_all seconds 3.83, max 32.5

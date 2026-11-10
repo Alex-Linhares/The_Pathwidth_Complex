@@ -835,3 +835,39 @@ treewidth through one balanced separator (Chandran & Subramanian; Gima et al.;
 Chen, Wu & Li). The prefix-separator form in `learning/spectral_bound.py` is
 the obvious transfer and we found no prior statement of it; it is not claimed
 as new.
+
+## LP bounds for layout problems (2026-11-10)
+
+Precedent for `reports/chain_lp.md` (an LP relaxation of the nested-chain encoding
+of vertex separation with Harper's inequalities). Found by web search; none held,
+nothing downloaded.
+
+- **Caprara, A. & Salazar-González, J.-J.** (2005). Laying out sparse graphs with
+  provably minimum bandwidth. *INFORMS Journal on Computing* 17(3), 356–373.
+  DOI 10.1287/ijoc.1040.0083 (`https://pubsonline.informs.org/doi/10.1287/ijoc.1040.0083`;
+  Bologna record `https://cris.unibo.it/handle/11585/17058`). A new simple lower bound on
+  the bandwidth, an enumerative algorithm with integer-programming relaxations (24 of 30
+  literature instances under 200 nodes to proven optimality), and a method to compute the
+  density lower bound. The bound is computed through layered graphs with fixed positions
+  (per arXiv 1908.07584, which cites it). Not held.
+- **Caprara, A., Letchford, A. N. & Salazar-González, J.-J.** (2011). Decorous lower
+  bounds for minimum linear arrangement. *INFORMS Journal on Computing* 23(1), 26–40.
+  DOI 10.1287/ijoc.1100.0390. LP-based lower bounds from counting inequalities; improved
+  bounds on the MinLA benchmark (gd95c 443, gd96a 77,860). Open submitted version at
+  Lancaster eprints `https://eprints.lancs.ac.uk/id/eprint/45449` (PDF via
+  `https://core.ac.uk/download/1552183.pdf`). Not held.
+- **Mallach, S.** (2018). Linear ordering based MIP formulations for the vertex
+  separation or pathwidth problem. *Journal of Discrete Algorithms* 52–53, 156–168.
+  DOI 10.1016/j.jda.2018.11.012; conference version IWOCA 2017, LNCS 10765, 327–340,
+  DOI 10.1007/978-3-319-78825-8_27. **The direct prior statement**: its abstract says the
+  lower bound from the LP relaxations of the existing (position-based) vertex-separation
+  MIPs "is zero for any directed graph", and gives a linear-ordering-variable formulation
+  whose relaxation is non-zero whenever the pathwidth is. Our chain LP is of the first
+  kind and `reports/chain_lp.md` §1 proves the zero (and, with Harper cuts, exactly
+  Harper). Whether its linear-ordering relaxation exceeds Harper is not stated in the
+  abstract; the paper would settle it. Not held.
+- **Coudert, D.** (2016). A note on Integer Linear Programming formulations for linear
+  ordering problems on graphs. INRIA research report, HAL `hal-01271838`
+  (`https://hal.archives-ouvertes.fr/hal-01271838`, open). ILP formulations for pathwidth,
+  cutwidth, bandwidth, SumCut and MinLA; results for very sparse graphs on 16–24 vertices
+  (as characterised by arXiv 2301.03900). Not held.

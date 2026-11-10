@@ -1,0 +1,8 @@
+merged == harper_vs: 64 below: 0 ABOVE: 0
+Empty DataFrame
+Columns: [name, n, harper_vs, bb, merged, levels, cap]
+Index: []
+HS problem 1000 size 20 10 density  0.60 exact max 17 floor max 17 ok True
+HS problem 1016 size 20 10 density  0.65 exact max 17 floor max 17 ok True
+HS problem 1021 size 20 10 density  0.65 exact max 17 floor max 17 ok True
+DONE

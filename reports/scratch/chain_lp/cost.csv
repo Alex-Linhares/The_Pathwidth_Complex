@@ -1,0 +1,4 @@
+instance_name,n,edges,optimum,harper_floor_max,lp_harper,status,n_vars,n_rows,seconds
+Random-100-100-4-1_0,100,788,46,28,27.999999999999993,optimal,19801,166059,41.7
+Random-100-100-4-2_0,100,952,50,34,34.00000000000008,optimal,19801,198538,138.2
+Random-125-125-4-1_0,125,1063,57,29,29.0,optimal,31001,279285,125.7
