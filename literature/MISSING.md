@@ -788,3 +788,50 @@ links where they exist (nothing downloaded into `literature/`):
   45–50. DOI 10.1007/978-3-642-02777-2_6.
 - **Grohe, M.** (2016). Tangled up in blue (a survey on connectivity, decompositions, and
   tangles). arXiv 1605.06704 (open). Not read; optional.
+
+## Spectral bounds on vertex separation (2026-11-10)
+
+From the one-measurement test of eigenvalue lower bounds on vertex separation
+(`reports/spectral_bound.md`, `learning/spectral_bound.py`). Read online and
+cited, nothing downloaded into `literature/`:
+
+- **Helmberg, C., Mohar, B., Poljak, S. & Rendl, F.** (1995). A spectral approach to
+  bandwidth and separator problems in graphs. *Linear and Multilinear Algebra* 39(1–2),
+  73–90. [doi:10.1080/03081089508818381](https://doi.org/10.1080/03081089508818381).
+  Open reprint: [users.fmf.uni-lj.si/mohar/Reprints/1995/BM95_LMA39_Helmberg_BandwidthandSeparatorProblems.pdf](https://users.fmf.uni-lj.si/mohar/Reprints/1995/BM95_LMA39_Helmberg_BandwidthandSeparatorProblems.pdf)
+  (also at sfu.ca/~mohar). Theorem 1 (the cut bound `f(m₁, m₂)` in `λ₂, λₙ`),
+  Theorem 8 (bandwidth), **Theorem 11, eq. (20)**: a separator `S₃` between `S₁, S₂`
+  has `|S₃| ≥ 4 λₙ λ₂ |S₁||S₂| / (n (λₙ − λ₂)²)`; eq. (21) quotes Mohar & Poljak's
+  `|S₃| ≥ 4 λ₂ |S₁||S₂| / (Δ n − λ₂ |S₁ ∪ S₂|)` and eq. (22) says when (20) beats it.
+  Read in full for the measurement; worth holding (open).
+- **Gu, X. & Liu, M.** (2022). A tight lower bound on the matching number of graphs via
+  Laplacian eigenvalues. *European J. Combin.* 101, 103468.
+  [doi:10.1016/j.ejc.2021.103468](https://doi.org/10.1016/j.ejc.2021.103468).
+  [Google](https://www.google.com/search?q=Gu+Liu+%22A+tight+lower+bound+on+the+matching+number+of+graphs+via+Laplacian+eigenvalues%22).
+  Source of the separator inequality `|S| ≥ 2 λ₂ |X| / (λₙ − λ₂)` (`|X| ≤ |Y|`, no
+  `X–Y` edges) that Gima et al. 2025 quote as Lemma 4.1; used here through that
+  quotation and checked on every separator triple to 7 vertices. Not held.
+- **Chen, Wu & Li** (2027). An improved spectral lower bound for treewidth. *Inform.
+  Process. Lett.* 195, 106657. [doi:10.1016/j.ipl.2026.106657](https://doi.org/10.1016/j.ipl.2026.106657).
+  [Google](https://www.google.com/search?q=%22An+improved+spectral+lower+bound+for+treewidth%22+Chen+Wu+Li).
+  Found through Crossref (title, authors, venue only); the abstract was not
+  readable (Elsevier 403) and no arXiv version was found, so no formula is
+  recorded here. The latest step after Gima et al. 2025 (held); to obtain before
+  any further spectral work.
+- **Gima, T., Hanaka, T., Noro, K., Ono, H. & Otachi, Y.** (2024). On a spectral lower
+  bound of treewidth. *IEICE Trans. Inf. Syst.* E107-D(3), 328–330.
+  [doi:10.1587/transinf.2023FCL0002](https://doi.org/10.1587/transinf.2023FCL0002).
+  The intermediate bound (`max{4Δ + 3λ₂, 3Δ + 4.5λ₂}` in the denominator),
+  superseded by the held 2025 paper; for the citation only.
+- Already listed above under *Pathwidth lower bounds (2026-10-11)* and still
+  wanted: Mohar & Poljak (1993) (the original of eq. (21)), Juvan & Mohar (1992),
+  Alon & Milman (1985), Chandran & Subramanian (2003).
+
+What the search did not find: any published eigenvalue lower bound stated for
+vertex separation or pathwidth itself. Every spectral statement found is on a
+single separator (Helmberg et al.; Mohar & Poljak; Gu & Liu), on bandwidth,
+cutwidth or linear arrangement (Juvan & Mohar; Helmberg et al. Thm 8), or on
+treewidth through one balanced separator (Chandran & Subramanian; Gima et al.;
+Chen, Wu & Li). The prefix-separator form in `learning/spectral_bound.py` is
+the obvious transfer and we found no prior statement of it; it is not claimed
+as new.
