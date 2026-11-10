@@ -856,7 +856,7 @@ nothing downloaded.
   bounds on the MinLA benchmark (gd95c 443, gd96a 77,860). Open submitted version at
   Lancaster eprints `https://eprints.lancs.ac.uk/id/eprint/45449` (PDF via
   `https://core.ac.uk/download/1552183.pdf`). Not held.
-- **Mallach, S.** (2018). Linear ordering based MIP formulations for the vertex
+- **Mallach, S.** (2018). Linear ordering based MIP formulations for the vertex HELD (since 2026-09-28, `mallach_2018_linear_ordering_mip_vertex_separation_pathwidth.pdf`; see line 58).
   separation or pathwidth problem. *Journal of Discrete Algorithms* 52–53, 156–168.
   DOI 10.1016/j.jda.2018.11.012; conference version IWOCA 2017, LNCS 10765, 327–340,
   DOI 10.1007/978-3-319-78825-8_27. **The direct prior statement**: its abstract says the

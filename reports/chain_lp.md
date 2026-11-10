@@ -28,9 +28,10 @@ further cut families we could prove valid (boundary persistence across levels,
 the two upper bounds on `s`, and clique inequalities; §3), so every
 formulation built here returns `max_t Φ(t)`: fractional relaxation decouples
 the levels completely, and nothing in `(y, s)` that the uniform point
-satisfies can recouple them. Mallach (2018) states the bare fact for the
-position-based vertex-separation MIPs ("the lower bound … is zero for any
-directed graph"); the Harper-cut form, and that it equals Harper exactly, we
+satisfies can recouple them. Mallach (2018, Theorem 4.1, p. 159) states the
+bare fact for his `MIP_S`, which *is* this chain IP (nesting, size and the edge
+inequality), with the uniform point `p/n` as the witness — the paper is held
+(`literature/mallach_2018_...pdf`); the Harper-cut form, and that it equals Harper exactly, we
 found no prior statement of.
 
 | formulation | LP optimum (proved) | on the 64: `⌈b*⌉ > Harper` | reaches the optimum |
@@ -164,9 +165,9 @@ any LP ran on it; the test
 `test_floors_from_all_exact_levels_equal_the_exact_profile` pins the corrected
 rule to the exact profile.
 
-Mallach (2018, *J. Discrete Algorithms* 52–53, abstract) states that the LP
-relaxations of the position-based vertex-separation MIPs have lower bound
-zero for every graph, and gives a linear-ordering-variable formulation whose
+Mallach (2018, *J. Discrete Algorithms* 52–53, Theorem 4.1 — the paper is held)
+states that the LP relaxation of his `MIP_S`, the chain model itself, has lower
+bound zero for every graph (the position model likewise), and gives a linear-ordering-variable formulation whose
 relaxation is non-zero whenever the pathwidth is; we do not hold the paper
 and do not know whether that relaxation exceeds Harper anywhere
 (`literature/MISSING.md`). The brief's precedents, Caprara & Salazar-González
