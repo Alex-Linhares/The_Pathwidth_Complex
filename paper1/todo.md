@@ -265,12 +265,21 @@ pass (the hypercube and Mycielski theorems were missing from
       the Lean value matched to `learning.spectral_bound.spectral_graph_bound` on small
       graphs by `learning/sandwich.py`'s pinning stage. Until then the paper says the
       component is "not formalised", as the clique bound was before 2026-09-27.
-- [ ] **Dataset rebuild: three closures on record not yet in the dataset** — BalancedTree_3_5
-      (branch lemma, loop0013), NY_13 (85-vertex minor, loop0013; the dataset row is
-      `certified:minor` already — check) and **can_292 = 22** (2026-11-09, the rebuilt program;
-      `reports/scratch/graph_split/can292/`, verified certificate; the dataset says `solution 23`,
-      so the recorded width was one too high). Section 5's graph table (`tables/graphs.tex`, written
-      by hand) and the open-class counts should move with it.
+      *Status 2026-11-10*: the component is in `_lower_bound` (`satisfiability/mosp_solver.py::_spectral_floor`,
+      `BOUND_SOURCES` has `spectral`) and the nine dataset floors are written
+      (`reports/spectral_floor_integration.md`); both rest on the cited theorems and on the
+      corpus validation (0 of 6,376 certified optima violated, `--stage solver`), not on Lean.
+      The checker replays the prefix arithmetic from stated eigenvalues; nothing in Lean
+      states Theorems 1–3.
+- [x] **Dataset rebuild: three closures on record not yet in the dataset** — done 2026-11-10
+      with the spectral floors (`reports/spectral_floor_integration.md` §0): BalancedTree_3_5 is
+      `certified:theorem` (the nested branch-lemma certificate replayed by `dataset_check.py`),
+      can_292 is `certified:minor` at 22 (`graph_split/can292/results_can292.csv`), NY_13 was
+      `certified:minor` already. **Still to do**: Section 5's graph table (`tables/graphs.tex`,
+      written by hand) and the prose that quotes open-class counts; and the loop0013 pass-1
+      search floors (`13_pass1/pass1.csv`, `ladder_floor`/`search_floor`) are not folded as
+      dataset floors — they are not in the run format and their unit convention would need
+      pinning first; the dataset's `floor` on the other open classes is the C program's own.
 - [ ] **Dataset table drifted from the prose**: regenerating `tables/dataset.tex`
       on 2026-11-07 (after loop0013's pass 2 closed classes) moved PACE 2016
       open 37 -> 36, PACE 2017 open 54 -> 49, Rome open 1 -> 0, minor-certified

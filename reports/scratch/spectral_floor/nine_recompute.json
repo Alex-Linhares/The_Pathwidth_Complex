@@ -1,0 +1,216 @@
+{
+ "pwc-16016": {
+  "name": "NStarGraph_5",
+  "n": 120,
+  "m": 240,
+  "width": 28,
+  "prov": "solution",
+  "mu2": 0.9999999999999963,
+  "mun": 8.0,
+  "delta": 4,
+  "dmin": 4,
+  "graph": 24,
+  "t_star": 37,
+  "per": {
+   "mp": 24,
+   "hmpr": 15,
+   "gl": 15
+  },
+  "fam": {
+   "graph": 24,
+   "peel": 24,
+   "minor": 24,
+   "censored": false
+  },
+  "connected": true,
+  "seconds": 0.4
+ },
+ "pwc-16023": {
+  "name": "OddGraph_5",
+  "n": 126,
+  "m": 315,
+  "width": 41,
+  "prov": "solution",
+  "mu2": 1.999999999999995,
+  "mun": 9.000000000000004,
+  "delta": 5,
+  "dmin": 5,
+  "graph": 36,
+  "t_star": 36,
+  "per": {
+   "mp": 36,
+   "hmpr": 28,
+   "gl": 28
+  },
+  "fam": {
+   "graph": 36,
+   "peel": 36,
+   "minor": 36,
+   "censored": false
+  },
+  "connected": true,
+  "seconds": 0.3
+ },
+ "pwc-16064": {
+  "name": "Tutte12Cage",
+  "n": 126,
+  "m": 189,
+  "width": 26,
+  "prov": "solution",
+  "mu2": 0.5505102572168187,
+  "mun": 6.000000000000003,
+  "delta": 3,
+  "dmin": 3,
+  "graph": 20,
+  "t_star": 44,
+  "per": {
+   "mp": 20,
+   "hmpr": 12,
+   "gl": 12
+  },
+  "fam": {
+   "graph": 20,
+   "peel": 20,
+   "minor": 20,
+   "censored": false
+  },
+  "connected": true,
+  "seconds": 0.2
+ },
+ "pwc-15943": {
+  "name": "CameronGraph",
+  "n": 231,
+  "m": 3465,
+  "width": 161,
+  "prov": "solution",
+  "mu2": 20.999999999999947,
+  "mun": 33.000000000000085,
+  "delta": 30,
+  "dmin": 30,
+  "graph": 147,
+  "t_star": 36,
+  "per": {
+   "mp": 96,
+   "hmpr": 147,
+   "gl": 147
+  },
+  "fam": {
+   "graph": 147,
+   "peel": 147,
+   "minor": 147,
+   "censored": false
+  },
+  "connected": true,
+  "seconds": 6.0
+ },
+ "pwc-15995": {
+  "name": "HyperStarGraph_10_5",
+  "n": 252,
+  "m": 630,
+  "width": 62,
+  "prov": "solution",
+  "mu2": 0.9999999999999951,
+  "mun": 10.000000000000009,
+  "delta": 5,
+  "dmin": 5,
+  "graph": 42,
+  "t_star": 87,
+  "per": {
+   "mp": 42,
+   "hmpr": 26,
+   "gl": 26
+  },
+  "fam": {
+   "graph": 42,
+   "peel": 42,
+   "minor": 42,
+   "censored": false
+  },
+  "connected": true,
+  "seconds": 6.4
+ },
+ "pwc-17488": {
+  "name": "he048",
+  "n": 363,
+  "m": 2992,
+  "width": 122,
+  "prov": "solution",
+  "mu2": 4.138419193924787,
+  "mun": 24.79532308178455,
+  "delta": 23,
+  "dmin": 14,
+  "graph": 61,
+  "t_star": 134,
+  "per": {
+   "mp": 58,
+   "hmpr": 61,
+   "gl": 61
+  },
+  "fam": null,
+  "connected": true,
+  "seconds": 0.5
+ },
+ "pwc-15892": {
+  "name": "le450_5a",
+  "n": 450,
+  "m": 5714,
+  "width": 245,
+  "prov": "solution",
+  "mu2": 10.484470637608172,
+  "mun": 45.00873152706616,
+  "delta": 42,
+  "dmin": 13,
+  "graph": 110,
+  "t_star": 152,
+  "per": {
+   "mp": 110,
+   "hmpr": 105,
+   "gl": 105
+  },
+  "fam": null,
+  "connected": true,
+  "seconds": 1.4
+ },
+ "pwc-15893": {
+  "name": "le450_5b",
+  "n": 450,
+  "m": 5734,
+  "width": 261,
+  "prov": "solution",
+  "mu2": 10.306635427736941,
+  "mun": 44.747696504914416,
+  "delta": 42,
+  "dmin": 12,
+  "graph": 110,
+  "t_star": 161,
+  "per": {
+   "mp": 110,
+   "hmpr": 104,
+   "gl": 104
+  },
+  "fam": null,
+  "connected": true,
+  "seconds": 1.4
+ },
+ "pwc-15944": {
+  "name": "Cell120",
+  "n": 600,
+  "m": 1200,
+  "width": 67,
+  "prov": "solution",
+  "mu2": 0.145898033750278,
+  "mun": 6.8541019662496865,
+  "delta": 4,
+  "dmin": 4,
+  "graph": 22,
+  "t_star": 268,
+  "per": {
+   "mp": 22,
+   "hmpr": 13,
+   "gl": 13
+  },
+  "fam": null,
+  "connected": true,
+  "seconds": 3.1
+ }
+}

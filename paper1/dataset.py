@@ -34,6 +34,15 @@ Conventions.
   this module only regenerates the witness, with the search told to stop at
   the recorded width, and never upgrades a provenance by itself except where
   its own descent proves it (`run` on collections never run before).
+- **Floor** (since 2026-11-10): a `solution` record may carry `floor`, a
+  certified lower bound on its pathwidth below its width, with
+  `floor_evidence` (the run file it comes from) and, where the run wrote one,
+  `floor_certificate` (so far `spectral-prefix-1`, the eigenvalue
+  prefix-separator bound of `learning.spectral_bound`, which
+  `dataset_check.py` replays from the stated eigenvalues). The class stays
+  open; the floor says how far its interval is from closed. Floors are read
+  from the open-run files' `lower` column (`fold`, step 3) into
+  `floors.csv`, which `write` pairs with the witness it stores.
 
 Nothing here writes to `solutions/`.
 """
@@ -439,6 +448,8 @@ def layout_width(n: int, edges, layout) -> int:
 
 VALUES_CSV = OUT / "values.csv.gz"
 VALUE_FIELDS = ["source", "name", "width", "provenance", "evidence", "layout", "certificate"]
+FLOORS_CSV = OUT / "floors.csv"      # written by `fold`, read by `write`: certified floors of unproved classes
+FLOOR_FIELDS = ["cls", "id", "floor", "floor_evidence", "floor_certificate"]
 
 
 def stage_values() -> None:
@@ -522,17 +533,35 @@ OPEN_RUNS = [SCRATCH / "dataset_open" / f for f in
     SCRATCH / "obstruction_search" / "07_open" / "results_obstruction.csv",       # loop0013 item 07: NY_13 = 10 by an
     SCRATCH / "obstruction_search" / "12_tenmin" / "open" / "results_obstruction.csv",   # 85-vertex minor; ex139 = 10 (12_tenmin);
     SCRATCH / "obstruction_search" / "13_pass1" / "results_pass1.csv",           # four more by pass 1 (2026-11-03);
-    SCRATCH / "obstruction_search" / "13_pass1" / "results_pass2.csv"]           # pass 2 (one hour each, 2026-11-03). Each row's
+    SCRATCH / "obstruction_search" / "13_pass1" / "results_pass2.csv",           # pass 2 (one hour each, 2026-11-03). Each row's
     # `minor` column carries the contraction certificate (proof=minor, checker-verified). The BalancedTree_3_5 rows
-    # (proof=theorem, the branch lemma) fold as `solution` at the recorded width and are therefore skipped: a
-    # `certified:theorem` row needs dataset_check.py to know the branch-lemma case (07_open/open_runs_proposal.diff).
+    # (proof=theorem, the branch lemma) fold as `certified:theorem` since 2026-11-10: the `minor` column names the
+    # nested branch-lemma certificate, which dataset_check.py replays (07_open/open_runs_proposal.diff, applied).
+    SCRATCH / "graph_split" / "can292" / "results_can292.csv",                   # can_292 = 22 (2026-11-09, the rebuilt
+    #                                                                              program; a 146-vertex minor, verified)
+    SCRATCH / "spectral_floor" / "results_spectral.csv"]                         # the spectral floor on the nine open
+    # classes where it is the best floor on record (reports/layout_lp_literature.md §8; proof empty, the class stays
+    # open; `lower` the floor and `minor` its `spectral-prefix-1` certificate, which dataset_check.py replays).
+# A `solution` row's `lower` column -- the run's own floor in pathwidth units (the C program's `lower=`: degeneracy,
+# contraction degeneracy or a minor refutation short of width - 1; or a certificate-carrying floor such as the
+# spectral rows above) -- is carried onto the class as its `floor`, with the file as evidence and the certificate
+# where the row has one. Every open-run file writes the column; before 2026-11-10 nothing read it.
 GRIDS = SCRATCH / "grids_theorem" / "grids.csv"
 BENCH_ON = sorted((SCRATCH / "minor_bound").glob("bench_*_on.csv"))   # the minor-step benchmark runs
 ROME_WITNESS = SCRATCH / "rome_witness" / "results.csv"   # witnesses for minor-proved widths kept by no run
 GRID_THEOREM = dict(family="grid",
                     theorem="Ellis & Warren (2008), Theorem 4.1: the (h, w)-grid has pathwidth min(h, w)",
                     lean="MOSPFormalization.pathwidth_grid (lean/MOSPFormalization/Grid.lean)")
-PROOF_PROV = {"refutation": "certified:refutation", "minor": "certified:minor", "bound": "certified:bound"}
+PROOF_PROV = {"refutation": "certified:refutation", "minor": "certified:minor", "bound": "certified:bound",
+              "theorem": "certified:theorem"}   # a theorem row's `minor` column names a certificate dataset_check.py
+                                                # knows: the branch lemma (`obstruction-branch-1`, nested) so far
+BRANCH_THEOREM = dict(family="branch",
+                      theorem="the pathwidth branch lemma, separator form (Fellows & Langston 1987 Lemma 4.3; "
+                              "Ellis, Sudborough & Turner 1994): three vertex-disjoint connected parts of pathwidth "
+                              ">= k, pairwise linked through a connected subset of a separator S disjoint from them, "
+                              "force pathwidth >= k + 1",
+                      lean="MOSPFormalization.branch_lemma_separator (lean/MOSPFormalization/Sandwich.lean)")
+FLOOR_CERTIFICATE_FORMATS = ("spectral-prefix-1",)   # floor certificates the checker replays
 
 
 def class_order(by: dict[str, list[dict]]) -> list[str]:
@@ -689,6 +718,7 @@ def fold(idx: list[dict], base: list[dict]) -> list[dict]:
         cand.append(row(m, w, prov, ev, json.loads(r["order"]), cert))
     # 3. The dataset's open classes: rows by record id, in the representative's labels.
     best: dict[str, tuple[dict, Path]] = {}
+    floors: dict[str, tuple[int, str, dict | None]] = {}   # per record id: the best floor any row carries
     for f in OPEN_RUNS:
         for r in read_csv(f) if f.exists() else []:
             if not r["width"] or r["finished"].startswith("skipped") or not r["order"]:
@@ -696,8 +726,23 @@ def fold(idx: list[dict], base: list[dict]) -> list[dict]:
             if r.get("status") not in (None, "", "ok"):
                 continue
             r = dict(r, provenance=PROOF_PROV.get(r["proof"], "solution"))
+            if r["provenance"] == "solution" and r.get("lower"):
+                lower = int(float(r["lower"]))
+                fcert = None
+                if r.get("minor"):
+                    loaded = json.loads(r["minor"])
+                    if isinstance(loaded, dict) and loaded.get("format") in FLOOR_CERTIFICATE_FORMATS:
+                        fcert = loaded
+                fev = (f"{rel(f)} (record {rid_ if (rid_ := r['id']) else ''}; "
+                       + (f"{fcert['format']} certificate: {fcert.get('theorem', '')[:60]}..."
+                          if fcert else "the run's own floor: degeneracy, contraction degeneracy or a minor "
+                                        "refutation short of width - 1; no certificate")
+                       + f"; width {r['width']}, s={r['seconds']})")
+                if r["id"] not in floors or lower > floors[r["id"]][0] or \
+                        (lower == floors[r["id"]][0] and fcert and not floors[r["id"]][2]):
+                    floors[r["id"]] = (lower, fev, fcert)
             if r["provenance"] == "solution" and int(r["width"]) >= int(r["recorded"]):
-                continue                       # neither proved nor better
+                continue                       # neither proved nor better (its floor, if any, is kept above)
             old = best.get(r["id"])
             if old is not None:
                 _consistent([old[0], r], r["id"])
@@ -715,6 +760,17 @@ def fold(idx: list[dict], base: list[dict]) -> list[dict]:
             cert["contractions"] = [[v, None if u is None or u < 0 else u] for v, u in cert["contractions"]]
             if cert["refuted"] != int(r["width"]) - 1:
                 raise SystemExit(f"{rid}: minor refutes {cert['refuted']}, width is {r['width']}")
+        if r["provenance"] == "certified:theorem":
+            named = json.loads(r["minor"]) if r["minor"] else {}
+            if named.get("format") != "obstruction-branch-1" or not named.get("certificate"):
+                raise SystemExit(f"{rid}: a theorem row with no branch-lemma certificate ({named})")
+            nested = json.loads((ROOT / named["certificate"]).read_text())
+            if nested.get("pathwidth_proved") != int(r["width"]) or nested.get("n") != n:
+                raise SystemExit(f"{rid}: the branch certificate proves {nested.get('pathwidth_proved')} on "
+                                 f"{nested.get('n')} vertices, the row says {r['width']} on {n}")
+            cert = dict(BRANCH_THEOREM, certificate=rel(ROOT / named["certificate"]),
+                        pathwidth_proved=nested["pathwidth_proved"], node=nested["node"],
+                        node_note=nested.get("node_note", ""))
         ev = (f"{rel(f)} (record {rid}; proof={r['proof'] or 'none'}, nodes={r['nodes']}, s={r['seconds']}"
               + (f"; improves the recorded {r['recorded']}" if int(r["width"]) < int(r["recorded"]) else "") + ")")
         if r["provenance"] == "certified:minor" and cert is None:
@@ -781,6 +837,24 @@ def fold(idx: list[dict], base: list[dict]) -> list[dict]:
     for cls, members in by.items():
         rows = [out[k] for k in ((m["source"], m["name"]) for m in members) if k in out]
         _consistent(rows + ([runs[cls]] if cls in runs else []), cls)
+    # Floors (unproved classes only) go to FLOORS_CSV, keyed by class; `write` pairs each with
+    # the witness it stores. A floor must be below every width the class has on record.
+    floor_rows = []
+    for rid, (lower, fev, fcert) in sorted(floors.items()):
+        cls = ids[rid]
+        rows = [out[k] for k in ((m["source"], m["name"]) for m in by[cls]) if k in out]
+        if cls in runs:
+            rows.append(runs[cls])
+        if not rows or any(PROV_RANK[r["provenance"]] >= 2 for r in rows):
+            continue                           # proved since, or never valued: no floor to record
+        least = min(int(r["width"]) for r in rows)
+        if lower >= least:
+            raise SystemExit(f"{rid}: floor {lower} meets the width {least} on an unproved class; "
+                             f"record it as a proof, not a floor ({fev})")
+        floor_rows.append(dict(cls=cls, id=rid, floor=lower, floor_evidence=fev,
+                               floor_certificate=json.dumps(fcert, separators=(",", ":")) if fcert else ""))
+    write_csv(FLOORS_CSV, floor_rows, FLOOR_FIELDS)
+    changed["floors recorded"] = len(floor_rows)
     print(f"fold: {len(cand)} candidate rows; changed {dict(changed)}")
     return list(out.values())
 
@@ -915,7 +989,7 @@ def stage_run(workers: int, until: str | None, budget_witness: float, budget_sol
 DATASET = OUT / "pathwidth_dataset.jsonl.gz"
 CLASSES_CSV = OUT / "classes.csv.gz"
 CLASS_FIELDS = ["id", "cls", "n", "m", "max_component", "width", "provenance", "witness",
-                "owner", "collections", "members", "problems"]
+                "owner", "collections", "members", "problems", "floor"]
 
 
 def _perm_to_rep(member: dict, rep: dict) -> list[int] | None:
@@ -932,6 +1006,7 @@ def _perm_to_rep(member: dict, rep: dict) -> list[int] | None:
 
 def stage_write() -> None:
     by, vals = classes()
+    floors = {r["cls"]: r for r in read_csv(FLOORS_CSV)} if FLOORS_CSV.exists() else {}
     runs = {}
     if RUN_CSV.exists():
         for r in read_csv(RUN_CSV):
@@ -975,10 +1050,14 @@ def stage_write() -> None:
                 evidence = f"{rel(RUN_CSV)} (rules=repaired, nodes={r['nodes']}, s={r['seconds']})"
             colls = sorted({m["collection"] for m in members}, key=PRIORITY.get)
             probs = sorted({PROBLEM[m["collection"]] for m in members})
+            fl = floors.get(cls)
+            floor = int(fl["floor"]) if fl is not None and prov == "solution" and width is not None \
+                and int(fl["floor"]) < width else ""
             rows.append(dict(id=rec_id, cls=cls, n=rep["n"], m=rep["m"], max_component=rep["max_component"],
                              width="" if width is None else width, provenance=prov or "",
                              witness=int(layout is not None), owner=members[0]["collection"],
-                             collections="; ".join(colls), members=len(members), problems="; ".join(probs)))
+                             collections="; ".join(colls), members=len(members), problems="; ".join(probs),
+                             floor=floor))
             if width is None or layout is None:
                 continue                   # records hold only graphs with a witnessed value
             n, edges = load(rep)
@@ -1004,6 +1083,13 @@ def stage_write() -> None:
                 if cert is None:
                     raise SystemExit(f"{rec_id}: certified:theorem without its theorem")
                 rec["theorem"] = cert
+            if fl is not None and prov == "solution" and int(fl["floor"]) >= width:
+                raise SystemExit(f"{rec_id}: floor {fl['floor']} meets the width {width} on a solution record")
+            if floor != "":
+                rec["floor"] = floor
+                rec["floor_evidence"] = fl["floor_evidence"]
+                if fl["floor_certificate"]:
+                    rec["floor_certificate"] = json.loads(fl["floor_certificate"])
             out.write(json.dumps(rec, separators=(",", ":")) + "\n")
     tmp.replace(DATASET)
     write_csv(CLASSES_CSV, rows, CLASS_FIELDS)

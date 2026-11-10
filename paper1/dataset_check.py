@@ -35,10 +35,37 @@ For every record:
    `pathwidth_grid`), the graph must be an h x w grid, which is checked by
    building the coordinates from two corners and testing every edge, and the
    width must be min(h, w). A flag in the record is never trusted;
+   For the branch lemma (`family: branch`; Fellows & Langston 1987 Lemma
+   4.3, Ellis, Sudborough & Turner 1994; Lean `branch_lemma_separator`), the
+   nested certificate is replayed on the graph: at every `branch` node the
+   three parts must be vertex-disjoint subsets of the node's vertex set,
+   disjoint from the separator `S`, each connected in the induced subgraph,
+   each pairwise linked through a connected `Q ⊆ S` with an edge into each
+   of the two parts, and each certifying `>= k` recursively (`trivial`: one
+   vertex, `>= 0`; `clique`: a clique, `>= size - 1`); the node then
+   certifies `>= k + 1`, and the root, which must name every vertex, must
+   certify `>= width`. Node kinds that rest on a search (`c`, `minor`) are
+   not accepted here;
 8. every member's map to the representative is a permutation of the vertices;
    with `--sources`, the member's source file is re-read with this file's own
    readers and the map is checked to be an isomorphism onto the record's graph
-   (collections in a format this checker does not read are counted as skipped).
+   (collections in a format this checker does not read are counted as skipped);
+9. a `solution` record may carry a `floor`, a certified lower bound below its
+   width (pathwidth units): it must be below the width, and where it has a
+   `floor_certificate` of format `spectral-prefix-1` (the eigenvalue
+   prefix-separator bound: Mohar & Poljak via Helmberg, Mohar, Poljak & Rendl
+   1995 eq. (21) with the top-degree sum, their Theorem 11 eq. (20), and Gu &
+   Liu 2022, on every prefix of a layout; `learning/spectral_bound.py`
+   Theorem 4), the arithmetic is replayed here from the certificate's two
+   eigenvalues `mu2`, `mun` (lowered and raised by the stated tolerance) and
+   the graph's own degree sequence, and must reach the floor; the stated `n`,
+   `m`, maximum and minimum degree and connectedness are recomputed. The
+   eigenvalues themselves are not recomputed (no linear algebra in the
+   standard library); the certificate names the command that regenerates
+   them. A floor with no certificate (the C program's own floor) is only
+   checked to be below the width; the checker's own degeneracy and
+   contraction degeneracy are computed and the count they re-establish is
+   reported.
 
 A `certified:refutation` cannot be checked from the record: it rests on a
 search (the repaired-rules customer search, `paper1/revised_algorithm.md`).
@@ -74,6 +101,8 @@ DEFAULT = HERE / "data" / "dataset" / "pathwidth_dataset.jsonl.gz"
 PROVENANCES = ("certified:refutation", "certified:theorem", "certified:minor", "certified:bound",
                "solution")
 GRID_LEAN = "MOSPFormalization.pathwidth_grid"
+BRANCH_LEAN = "MOSPFormalization.branch_lemma_separator"
+SPECTRAL_FORMAT = "spectral-prefix-1"
 OFFSETS = {
     "pathwidth": 0, "vertex separation": 0, "Lengauer's vertex separator game": 0,
     "MOSP": 1, "gate matrix layout (incl. multiple PLA folding)": 1,
@@ -369,6 +398,116 @@ def read_source(path: Path, collection: str, name: str, index=None):
 # The check
 # --------------------------------------------------------------------------
 
+def _connected(adj, vertices):
+    """Is the subgraph induced by `vertices` (non-empty) connected?"""
+    vs = set(vertices)
+    if not vs:
+        return False
+    start = next(iter(vs))
+    seen = {start}
+    stack = [start]
+    while stack:
+        x = stack.pop()
+        for y in adj[x]:
+            if y in vs and y not in seen:
+                seen.add(y)
+                stack.append(y)
+    return len(seen) == len(vs)
+
+
+def branch_certificate_value(adj, node, depth=0):
+    """The pathwidth lower bound a nested branch-lemma certificate proves for
+    the subgraph induced by `node["vertices"]`, recomputed from the graph;
+    raises ValueError where a hypothesis fails. Accepts `trivial`, `clique`
+    and `branch` nodes only."""
+    if depth > 64:
+        raise ValueError("certificate nested deeper than 64")
+    kind = node.get("kind")
+    verts = node.get("vertices")
+    if not isinstance(verts, list) or not verts or len(set(verts)) != len(verts) or \
+            any(not isinstance(v, int) or not 0 <= v < len(adj) for v in verts):
+        raise ValueError(f"{kind} node: bad vertex list")
+    vset = set(verts)
+    if kind == "trivial":
+        if len(vset) != 1:
+            raise ValueError("trivial node with more than one vertex")
+        return 0
+    if kind == "clique":
+        for u in vset:
+            if any(w not in adj[u] for w in vset if w != u):
+                raise ValueError("clique node is not a clique")
+        return len(vset) - 1
+    if kind != "branch":
+        raise ValueError(f"node kind {kind!r} rests on a search or is unknown; not accepted here")
+    S = node.get("S")
+    parts = node.get("branches")
+    links = node.get("links")
+    if not isinstance(S, list) or not isinstance(parts, list) or len(parts) != 3 or not isinstance(links, list):
+        raise ValueError("branch node: S, three branches and links required")
+    Sset = set(S)
+    if not Sset <= vset:
+        raise ValueError("branch node: S not inside the node's vertices")
+    psets = [set(p.get("vertices", [])) for p in parts]
+    for i, ps in enumerate(psets):
+        if not ps or not ps <= vset or ps & Sset:
+            raise ValueError(f"branch node: part {i} empty, outside the node, or meeting S")
+        for j in range(i):
+            if ps & psets[j]:
+                raise ValueError(f"branch node: parts {j} and {i} overlap")
+        if not _connected(adj, ps):
+            raise ValueError(f"branch node: part {i} is not connected")
+    k = min(branch_certificate_value(adj, p, depth + 1) for p in parts)
+    covered = set()
+    for link in links:
+        pair = tuple(link.get("pair", ()))
+        Q = set(link.get("Q", []))
+        if len(pair) != 2 or pair[0] == pair[1] or not all(0 <= i < 3 for i in pair):
+            raise ValueError("branch node: a link names no pair of parts")
+        if not Q or not Q <= Sset or not _connected(adj, Q):
+            raise ValueError("branch node: a link's Q is empty, not inside S, or not connected")
+        for key, part in (("edge_first", pair[0]), ("edge_second", pair[1])):
+            e = link.get(key)
+            if not (isinstance(e, list) and len(e) == 2 and e[0] in Q and e[1] in psets[part] and e[1] in adj[e[0]]):
+                raise ValueError(f"branch node: {key} of link {pair} is not an edge from Q into part {part}")
+        covered.add(tuple(sorted(pair)))
+    if covered != {(0, 1), (0, 2), (1, 2)}:
+        raise ValueError("branch node: the three pairs of parts are not all linked")
+    claimed = node.get("pathwidth_at_least")
+    if claimed is not None and claimed > k + 1:
+        raise ValueError(f"branch node claims {claimed}, the hypotheses give {k + 1}")
+    return k + 1
+
+
+def spectral_prefix_bound(n, mu2, mun, degrees, tol=1e-7, slack=1e-9):
+    """The prefix-separator bound (Theorem 4 of the spectral bound module, see
+    the docstring, item 9), recomputed with the standard library: `max_t min{c : all three inequalities hold at (c, a = t, b = n - t - c)}`.
+    `mu2` is lowered and `mun` raised by `tol * max(1, value)` first, which
+    weakens every inequality."""
+    if n < 2:
+        return 0
+    mu2 = max(mu2 - tol * max(1.0, mu2), 0.0)
+    mun = mun + tol * max(1.0, mun)
+    d = sorted(degrees, reverse=True)
+    S = [0.0]
+    for x in d:
+        S.append(S[-1] + x)
+    best = 0
+    for t in range(1, n):
+        for c in range(0, n - t + 1):
+            a, b = t, n - t - c
+            if S[c] + slack < mu2 * ((a + b) - (a - b) ** 2 / n):
+                continue
+            if mun - mu2 > 0:
+                if c + slack < 4.0 * mun * mu2 * a * b / (n * (mun - mu2) ** 2):
+                    continue
+                if c + slack < 2.0 * mu2 * min(a, b) / (mun - mu2):
+                    continue
+            if c > best:
+                best = c
+            break
+    return best
+
+
 def check_record(rec, sources=False, root=REPO):
     """List of failure strings for one record (empty if it passes), and a dict
     of facts for the report."""
@@ -439,7 +578,22 @@ def check_record(rec, sources=False, root=REPO):
                 fails.append(f"minor certificate invalid: {exc}")
     if rec["provenance"] == "certified:theorem":
         th = rec.get("theorem") or {}
-        if th.get("family") != "grid" or not str(th.get("lean", "")).startswith(GRID_LEAN):
+        if th.get("family") == "branch" and str(th.get("lean", "")).startswith(BRANCH_LEAN):
+            node = th.get("node") or {}
+            try:
+                if set(node.get("vertices", [])) != set(range(n)):
+                    raise ValueError("the root node does not name every vertex")
+                value = branch_certificate_value(adj, node)
+                facts["branch_value"] = value
+                if value < rec["width"]:
+                    fails.append(f"branch certificate proves {value} < width {rec['width']}")
+                elif value > rec["width"]:
+                    fails.append(f"branch certificate proves {value} > the witnessed width {rec['width']}")
+                else:
+                    facts["theorem_checked"] = True
+            except (ValueError, TypeError, AttributeError) as exc:
+                fails.append(f"branch certificate invalid: {exc}")
+        elif th.get("family") != "grid" or not str(th.get("lean", "")).startswith(GRID_LEAN):
             fails.append(f"certified:theorem names no theorem this checker knows: {th!r}")
         else:
             shape = grid_shape(adj)
@@ -451,6 +605,47 @@ def check_record(rec, sources=False, root=REPO):
                 fails.append(f"record names a {th.get('h')} x {th.get('w')} grid, the graph is {shape[0]} x {shape[1]}")
             else:
                 facts["theorem_checked"] = True
+    if rec.get("floor") is not None:
+        floor = rec["floor"]
+        facts["floor"] = floor
+        if not isinstance(floor, int) or floor < 0:
+            fails.append(f"floor {floor!r} is not a non-negative integer")
+        elif rec["provenance"] != "solution":
+            fails.append(f"floor on a {rec['provenance']} record")
+        elif floor >= rec["width"]:
+            fails.append(f"floor {floor} meets the width {rec['width']} on a solution record")
+        cert = rec.get("floor_certificate")
+        if cert is not None:
+            facts["floor_certificate"] = cert.get("format")
+            if cert.get("format") != SPECTRAL_FORMAT:
+                fails.append(f"floor certificate of unknown format {cert.get('format')!r}")
+            else:
+                degs = [len(a) for a in adj]
+                try:
+                    stated = dict(n=cert["n"], m=cert["m"], delta=cert["delta"], min_degree=cert["min_degree"])
+                    actual = dict(n=n, m=len(edges), delta=max(degs), min_degree=min(degs))
+                    if stated != actual:
+                        fails.append(f"spectral certificate states {stated}, the graph has {actual}")
+                    elif cert.get("connected") and not _connected(adj, range(n)):
+                        fails.append("spectral certificate says connected, the graph is not")
+                    elif not cert.get("connected"):
+                        fails.append("spectral certificate on a disconnected graph: the per-component form is "
+                                     "not replayed here")
+                    else:
+                        value = spectral_prefix_bound(n, float(cert["mu2"]), float(cert["mun"]), degs)
+                        facts["spectral_replay"] = value
+                        if value < floor:
+                            fails.append(f"spectral replay gives {value} < floor {floor}")
+                        else:
+                            facts["floor_by_certificate"] = True
+                except (KeyError, TypeError, ValueError) as exc:
+                    fails.append(f"spectral certificate invalid: {exc}")
+        else:
+            own = degeneracy(adj)
+            cd = contraction_degeneracy(adj)
+            if cd is not None:
+                own = max(own, cd)
+            facts["floor_by_own"] = own >= floor
     for mem in rec["members"]:
         perm = mem.get("to_representative")
         if perm is not None and sorted(perm) != list(range(n)):
@@ -510,6 +705,15 @@ def check(path=DEFAULT, sources=False, limit=None, out=sys.stdout):
             if rec["provenance"] == "certified:theorem":
                 totals["theorem"] += 1
                 totals["theorem_checked"] += facts.get("theorem_checked", False)
+                totals["theorem_branch"] += "branch_value" in facts
+            if "floor" in facts:
+                totals["floor"] += 1
+                if "floor_certificate" in facts:
+                    totals["floor_cert"] += 1
+                    totals["floor_by_certificate"] += facts.get("floor_by_certificate", False)
+                else:
+                    totals["floor_plain"] += 1
+                    totals["floor_by_own"] += facts.get("floor_by_own", False)
             for f in fails:
                 failures.append(f"{rec['id']}: {f}")
     print(f"records checked: {records} in {time.time() - t0:.1f} s", file=out)
@@ -523,8 +727,13 @@ def check(path=DEFAULT, sources=False, limit=None, out=sys.stdout):
           file=out)
     print(f"certified:minor contraction sequences replayed: {totals['minor_by_certificate']} / "
           f"{totals['minor']} (the refutation on the minor rests on a search, not checkable here)", file=out)
-    print(f"certified:theorem hypotheses recomputed (grid recognised, width = min(h, w)): "
+    print(f"certified:theorem hypotheses recomputed (grid recognised, width = min(h, w); branch-lemma "
+          f"certificates replayed: {totals['theorem_branch']}): "
           f"{totals['theorem_checked']} / {totals['theorem']}", file=out)
+    print(f"solution records with a floor: {totals['floor']}; spectral certificates replayed from the stated "
+          f"eigenvalues: {totals['floor_by_certificate']} / {totals['floor_cert']}; floors without a "
+          f"certificate (the run's own, below the width): {totals['floor_plain']}, of which the checker's own "
+          f"degeneracy and contraction degeneracy re-establish {totals['floor_by_own']}", file=out)
     if sources:
         print(f"member sources re-read and matched: {totals['sources_checked']}, "
               f"skipped (format not read here): {totals['sources_skipped']}, "
