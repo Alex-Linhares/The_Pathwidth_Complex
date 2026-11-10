@@ -125,7 +125,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "reports" / "scratch" / "spectral_bound"
 VALUES_CSV = OUT / "values.csv.gz"
-CHECK_CSV = OUT / "check_small.csv"
+CHECK_CSV = OUT / "check_small.csv.gz"
 INEQ_CSV = OUT / "check_inequalities.csv"
 TABLES_MD = OUT / "tables.md"
 MAP_CSV = ROOT / "reports" / "scratch" / "obstruction_search" / "08_map" / "map.csv"
