@@ -55,7 +55,7 @@ authors.
 
 - **Kobayashi, Y., Komuro, K. & Tamaki, H.** (2014). Search space reduction through commitments in pathwidth computation: an experimental study. *SEA 2014*, LNCS 8504, 388-399. doi:10.1007/978-3-319-07959-2_33 — in `literature/` as `kobayashi_komuro_tamaki_2014_commitments_pathwidth_sea.pdf`, extracted 2026-09-28. Memoized backtracking over vertex-separation prefix sets with *commitments* (Tamaki): an extension `T ⊇ S` may be taken without branching when every intermediate set has border at least `d(T)`. Depth-1 commitments are extremely effective on TreewidthLIB; depth 2-10 add little. Depth-1 is again the definite-move family. The full SEA 2014 proceedings stay in `~/Downloads` and are not committed (12 MB).
 
-- **Mallach, S.** (2018). Linear ordering based MIP formulations for the vertex separation or pathwidth problem. *Journal of Discrete Algorithms*, 52-53, 156-167. doi:10.1016/j.jda.2018.11.012 — in `literature/` as `mallach_2018_linear_ordering_mip_vertex_separation_pathwidth.pdf`, obtained 2026-09-28. Shows the earlier position- and set-assignment MIPs have LP relaxations with worst-possible (zero) lower bounds, and gives a linear-ordering MIP whose relaxation is provably nonzero; still weak on grids (constant 2 against pathwidth n) and on dense queen graphs, and the author notes combinatorial treewidth bounds are usually stronger. Relevant to item 7 only as a negative: an LP relaxation is not where a strong MOSP floor will come from.
+- **Mallach, S.** (2018). Linear ordering based MIP formulations for the vertex separation or pathwidth problem. *Journal of Discrete Algorithms*, 52-53, 156-167. doi:10.1016/j.jda.2018.11.012 — in `literature/` as `mallach_2018_linear_ordering_mip_vertex_separation_pathwidth.pdf`, obtained 2026-09-28. Shows the earlier position- and set-assignment MIPs have LP relaxations with worst-possible (zero) lower bounds, and gives a linear-ordering MIP whose relaxation is provably nonzero; still weak on grids (constant 2 against pathwidth n) and on dense queen graphs, and the author notes combinatorial treewidth bounds are usually stronger. Relevant to item 7 only as a negative: an LP relaxation is not where a strong MOSP floor will come from. HELD (already in literature/ as `mallach_2018_linear_ordering_mip_vertex_separation_pathwidth.pdf`).
 
 - **Grigoriev, A., Kobayashi, Y., Tamaki, H. & van der Zanden, T.C.** (2025). A polynomial delay algorithm generating all potential maximal cliques in triconnected planar graphs. arXiv:2506.12635v3 — in `literature/` as `grigoriev_kobayashi_tamaki_vanderzanden_2025_potential_maximal_cliques_planar.pdf`, obtained 2026-09-28. Treewidth of planar graphs via Bouchitté-Todinca. MOSP graphs are unions of cliques and rarely planar, so this bears only on the exact-treewidth ideas in `reports/machine_learning_todo.md`, and weakly.
 
@@ -795,7 +795,7 @@ From the one-measurement test of eigenvalue lower bounds on vertex separation
 (`reports/spectral_bound.md`, `learning/spectral_bound.py`). Read online and
 cited, nothing downloaded into `literature/`:
 
-- **Helmberg, C., Mohar, B., Poljak, S. & Rendl, F.** (1995). A spectral approach to
+- **Helmberg, C., Mohar, B., Poljak, S. & Rendl, F.** (1995). A spectral approach to HELD 2026-11-10: `1995-Helmberg-Mohar-Poljak-Rendl-Spectral-Approach-Bandwidth-Separator-Problems-LMA.pdf`.
   bandwidth and separator problems in graphs. *Linear and Multilinear Algebra* 39(1–2),
   73–90. [doi:10.1080/03081089508818381](https://doi.org/10.1080/03081089508818381).
   Open reprint: [users.fmf.uni-lj.si/mohar/Reprints/1995/BM95_LMA39_Helmberg_BandwidthandSeparatorProblems.pdf](https://users.fmf.uni-lj.si/mohar/Reprints/1995/BM95_LMA39_Helmberg_BandwidthandSeparatorProblems.pdf)
@@ -804,7 +804,7 @@ cited, nothing downloaded into `literature/`:
   has `|S₃| ≥ 4 λₙ λ₂ |S₁||S₂| / (n (λₙ − λ₂)²)`; eq. (21) quotes Mohar & Poljak's
   `|S₃| ≥ 4 λ₂ |S₁||S₂| / (Δ n − λ₂ |S₁ ∪ S₂|)` and eq. (22) says when (20) beats it.
   Read in full for the measurement; worth holding (open).
-- **Gu, X. & Liu, M.** (2022). A tight lower bound on the matching number of graphs via
+- **Gu, X. & Liu, M.** (2022). A tight lower bound on the matching number of graphs via HELD 2026-11-10: `2022-Gu-Liu-Tight-Lower-Bound-Matching-Number-Laplacian-Eigenvalues-EJC.pdf`.
   Laplacian eigenvalues. *European J. Combin.* 101, 103468.
   [doi:10.1016/j.ejc.2021.103468](https://doi.org/10.1016/j.ejc.2021.103468).
   [Google](https://www.google.com/search?q=Gu+Liu+%22A+tight+lower+bound+on+the+matching+number+of+graphs+via+Laplacian+eigenvalues%22).
@@ -850,7 +850,7 @@ nothing downloaded.
   literature instances under 200 nodes to proven optimality), and a method to compute the
   density lower bound. The bound is computed through layered graphs with fixed positions
   (per arXiv 1908.07584, which cites it). Not held.
-- **Caprara, A., Letchford, A. N. & Salazar-González, J.-J.** (2011). Decorous lower
+- **Caprara, A., Letchford, A. N. & Salazar-González, J.-J.** (2011). Decorous lower HELD 2026-11-10: `2011-Caprara-Letchford-Salazar-Gonzalez-Decorous-Lower-Bounds-Minimum-Linear-Arrangement-IJOC.pdf`.
   bounds for minimum linear arrangement. *INFORMS Journal on Computing* 23(1), 26–40.
   DOI 10.1287/ijoc.1100.0390. LP-based lower bounds from counting inequalities; improved
   bounds on the MinLA benchmark (gd95c 443, gd96a 77,860). Open submitted version at
@@ -866,7 +866,7 @@ nothing downloaded.
   kind and `reports/chain_lp.md` §1 proves the zero (and, with Harper cuts, exactly
   Harper). Whether its linear-ordering relaxation exceeds Harper is not stated in the
   abstract; the paper would settle it. Not held.
-- **Coudert, D.** (2016). A note on Integer Linear Programming formulations for linear
+- **Coudert, D.** (2016). A note on Integer Linear Programming formulations for linear HELD 2026-11-10: `2016-Coudert-Note-ILP-Formulations-Linear-Ordering-Problems-Graphs-Inria-RR.pdf`.
   ordering problems on graphs. INRIA research report, HAL `hal-01271838`
   (`https://hal.archives-ouvertes.fr/hal-01271838`, open). ILP formulations for pathwidth,
   cutwidth, bandwidth, SumCut and MinLA; results for very sparse graphs on 16–24 vertices
