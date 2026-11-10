@@ -1,0 +1,65 @@
+18:36:23 Random-50-100-2-1_0          n=50 H=17 vs=18 no pair calls 120 censored 0 16.3s
+18:36:23 Random-50-100-2-4_0          n=50 H=22 vs=23 no pair calls 120 censored 0 16.6s
+18:36:24 Random-50-100-2-3_0          n=50 H=20 vs=21 no pair calls 120 censored 0 17.1s
+18:36:26 Random-50-100-2-2_0          n=50 H=19 vs=20 no pair calls 120 censored 0 19.7s
+18:36:40 Random-50-50-2-4_0           n=50 H=11 vs=12 no pair calls 120 censored 0 13.8s
+18:36:49 Random-50-50-2-5_0           n=50 H=11 vs=13 ALIVE pair 29 31 calls 1 censored 0 8.7s
+18:36:57 Random-50-50-2-2_0           n=50 H=10 vs=12 ALIVE pair 26 28 calls 18 censored 0 34.0s
+18:37:00 Random-50-50-2-3_0           n=50 H=9 vs=10 no pair calls 120 censored 0 35.7s
+18:37:03 Random-50-50-4-5_0           n=50 H=20 vs=21 no pair calls 120 censored 0 13.7s
+18:37:05 p1550n10_0                   n=50 H=4 vs=7 ALIVE pair 28 31 calls 4 censored 0 2.5s
+18:37:07 Random-50-100-2-5_0          n=50 H=18 vs=19 no pair calls 120 censored 0 43.9s
+18:37:08 p1550n8_0                    n=50 H=3 vs=7 ALIVE pair 28 31 calls 4 censored 0 3.0s
+18:37:09 p2050n10_0                   n=50 H=7 vs=8 ALIVE pair 29 30 calls 2 censored 0 2.0s
+18:37:14 SP2                          n=50 H=17 vs=18 no pair calls 120 censored 0 17.1s
+18:37:16 p2050n1_0                    n=50 H=4 vs=6 ALIVE pair 27 28 calls 14 censored 0 7.9s
+18:37:17 p2050n4_0                    n=50 H=4 vs=7 ALIVE pair 28 30 calls 6 censored 0 3.0s
+18:37:18 SP2_0                        n=50 H=17 vs=18 no pair calls 120 censored 0 18.4s
+18:37:24 p2050n7_0                    n=50 H=5 vs=7 ALIVE pair 26 27 calls 20 censored 0 8.6s
+18:37:25 p2050n3_0                    n=50 H=5 vs=7 no pair calls 120 censored 0 15.7s
+18:37:25 p2050n9_0                    n=50 H=6 vs=9 ALIVE pair 27 29 calls 12 censored 0 7.2s
+18:37:36 p2550n10_0                   n=50 H=8 vs=10 no pair calls 120 censored 0 17.7s
+18:37:36 p2550n3_0                    n=50 H=7 vs=8 no pair calls 120 censored 0 11.0s
+18:37:38 p2550n5_0                    n=50 H=7 vs=9 ALIVE pair 29 30 calls 2 censored 0 2.5s
+18:37:40 p2550n1_0                    n=50 H=7 vs=8 no pair calls 120 censored 0 15.8s
+18:37:42 p2550n2_0                    n=50 H=8 vs=10 no pair calls 120 censored 0 17.7s
+18:37:43 p2550n7_0                    n=50 H=7 vs=9 ALIVE pair 29 31 calls 1 censored 0 2.4s
+18:37:44 p2550n8_0                    n=50 H=7 vs=10 ALIVE pair 29 30 calls 2 censored 0 1.7s
+18:37:58 p2550n6_0                    n=50 H=7 vs=8 no pair calls 120 censored 0 19.3s
+18:37:58 p2550n9_0                    n=50 H=8 vs=9 no pair calls 120 censored 0 15.0s
+18:38:01 p2550n4_0                    n=50 H=7 vs=9 no pair calls 120 censored 0 25.0s
+18:38:03 p3050n1_0                    n=50 H=9 vs=10 no pair calls 120 censored 0 18.8s
+18:38:12 p3050n4_0                    n=50 H=9 vs=10 no pair calls 120 censored 0 14.2s
+18:38:12 p3050n7_0                    n=50 H=10 vs=11 no pair calls 120 censored 0 9.6s
+18:38:21 p3050n2_0                    n=50 H=9 vs=10 no pair calls 120 censored 0 23.3s
+18:38:23 p3050n6_0                    n=50 H=11 vs=12 no pair calls 120 censored 0 22.1s
+18:38:30 p3050n9_0                    n=50 H=10 vs=11 no pair calls 120 censored 0 18.0s
+18:38:35 p3050n8_0                    n=50 H=7 vs=9 no pair calls 120 censored 0 23.4s
+18:38:36 p4050n2_0                    n=50 H=13 vs=14 no pair calls 120 censored 0 12.9s
+18:38:45 p4050n1_0                    n=50 H=12 vs=13 no pair calls 120 censored 0 24.0s
+18:38:49 p4050n5_0                    n=50 H=13 vs=14 ALIVE pair 30 31 calls 3 censored 0 13.5s
+18:38:50 p4050n6_0                    n=50 H=13 vs=14 ALIVE pair 29 32 calls 5 censored 0 14.4s
+18:38:51 p4050n3_0                    n=50 H=11 vs=14 no pair calls 120 censored 0 20.4s
+18:38:54 Random-40-40-2-2_0           n=40 H=11 vs=13 no pair calls 111 censored 0 3.6s
+18:38:54 Random-40-40-2-4_0           n=40 H=5 vs=6 ALIVE pair 21 24 calls 10 censored 0 3.2s
+18:38:54 p1540n3_0                    n=40 H=4 vs=6 ALIVE pair 23 24 calls 2 censored 0 0.5s
+18:38:55 p1540n10_0                   n=40 H=4 vs=7 ALIVE pair 21 22 calls 14 censored 0 1.2s
+18:38:57 p2040n1_0                    n=40 H=7 vs=8 no pair calls 111 censored 0 2.6s
+18:38:58 p2040n5_0                    n=40 H=6 vs=7 ALIVE pair 23 24 calls 2 censored 0 0.5s
+18:38:58 p2040n4_0                    n=40 H=6 vs=8 ALIVE pair 20 23 calls 16 censored 0 2.8s
+18:39:01 p2040n8_0                    n=40 H=7 vs=8 no pair calls 111 censored 0 3.0s
+18:39:01 p2040n9_0                    n=40 H=6 vs=8 no pair calls 111 censored 0 3.3s
+18:39:02 p2540n1_0                    n=40 H=7 vs=9 ALIVE pair 23 25 calls 1 censored 0 0.6s
+18:39:06 p2540n6_0                    n=40 H=9 vs=10 no pair calls 111 censored 0 3.9s
+18:39:06 p2540n10_0                   n=40 H=7 vs=9 no pair calls 111 censored 0 5.2s
+18:39:06 p2540n7_0                    n=40 H=7 vs=9 ALIVE pair 23 24 calls 2 censored 0 0.3s
+18:39:06 p2540n8_0                    n=40 H=8 vs=10 ALIVE pair 23 25 calls 1 censored 0 0.5s
+18:39:06 p3040n10_0                   n=40 H=9 vs=11 ALIVE pair 23 25 calls 1 censored 0 0.6s
+18:39:11 p3040n4_0                    n=40 H=10 vs=11 no pair calls 111 censored 0 4.1s
+18:39:11 p3040n3_0                    n=40 H=9 vs=10 no pair calls 111 censored 0 4.5s
+18:39:15 p3040n6_0                    n=40 H=10 vs=11 no pair calls 111 censored 0 4.0s
+18:39:15 Warwick 1299: balanced order n=30 H=9 vs=11 ALIVE pair 17 18 calls 2 censored 0 0.1s
+18:39:16 p3040n5_0                    n=40 H=11 vs=12 no pair calls 111 censored 0 5.2s
+18:39:20 p4050n9_0                    n=50 H=12 vs=14 no pair calls 120 censored 0 31.6s
+18:39:26 p4050n8_0                    n=50 H=13 vs=14 no pair calls 120 censored 0 41.5s
+pairs: 64 instances in 200 s; two-level sum UNSAT (L >= H + 1/2, ceiling alive) on 24; no pair within gap 3 and 120 calls on 40 (censored calls 0); by n: 30: 1/1, 40: 9/19, 50: 14/44

@@ -1,0 +1,1 @@
+ceiling: exact L on 1189 instances at n <= 20 (Harper < optimum on record): recomputed Harper < vs on 1189, L > Harper + 1e-6 on 1110, ceil(L) > Harper on 1110, L = vs on 0; mean (L - Harper)/(vs - Harper) 0.371. mixture upper bound on 64 at 30-50: L_upper <= Harper (route dead for every (y,s) cut) on 38, inconclusive on 26; median seconds 0.3

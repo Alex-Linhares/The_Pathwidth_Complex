@@ -1,0 +1,1 @@
+pairs: 64 instances in 200 s; two-level sum UNSAT (L >= H + 1/2, ceiling alive) on 24; no pair within gap 3 and 120 calls on 40 (censored calls 0); by n: 30: 1/1, 40: 9/19, 50: 14/44
