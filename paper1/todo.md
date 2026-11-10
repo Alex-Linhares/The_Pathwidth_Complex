@@ -248,6 +248,23 @@ pass (the hypercube and Mycielski theorems were missing from
       1979, Grohe & Marx 2009, Hatzel et al. 2022, Kinnersley & Langston 1994,
       Megiddo et al. 1988, Tamaki 2022, Dell et al. 2016/2017; open links in
       `literature/MISSING.md` under "Pathwidth lower bounds and NP ∩ coNP".
+- [ ] **Formalise the spectral lower bound in Lean** (owner, 2026-11-10). The component
+      entering `_lower_bound` and the dataset's `bound:spectral` floors rests on cited
+      theorems and the corpus validation only: (i) the prefix-separator argument — a layout
+      of vertex separation w gives, at every prefix size t, a separator of at most w vertices
+      splitting the rest into parts of sizes t and n − t − w (elementary; state it over
+      `LinearLayout`/`vertexSeparation`); (ii) the eigenvalue separator inequality of
+      Mohar–Poljak (Helmberg–Mohar–Poljak–Rendl 1995 eq. 21) with the top-degree-sum
+      strengthening, and Helmberg et al. Theorem 11 eq. 20 — these need the Laplacian, its
+      second-smallest and largest eigenvalues and the Courant–Fischer characterisation;
+      Mathlib has `Matrix.IsHermitian` eigenvalues and the Rayleigh quotient (check
+      `Matrix.IsHermitian.eigenvalues`, `LinearMap.IsSymmetric.rayleigh`), so the inequality is
+      the real work; (iii) the family lifts: pathwidth is monotone under induced subgraphs
+      (peel) and minors (`Minor.lean` has the minor half). Target statement:
+      `spectralFloor G ≤ pathwidth G` in `lean/MOSPFormalization/SpectralBound.lean`, with
+      the Lean value matched to `learning.spectral_bound.spectral_graph_bound` on small
+      graphs by `learning/sandwich.py`'s pinning stage. Until then the paper says the
+      component is "not formalised", as the clique bound was before 2026-09-27.
 - [ ] **Dataset rebuild: three closures on record not yet in the dataset** — BalancedTree_3_5
       (branch lemma, loop0013), NY_13 (85-vertex minor, loop0013; the dataset row is
       `certified:minor` already — check) and **can_292 = 22** (2026-11-09, the rebuilt program;
