@@ -1,0 +1,1 @@
+residual: 66 calls on 11 instances in 166 s; unsat 0, sat 66, censored 0; instances whose floor rises: []

@@ -60,6 +60,7 @@ Usage:
     python -m learning.chain_lp --stage ceiling --workers 4      # L(G) exact at n <= 20, mixtures at 30-50
     python -m learning.chain_lp --stage cost                     # LP size and time at 100-125
     python -m learning.chain_lp --stage pairs --workers 4        # L >= Harper + 1/2 by a two-level SAT refutation, the 64
+    python -m learning.chain_lp --stage residual --workers 4 --seconds 180   # the record's 11 open instances, floor-raising target
     python -m pytest tests/test_chain_lp.py -q
 """
 from __future__ import annotations
@@ -685,24 +686,37 @@ def pair_sum_cnf(closed: list[int], sizes: list[int], weights: list[int], total:
 
 
 def decide_pair_sum(closed: list[int], sizes: list[int], weights: list[int], total: int,
-                    conflicts: int | None = None) -> dict:
-    """One CaDiCaL call; `answer` False proves `L > total / Σw`; True comes with
-    the sets, re-checked from the masks (`boundary` of `checkpoint_bound`)."""
+                    conflicts: int | None = None, seconds: float | None = None) -> dict:
+    """One CaDiCaL call; `answer` False proves `L > total / Σw` (and, since both
+    boundaries `≤ F` would sum to `≤ F·Σw`, `vs ≥ ⌊total / Σw⌋ + 1`); True comes
+    with the sets, re-checked from the masks (`boundary` of `checkpoint_bound`);
+    None is a conflict-budget censor. **`seconds` does not bind on CaDiCaL**: pysat's
+    `interrupt()` is not honoured by `cadical195`, and the `--window high` residual
+    pass ran two hours on calls "capped" at 180 s before the coordinator stopped
+    it (`reports/chain_lp.md` §7). Use a conflict budget for a bound on work."""
+    import threading
     from pysat.solvers import Solver
     from learning.checkpoint_bound import boundary, sets_from_model
 
     clauses, nv, var_map = pair_sum_cnf(closed, sizes, weights, total)
     solver = Solver(name="cadical195", bootstrap_with=clauses)
     t0 = time.monotonic()
+    timer = None
     try:
+        if seconds is not None:
+            timer = threading.Timer(seconds, solver.interrupt)
+            timer.start()
         if conflicts is not None:
             solver.conf_budget(int(conflicts))
-            answer = solver.solve_limited()
+        if conflicts is not None or seconds is not None:
+            answer = solver.solve_limited(expect_interrupt=seconds is not None)
         else:
             answer = solver.solve()
         model = solver.get_model() if answer is True else None
         stats = solver.accum_stats() or {}
     finally:
+        if timer is not None:
+            timer.cancel()
         solver.delete()
     sets = None
     if answer is True:
@@ -780,6 +794,126 @@ def run_pairs(workers: int, out_dir: Path, max_gap: int, conflicts: int, max_cal
     print(msg, flush=True)
     (out_dir / "pairs_summary.txt").write_text(msg + "\n")
     return d
+
+
+# ----------------------------------------------------------------------------
+# the record's 11 open residual instances (owner's follow-up, 2026-11-10)
+# ----------------------------------------------------------------------------
+
+RESIDUAL_11 = ("Random-100-100-4-1_0", "Random-100-100-4-3_0", "Random-125-125-2-2_0", "Random-125-125-4-1_0",
+               "Random-125-125-4-2_0", "Random-125-125-4-3_0", "Random-125-125-4-4_0", "Random-125-125-6-2_0",
+               "Random-125-125-6-3_0", "Random-125-125-6-4_0", "Random-125-125-6-5_0")
+RESIDUAL_CSV = OUT / "residual" / "residual.csv"
+
+
+def residual_record() -> pd.DataFrame:
+    """The 11 instances `reports/obstruction_search.md` §0 leaves open, with the
+    record's floors in optimum units: `floor0`, Harper's proved floor `e_floor`
+    and ceiling `e_ceiling`, the minor floors, and `best` = their maximum."""
+    u = pd.read_csv(UNCOVERED_CSV).set_index("instance_name")
+    cols = [c for c in ("floor0", "e_floor", "m_floor", "m_search", "b_value") if c in u.columns]
+    rows = []
+    for nm in RESIDUAL_11:
+        r = u.loc[nm]
+        rows.append({"instance_name": nm, "n": int(r.n), "optimum": int(r.optimum), "floor0": r.floor0,
+                     "e_floor": r.e_floor, "e_ceiling": r.e_ceiling, "m_floor": r.m_floor, "m_search": r.m_search,
+                     "best": float(np.nanmax([r[c] for c in cols]))})
+    return pd.DataFrame(rows)
+
+
+def residual_pairs(n: int) -> list[tuple[list[int], list[int]]]:
+    """Six calls per instance: adjacent pairs at `0.55 n`, `0.58 n`, `0.52 n`,
+    `0.61 n` (inner-boundary units, the window of §5), a pair two apart at
+    `0.56 n`, all with weights (1, 1); and the first pair with weights (1, 2)."""
+    a = [round(0.55 * n), round(0.58 * n), round(0.52 * n), round(0.61 * n)]
+    out = [([t, t + 1], [1, 1]) for t in a]
+    out.append(([round(0.56 * n), round(0.56 * n) + 2], [1, 1]))
+    out.append(([a[0], a[0] + 1], [1, 2]))
+    return out
+
+
+def residual_pairs_high(n: int, F: int) -> list[tuple[list[int], list[int]]]:
+    """The second window: a two-level sum at sizes `t_1, t_2` with target `F·Σw`
+    is vacuous unless `Σ w_j t_j > F·Σw` (the inner boundary of a `t`-set is at
+    most `t`), which the first window missed on the density-6 instances
+    (`F = 70–78`, sizes `65–77`). Adjacent pairs at `0.66 n`, `0.70 n`, `0.75 n`,
+    `0.80 n`, and at `F + 2`, `F + 5`, `F + 9` where those are higher, weights (1, 1);
+    pairs whose sum does not exceed `2F` are dropped."""
+    starts = sorted({round(0.66 * n), round(0.70 * n), round(0.75 * n), round(0.80 * n), F + 2, F + 5, F + 9})
+    out = []
+    for t in starts:
+        if t + 1 <= n - 1 and 2 * t + 1 > 2 * F:
+            out.append(([t, t + 1], [1, 1]))
+    return out
+
+
+def _residual_job(args) -> dict:
+    name, matrix, optimum, best, sizes, weights, seconds, conflicts = args
+    from learning.obstruction_expansion import closed_masks_from_matrix
+    from learning.extremal import matrix_key
+
+    closed = closed_masks_from_matrix(matrix)
+    F = int(best) - 1                      # best floor on record, vs units
+    total = F * sum(weights)               # UNSAT proves vs >= F + 1, i.e. optimum >= best + 1
+    r = decide_pair_sum(closed, sizes, weights, total, conflicts=conflicts, seconds=seconds)
+    status = {False: "unsat", True: "sat", None: "censored"}[r["answer"]]
+    return {"instance_name": name, "n": len(closed), "optimum": optimum, "best_record": best, "F_vs": F,
+            "sizes": " ".join(map(str, sizes)), "weights": " ".join(map(str, weights)), "total": total,
+            "status": status, "proves_optimum_ge": (best + 1) if status == "unsat" else None,
+            "seconds": round(r["seconds"], 1), "conflicts": r["conflicts"], "n_vars": r["n_vars"],
+            "n_clauses": r["n_clauses"], "matrix_key": matrix_key(matrix)}
+
+
+def run_residual(workers: int, out_dir: Path, seconds: float, conflicts: int | None,
+                 window: str = "mid") -> pd.DataFrame:
+    from learning.obstruction_ledger import corpus_instances
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    rec = residual_record()
+    found = corpus_instances()
+    jobs = []
+    for r in rec.itertuples():
+        _, inst = found[r.instance_name]
+        opt, prov, _ = certified_optimum(inst)
+        assert opt == r.optimum and prov.startswith("certified"), (r.instance_name, opt, prov)
+        pairs = residual_pairs(int(r.n)) if window == "mid" else residual_pairs_high(int(r.n), int(r.best) - 1)
+        for sizes, weights in pairs:
+            jobs.append((r.instance_name, np.asarray(inst.matrix, dtype=int), int(r.optimum), float(r.best),
+                         sizes, weights, seconds, conflicts))
+    t0 = time.monotonic()
+    path = out_dir / ("residual.csv" if window == "mid" else f"residual_{window}.csv")
+    rows = []
+    with Pool(workers, initializer=_init) as pool:
+        for row in pool.imap_unordered(_residual_job, jobs):
+            rows.append(row)
+            print(f"{time.strftime('%T')} {row['instance_name']:22} sizes {row['sizes']:8} w {row['weights']} total {row['total']:4} "
+                  f"-> {row['status']:8} {row['seconds']:7.1f}s {row['conflicts']} conflicts", flush=True)
+            pd.DataFrame(rows).to_csv(path, index=False)
+    d = pd.DataFrame(rows).sort_values(["instance_name", "sizes", "weights"]).reset_index(drop=True)
+    d.to_csv(path, index=False)
+    bad = d[(d.status == "unsat") & (d.proves_optimum_ge > d.optimum)]
+    if len(bad):
+        raise SystemExit(f"VIOLATION: a refutation above the certified optimum on {bad.instance_name.tolist()}")
+    msg = (f"residual: {len(d)} calls on {d.instance_name.nunique()} instances in {time.monotonic() - t0:.0f} s; "
+           f"unsat {int((d.status == 'unsat').sum())}, sat {int((d.status == 'sat').sum())}, censored {int((d.status == 'censored').sum())}; "
+           f"instances whose floor rises: {sorted(d[d.status == 'unsat'].instance_name.unique().tolist())}")
+    print(msg, flush=True)
+    (out_dir / ("residual_summary.txt" if window == "mid" else f"residual_{window}_summary.txt")).write_text(msg + "\n")
+    return d
+
+
+def pair_floor_candidate(graph, matrix, budget) -> int:
+    """A `bound_harness` candidate: the best floor the residual run proved for
+    this matrix (optimum units), read from `residual.csv` by matrix key; 0 where
+    nothing was proved. For the harness's validity stage on the 11."""
+    from learning.extremal import matrix_key
+
+    files = [f for f in (RESIDUAL_CSV, RESIDUAL_CSV.with_name("residual_high.csv")) if f.exists()]
+    if not files:
+        return 0
+    d = pd.concat([pd.read_csv(f) for f in files])
+    d = d[(d.matrix_key == matrix_key(np.asarray(matrix, dtype=int))) & (d.status == "unsat")]
+    return int(d.proves_optimum_ge.max()) if len(d) else 0
 
 
 # ----------------------------------------------------------------------------
@@ -1078,7 +1212,7 @@ def run_cost(out_dir: Path, names: tuple[str, ...], cap: int, budget: float) -> 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--stage", choices=("atlas", "lp64", "ceiling", "cost", "pairs"), required=True)
+    ap.add_argument("--stage", choices=("atlas", "lp64", "ceiling", "cost", "pairs", "residual"), required=True)
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--out", type=Path, default=OUT)
     ap.add_argument("--cap", type=int, default=12)
@@ -1090,6 +1224,8 @@ def main() -> None:
     ap.add_argument("--conflicts", type=int, default=1_000_000, help="pairs: conflict budget per call")
     ap.add_argument("--max-calls", type=int, default=120, help="pairs: calls per instance")
     ap.add_argument("--n-max", type=int, default=50)
+    ap.add_argument("--seconds", type=float, default=180.0, help="residual: wall cap per SAT call")
+    ap.add_argument("--window", choices=("mid", "high"), default="mid", help="residual: 0.52-0.61 n, or above the floor")
     ap.add_argument("--names", nargs="*", default=("Random-100-100-4-1_0", "Random-100-100-4-2_0", "Random-125-125-4-1_0"))
     a = ap.parse_args()
     os.nice(19)
@@ -1101,6 +1237,8 @@ def main() -> None:
         run_ceiling(a.workers, a.out, a.small_limit, a.pool, not a.no_witness)
     elif a.stage == "pairs":
         run_pairs(a.workers, a.out, a.max_gap, a.conflicts, a.max_calls, a.n_max)
+    elif a.stage == "residual":
+        run_residual(a.workers, a.out / "residual", a.seconds, None, a.window)
     else:
         run_cost(a.out, tuple(a.names), a.cap, a.budget)
 

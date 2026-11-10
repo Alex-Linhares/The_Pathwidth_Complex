@@ -89,7 +89,10 @@ optimum by that study).
 
 **Cost at 100–125** (§6): LP sizes and HiGHS times on two `Random-100-100-4`
 instances and one `Random-125-125-4`, for the record; the value is Harper
-there too.
+there too. **§7 (owner's follow-up)**: the two-level sum aimed at the floor on
+the record's 11 open instances — 66 calls at `0.52–0.61 n`, all sat, none
+censored, no floor rises; a high-window pass stopped after two hours with its
+last calls unanswered (pysat's CaDiCaL ignores the time cap), undecided.
 
 ## 1. The integer program and its exactness
 
@@ -368,3 +371,31 @@ The LP is affordable at 125 (31,001 variables, 279,285 rows, 2 minutes) and retu
   measured already and found to be the exact problem localised.
 - **Cost at 100–125** (§6): 2 minutes per LP at 125 vertices; affordable, and
   worthless there for the same reason.
+
+## 7. The two-level sum on the record's 11 open instances (owner's follow-up, 2026-11-10)
+
+*Regenerate: `nice -n 19 python -m learning.chain_lp --stage residual --workers 4` (the first window; 166 s wall on 4 cores) and `… --stage residual --window high` (the second; stopped by the coordinator after two hours, see below). Data `reports/scratch/chain_lp/residual/residual.csv`, `residual_high.csv`, `harness_validity.csv`; logs `reports/scratch/chain_lp/residual_run.out`, `residual_high_run.out`.*
+
+**The question.** §5's two-level sum proved `L ≥ H + ½` on 24 of the 64 at 30–50 with pairs at `0.53–0.61 n`. The owner asked for the same refutation on the 11 instances `reports/obstruction_search.md` leaves open (`Random-100-100-4-1/3`, `Random-125-125-4-1..4`, `Random-125-125-6-2..5`, and the one ridge instance among them, `Random-125-125-2-2_0`; best floors 1–4 below the certified optimum), aimed at the **floor**: with `F` the best floor on record in `vs` units (optimum units minus one), a call asks for a nested pair `S_{t_1} ⊂ S_{t_2}` with inner boundaries summing to `≤ 2F` (`≤ 3F` for weights (1, 2)); UNSAT would prove every layout has a boundary `≥ F + ½` at one of the two sizes, hence `vs ≥ F + 1` and `optimum ≥ best + 1` — a floor that rises. Harper's exact value is not settled at these sizes; the table gives the record's proved floor and ceiling (`e_floor`, `e_ceiling`, optimum units; the ceiling is a found set and is below the optimum on all 11), and `2F ≥ 2(e_ceiling − 1)` on all but `4-1_0`, `4-3_0` and `2-2_0`, so a refutation here would also have been above Harper's ceiling on eight of them. Every optimum was re-read from `solutions/` (provenance `certified:refutation` on all 11); every SAT answer's two sets were re-verified from the masks (sizes, nesting, boundary sum).
+
+**First window** (sizes `0.52–0.61 n`, the §5 band; six calls per instance: adjacent pairs at `0.55 n`, `0.58 n`, `0.52 n`, `0.61 n`, a pair two apart at `0.56 n`, and the first pair with weights (1, 2)): **66 calls, 66 sat, 0 censored, 166 s on 4 cores.** No floor rises. On the four density-6 instances the window was *vacuous or nearly so*: the inner boundary of a `t`-set is at most `t`, and with `F = 70–78` and sizes `65–77` every pair of `6-3_0` and `6-4_0` has `2F ≥ t_1 + t_2` (the constraint cannot bind), while on `6-2_0` and `6-5_0` the largest pairs ask for 2–13 interior vertices across the two sets and are satisfied at 0 conflicts; the table marks the fully vacuous two. On the seven others the calls were genuine and quick (median 1.3 s, 78 s at most on the ridge instance), each returning a nested pair with boundary sum `≤ 2F`: at those sizes the two-level relaxation admits a solution below the floor, and nothing with two levels there can raise it.
+
+**High window** (adjacent pairs at `0.66 n`, `0.70 n`, `0.75 n`, `0.80 n` and at `F + 2`, `F + 5`, `F + 9` where higher, pairs with `t_1 + t_2 ≤ 2F` dropped; 76 calls planned): **29 finished, all sat** (the quick ones: sizes near `F` on the 100s and `4-1/4-2`, the far-right sizes `80–101`); the four calls the workers were on at 19:28 ran at full CPU for two hours with no answer, past the owner's budget, and the coordinator stopped the process; the other 43 never started. **Those 47 are undecided, not results.** The 180 s per-call cap did not bind: pysat's `interrupt()` is not honoured by CaDiCaL (the cap was tested only on a call that returned SAT in 1.6 s, which exercised nothing), and a conflict budget — which the 30–50 run used — is the only bound on work that holds; the module's docstring now says so. The first window's `0.5–0.6 n` sizes answered in seconds; the sizes around `0.7 n` on the 100- and 125-vertex instances are where the two-level formula stops being easy, which is the pattern of `reports/checkpoint_relaxation.md` §6 (dense 75-vertex instances refute in minutes to an hour, the ridge never).
+
+| instance | n | optimum | Harper on record [floor, ceiling] | best floor on record | target total `2F` | first window: pairs (sizes; weights (1,1) unless marked) | answers | high window: pairs finished | answers | high window: not finished (undecided) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| `Random-100-100-4-1_0` | 100 | 46 | [34, 44] | 45 | 88 | (52,53), (55,56), (55,56)×(1,2), (56,58), (58,59), (61,62) | all sat; 2 s max | (46,47), (49,50), (53,54), (80,81), (66,67), (75,76), (70,71) | all sat; 81 s max | — |
+| `Random-100-100-4-3_0` | 100 | 43 | [26, 42] | 42 | 82 | (52,53), (55,56), (55,56)×(1,2), (56,58), (58,59), (61,62) | all sat; 1 s max | (43,44), (46,47), (50,51), (66,67), (75,76), (80,81), (70,71) | all sat; 95 s max | — |
+| `Random-125-125-2-2_0` | 125 | 25 | [8, 23] | 24 | 46 | (65,66), (69,70), (69,70)×(1,2), (70,72), (72,73), (76,77) | all sat; 78 s max | (28,29), (25,26), (32,33), (88,89), (94,95), (100,101), (82,83) | all sat; 160 s max | — |
+| `Random-125-125-4-1_0` | 125 | 57 | [37, 55] | 53 | 104 | (65,66), (69,70), (69,70)×(1,2), (70,72), (72,73), (76,77) | all sat; 9 s max | (54,55), (57,58), (61,62), (100,101) | all sat; 27 s max | (82,83), (88,89), (94,95) |
+| `Random-125-125-4-2_0` | 125 | 57 | [35, 56] | 55 | 108 | (65,66), (69,70), (69,70)×(1,2), (70,72), (72,73), (76,77) | all sat; 24 s max | (56,57), (59,60), (63,64), (82,83) | all sat; 34 s max | (88,89), (94,95), (100,101) |
+| `Random-125-125-4-3_0` | 125 | 54 | [34, 53] | 52 | 102 | (65,66), (69,70), (69,70)×(1,2), (70,72), (72,73), (76,77) | all sat; 64 s max | — | — | (53,54), (56,57), (60,61), (82,83), (88,89), (94,95), (100,101) |
+| `Random-125-125-4-4_0` | 125 | 51 | [24, 50] | 50 | 98 | (65,66), (69,70), (69,70)×(1,2), (70,72), (72,73), (76,77) | all sat; 4 s max | — | — | (51,52), (54,55), (58,59), (82,83), (88,89), (94,95), (100,101) |
+| `Random-125-125-6-2_0` | 125 | 77 | [61, 75] | 76 | 150 | (65,66), (69,70), (69,70)×(1,2), (70,72), (72,73), (76,77) | all sat; 0 s max | — | — | (77,78), (80,81), (82,83), (84,85), (88,89), (94,95), (100,101) |
+| `Random-125-125-6-3_0` | 125 | 80 | [70, 79] | 79 | 156 | (65,66), (69,70), (69,70)×(1,2), (70,72), (72,73), (76,77) | all sat (vacuous: 2F ≥ t₁ + t₂); 0 s max | — | — | (80,81), (82,83), (83,84), (87,88), (88,89), (94,95), (100,101) |
+| `Random-125-125-6-4_0` | 125 | 80 | [69, 79] | 78 | 154 | (65,66), (69,70), (69,70)×(1,2), (70,72), (72,73), (76,77) | all sat (vacuous: 2F ≥ t₁ + t₂); 0 s max | — | — | (79,80), (82,83), (86,87), (88,89), (94,95), (100,101) |
+| `Random-125-125-6-5_0` | 125 | 74 | [59, 73] | 71 | 140 | (65,66), (69,70), (69,70)×(1,2), (70,72), (72,73), (76,77) | all sat; 0 s max | — | — | (72,73), (75,76), (79,80), (82,83), (88,89), (94,95), (100,101) |
+
+**Harness.** `learning.bound_harness.evaluate_candidates` on the 11 with the candidate `learning.chain_lp:pair_floor_candidate` (the best value this run proved for the matrix, 0 where none): 0 on all 11, below every certified optimum (`harness_validity.csv`); there is no claimed value to validate, and none above an optimum.
+
+**Verdict for the two-level line on the dense residual.** Dead at the sizes where it is cheap, undecided where it is not. At `0.52–0.61 n` — the band that carried every certificate at 30–50 — every one of the 11 has a nested pair below its floor, so no two-level sum there raises any floor; at `0.66–0.80 n` the few calls that returned were also sat and the rest did not return in two hours. The owner's 1–4 missing stacks on these instances are, on this evidence, not a two-level fact at any size tried: where the gap is 2–4 (`4-1_0`, `4-3_0`, `6-5_0`, `100-4-1_0`) the first-window calls were as quick and as satisfiable as where it is 1. Nothing on record moves; `solutions/` untouched; about 0.6 core-hours for the first window and 8 core-hours for the stopped second.
