@@ -11,3 +11,12 @@ had absorbed 7 x 10^11 nodes and every one was split further; about 150 core-hou
 at least 10^14 for every other open class; the run's progress is consistent with the law. The owner stopped
 it and moved the cores elsewhere. `tasks.csv` holds every expansion and task (resumable with
 `--only pwc-15968`); `run.out` the log. No class closed; nothing written to the dataset or `solutions/`.
+
+## The no-limit run on the nine open named graphs (2026-11-09 22:28 to 2026-11-10 21:55, stopped by the owner)
+
+`graph_split.py --workers 16 --order law --only <the nine ids>` (cost-law order: Foster, Biggs–Smith, Ljubljana,
+Balaban 11-cage, BubbleSort_5, Tutte 12-cage, NStar_5, Dejter, OddGraph_5), tasks with the 64M memo, resumed from the
+morning's Foster rows. Stopped on Foster after 23.5 h of wall clock: 6,653 tasks refuted, 99 split, 25 of the 90 root
+subtrees worked through, 2.15e12 nodes, 515 core-hours in total (`run2.out`). **`tasks.csv` is the state**: a
+restart with the same command re-expands the top, skips every refuted key, replays the splits and continues; only
+the tasks in flight at the stop are lost. No decision settled; no class closed; no better layout found.
