@@ -38,11 +38,24 @@ SAT_BACKEND = "kissat404"
 SOLUTIONS_DIR = Path(__file__).parent.parent / "solutions"
 
 
+# The spectral floor's limits. The whole-graph family is one dense eigenvalue
+# problem (`numpy.linalg.eigvalsh`, milliseconds to about a second at 1,000
+# vertices); the peel and minor families are one per vertex, so they are cut
+# at the size the contraction degeneracy is cut at (`_contraction_degeneracy`).
+# The corpus is at most 134 customers, where all three cost 0.02 s at the median
+# and about one second at most (`reports/spectral_floor_integration.md`).
+SPECTRAL_BUDGET = 10.0
+SPECTRAL_MAX_NODES = 1500
+SPECTRAL_FAMILIES_MAX_NODES = 400
+
+
 def _lower_bound(
     instance: MOSPInstance,
     clique_budget: float = 5.0,
     expansion_t: int = 8,
     expansion_budget: float | None = None,
+    spectral_budget: float | None = SPECTRAL_BUDGET,
+    info: dict | None = None,
 ) -> int:
     """Compute a lower bound on MOSP from the largest clique found.
 
@@ -78,11 +91,37 @@ def _lower_bound(
     costs 0.2s while computing it costs 28s. Measured head to head in
     `reports/expansion_bound.md` §6. Pass a budget to use it for analysis.
 
+    **The spectral floor** (`learning.spectral_bound`, added 2026-11-10 at the
+    owner's decision) is the fourth component: the prefix-separator bound of
+    Theorem 4 there -- the Mohar-Poljak, Helmberg-Mohar-Poljak-Rendl (20) and
+    Gu-Liu separator inequalities on every prefix of a layout -- over the MOSP
+    graph, every induced subgraph of its degeneracy peeling and every minor of
+    its contraction-degeneracy sequence. It bounds **pathwidth**, so it enters
+    here as `spec + 1` (optimum units; `tests/test_lower_bounds.py` pins the
+    unit). It is computed under `spectral_budget` seconds (`None` or `0`
+    disables it; what a cut-short sequence saw is still valid) and only on
+    graphs of at most `SPECTRAL_MAX_NODES` vertices, the whole-graph family
+    alone above `SPECTRAL_FAMILIES_MAX_NODES`. Measured over the corpus
+    (`reports/spectral_floor_integration.md`): median 0.02 s per call, and it
+    raises the floor on 9 of the 338 bound-gap instances, by one each. **It
+    rests on the cited theorems and on the corpus validation, not on Lean**
+    (`paper1/todo.md`, "Formalise the spectral lower bound"), as the clique
+    bound did before 2026-09-27.
+
+    `info`, when given, receives `source` -- the component that attains the
+    bound, one of `BOUND_SOURCES` (`degeneracy` for the trivial, clique and
+    contraction-degeneracy components, which `solutions/` has always recorded
+    under that name; `spectral` only when the spectral floor is the **strict**
+    maximum) -- and the per-component values.
+
     **Trust classes differ and are recorded.** The clique bound above is proved
-    directly from the MOSP semantics. Contraction degeneracy and the expansion
-    bound both rest on Yanasse's `MOSP = pathwidth(MOSP graph) + 1`, so a
-    closure resting on either inherits it.
+    directly from the MOSP semantics. Contraction degeneracy, the expansion
+    bound and the spectral floor all rest on Yanasse's `MOSP = pathwidth(MOSP
+    graph) + 1`, so a closure resting on any of them inherits it.
     """
+    if info is None:
+        info = {}
+    info["source"] = "degeneracy"
     m = instance.n_patterns
     if m == 0:
         return 0
@@ -93,6 +132,7 @@ def _lower_bound(
     if instance.n_customers <= best:
         return best  # cannot do better than the number of customers
 
+    graph = None
     try:
         import networkx as nx
 
@@ -110,16 +150,50 @@ def _lower_bound(
         best = max(best, _contraction_degeneracy(graph) + 1)
     except Exception:  # noqa: BLE001 - a bound is an optimisation, never required
         pass
+    info["degeneracy"] = best
 
     try:
         from satisfiability.expansion_bound import mosp_lower_bound
 
-        best = max(best, mosp_lower_bound(instance, max_t=expansion_t,
-                                          time_budget=expansion_budget))
+        expansion = mosp_lower_bound(instance, max_t=expansion_t, time_budget=expansion_budget)
+        info["expansion"] = expansion
+        if expansion > best:
+            best, info["source"] = expansion, "expansion"
     except Exception:  # noqa: BLE001 - as above
         pass
 
+    if graph is not None and spectral_budget:
+        try:
+            spectral = _spectral_floor(graph, spectral_budget)
+            info["spectral"] = spectral
+            if spectral > best:
+                best, info["source"] = spectral, "spectral"
+        except Exception:  # noqa: BLE001 - as above
+            pass
+
     return best
+
+
+def _spectral_floor(graph, budget: float = SPECTRAL_BUDGET) -> int:
+    """`spec(G) + 1` in optimum units: the best of the three spectral families
+    of `learning.spectral_bound.spectral_bounds` (whole graph, degeneracy peel,
+    contraction minors) on the MOSP graph, plus one, since every one of them
+    bounds the pathwidth and `MOSP = pathwidth + 1`. 0 on the empty graph.
+
+    The deadline cuts the peel and minor sequences short; every value seen
+    before it is a bound on its own, so a censored call returns a valid floor
+    (`spectral_bounds` records `censored`). Rounding only weakens the
+    inequalities (`learning.spectral_bound`, "Numerics").
+    """
+    if graph.number_of_nodes() == 0:
+        return 0
+    if graph.number_of_nodes() > SPECTRAL_MAX_NODES:
+        return 0
+    from learning.spectral_bound import FAMILIES, spectral_bounds
+
+    families = FAMILIES if graph.number_of_nodes() <= SPECTRAL_FAMILIES_MAX_NODES else ("graph",)
+    result = spectral_bounds(graph, families=families, deadline=time.monotonic() + budget)
+    return int(result["best"]) + 1
 
 
 def _contraction_degeneracy(graph, max_nodes: int = 400) -> int:
@@ -335,7 +409,15 @@ CERTIFIED = frozenset({PROVENANCE_REFUTATION, PROVENANCE_BOUND,
 # `minor` is a refutation on a min-degree contraction of the MOSP graph
 # (`relaxation.MinorLadder`): it rests on minor monotonicity of pathwidth with
 # `MOSPGraph.lean`, and on the refutation of the contraction.
-BOUND_SOURCES = ("clique", "degeneracy", "expansion", "relaxation", "minor")
+# `spectral` is the prefix-separator eigenvalue bound of `learning.spectral_bound`
+# (Mohar & Poljak; Helmberg, Mohar, Poljak & Rendl 1995 eq. (20); Gu & Liu
+# 2022) over the MOSP graph, its degeneracy peel and its contraction minors,
+# plus one. It rests on MOSP = pathwidth + 1 and on the cited theorems, which
+# are not formalised (`paper1/todo.md`); its soundness is checked on every
+# certified optimum like the others (`tests/test_lower_bounds.py`,
+# `reports/spectral_floor_integration.md`). Added as a component of
+# `_lower_bound` on 2026-11-10.
+BOUND_SOURCES = ("clique", "degeneracy", "expansion", "relaxation", "minor", "spectral")
 
 
 def _save_solution(
@@ -648,8 +730,9 @@ def solve_mosp_exact(
     # The recorded bound can exceed a freshly computed one -- a relaxation may
     # have proved something this call would not -- and the descent ends the
     # moment its value reaches the floor, with no refutation needed.
-    cheap = _lower_bound(instance)
-    floor, source = cheap, "degeneracy"
+    cheap_info: dict = {}
+    cheap = _lower_bound(instance, info=cheap_info)
+    floor, source = cheap, cheap_info.get("source", "degeneracy")
     if solutions_dir is not None:
         recorded = load_lower_bound(instance, solutions_dir)
         if recorded and recorded[0] > cheap:

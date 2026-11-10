@@ -203,7 +203,25 @@ MIT licence, as the repository; the header is in `pathwidth.c`.
   closed first first); its width is recomputed and becomes the starting upper
   bound. Connected graphs only.
 - `-L k`: a proved lower bound to start from, so the descent goes straight to
-  refuting `k` when the starting width is `k + 1`.
+  refuting `k` when the starting width is `k + 1`. The program trusts it; pass
+  only a bound you can cite. One source outside the C is the **spectral
+  floor** (eigenvalues stay out of this program): `bench/spectral_floor.py`
+  computes the prefix-separator bound of `learning.spectral_bound` (Mohar &
+  Poljak; Helmberg, Mohar, Poljak & Rendl 1995 eq. (20); Gu & Liu 2022; on
+  the graph, its degeneracy peel and its contraction minors) in pathwidth
+  units and hands it over:
+
+      python3 bench/spectral_floor.py bench/instances/named/gr/OddGraph_5.gr            # prints the floor
+      python3 bench/spectral_floor.py bench/instances/named/gr/OddGraph_5.gr --run -- -t 600 -l
+                                                                                        # ./pathwidth -L 36 -t 600 -l
+      python3 bench/spectral_floor.py --graph6 < graphs.g6                              # from graph6
+
+  It is above the program's own floor on regular and dense graphs (OddGraph_5
+  36 against 31, the Cameron graph 147 against 88) and below it on most
+  sparse ones; it never exceeds the pathwidth (0 violations on every graph
+  to 9 vertices and 50,949 certified instances, `reports/spectral_bound.md`),
+  and the descent's answer does not depend on it (`tests/test_spectral_floor_cli.py`).
+  The bound rests on the cited theorems, not on Lean (`paper1/todo.md`).
 - `-m key=value`: one `MinorConfig` field (`first_nodes`, `total_nodes`,
   `share`, `start_fraction`, `step_fraction`, `max_fraction`, `growth`,
   `min_vertices`, `probe_nodes`, `time_fraction`), repeatable. Defaults are

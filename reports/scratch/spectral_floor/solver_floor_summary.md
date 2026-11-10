@@ -1,0 +1,28 @@
+instances: 6376 (certified corpus)
+lb_new above optimum (must be 0): 0
+spectral above optimum (must be 0): 0
+lb_old above optimum (must be 0): 0
+lb_new below lb_old (must be 0): 0
+tight, old: 0.7699 (4909)
+tight, new: 0.7699 (4909)
+mean gap, old: 0.4305
+mean gap, new: 0.4291
+max gap, old: 30; new: 30
+raised above the old floor: 9 (by [1])
+newly tight: 0
+source = spectral: 9
+seconds per call, spectral alone: median 0.012, p90 0.032, max 2.15 (Random-125-125-10-4_0), total 2.7 min
+seconds per call, _lower_bound old: median 0.002, max 24.71; new: median 0.014, max 15.92
+bound-gap instances (optimum - lb_old >= 2): 338; raised there: 9
+
+| instance | n | optimum | lb_old | lb_new | spectral |
+|---|---:|---:|---:|---:|---:|
+| Random-100-50-2-3_0 | 100 | 15 | 10 | 11 | 11 |
+| Random-100-50-6-2_0 | 100 | 43 | 24 | 25 | 25 |
+| Random-125-125-2-3_0 | 125 | 21 | 12 | 13 | 13 |
+| Random-125-125-4-4_0 | 125 | 51 | 24 | 25 | 25 |
+| Random-50-50-2-4_0 | 50 | 13 | 10 | 11 | 11 |
+| Random-75-75-4-5_0 | 75 | 32 | 19 | 20 | 20 |
+| p2040n5_0 | 40 | 8 | 6 | 7 | 7 |
+| p3040n7_0 | 40 | 13 | 9 | 10 | 10 |
+| p3050n7_0 | 50 | 12 | 8 | 9 | 9 |

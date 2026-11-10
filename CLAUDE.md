@@ -106,6 +106,16 @@ and contraction degeneracy bounds landed; see `reports/lower_bounds.md`.)*
 `satisfiability/mosp_solver.py::_lower_bound` now returns the best of three:
 the trivial bound, the largest clique found in the MOSP graph under a 5-second
 budget, and contraction degeneracy (MMD+) plus one. On SP4 that is 27, not 13.
+*(2026-11-10: a fourth component, the **spectral floor** of
+`learning/spectral_bound.py` — the prefix-separator eigenvalue bound over
+the MOSP graph, its degeneracy peel and its contraction minors, plus one —
+is in by the owner's decision; validated over all 6,376 certified optima
+with zero violations, it raises the floor on 9 of the 338 gap instances by
+one, costs 0.012 s at the median and 2.2 s at most, and rests on the cited
+theorems and the corpus check, not on Lean. `BOUND_SOURCES` has `spectral`.
+The same nine open dataset classes it floors are now in the dataset as
+`floor` fields, with `BalancedTree_3_5` certified by the branch lemma and
+`can_292 = 22` folded in. `reports/spectral_floor_integration.md`.)*
 
 Validated over all 6,340 certified optima, 2026-09-18: **zero violations**,
 tight on 65.7%, mean gap 0.86. This is a correctness dependency, not an

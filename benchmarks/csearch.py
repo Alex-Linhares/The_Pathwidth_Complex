@@ -91,9 +91,10 @@ def _worker(matrix_list, n_customers, n_patterns, name, timeout, max_nodes,
         # with no refutation needed. That is how GP7 and GP8 were settled, and
         # it is the whole point of computing the bounds: it converts an
         # expensive refutation into a cheap witness search.
-        cheap = _lower_bound(instance)
+        cheap_info: dict = {}
+        cheap = _lower_bound(instance, info=cheap_info)
         recorded = load_lower_bound(instance, solutions_dir)
-        floor, source = cheap, "degeneracy"
+        floor, source = cheap, cheap_info.get("source", "degeneracy")
         if recorded and recorded[0] > cheap:
             floor, source = recorded
 

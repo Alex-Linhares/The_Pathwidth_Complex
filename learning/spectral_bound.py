@@ -102,10 +102,24 @@ spectral floor over the three families never exceeds the best floor on
 record (`best` of `reports/scratch/obstruction_search/08_map/map.csv`, the
 loop0013 result) on any of the 338 gap instances.
 
+**In the solver since 2026-11-10** (the owner's decision, after the
+measurement above): `satisfiability.mosp_solver._lower_bound` takes
+`max(existing, spec + 1)` with `spec` the best of the three families under a
+budget (`_spectral_floor`), and records `spectral` in `BOUND_SOURCES` when it
+is the strict maximum. The component **rests on the cited theorems and on the
+corpus validation, not on Lean**: Theorems 1–3 are not formalised
+(`paper1/todo.md`, "Formalise the spectral lower bound in Lean"), as the
+clique bound was not before 2026-09-27. The validation is `--stage solver`
+below, re-run whenever the corpus grows, like the other components
+(`reports/spectral_floor_integration.md`); the graph side is
+`pathwidth_solver/bench/spectral_floor.py`, which passes the value to the C
+program as `-L`.
+
 Usage:
     nice -n 19 python3 -m learning.spectral_bound --stage check --workers 8     # small graphs vs exact pw, Harper
     nice -n 19 python3 -m learning.spectral_bound --stage validity --workers 8  # every certified instance (harness)
     nice -n 19 python3 -m learning.spectral_bound --stage tables                # reports/scratch/spectral_bound/tables.md
+    nice -n 19 python3 -m learning.spectral_bound --stage solver --workers 8    # _lower_bound old vs new on every certified corpus instance
     python3 -m learning.spectral_bound --stage one --key <matrix key>
     python3 -m pytest tests/test_spectral_bound.py -q
 """
@@ -646,9 +660,125 @@ def write_tables(values_csv: Path = VALUES_CSV, check_csv: Path = CHECK_CSV,
     return tabs
 
 
+# ----------------------------------------------------------------------------
+# the solver's floor, old against new, on every certified corpus instance
+# ----------------------------------------------------------------------------
+
+SOLVER_OUT = ROOT / "reports" / "scratch" / "spectral_floor"
+SOLVER_CSV = SOLVER_OUT / "solver_floor.csv"
+
+
+def _solver_job(args) -> dict:
+    """`_lower_bound` without and with the spectral component on one certified
+    instance, each timed, with the spectral floor's own seconds."""
+    path, index, optimum, provenance = args
+    from mosp.instance import MOSPInstance
+    from satisfiability.mosp_solver import _lower_bound, _spectral_floor
+    from customer_inter.customer_graph import build_customer_graph
+
+    inst = MOSPInstance.from_benchmark_file(Path(path).resolve())[index]
+    t0 = time.monotonic()
+    old = _lower_bound(inst, spectral_budget=None)
+    t1 = time.monotonic()
+    info: dict = {}
+    new = _lower_bound(inst, info=info)
+    t2 = time.monotonic()
+    graph = build_customer_graph(inst)
+    t3 = time.monotonic()
+    spectral = _spectral_floor(graph)
+    t4 = time.monotonic()
+    return {"instance_name": inst.name, "source_file": str(Path(path)),
+            "n_customers": inst.n_customers, "n_patterns": inst.n_patterns,
+            "optimum": optimum, "provenance": provenance,
+            "lb_old": old, "lb_new": new, "spectral": spectral, "source": info.get("source", ""),
+            "seconds_old": round(t1 - t0, 4), "seconds_new": round(t2 - t1, 4),
+            "seconds_spectral": round(t4 - t3, 4)}
+
+
+def run_solver(workers: int = 8, out_csv: Path = SOLVER_CSV, limit: int | None = None) -> "pd.DataFrame":
+    """Every certified corpus instance (`solutions/*.json` with a `certified:*`
+    provenance), largest first. The result CSV has `lb_old`, `lb_new`,
+    `spectral` and the seconds; `summarise_solver` reads it."""
+    import json
+
+    import pandas as pd
+
+    from learning.dataset import enumerate_instances
+    from satisfiability.mosp_solver import _solution_path, SOLUTIONS_DIR
+
+    SOLVER_OUT.mkdir(parents=True, exist_ok=True)
+    jobs = []
+    positions: dict[Path, int] = {}
+    for path, inst in enumerate_instances():
+        index = positions.get(path, 0)
+        positions[path] = index + 1
+        sp = _solution_path(inst, SOLUTIONS_DIR)
+        if not sp.exists():
+            continue
+        sol = json.loads(sp.read_text())
+        prov = sol.get("provenance", "solution")
+        if not prov.startswith("certified:"):
+            continue
+        jobs.append((str(path), index, int(sol["mosp_value"]), prov, inst.n_customers))
+    jobs.sort(key=lambda j: -j[4])
+    if limit is not None:
+        jobs = jobs[:limit]
+    print(f"[spectral] solver floor on {len(jobs)} certified corpus instances", flush=True)
+    started = time.monotonic()
+    rows = []
+    with ProcessPoolExecutor(max_workers=workers) as pool:
+        for i, row in enumerate(pool.map(_solver_job, [j[:4] for j in jobs], chunksize=4), start=1):
+            rows.append(row)
+            if i % 500 == 0:
+                print(f"[spectral] solver {i}/{len(jobs)} in {time.monotonic() - started:.0f}s", flush=True)
+    frame = pd.DataFrame(rows)
+    frame.to_csv(out_csv, index=False)
+    print(f"[spectral] wrote {out_csv.relative_to(ROOT)} ({len(frame)} rows, "
+          f"{time.monotonic() - started:.0f}s)", flush=True)
+    return frame
+
+
+def summarise_solver(frame: "pd.DataFrame") -> str:
+    """The validation numbers in one Markdown block: violations (must be 0),
+    tightness, mean gap, where the component raised the floor, seconds."""
+    import pandas as pd
+
+    opt = frame["optimum"]
+    lines = [f"instances: {len(frame)} (certified corpus)",
+             f"lb_new above optimum (must be 0): {int((frame['lb_new'] > opt).sum())}",
+             f"spectral above optimum (must be 0): {int((frame['spectral'] > opt).sum())}",
+             f"lb_old above optimum (must be 0): {int((frame['lb_old'] > opt).sum())}",
+             f"lb_new below lb_old (must be 0): {int((frame['lb_new'] < frame['lb_old']).sum())}",
+             f"tight, old: {(frame['lb_old'] == opt).mean():.4f} ({int((frame['lb_old'] == opt).sum())})",
+             f"tight, new: {(frame['lb_new'] == opt).mean():.4f} ({int((frame['lb_new'] == opt).sum())})",
+             f"mean gap, old: {(opt - frame['lb_old']).mean():.4f}",
+             f"mean gap, new: {(opt - frame['lb_new']).mean():.4f}",
+             f"max gap, old: {int((opt - frame['lb_old']).max())}; new: {int((opt - frame['lb_new']).max())}",
+             f"raised above the old floor: {int((frame['lb_new'] > frame['lb_old']).sum())} "
+             f"(by {sorted(set((frame['lb_new'] - frame['lb_old'])[frame['lb_new'] > frame['lb_old']].tolist()))})",
+             f"newly tight: {int(((frame['lb_new'] == opt) & (frame['lb_old'] < opt)).sum())}",
+             f"source = spectral: {int((frame['source'] == 'spectral').sum())}",
+             f"seconds per call, spectral alone: median {frame['seconds_spectral'].median():.3f}, "
+             f"p90 {frame['seconds_spectral'].quantile(0.9):.3f}, max {frame['seconds_spectral'].max():.2f} "
+             f"({frame.loc[frame['seconds_spectral'].idxmax(), 'instance_name']}), "
+             f"total {frame['seconds_spectral'].sum() / 60:.1f} min",
+             f"seconds per call, _lower_bound old: median {frame['seconds_old'].median():.3f}, max {frame['seconds_old'].max():.2f}; "
+             f"new: median {frame['seconds_new'].median():.3f}, max {frame['seconds_new'].max():.2f}"]
+    gap = frame[(opt - frame["lb_old"]) >= 2]
+    lines.append(f"bound-gap instances (optimum - lb_old >= 2): {len(gap)}; raised there: "
+                 f"{int((gap['lb_new'] > gap['lb_old']).sum())}")
+    raised = frame[frame["lb_new"] > frame["lb_old"]].sort_values("instance_name")
+    lines.append("")
+    lines.append("| instance | n | optimum | lb_old | lb_new | spectral |")
+    lines.append("|---|---:|---:|---:|---:|---:|")
+    for r in raised.itertuples():
+        lines.append(f"| {r.instance_name} | {r.n_customers} | {r.optimum} | {r.lb_old} | {r.lb_new} | {r.spectral} |")
+    return "\n".join(lines)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    ap.add_argument("--stage", choices=("check", "validity", "tables", "one"), required=True)
+    ap.add_argument("--stage", choices=("check", "validity", "tables", "one", "solver"), required=True)
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument("--sources", default="corpus,campaign,upward")
     ap.add_argument("--limit", type=int, default=None)
@@ -669,6 +799,14 @@ def main() -> None:
         tabs = write_tables()
         for k, v in tabs.items():
             print(f"\n== {k}\n{v.to_string()}")
+    elif args.stage == "solver":
+        import pandas as pd
+
+        frame = run_solver(args.workers, limit=args.limit) if not SOLVER_CSV.exists() or args.limit \
+            else pd.read_csv(SOLVER_CSV)
+        summary = summarise_solver(frame)
+        (SOLVER_OUT / "solver_floor_summary.md").write_text(summary + "\n")
+        print(summary)
     else:
         from learning.bound_harness import Budget, graph_from_matrix
         from learning.extremal import matrix_from_key
