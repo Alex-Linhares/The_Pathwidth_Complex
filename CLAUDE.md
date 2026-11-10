@@ -1722,6 +1722,28 @@ morning used 4M memos per task. Node counts recorded before that date were taken
 comparable to new ones on hard refutations. Widths and proofs unaffected (the memo changes cost, never
 the answer, `Search/Split.lean`).
 
+**Two more bound families measured and dead, 2026-11-10** (two agent sessions, about 13
+core-hours, nothing re-solved). **Spectral** (`reports/spectral_bound.md`,
+`learning/spectral_bound.py`): the eigenvalue separator inequalities (Helmberg–Mohar–Poljak–Rendl
+1995, Mohar–Poljak, Gu–Liu 2022) turned into a pathwidth bound by the prefix-separator argument,
+on the whole graph, the degeneracy peel and the contraction minors: valid on all 50,949 certified
+instances and 274,048 small graphs, but strictly below the best floor on record on 338 of 338 gap
+instances (mean 7.5 stacks short), and two proofs say why — spectral ≤ exact Harper at every
+size, and the main inequality is ≤ tw + 1 (Gima et al. 2025's proof), so it sits under the
+treewidth ceiling like every degree bound. **The chain LP** (`reports/chain_lp.md`,
+`learning/chain_lp.py`): the LP relaxation of the nested-chain (checkpoint) encoding with
+Harper's inequalities equals Harper's bound exactly (the uniform fractional point is feasible
+and optimal; a two-line proof, confirmed to 1e-14 on the 64 gap instances at 30–50), and the
+ceiling of any such LP is the Lagrangian dual `L = max_μ min_σ Σ_t μ(t) B_σ(t)` (Harper ≤ L ≤ vs),
+which at n ≤ 20 rounds up to the pathwidth on 82% of the gap instances with weights on two
+adjacent sizes — but the only instrument that certifies L above Harper is the SAT refutation of
+the two-level sum, which is the checkpoint relaxation under another name; on the 11 dense
+residual instances every such call at 0.52–0.61 n was satisfiable (no floor rises), the higher
+window undecided. Note: pysat's CaDiCaL ignores `interrupt()`; only a conflict budget bounds a
+call. Literature recorded in `literature/MISSING.md` (spectral; LP bounds for layout problems:
+Caprara & Salazar-González 2005, Caprara–Letchford–Salazar-González 2011, Mallach 2018, Coudert
+2016).
+
 **Unrelated to the plan:**
 - Fix the pathwidth SAT encoding variable ID collision bug in `encoding.py`.
 - ~~Becceneri, Yanasse & Soma (2004) is still missing~~ — **obtained 2026-09-27**,
