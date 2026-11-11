@@ -77,8 +77,8 @@ And the C program's own `lower=` on these runs (13–16) is below the dataset's
 floors (15–20), which come from searched minors and the spectral certificate;
 a `-L` would not have changed the outcome, since no run reached `record − 1`.
 
-Nothing re-solved; `solutions/` and the dataset untouched; about 2.2
-core-hours in total (sweeps 1.7, C runs 0.8). Layouts of the recorded widths
+Nothing re-solved; `solutions/` and the dataset untouched; about 2.4
+core-hours in total (sweeps 1.6, C runs 0.8). Layouts of the recorded widths
 are under `reports/scratch/gaspers_cages/c600/` (`<id>_c.log`, textbook
 order); none improves on the record, so there is nothing for a dataset
 rebuild to take.
