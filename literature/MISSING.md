@@ -1135,3 +1135,154 @@ branch lemmas, and Yu's unread hypercycle; no "dominating net" bound; no LP or
 Lagrangean bound on tracks (the TU Berlin Lagrangean of Möhring 1990 p. 48 is for
 constrained block folding and we found no publication of it); nothing in Japanese; two
 Chinese heuristics. Full search list in `reports/complex_lb_vlsi.md` §5.
+
+## Lower bounds: the linear-layout neighbours of the complex (2026-11-11)
+
+Survey behind `reports/complex_lb_layout.md`: the lower-bound literature of cutwidth,
+bandwidth and proper pathwidth, split bandwidth, MinLA and profile, treewidth,
+tree-depth, linear-width and directed pathwidth, read for what transfers to pathwidth.
+Verdict there: nothing transfers that is not already a treewidth or Harper argument;
+the one genuinely different relaxation (an edge-lattice Harper bound through
+linear-width) is measured dead to 8 vertices. Read from open copies in a scratch
+directory; nothing downloaded into `literature/`. Papers already listed under other
+headings (Juvan & Mohar 1992, Mohar & Poljak 1993, Caprara & Salazar-González 2005,
+Clautiaux et al. 2003/2004, Korach & Solel 1993, Chung & Seymour 1989, Makedon &
+Sudborough 1989, Dell et al. 2017, Lin & Lin 2025, Bodlaender & Koster 2011) are not
+repeated.
+
+**Cutwidth**
+
+- **Bermond, J.-C., Cosnard, M., Coudert, D. & Havet, F.** (2025). New lower bounds on
+  the cutwidth of graphs. *Computers & Operations Research* 182, 107130.
+  [doi:10.1016/j.cor.2025.107130](https://doi.org/10.1016/j.cor.2025.107130). Open at
+  HAL: [hal-05083322](https://hal.science/hal-05083322/document) (read whole). §2 surveys
+  the edge-cut, `λ₂`, `Δ/2` and degeneracy bounds; §3 minimum-, average- and
+  maximum-average-degree bounds by a sum-of-cuts ("grooming") argument; §4 the bound
+  `C*(m, n)` from the maximum path-grooming count, `O(log n)`, dominating the average-degree
+  bound; §4.2 corrects the greedy claim of Martí et al. 2013 above `C = 9`.
+- **Gaar, E., Puges, D. & Wiegele, A.** (2024). Strong SDP based bounds on the cutwidth of
+  a graph. *Computers & Operations Research*, 106449.
+  [doi:10.1016/j.cor.2023.106449](https://doi.org/10.1016/j.cor.2023.106449);
+  [arXiv:2301.03900](https://arxiv.org/abs/2301.03900) (read). The lifted linear-ordering
+  SDP with 3-dicycle, triangle and LOP-lifted cuts; `n ≤ 50`; 20–63 % gaps on 16–24-vertex
+  sparse graphs where Coudert's MILP solves them in seconds.
+- **Kloeckner, B.** (2010). Cutwidth and degeneracy of graphs.
+  [arXiv:0907.5138](https://arxiv.org/abs/0907.5138) (read). Thm 2.1 (uniform sparsity),
+  Cor. 2.2 `cw ≥ δ*²/4 + δ*/2`.
+- **Martí, R., Pantrigo, J. J., Duarte, A. & Pardo, E. G.** (2013). Branch and bound for
+  the cutwidth minimization problem. *Computers & Operations Research* 40(1), 137–149.
+  Author preprint open at
+  [uv.es](https://www.uv.es/~rmarti/paper/docs/other15.pdf) (read). §2.1 the four prior
+  bounds (Gomory–Hu, `λ₂`, MinLA/n, edge bisection); §3 LB1–LB4; §4 the same-set dominance
+  rule.
+  [Google](https://www.google.com/search?q=Mart%C3%AD+Pantrigo+Duarte+Pardo+%22Branch+and+bound+for+the+cutwidth+minimization+problem%22).
+- **Bodlaender, H. L.** (1986). Classes of graphs with bounded tree-width. Technical
+  Report RUU-CS-86-22, Utrecht. The source Gaar et al. cite for `cw ≥ tw`.
+  [Google](https://www.google.com/search?q=Bodlaender+%22Classes+of+graphs+with+bounded+tree-width%22+RUU-CS-86-22).
+
+**Bandwidth and proper pathwidth**
+
+- **Chvátal, V.** (1970). A remark on a problem of Harary. *Czechoslovak Mathematical
+  Journal* 20(1), 109–111. The density bound `bw ≥ max_S (|S| − 1)/diam(S)` (as attributed
+  by Benadé & Hooker 2019 §7). The journal is digitised at dml.cz; the article's handle was
+  not verified.
+  [Google](https://www.google.com/search?q=Chv%C3%A1tal+1970+%22A+remark+on+a+problem+of+Harary%22).
+- **Chinn, P. Z., Chvátalová, J., Dewdney, A. K. & Gibbs, N. E.** (1982). The bandwidth
+  problem for graphs and matrices — a survey. *Journal of Graph Theory* 6(3), 223–254.
+  [doi:10.1002/jgt.3190060302](https://doi.org/10.1002/jgt.3190060302). Not open.
+- **Blum, A., Konjevod, G., Ravi, R. & Vempala, S.** (2000). Semi-definite relaxations
+  for minimum bandwidth and other vertex-ordering problems. *Theoretical Computer
+  Science* 235(1), 25–42.
+  [doi:10.1016/S0304-3975(99)00181-3](https://doi.org/10.1016/S0304-3975(99)00181-3).
+  The half-density ball bound `α(G)` and the first bandwidth SDP.
+- **Benadé, J. G. & Hooker, J. N.** (2019). Optimization bounds from the branching dual.
+  [arXiv:1908.07584](https://arxiv.org/abs/1908.07584) (read for §7–§8: the Chvátal, Blum
+  et al. and Caprara–Salazar-González bounds restated as eqs (4)–(6), and the latter's
+  bilevel IP (29) with fixed vertices).
+- **Rendl, F., Sotirov, R. & Truden, C.** (2021). Lower bounds for the bandwidth problem.
+  *Computers & Operations Research*, 105422.
+  [doi:10.1016/j.cor.2021.105422](https://doi.org/10.1016/j.cor.2021.105422);
+  [arXiv:1904.06715](https://arxiv.org/abs/1904.06715) (read §1–§3). The `k`-partition SDP
+  (Juvan–Mohar at `k = 3`, the QAP form at `k = n`), matrices of order `n·k`, graphs to
+  128 vertices; §1 states the 3-partition principle that is Harper's argument for `bw`.
+- **Haemers, W. H.** (1995). Interlacing eigenvalues and graphs. *Linear Algebra and its
+  Applications* 226–228, 593–616. `bw > nλ₂/λₙ` by interlacing (cited by RST 2021 and van
+  Dam & Sotirov 2015).
+  [Google](https://www.google.com/search?q=Haemers+1995+%22Interlacing+eigenvalues+and+graphs%22).
+- **Povh, J. & Rendl, F.** (2007). A copositive programming approach to graph partitioning.
+  *SIAM Journal on Optimization* 18(1), 223–241. The min-cut SDP whose value is the
+  eigenvalue bound; tightened by nonnegativity.
+  [Google](https://www.google.com/search?q=Povh+Rendl+%22A+copositive+programming+approach+to+graph+partitioning%22).
+- **de Klerk, E., Nagy, M. & Sotirov, R.** (2013). On semidefinite programming bounds for
+  graph bandwidth. *Optimization Methods and Software* 28(3), 485–500. Two QAP-SDP bounds
+  dominating Blum et al.
+  [Google](https://www.google.com/search?q=de+Klerk+Nagy+Sotirov+%22On+semidefinite+programming+bounds+for+graph+bandwidth%22).
+- **Del Corso, G. M. & Manzini, G.** (1999). Finding exact solutions to the bandwidth
+  minimization problem. *Computing* 62, 189–203.
+  [doi:10.1007/s006070050002](https://doi.org/10.1007/s006070050002). The upper partial
+  ordering branch and bound.
+- **Martí, R., Campos, V. & Piñana, E.** (2008). A branch and bound algorithm for the
+  matrix bandwidth minimization. *European Journal of Operational Research* 186(2),
+  513–528. `LB2(g)`, `LB3(g)` for partial orderings. Author preprint open at
+  [uv.es](https://www.uv.es/~rmarti/paper/docs/bmp3.pdf) (not read).
+- **Lim, A., Rodrigues, B. & Xiao, F.** (2007). A fast bandwidth minimization algorithm.
+  *International Journal of Artificial Intelligence Tools* 16(3). The level-structure
+  band `|L| ≤ bw ≤ 2|L| − 1` for level layouts. Open at
+  [SMU ink](https://ink.library.smu.edu.sg/lkcsb_research/609) (not read).
+- **Cygan, M. & Pilipczuk, M.** (2010). Exact and approximate bandwidth. *Theoretical
+  Computer Science* 411(40–42), 3701–3713.
+  [doi:10.1016/j.tcs.2010.06.018](https://doi.org/10.1016/j.tcs.2010.06.018). `O(4.473ⁿ)`;
+  no lower bound of its own.
+- **Kaplan, H. & Shamir, R.** (1996). Pathwidth, bandwidth, and completion problems to
+  proper interval graphs with small cliques. *SIAM Journal on Computing* 25(3), 540–561.
+  [doi:10.1137/S0097539793258143](https://doi.org/10.1137/S0097539793258143). Proper
+  pathwidth equals bandwidth.
+
+**MinLA and profile**
+
+- **Petit, J.** (2003). Experiments on the minimum linear arrangement problem. *ACM
+  Journal of Experimental Algorithmics* 8, 2.3.
+  [doi:10.1145/996546.996554](https://doi.org/10.1145/996546.996554). Preprint open at
+  [aminer](https://static.aminer.org/pdf/PDF/000/979/944/experiments_on_the_minimum_linear_arrangement_problem.pdf)
+  (read §2, §7): the Path, Edges, Degree, Gomory–Hu, Juvan–Mohar and Mesh methods.
+- **Adolphson, D. L. & Hu, T. C.** (1973). Optimal linear ordering. *SIAM Journal on
+  Applied Mathematics* 25(3), 403–423. [doi:10.1137/0125042](https://doi.org/10.1137/0125042).
+  The Gomory–Hu tree bound for MinLA.
+- **Lin, Y. & Yuan, J.** (1994). Profile minimization problem for matrices and graphs.
+  *Acta Mathematicae Applicatae Sinica* 10(1), 107–112.
+  [doi:10.1007/BF02006264](https://doi.org/10.1007/BF02006264). Profile lower bounds.
+
+**Treewidth, tree-depth, linear-width, directed pathwidth**
+
+- **Bodlaender, H. L. & Koster, A. M. C. A.** (2006). Safe separators for treewidth.
+  *Discrete Applied Mathematics* 154(6), 806–812. The block / clique-separator
+  decomposition that pathwidth lacks.
+  [Google](https://www.google.com/search?q=Bodlaender+Koster+%22Safe+separators+for+treewidth%22).
+- **Brokkelkamp, R., van Venetië, R., de Vries, M. & Westerdiep, J.** (2020). PACE solver
+  description: tdULL. IPEC 2020, LIPIcs 180. Open at
+  [CWI](https://ir.cwi.nl/pub/30347/30347.pdf) (read §2.1.1: core subgraph and
+  least-common-neighbour contraction as lower bounds).
+- **Korhonen, T.** (2020). SMS in PACE 2020. IPEC 2020, LIPIcs 180, 30.
+  [doi:10.4230/LIPIcs.IPEC.2020.30](https://doi.org/10.4230/LIPIcs.IPEC.2020.30);
+  [arXiv:2006.07302](https://arxiv.org/abs/2006.07302) (read §3.3: MMD+, long paths, and
+  the isomorphism hashtable that shares lower bounds across isomorphic induced subgraphs).
+- **Trimble, J.** (2020). An algorithm for the exact treedepth problem (Bute / Bute-Plus).
+  SEA 2020, LIPIcs 160; [arXiv:2006.09912](https://arxiv.org/abs/2006.09912) (read §2–§3).
+- **Takahashi, A., Ueno, S. & Kajitani, Y.** (1995). Mixed searching and proper-path-width.
+  *Theoretical Computer Science* 137(2), 253–268. Mixed search number = 3-proper pathwidth.
+  [Google](https://www.google.com/search?q=Takahashi+Ueno+Kajitani+%22Mixed+searching+and+proper-path-width%22).
+- **Thomas, R.** (1996). Tree-decompositions of graphs. Lecture notes, Georgia Institute
+  of Technology (unpublished). The definition of linear-width.
+  [Google](https://www.google.com/search?q=Robin+Thomas+%22Tree-decompositions+of+graphs%22+lecture+notes+linear-width).
+- **Yang, B. & Cao, Y.** (2008). Digraph searching, directed vertex separation and
+  directed pathwidth. *Discrete Applied Mathematics* 156(10), 1822–1837. The directed
+  equivalence only; no bound.
+  [Google](https://www.google.com/search?q=Yang+Cao+2008+%22directed+vertex+separation+and+directed+pathwidth%22).
+
+What the search did not find: any lower bound stated for linear-width, mixed search,
+split bandwidth or directed pathwidth beyond the parameters' definitions; any
+treewidth lower bound built on a matching as such (LBP's disjoint paths are the nearest);
+a PACE lower-bound track before 2026 (maximum agreement forest). Every cutwidth and
+bandwidth bound found is either one separator of the layout (Harper's family), a degree
+or edge-count statement (under `tw`), or an LP/SDP in layout variables (under the
+Lagrangian ceiling of `reports/chain_lp.md` §5).
