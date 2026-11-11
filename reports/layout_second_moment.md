@@ -70,7 +70,7 @@ structure is `O(log² n)` non-edges, the edge-count lottery vanishes (the Jensen
 `w = n − a log_b n` *decreases* with `n`: `2.4 → 0.6` for `a = 2`, `16 → 5.2` for `a = 3`,
 `53 → 19.5` for `a = 4`, `n = 30 → 100`), and `pw ≤ n − s` is **exactly** the existence of a
 *staircase*: distinct `v_1..v_{s−1}`, `u_1..u_{s−1}` with `u_i` non-adjacent to `v_1..v_{s−i}`
-(§3.4, both directions). Its ordered count has `E = (n)_{2s−2} (1 − p)^{s(s−1)/2}`, threshold
+(§3.4; sufficient as stated, necessary up to coincidences of `u`'s with later `v`'s). Its ordered count has `E = (n)_{2s−2} (1 − p)^{s(s−1)/2}`, threshold
 `s = (4 − o(1)) log_b n` — Theorem B's constant, and `s₀/log₂ n = 3.96` at `n = 10⁶` — so a
 second moment on staircases that works to the threshold would give
 `n − pw(G(n, p)) = (4 + o(1)) log_b n`, closing the dense sandwich `[2, 4]` at `4`. The
@@ -272,12 +272,15 @@ large pathwidth.
 At `p` fixed and `w = n − s`, the condition `k_t ≤ n − s` reads: at least `s − t` suffix
 vertices are closed at step `t`, for `t = 1..s − 1`, and nothing for `t ≥ s`. Hence
 
-**Lemma (staircase).** `pw(G) ≤ n − s` iff there are distinct vertices `v_1..v_{s−1}` and
-`u_1..u_{s−1}` with `u_i` non-adjacent to `v_1..v_{s−i}` for every `i`. (⇐: order
+**Lemma (staircase).** If there are distinct vertices `v_1..v_{s−1}` and `u_1..u_{s−1}`
+with `u_i` non-adjacent to `v_1..v_{s−i}` for every `i`, then `pw(G) ≤ n − s` (order
 `v_1..v_{s−1}` first, the rest arbitrarily; at prefix `t < s` the `s − t` vertices
-`u_1..u_{s−t}` are closed. ⇒: from a narrow layout pick `u_i ∈ C_{s−i}` distinct, possible
-since `|C_{s−i}| ≥ i`; if some `u_i` is a later `v_j`, replace it — the all-distinct
-form is the one counted and is sufficient.)
+`u_1..u_{s−t}` are closed). Conversely a layout of width `≤ n − s` yields `v_1..v_{s−1}`
+(its prefix) and distinct `u_i ∈ C_{s−i}` (possible since `|C_{s−i}| ≥ i`), where a `u_i` may
+coincide with a later prefix vertex `v_j`, `j > s − i`. The all-distinct form is the one
+counted below; it is sufficient, which is all the upper bound needs, and the
+configurations with coincidences have fewer free vertices at the same cost, so they do not
+change the first-moment threshold.
 
 The ordered count `Y_s` of staircases has `E[Y_s] = (n)_{2s−2} (1 − p)^{s(s−1)/2}`: `2s − 2`
 labelled vertices and `s(s−1)/2` forced non-edges (`Σ_i (s − i)`), so `E[Y_s] ≥ 1` iff
