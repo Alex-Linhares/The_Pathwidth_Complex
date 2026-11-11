@@ -226,6 +226,37 @@ those graphs, losing to $n-\alpha(G)$ by $0.2$ to $2$ per cell. We found no
 prior statement of the width of a random ordering as a pathwidth bound on
 $G(n,p)$, in the searches recorded for this appendix.
 
+\paragraph{Other models.} The empty-pair argument is a statement about a
+product measure on the edges and transfers to any model whose pair
+probabilities can be written down; three such transfers bear on this paper.
+Under the pairing model of random $d$-regular graphs the same count gives
+$\pw(G_{n,d})\ge\beta^{*}_{d}\,n$ asymptotically almost surely with
+$\beta^{*}_{3},\dots,\beta^{*}_{10}=0.070, 0.145, 0.211, 0.268, 0.357, 0.424$,
+which reproduces the vertex-isoperimetric bound of
+\citet{KolesnikWormald2014} to within $0.004$ at every degree, a corollary of
+their result they do not draw; at $d=3$ it is bracketed by
+\citet{Gaspers2026}, who proves $\pw\ge0.1033\,n-2$ for almost every cubic
+graph and $\pw\le0.1398\,n+o(n)$ for every graph of maximum degree three,
+closing the $n/6$ of \citet{FominHoie2006}. The five open cubic cages of the
+dataset (Section~\ref{sec:dataset}) have certified floors of $0.15$ to
+$0.17\,n$ and layouts of $0.19$ to $0.21\,n$, above every constant that holds
+for a typical cubic graph: they are extremal, and no statement about the class
+can close them. On the bipartite model $G(n,n,p)$ the constant equals the
+Erd\H{o}s--R\'enyi one to three decimals. And the clique-cover theorem of
+\texttt{CliqueCoverMoment.lean}, stated for the generator of
+\citet{ChuStuckey2009}, was evaluated on its own instances: on all 200
+certified optima of that generator and all 2,130 of Harvey's the floor lies
+below the optimum, by two to twelve stacks on the Chu and Stuckey classes and
+most where the search is slowest, while on the designed sets, 14 of the 20
+Wilson instances, 2 of 25 Shaw and one SCOOP instance, the optimum lies
+\emph{below} the floor, which is the floor saying correctly that those
+instances are not random covers. For random geometric graphs the sharp
+constant is in print \citep{DiazPenrosePetitSerna2001}; for random planar
+graphs and for preferential-attachment graphs we found no statement of the
+order of the pathwidth and our argument gives none, since the product step
+fails. Details, with every number beside its command, are in the repository's
+report on random graph classes.
+
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=\linewidth]{random_graph_middle.pdf}
