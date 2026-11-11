@@ -1,0 +1,3 @@
+min-max forward degree vs degeneracy on 1251 atlas graphs (2..7 vertices): mismatches = 0
+smallest graph with pw > degeneracy (n, edges, degeneracy, pw): (5, [(0, 2), (0, 3), (0, 4), (1, 2), (1, 3), (1, 4), (2, 4)], 2, 3)
+largest pw - degeneracy at <= 7 vertices: (1, (5, [(0, 2), (0, 3), (0, 4), (1, 2), (1, 3), (1, 4), (2, 4)], 2, 3))

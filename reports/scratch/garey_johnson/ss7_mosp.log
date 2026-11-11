@@ -1,0 +1,2 @@
+MOSP: SS7(encoded poset) = brute-force MOSP = pw(MOSP graph)+1 on 300 random instances (n<=5, m<=6): mismatches = 0
+PO1: SS7(Abdel-Wahab encoding) = black progressive pebble demand on all 1099 labelled dags with <= 5 vertices: mismatches = 0

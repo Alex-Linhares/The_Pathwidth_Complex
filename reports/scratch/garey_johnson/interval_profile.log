@@ -1,0 +1,9 @@
+(b) enumeration vs profile formula on all 52 graphs <= 5 vertices: mismatches = 0
+(a) profile formula evaluated on all 208 atlas graphs <= 6 vertices (completion = profile - |E|):
+   max (completion - pw) on <= 6 vertices: (1, ([(0, 1), (0, 5), (1, 2), (2, 3), (3, 4), (4, 5)], 3, 2))
+   graphs with completion = 0 and pw >= 3: [(0, 3), (0, 3), (0, 3), (0, 3), (0, 3)]
+   C_4: completion 1, pw 2;   K_4: completion 0, pw 3
+   C_5: completion 2, pw 2;   K_5: completion 0, pw 4
+   C_6: completion 3, pw 2;   K_6: completion 0, pw 5
+   C_7: completion 4, pw 2;   K_7: completion 0, pw 6
+   C_8: completion n-3 (fan), pw 2;   K_8: completion 0, pw 7

@@ -1625,3 +1625,55 @@ are not repeated.
   `random4reg`, `RandomGNM_*`): the PACE 2016 named instances, generated with SageMath /
   NetworkX; their seeds are not recorded with the files, so they are single draws and no
   ensemble statement rests on them.
+
+## Garey & Johnson's list and the pathwidth complex (2026-11-11)
+
+Papers Garey & Johnson (1979) cite for the entries related to the complex
+(`reports/garey_johnson_complex.md` §4), none held; the bibliographic data are
+G&J's own (pp. 291–325) unless marked otherwise.
+
+- **Papadimitriou, C. H.** (1976a). The NP-completeness of the bandwidth minimization
+  problem. *Computing* 16, 263–270. GT40 and SR16.
+- **Garey, M. R., Graham, R. L., Johnson, D. S. & Knuth, D. E.** (1978). Complexity results
+  for bandwidth minimization. *SIAM J. Appl. Math.* 34, 477–495. GT40 on trees of maximum
+  degree 3, GT41.
+- **Garey, M. R., Johnson, D. S. & Stockmeyer, L.** (1976). Some simplified NP-complete graph
+  problems. *Theoretical Computer Science* 1, 237–267. GT42 (optimal linear arrangement),
+  SIMPLE MAX CUT, from which GT44 is reduced.
+- **Gavril, F.** (1977a). Some NP-complete problems on graphs. *Proc. 11th Conf. on
+  Information Sciences and Systems*, Johns Hopkins University, 91–95. GT44 (cutwidth),
+  GT45, SR5.
+- **Sethi, R.** (1975). Complete register allocation problems. *SIAM J. Comput.* 4, 226–248.
+  PO1: the one-shot black pebble game is NP-complete.
+- **Abdel-Wahab, H. M.** (1976). *Scheduling with Applications to Register Allocation and
+  Deadlock Problems*. Doctoral thesis, Dept. of Electrical Engineering, University of
+  Waterloo. SS7, the reduction from register sufficiency.
+- **Abdel-Wahab, H. M. & Kameda, T.** (1978). Scheduling to minimize maximum cumulative cost
+  subject to series-parallel precedence constraints. *Operations Research* 26, 141–158. The
+  polynomial case of SS7.
+- **Monma, C. L. & Sidney, J. B.** (1977). Cited by G&J for the series-parallel case of SS7
+  (with Abdel-Wahab & Kameda); entry not transcribed.
+- **Rose, D. J. & Tarjan, R. E.** (1978). Algorithmic aspects of vertex elimination on
+  directed graphs. *SIAM J. Appl. Math.* 34, 176–197. GT46.
+- **Rose, D., Tarjan, R. & Lueker, G.** (1976). Algorithmic aspects of vertex elimination on
+  graphs. *SIAM J. Comput.* 5, 266–283. OPEN4 (fill-in).
+- **Yannakakis, M.** (1981). Computing the minimum fill-in is NP-complete. *SIAM J. Algebraic
+  and Discrete Methods* 2(1), 77–79 (data from memory, to be checked). Cited in G&J's Update
+  (p. 339) as closing OPEN4.
+- **Booth, K. S. & Lueker, G. S.** (1976). Testing for the consecutive ones property, interval
+  graphs, and graph planarity using PQ-tree algorithms. *JCSS* 13, 335–379. GT35 at `K = 0`,
+  SR14, SR17; **Booth, K. S.** (1975). *PQ-Tree Algorithms*. Doctoral thesis, UC Berkeley.
+  SR16.
+- **Fulkerson, D. R. & Gross, O. A.** (1965). Incidence matrices and interval graphs. *Pacific
+  J. Math.* 15, 835–855. Interval-graph recognition at the boundary of GT35 and SR14.
+- **Garey, M. R., Gavril, F. & Johnson, D. S.** (1977), unpublished results: the NP-completeness
+  of GT35 (interval graph completion by edges, = profile). Unpublished; cite G&J GT35.
+- **Gilbert, J. R., Lengauer, T. & Tarjan, R. E.** (1980). The pebbling problem is complete in
+  polynomial space. *SIAM J. Comput.* 9, 513–524 (data from memory). The recomputation
+  variant of PO1, "not known to be in NP" in 1979.
+- **Billionnet, A.** (1986). On interval graphs and matrice profiles. *RAIRO Recherche
+  Opérationnelle* 20, 245–256 (data from memory). With Lin & Yuan (1994, recorded above):
+  the identity `min interval completion = profile − |E|` of `garey_johnson_complex.md` §3.3,
+  which the report proves and checks on its own; the attribution is to be verified.
+- **Kashiwabara, T. & Fujisawa, T.** (1979). Interval thickness: recorded missing earlier
+  (Table 1 ref. [5]); it is the clique-size sibling of GT35 and is not in G&J's list.
