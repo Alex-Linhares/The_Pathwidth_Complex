@@ -182,6 +182,50 @@ largest $k$ with $\Pr[\mathrm{pw}\le k]\le0.05$, is within six of the
 smallest proved value in every cell where it is positive
 (Figure~\ref{fig:middle}).
 
+\paragraph{A trivial upper bound.}
+The upper end of the sandwich at fixed $c$ has been the degree-sequence bound
+of \citet[Corollary~5.2]{EdwardsMcDermid2015}. A bound that needs no structure
+at all beats it from $c\approx14.4$ on. Fix any ordering $v_{1},\dots,v_{n}$ of
+the vertices, the identity say, and expose $G(n,p)$. At step $t$ the vertex
+separation counts the suffix vertices with a neighbour among $v_{1},\dots,v_{t}$;
+the indicator of $v_{j}$ depends only on the $t$ pairs $v_{i}v_{j}$, $i\le t$,
+and these $t$-sets are disjoint across $j$, so the count is exactly
+$\mathrm{Bin}(n-t,\,1-(1-p)^{t})$~\leanref{randomordering}. Hoeffding's
+inequality~\citep{Hoeffding1963} and a union bound over the $n$ positions give,
+for $p=c/n$ with $c\le n/2$,
+\[
+  \Pr\bigl[\mathrm{pw}(G(n,c/n))>\beta_{\mathrm{typ}}(c)\,n+c^{2}+\sqrt{n\ln n}\bigr]\le 1/n,
+  \qquad
+  \beta_{\mathrm{typ}}(c)=\max_{0\le x\le1}(1-x)\bigl(1-e^{-cx}\bigr),
+\]
+since the pathwidth is at most the vertex separation of any one ordering. The
+maximiser is unique and solves $(1-x)\,c\,e^{-cx}=1-e^{-cx}$; in
+$y=e^{-cx}$ the condition is $y\ln y+(c+1)y=1$ and
+$\beta_{\mathrm{typ}}(c)=(1-y)^{2}/(cy)$; asymptotically
+$\beta_{\mathrm{typ}}(c)=1-(\ln c+1)/c+(\ln c)/c^{2}+O(\ln^{2}c/c^{3})$.
+Its values are $0.423$, $0.586$, $0.694$ at $c=3,6,10$, above the
+degree-sequence bound's $0.183$, $0.458$, $0.656$; the two cross once, at
+$c_{0}=14.42$, and from there the random ordering is the better one:
+$0.808$ against $0.826$ at $c=20$, $0.903$ against $0.930$ at $50$, $0.944$
+against $0.965$ at $100$ (the degree-sequence weights satisfy
+$1-g(d)=3.5/d+O(1/d^{2})$ numerically, so that bound is $1-3.5/c+o(1/c)$
+against $1-(\ln c+1)/c$). So the provable sandwich on $\mathrm{pw}/n$ at fixed
+$c$ has Edwards and McDermid's bound as its upper end for $c<14.42$ and the
+width of a random ordering for $c\ge14.42$: $[0.554,0.808]$ at $c=20$,
+$[0.761,0.903]$ at $50$, $[0.857,0.944]$ at $100$. In the other two regimes
+the same computation is consistent with the brackets above and weaker than
+their ends: at $p$ fixed the random ordering's width is
+$n-(1+o(1))\log_{b}n$, coefficient $1$ against the $[2,4]$ of the
+independence number and Theorem~B; for $c\to\infty$ it is
+$n-(1+o(1))\,n\ln c/c$, coefficient $1$ against Frieze's $2$, so the
+independence number remains the better upper end there. The finite
+inequality, evaluated at level $0.05$ on the 320 graphs of
+Figure~\ref{fig:middle}, equals the largest identity-ordering width of each
+cell to within one, and the identity ordering is never the best ceiling on
+those graphs, losing to $n-\alpha(G)$ by $0.2$ to $2$ per cell. We found no
+prior statement of the width of a random ordering as a pathwidth bound on
+$G(n,p)$, in the searches recorded for this appendix.
+
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=\linewidth]{random_graph_middle.pdf}
@@ -636,7 +680,9 @@ $c\approx227$. Neither states the entropy form, a value of $\beta^{*}(c)$, the
 threshold $4\ln2$ or the asymptotics, and we found no later work that does.
 Three more things are known. The best published upper bound on the pathwidth
 of $G(n,c/n)$ is the degree-sequence bound of \citet{EdwardsMcDermid2015},
-which on Poisson degrees gives $0.183$, $0.458$ and $0.656$ at $c=3,6,10$,
+which on Poisson degrees gives $0.183$, $0.458$ and $0.656$ at $c=3,6,10$
+(and is the better end of the sandwich only up to $c=14.42$, as the paragraph
+\emph{A trivial upper bound} shows),
 so the measured slopes sit near the middle of the sandwich between
 $\beta^{*}(c)$ and it. We did not take that bound on trust. Their Corollary~5.2 states
 $\pw(G)\le\sum_{v}g(d_{r(G)}(v))+\tau(n)+O(\log n)$ for every graph on $n$
@@ -690,4 +736,6 @@ the record and formalised conditional on its two cited inputs as described
 above, gives $0.183$, $0.458$ and $0.656$
 on Poisson degrees at $c=3$, $6$ and $10$, so the provable sandwich on
 $\pw/n$ is $[0.037,0.183]$, $[0.182,0.458]$ and $[0.345,0.656]$ there, against
-fitted slopes of $0.099$, $0.268$ and $0.415$.
+fitted slopes of $0.099$, $0.268$ and $0.415$; above $c=14.42$ the upper end
+is the width of a random ordering (the paragraph \emph{A trivial upper
+bound}), which no longer needs the two cited inputs.

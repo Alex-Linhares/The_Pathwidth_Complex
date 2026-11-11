@@ -1808,6 +1808,17 @@ and the independence lemma `sum_gnpWeight_pattern` proved (no sorry); the chain 
 `narrowWeight = chainQ` stated as a `Prop`, not proved. "We found no prior statement" of the chain, of
 the random-ordering width, or of any second moment on layouts.
 
+**The random-ordering bound (2026-11-11, one agent session; `reports/random_ordering_bound.md`,
+`RandomOrdering.lean`, 18 theorems, no sorry; Appendix E paragraph "A trivial upper bound").** Along
+any fixed ordering of `G(n,p)` the open count at step `t` is exactly `Bin(n − t, 1 − (1 − p)^t)`
+(disjoint blocks of pairs are independent), so `pw(G(n,c/n)) ≤ β_typ(c) n + c² + √(n ln n)` with
+probability ≥ 1 − 1/n, `β_typ(c) = max_x (1 − x)(1 − e^{−cx}) = 1 − (ln c + 1)/c + (ln c)/c² + …`. It
+crosses Edwards–McDermid once, at `c₀ = 14.421`, and is the upper end of the fixed-`c` sandwich from
+there (`[0.554, 0.808]` at c = 20, `[0.761, 0.903]` at 50, `[0.857, 0.944]` at 100; the published line
+read 0.826, 0.930, 0.965). Coefficient 1 against the `[2, 4]` brackets of the middle and dense regimes,
+so weaker there. Brute-forced to n = 7 before stating. The root `lake build` had been broken by a
+`relabel` name clash between `LayoutMoment` and `SeparatorMoment`; fixed by renaming `layoutRelabel`.
+
 **Unrelated to the plan:**
 - Fix the pathwidth SAT encoding variable ID collision bug in `encoding.py`.
 - ~~Becceneri, Yanasse & Soma (2004) is still missing~~ — **obtained 2026-09-27**,
