@@ -1,0 +1,8 @@
+'MOSPFormalization.binomTail_le_exp' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.sum_gnpWeight_blocks' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.sum_gnpWeight_activeSuffix_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.sum_gnpWeight_vertexSepAt_gt' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.sum_gnpWeight_vertexSepOfLayout_gt_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.sum_gnpWeight_pathwidth_gt_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.sum_gnpWeight_graphsOfPathwidthLe_ge' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.sum_gnpWeight_univ' depends on axioms: [propext, Classical.choice, Quot.sound]
