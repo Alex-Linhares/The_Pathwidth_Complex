@@ -280,6 +280,15 @@ pass (the hypercube and Mycielski theorems were missing from
       which stay cited (Lengauer 1981; Kashiwabara & Fujisawa 1979; Garey & Johnson 1979) — Mathlib
       has no NP/coNP framework and the chain down to Cook's theorem is out of reach. Beside it, the
       measured cost of the oracle (the refutation record) is the "immense work", already tabulated.
+- [ ] **Random graphs, two items from the layout second moment** (2026-11-11,
+      `reports/layout_second_moment.md`): (a) put the random-ordering upper bound
+      `pw ≤ β_typ(c) n`, `β_typ = max_x (1−x)(1−e^{−cx})`, into Appendix E as the upper end of the
+      sandwich for `c ≥ 14.42` (it beats Edwards–McDermid there; a two-line theorem once the
+      concentration of the open count at each `t` is written — Binomial(n−t, 1−(1−p)^t), union over
+      t); Lean it beside `LayoutMoment.lean`; (b) the **dense staircase conjecture**
+      `n − pw(G(n,p)) = (4 + o(1)) log_{1/(1−p)} n` (the report's §3.4 / §7, with its kill criterion):
+      a clique-type second moment on staircases; paper-sized; would close the dense sandwich [2, 4]
+      at 4. Also: prove `ChainIdentity` (`narrowWeight = chainQ`) in `LayoutMoment.lean`.
 - [ ] **Formalise the spectral lower bound in Lean** (owner, 2026-11-10). The component
       entering `_lower_bound` and the dataset's `bound:spectral` floors rests on cited
       theorems and the corpus validation only: (i) the prefix-separator argument — a layout

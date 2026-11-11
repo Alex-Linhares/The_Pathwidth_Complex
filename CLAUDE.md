@@ -1788,6 +1788,26 @@ all proved by the C program in 167 s; the finite inequality evaluated exactly is
 smallest proved value in every cell. "We found no prior statement" of either end for pathwidth,
 vertex separation or treewidth in this range (Perarnau–Serra 2014's `n − O(√(n/p))` is the nearest).
 
+**The second moment on layouts (2026-11-11, one agent session; `reports/layout_second_moment.md`,
+`learning/layout_moment.py`, `LayoutMoment.lean`).** For a fixed ordering of `G(n,p)` the open count is a
+Markov chain in `(t, k)` (the placed vertex is open w.p. `k/(n−t+1)`, each closed suffix vertex opens w.p.
+`p`), so `E[#orderings of width ≤ w] = n!·q(n,p,w)` by an `O(n w²)` DP — checked exactly against every
+labelled graph to 7 vertices and every isomorphism class to 10. As a lower bound it loses to the empty
+pair everywhere (the `n!` factor). **Sparse second moment: dead** — the ratio `E[X²]/E[X]²` at the
+threshold grows like `e^{0.93 n}` at `c = 3` (exact to `n = 10`), and a rigorous Jensen lower bound on it
+from the edge-marked chain is exponential at every `β` below the random-ordering width (the
+Achlioptas–Peres / Dani–Moore lottery through one statistic). Two by-products: **the width of a
+uniformly random ordering**, `max_t (n−t)(1−(1−p)^t)`, gives `pw ≤ β_typ(c) n` whp with
+`β_typ = max_x (1−x)(1−e^{−cx})` = 0.423, 0.586, 0.694 at c = 3, 6, 10 — worse than Edwards–McDermid there,
+**better from c = 14.42 on** (0.808 vs 0.826 at c = 20); and in the **dense regime** the Jensen bound is
+bounded and decreasing, `pw ≤ n − s` is the existence of a *staircase* whose ordered first moment has
+threshold `(4 − o(1)) log_b n` (Theorem B's constant), so a clique-type second moment on staircases
+would give `n − pw(G(n,p)) = (4 + o(1)) log_b n`, closing the dense sandwich [2, 4] at 4 — paper-sized,
+proposed with a kill criterion, not attempted. Lean: the expectation identity `expected_narrowLayouts`
+and the independence lemma `sum_gnpWeight_pattern` proved (no sorry); the chain identity
+`narrowWeight = chainQ` stated as a `Prop`, not proved. "We found no prior statement" of the chain, of
+the random-ordering width, or of any second moment on layouts.
+
 **Unrelated to the plan:**
 - Fix the pathwidth SAT encoding variable ID collision bug in `encoding.py`.
 - ~~Becceneri, Yanasse & Soma (2004) is still missing~~ — **obtained 2026-09-27**,
