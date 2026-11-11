@@ -1,0 +1,8 @@
+n=1: 1 graphs, all w in 0..0, 4 values of p: exact per position, union bound holds
+n=2: 2 graphs, all w in 0..1, 4 values of p: exact per position, union bound holds
+n=3: 8 graphs, all w in 0..2, 4 values of p: exact per position, union bound holds
+n=4: 64 graphs, all w in 0..3, 4 values of p: exact per position, union bound holds
+n=5: 1024 graphs, all w in 0..4, 4 values of p: exact per position, union bound holds
+n=6: 32768 graphs, all w in 0..5, 4 values of p: exact per position, union bound holds
+n=7: 2097152 graphs, all w in 0..6, 4 values of p: exact per position, union bound holds
+total checks: 672, zero discrepancies
