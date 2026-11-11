@@ -1,0 +1,1 @@
+{"id": "pwc-15936", "sweep_width": 21, "c_width": 19, "c_status": "upper", "c_checked": 19, "seconds": 600.4, "stderr": "line 1: n=102 width=19 status=upper lower=16 upper_start=21 nodes=749431119 minor_nodes=10000069 upper_bound_nodes=0 engine_calls=19 seconds=600.221"}

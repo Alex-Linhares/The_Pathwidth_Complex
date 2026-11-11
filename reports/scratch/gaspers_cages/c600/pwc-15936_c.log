@@ -1,0 +1,11 @@
+{
+ "cmd": "nice -n 19 /home/al/dev/MOSP/pathwidth_solver/cli/pathwidth -u reports/scratch/gaspers_cages/c600/pwc-15936_seed.txt -t 600 -l -v",
+ "stdout": "pathwidth 19 upper\nlayout 98 90 89 88 101 100 99 66 67 65 92 64 63 87 86 61 62 60 59 58 69 47 56 49 48 46 45 44 43 42 57 41 40 39 29 51 50 27 26 28 37 35 38 36 34 25 17 16 15 14 13 97 80 55 91 54 53 52 33 31 30 32 76 75 74 96 85 73 72 71 70 68 95 94 93 81 79 82 24 23 22 21 84 83 18 19 20 78 77 12 11 2 5 6 7 8 9 10 3 4 1 0\n",
+ "stderr": "line 1: n=102 width=19 status=upper lower=16 upper_start=21 nodes=749431119 minor_nodes=10000069 upper_bound_nodes=0 engine_calls=19 seconds=600.221\n",
+ "seconds": 600.3637204170227,
+ "returncode": 0,
+ "width": 19,
+ "status": "upper",
+ "checked_width": 19
+}
+layout 98 90 89 88 101 100 99 66 67 65 92 64 63 87 86 61 62 60 59 58 69 47 56 49 48 46 45 44 43 42 57 41 40 39 29 51 50 27 26 28 37 35 38 36 34 25 17 16 15 14 13 97 80 55 91 54 53 52 33 31 30 32 76 75 74 96 85 73 72 71 70 68 95 94 93 81 79 82 24 23 22 21 84 83 18 19 20 78 77 12 11 2 5 6 7 8 9 10 3 4 1 0
