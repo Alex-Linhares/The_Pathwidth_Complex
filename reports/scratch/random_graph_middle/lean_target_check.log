@@ -1,0 +1,4 @@
+grid points (main): 24904
+violations: {'main': 0, 'M1': 0, 'M2': 0, 'M3': 0, 'M4': 0, 'M5': 0, 'M6': 0}
+smallest slack of the main inequality (nats): [(2.2088, 3, 1.0), (2.788, 4, 1.0), (3.2381, 5, 1.0), (3.6066, 6, 1.0), (3.7016, 3, 1.034)]
+OK

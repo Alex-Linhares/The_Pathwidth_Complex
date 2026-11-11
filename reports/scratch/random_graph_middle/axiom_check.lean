@@ -1,0 +1,13 @@
+import MOSPFormalization.FirstMomentAsymptotics
+open MOSPFormalization
+#print axioms negMulLog_one_sub_le
+#print axioms firstMomentRate_ge
+#print axioms firstMomentRate_mid
+#print axioms firstMoment_pathwidth_le_mid
+#print axioms four_mul_log_lt_of_nine_le
+#print axioms firstMoment_pathwidth_le_mid'
+#print axioms middle_exponent_le
+#print axioms tendsto_log_two_log_atTop
+#print axioms tendsto_log_mul_log_log_atTop
+#print axioms tendsto_four_log_mul_atTop
+#print axioms tendsto_firstMoment_pathwidth_mid

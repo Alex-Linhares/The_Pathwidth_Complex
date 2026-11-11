@@ -484,4 +484,204 @@ theorem tendsto_firstMoment_pathwidth (c β : ℝ) (hc : 0 < c) (hβ0 : 0 < β) 
     have hcn : c ≤ n := (Nat.le_ceil c).trans (by exact_mod_cast hn)
     exact firstMoment_pathwidth_le_fin' c β hc hβ0 hβ1 n hn3 hcn
 
+/-! ### The middle regime: `c = c(n) → ∞`
+
+Theorem M of `reports/random_graph_middle.md` (2026-11-11). Theorem A above holds for every
+`c ≤ n`, so it already covers `p = c(n)/n` with `c(n) → ∞`; what is new is the bookkeeping:
+with `β = 1 − 4 log c / c`, so `a = 2 log c / c`, the rate satisfies
+`δ(β, c) ≥ a (c a + 2 log a − 2) = (4 log c / c)(log(2 log c) − 1)` (from
+`φ(1 − 2a) ≤ 2a`), hence
+
+  `P(pw(G(n, c/n)) ≤ ⌊(1 − 4 log c / c) n⌋) ≤ exp(−(4 log c / c)(log(2 log c) − 1) n + 3 log n + 2 log c)`
+
+for `1 < c`, `4 log c < c` (e.g. `c ≥ 9`), `3 ≤ n`, `c ≤ n`; and for `c ≤ n` the exponent is at
+most `−log c · (4 log(2 log c) − 9)`, which tends to `−∞` with `c`. So for every sequence
+`c n → ∞` with `c n ≤ n`, `pw(G(n, c n / n)) > (1 − 4 log (c n) / c n) · n` with probability
+`1 − o(1)`: this is the whole range `np → ∞`, `p ≤ 1`, in one statement, with `n − pw ≤ 4 n log c / c`.
+Checked numerically first (`reports/scratch/random_graph_middle/lean_target_check.py`, log
+beside it): the exact statement of `firstMoment_pathwidth_le_mid` and each lemma (M1)–(M6)
+on `n = 3..300`, `c` on 60 points of `(1, n]` plus every integer `c ≤ 40`, 24,904 grid points,
+zero violations, smallest slack `2.21` nats (`n = 3`, `c = 1`). -/
+
+/-- **(M1)** `φ(1 − x) ≤ x` for `0 ≤ x ≤ 1`: `−log(1 − x) ≤ x/(1 − x)`. -/
+theorem negMulLog_one_sub_le (x : ℝ) (hx0 : 0 ≤ x) (hx1 : x ≤ 1) : negMulLog (1 - x) ≤ x := by
+  rcases hx1.eq_or_lt with rfl | hx1'
+  · simp
+  · have hy : 0 < 1 - x := by linarith
+    have h := Real.log_le_sub_one_of_pos (one_div_pos.2 hy)
+    rw [Real.log_div one_ne_zero hy.ne', Real.log_one, zero_sub] at h
+    have e : 1 / (1 - x) - 1 = x / (1 - x) := by field_simp; ring
+    rw [e] at h
+    have h2 : (1 - x) * (-Real.log (1 - x)) ≤ (1 - x) * (x / (1 - x)) :=
+      mul_le_mul_of_nonneg_left h hy.le
+    have e2 : (1 - x) * (x / (1 - x)) = x := by field_simp
+    rw [e2] at h2
+    simp only [negMulLog]
+    linarith
+
+/-- **(M2)** the rate from below: `δ(β, c) ≥ a (c a + 2 log a − 2)` with `a = (1 − β)/2`, for
+`0 ≤ β ≤ 1`, any `c`. -/
+theorem firstMomentRate_ge (c β : ℝ) (hβ0 : 0 ≤ β) (hβ1 : β ≤ 1) :
+    (1 - β) / 2 * (c * ((1 - β) / 2) + 2 * Real.log ((1 - β) / 2) - 2) ≤ firstMomentRate c β := by
+  set a : ℝ := (1 - β) / 2 with ha
+  have ha0 : 0 ≤ a := by rw [ha]; linarith
+  have h1 : negMulLog (1 - 2 * a) ≤ 2 * a :=
+    negMulLog_one_sub_le (2 * a) (by linarith) (by rw [ha]; linarith)
+  have h2 : negMulLog a = -(a * Real.log a) := by rw [negMulLog]; ring
+  rw [firstMomentRate_def, ← ha, h2]
+  nlinarith
+
+/-- **(M3)** at `β = 1 − 4 log c / c`: `δ(β, c) ≥ (4 log c / c)(log(2 log c) − 1)`, for `1 < c`
+with `4 log c ≤ c`. -/
+theorem firstMomentRate_mid (c : ℝ) (hc1 : 1 < c) (hc4 : 4 * Real.log c ≤ c) :
+    4 * Real.log c / c * (Real.log (2 * Real.log c) - 1) ≤
+      firstMomentRate c (1 - 4 * Real.log c / c) := by
+  have hc0 : 0 < c := by linarith
+  have hl : 0 < Real.log c := Real.log_pos hc1
+  have ha : (1 - (1 - 4 * Real.log c / c)) / 2 = 2 * Real.log c / c := by ring
+  have h := firstMomentRate_ge c (1 - 4 * Real.log c / c) (by
+    rw [sub_nonneg, div_le_one hc0]; exact hc4) (by
+    have : 0 < 4 * Real.log c / c := by positivity
+    linarith)
+  rw [ha] at h
+  refine le_trans (le_of_eq ?_) h
+  have hlog : Real.log (2 * Real.log c / c) = Real.log (2 * Real.log c) - Real.log c :=
+    Real.log_div (by positivity) hc0.ne'
+  rw [hlog]
+  field_simp
+  ring
+
+open scoped Classical in
+/-- **Theorem M (finite form)**: for `1 < c` with `4 log c < c`, `n ≥ 3`, `c ≤ n`,
+`P(pathwidth(G(n, c/n)) ≤ ⌊(1 − 4 log c / c) n⌋) ≤
+  exp(−(4 log c / c)(log(2 log c) − 1) n + 3 log n + 2 log c)`. -/
+theorem firstMoment_pathwidth_le_mid (c : ℝ) (hc1 : 1 < c) (hc4 : 4 * Real.log c < c)
+    (n : ℕ) (hn3 : 3 ≤ n) (hnc : c ≤ n) :
+    ∑ G ∈ graphsOfPathwidthLe (V := Fin n) ⌊(1 - 4 * Real.log c / c) * n⌋₊,
+        gnpWeight (c / n) G ≤
+      Real.exp (-(4 * Real.log c / c * (Real.log (2 * Real.log c) - 1)) * n +
+        3 * Real.log n + 2 * Real.log c) := by
+  have hc0 : 0 < c := by linarith
+  have hl : 0 < Real.log c := Real.log_pos hc1
+  have hβ0 : 0 < 1 - 4 * Real.log c / c := by
+    rw [sub_pos, div_lt_one hc0]; exact hc4
+  have hβ1 : 1 - 4 * Real.log c / c < 1 := by
+    have : 0 < 4 * Real.log c / c := by positivity
+    linarith
+  refine (firstMoment_pathwidth_le_fin c _ hc0 hβ0 hβ1 n hn3 hnc).trans (Real.exp_le_exp.2 ?_)
+  have hrate := firstMomentRate_mid c hc1 hc4.le
+  have hn0 : (0 : ℝ) ≤ n := by positivity
+  have h1 : -firstMomentRate c (1 - 4 * Real.log c / c) * n ≤
+      -(4 * Real.log c / c * (Real.log (2 * Real.log c) - 1)) * n := by
+    nlinarith
+  have h2 : c * ((1 - (1 - 4 * Real.log c / c)) / 2) = 2 * Real.log c := by
+    field_simp; ring
+  rw [h2]
+  linarith
+
+/-- **(M5)** `4 log c < c` for `c ≥ 9`: `log c ≤ log 9 + c/9 − 1` and `log 9 < 9/4`
+(`e^{9/4} = e · e · e^{1/4} > 2.718² · 1.25 > 9`). -/
+theorem four_mul_log_lt_of_nine_le (c : ℝ) (hc : 9 ≤ c) : 4 * Real.log c < c := by
+  have hc0 : 0 < c := by linarith
+  have h9 : Real.log 9 < 9 / 4 := by
+    rw [Real.log_lt_iff_lt_exp (by norm_num)]
+    have he : (2.7182818283 : ℝ) < Real.exp 1 := Real.exp_one_gt_d9
+    have hq : (1 : ℝ) + 1 / 4 ≤ Real.exp (1 / 4) := by
+      have := Real.add_one_le_exp (1 / 4 : ℝ); linarith
+    have e : Real.exp (9 / 4) = Real.exp 1 * Real.exp 1 * Real.exp (1 / 4) := by
+      rw [← Real.exp_add, ← Real.exp_add]; norm_num
+    rw [e]
+    have hpos : 0 < Real.exp (1 / 4) := Real.exp_pos _
+    nlinarith [mul_pos (Real.exp_pos 1) (Real.exp_pos 1)]
+  have hdiv : Real.log (c / 9) ≤ c / 9 - 1 := Real.log_le_sub_one_of_pos (by positivity)
+  rw [Real.log_div hc0.ne' (by norm_num)] at hdiv
+  linarith
+
+/-- **Theorem M (finite form) for `c ≥ 9`**, the threshold made explicit. -/
+theorem firstMoment_pathwidth_le_mid' (c : ℝ) (hc : 9 ≤ c) (n : ℕ) (hn3 : 3 ≤ n) (hnc : c ≤ n) :
+    ∑ G ∈ graphsOfPathwidthLe (V := Fin n) ⌊(1 - 4 * Real.log c / c) * n⌋₊,
+        gnpWeight (c / n) G ≤
+      Real.exp (-(4 * Real.log c / c * (Real.log (2 * Real.log c) - 1)) * n +
+        3 * Real.log n + 2 * Real.log c) :=
+  firstMoment_pathwidth_le_mid c (by linarith) (four_mul_log_lt_of_nine_le c hc) n hn3 hnc
+
+/-- **(M6)** the exponent of Theorem M for `c ≤ n`: with `A = (4 log c / c)(log(2 log c) − 1)` and
+`A c ≥ 3`, `−A n + 3 log n + 2 log c ≤ −log c · (4 log(2 log c) − 9)`, by
+`3 log(n/c) ≤ 3 (n/c − 1) ≤ A (n − c)`. -/
+theorem middle_exponent_le (c n : ℝ) (hc0 : 0 < c) (hcn : c ≤ n)
+    (hA : 3 ≤ 4 * Real.log c * (Real.log (2 * Real.log c) - 1)) :
+    -(4 * Real.log c / c * (Real.log (2 * Real.log c) - 1)) * n + 3 * Real.log n +
+        2 * Real.log c ≤
+      -(Real.log c * (4 * Real.log (2 * Real.log c) - 9)) := by
+  have hn0 : 0 < n := lt_of_lt_of_le hc0 hcn
+  have hlog : Real.log n - Real.log c ≤ n / c - 1 := by
+    have := Real.log_le_sub_one_of_pos (div_pos hn0 hc0)
+    rwa [Real.log_div hn0.ne' hc0.ne'] at this
+  set A : ℝ := 4 * Real.log c / c * (Real.log (2 * Real.log c) - 1) with hAdef
+  have hAc : A * c = 4 * Real.log c * (Real.log (2 * Real.log c) - 1) := by
+    rw [hAdef]; field_simp
+  have h3 : 3 * (n / c - 1) ≤ A * (n - c) := by
+    have e : 3 * (n / c - 1) = (3 / c) * (n - c) := by field_simp
+    rw [e]
+    apply mul_le_mul_of_nonneg_right _ (by linarith)
+    rw [div_le_iff₀ hc0, hAc]; exact hA
+  nlinarith
+
+/-- `x ↦ log(2 log x)` tends to `+∞`. -/
+theorem tendsto_log_two_log_atTop :
+    Filter.Tendsto (fun x : ℝ => Real.log (2 * Real.log x)) Filter.atTop Filter.atTop :=
+  Real.tendsto_log_atTop.comp (Real.tendsto_log_atTop.const_mul_atTop two_pos)
+
+/-- `x ↦ log x · (4 log(2 log x) − 9)` tends to `+∞`. -/
+theorem tendsto_log_mul_log_log_atTop :
+    Filter.Tendsto (fun x : ℝ => Real.log x * (4 * Real.log (2 * Real.log x) - 9))
+      Filter.atTop Filter.atTop := by
+  have h2 : Filter.Tendsto (fun x : ℝ => 4 * Real.log (2 * Real.log x) - 9)
+      Filter.atTop Filter.atTop := by
+    have := Filter.tendsto_atTop_add_const_right Filter.atTop (-9)
+      (tendsto_log_two_log_atTop.const_mul_atTop (by norm_num : (0 : ℝ) < 4))
+    simpa [sub_eq_add_neg] using this
+  exact Real.tendsto_log_atTop.atTop_mul_atTop₀ h2
+
+/-- `x ↦ 4 log x · (log(2 log x) − 1)` tends to `+∞`. -/
+theorem tendsto_four_log_mul_atTop :
+    Filter.Tendsto (fun x : ℝ => 4 * Real.log x * (Real.log (2 * Real.log x) - 1))
+      Filter.atTop Filter.atTop := by
+  have h1 : Filter.Tendsto (fun x : ℝ => Real.log (2 * Real.log x) - 1)
+      Filter.atTop Filter.atTop := by
+    have := Filter.tendsto_atTop_add_const_right Filter.atTop (-1) tendsto_log_two_log_atTop
+    simpa [sub_eq_add_neg] using this
+  exact (Real.tendsto_log_atTop.const_mul_atTop (by norm_num : (0 : ℝ) < 4)).atTop_mul_atTop₀ h1
+
+open scoped Classical in
+/-- **Theorem M (the limit)**: for every sequence `c n → ∞` with `c n ≤ n` eventually,
+`P(pathwidth(G(n, c n / n)) ≤ ⌊(1 − 4 log (c n) / c n) · n⌋) → 0`: the pathwidth exceeds
+`n − 4 n log c / c` with probability `1 − o(1)` throughout the range `np → ∞`, `p ≤ 1` — the
+middle regime `c → ∞, c = o(n)` and the dense regime `c = pn` alike. -/
+theorem tendsto_firstMoment_pathwidth_mid (c : ℕ → ℝ)
+    (hc : Filter.Tendsto c Filter.atTop Filter.atTop)
+    (hcn : ∀ᶠ n in Filter.atTop, c n ≤ n) :
+    Filter.Tendsto (fun n : ℕ =>
+      ∑ G ∈ graphsOfPathwidthLe (V := Fin n) ⌊(1 - 4 * Real.log (c n) / c n) * n⌋₊,
+        gnpWeight (c n / n) G)
+      Filter.atTop (nhds 0) := by
+  -- the dominating sequence `exp(−log c · (4 log(2 log c) − 9)) → 0`
+  have hdom : Filter.Tendsto (fun n : ℕ =>
+      Real.exp (-(Real.log (c n) * (4 * Real.log (2 * Real.log (c n)) - 9))))
+      Filter.atTop (nhds 0) :=
+    Real.tendsto_exp_atBot.comp
+      (Filter.tendsto_neg_atTop_atBot.comp (tendsto_log_mul_log_log_atTop.comp hc))
+  have h9 : ∀ᶠ n in Filter.atTop, (9 : ℝ) ≤ c n := hc.eventually (Filter.eventually_ge_atTop 9)
+  have hA : ∀ᶠ n in Filter.atTop,
+      (3 : ℝ) ≤ 4 * Real.log (c n) * (Real.log (2 * Real.log (c n)) - 1) :=
+    (tendsto_four_log_mul_atTop.comp hc).eventually (Filter.eventually_ge_atTop 3)
+  refine tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds hdom ?_ ?_
+  · filter_upwards [h9, hcn] with n hn9 hn
+    have hnR : (0 : ℝ) < n := by linarith
+    exact Finset.sum_nonneg (fun G _ =>
+      gnpWeight_nonneg (by positivity) ((div_le_one hnR).2 hn) G)
+  · filter_upwards [h9, hcn, hA, Filter.eventually_ge_atTop 3] with n hn9 hn hAn hn3
+    refine (firstMoment_pathwidth_le_mid' (c n) hn9 n hn3 hn).trans (Real.exp_le_exp.2 ?_)
+    exact middle_exponent_le (c n) n (by linarith) hn hAn
+
 end MOSPFormalization

@@ -1286,3 +1286,59 @@ a PACE lower-bound track before 2026 (maximum agreement forest). Every cutwidth 
 bandwidth bound found is either one separator of the layout (Harper's family), a degree
 or edge-count statement (under `tw`), or an LP/SDP in layout variables (under the
 Lagrangian ceiling of `reports/chain_lp.md` §5).
+
+## Random graphs: the middle regime (2026-11-11)
+
+Survey behind `reports/random_graph_middle.md` §3: what is in print on the pathwidth,
+vertex separation, treewidth or bandwidth of `G(n, p)` when `np → ∞` and `p → 0`. Read
+from open copies (arXiv, ar5iv, publisher abstracts) by a search agent; nothing downloaded.
+Verdict there: no published statement gives `n − pw` (or `n − tw`) the order `n ln c / c`
+or a constant in that regime; the published forms are `n − O(√(n/p))` (Perarnau & Serra,
+tw), `n − o(n)` (Wang et al., tw; abstract only) and `(1 − o(1)) n` (Cheung & Girardet,
+vertex separation, `p ≥ n^{−1+ε}`). Papers already held under other headings (Lee, Lee &
+Oum 2012; Perarnau & Serra 2014; Gao 2006/2012; Do, Erde & Kang 2024; Edwards & McDermid
+2015; Díaz, Petit, Serna & Trevisan 2001) are not repeated.
+
+- **Wang, L., Liu, Y., Cui, S. & Xu, D.** (2011). A note on treewidth in random graphs.
+  *COCOA 2011*, LNCS 6831, 491–499.
+  [doi:10.1007/978-3-642-22616-8_38](https://doi.org/10.1007/978-3-642-22616-8_38).
+  Abstract only (paywalled, no open copy found): for `p = c/n`, `tw ≤ tn` with `t < 1`
+  w.h.p.; for `p ≫ 1/n`, `tw ≥ n − o(n)`. The theorem's rate is not visible from the
+  abstract. **Wanted**: the statement and proof of the `n − o(n)` bound.
+- **Cheung, K. K. H. & Girardet, P.** (2017). Improved approximation of layout problems on
+  random graphs. [arXiv:1710.10339](https://arxiv.org/abs/1710.10339) (read). No journal
+  version found; the "2020" in `refs.bib` (`CheungGirardet2020`) is not confirmed — check
+  the entry. Lemma 7: for `p_n = Ω(n^{−c})`, `c < 1`, w.h.p. `MINVS ≥ (1 − δ)n − 1`; Theorem
+  4.5 the approximation ratio for vertex separation. No rate.
+- **Turner, J. S.** (1986). On the probable performance of heuristics for bandwidth
+  minimization. *SIAM J. Comput.* 15(2), 561–580.
+  [doi:10.1137/0215041](https://doi.org/10.1137/0215041). Held
+  (`reports/scratch/first_moment/lit/turner1986.pdf`); listed here for Theorem 2.2,
+  `bw ≥ (1 − ε) n` for `p ≥ c log n / n` — a bandwidth statement, which bounds nothing
+  about pathwidth (`pw ≤ bw`).
+- **Frieze, A. M.** (1990). On the independence number of random graphs. *Discrete
+  Mathematics* 81(2), 171–175.
+  [doi:10.1016/0012-365X(90)90149-C](https://doi.org/10.1016/0012-365X(90)90149-C). Not
+  accessed; its statement `α(G(n, p)) = (2n/d)(ln d − ln ln d − ln 2 + 1 ± ε)` w.h.p. for
+  `d = np ≥ d_ε`, `d = o(n)`, is quoted from Coja-Oghlan & Efthymiou
+  ([arXiv:1007.1378](https://arxiv.org/abs/1007.1378), eq. (23)) and Bohman & van der
+  Hofstad ([arXiv:2208.00117](https://arxiv.org/abs/2208.00117)). It is the upper side
+  `n − pw ≥ α = (2 + o(1)) n ln c / c` of the middle-regime sandwich. **Wanted**: the
+  original, for the exact range of `d`.
+- **Bollobás, B. & Erdős, P.** (1976). Cliques in random graphs. *Math. Proc. Cambridge
+  Philos. Soc.* 80(3), 419–427.
+  [doi:10.1017/S0305004100053056](https://doi.org/10.1017/S0305004100053056); **Matula,
+  D. W.** (1976). The largest clique size in a random graph. Tech. Rep. CS 7608, Southern
+  Methodist University; **Grimmett, G. R. & McDiarmid, C. J. H.** (1975). On colouring
+  random graphs. *Math. Proc. Cambridge Philos. Soc.* 77(2), 313–324.
+  [doi:10.1017/S0305004100051124](https://doi.org/10.1017/S0305004100051124). The
+  two-point concentration of `α(G(n, p))` at `(2 + o(1)) log_b n` for constant `p`, the
+  upper side of the dense sandwich; not held.
+- **Shang, Y.** (2022). On the tree-depth and tree-width in heterogeneous random graphs.
+  *Proc. Japan Acad. Ser. A* 98(9), 78–83.
+  [doi:10.3792/pjaa.98.015](https://doi.org/10.3792/pjaa.98.015). Held
+  (`literature/2022-Shang-...pdf`); linear tree-depth and treewidth under density
+  assumptions in `G(n, (p_ij))`, citing Perarnau & Serra for `np → ∞`; nothing sharper.
+- **Mareček, J.** (2009). Some probabilistic results on width measures of graphs.
+  [arXiv:0908.1772](https://arxiv.org/abs/0908.1772). `Ω(n)` lower bounds on treewidth,
+  branchwidth, clique-width and rank-width at `G(n, 1/2)`; no constants.
