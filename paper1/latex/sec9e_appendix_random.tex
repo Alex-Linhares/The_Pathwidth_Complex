@@ -17,7 +17,7 @@ appendix proves such statements for random graphs and records what of them is
 checked in Lean. The results are that a sparse random graph has pathwidth
 proportional to its number of vertices, with an explicit constant; that a
 dense one has pathwidth within a few logarithms of its number of vertices,
-with its constant; and that one statement covers the regimes between. The argument is a first moment, an old tool; what is new here is the
+with its constant, $2+\sqrt2$; and that one statement covers the regimes between. The argument is a first moment, an old tool; what is new here is the
 exact form of its deterministic step, the constant it yields, and the
 machine check. We found no prior statement of the constant.
 
@@ -165,13 +165,14 @@ For $c$ fixed this is weaker than $\beta^{*}(c)$ ($0.816$ against $0.857$ at
 $c=100$), and the sharper end of Theorem~\ref{thm:betastar}'s asymptotic form,
 $n-(4\ln c-4\ln\ln c+O(1))n/c$, holds for growing $c$ by the same calculation
 with $a=(2/c)(\ln c+L)$ in place of $2\ln c/c$. At $p$ fixed it reads
-$n-\mathrm{pw}\le(4/p)\ln n+O(1)$, which the dense bound of this appendix,
-$n-(4+\varepsilon)\log_{1/(1-p)}n$, improves to its own form; carrying $-n\ln(1-p)$ through the proof in
-place of $np$ gives $4\log_{1/(1-p)}n+O(1)$ with no $\varepsilon$, on paper.
+$n-\mathrm{pw}\le(4/p)\ln n+O(1)$; carrying $-n\ln(1-p)$ through the proof in
+place of $np$ gives $4\log_{1/(1-p)}n+O(1)$ with no $\varepsilon$, on paper, and
+the next paragraph improves the $4$ to $2+\sqrt2$ by a sharper count.
 The constant~$4$ is the method's: since $\mathrm{pw}\le n-\alpha(G)$ and
 $\alpha(G(n,c/n))=(2+o(1))\,n\ln c/c$ whenever $c\to\infty$ and $c=o(n)$
 \citep{Frieze1990}, $n-\mathrm{pw}$ lies between $2n\ln c/c$ and $4n\ln c/c$
-throughout, the same bracket as in the dense case. We found no prior statement
+throughout; in the dense case the same bracket $[2,4]$ closes at $2+\sqrt2$, and
+here it is open. We found no prior statement
 of either end for pathwidth, vertex separation or treewidth in this range: the
 published forms are $n-O(\sqrt{n/p})$ for treewidth \citep{PerarnauSerra2014},
 $n-o(n)$ \citep{WangLiuCuiXu2011} and $(1-o(1))n$ for vertex separation when
@@ -185,6 +186,82 @@ terms are not yet small, and the finite inequality evaluated exactly, the
 largest $k$ with $\Pr[\mathrm{pw}\le k]\le0.05$, is within six of the
 smallest proved value in every cell where it is positive
 (Figure~\ref{fig:middle}).
+
+\paragraph{The dense regime.}
+At $p$ fixed the empty pair gives $n-\mathrm{pw}\le(4+\varepsilon)\log_{b}n$
+with $b=1/(1-p)$, and the independence number gives
+$n-\mathrm{pw}\ge\alpha(G)=(2-o(1))\log_{b}n$; the bracket is $[2,4]$. It
+closes at $2+\sqrt2$, and the object that closes it is the structure a narrow
+layout leaves behind when it is read in full rather than at one position.
+Call a \emph{generalised staircase of size $s$} two injective sequences
+$v_{1},\dots,v_{s-1}$ and $u_{1},\dots,u_{s-1}$ of vertices such that, for
+every $i$, $u_{i}$ is not among $v_{1},\dots,v_{s-i}$ and is adjacent to none
+of them; a \emph{staircase} is one whose $2s-2$ vertices are all distinct.
+Then, for $1\le s\le n$, $\mathrm{pw}(G)\le n-s$ if and only if $G$ has a
+generalised staircase of size $s$: a layout of width $n-s$ lays the $v$'s out
+first and reads the $u$'s off the inactive suffixes, and conversely; and a
+staircase is exactly the structure of bandwidth at most $n-s$ when
+$2s-2\le n$~\leanref{staircase}. The staircase's first moment,
+$(n)_{2s-2}(1-p)^{s(s-1)/2}$, crosses one at $s=(4-o(1))\log_{b}n$, which is
+the empty pair's constant again; but a staircase contains a denser
+sub-configuration, the \emph{corner block} $v_{1},\dots,v_{a}$,
+$u_{1},\dots,u_{b}$ with $c(s,a,b)=\sum_{i\le b}\min(a,s-i)$ forced
+non-edges, and the union bound over blocks, proved in Lean on $\mathrm{Fin}\,n$,
+is
+\[
+  \Pr\bigl[\mathrm{pw}(G(n,p))\le n-s\bigr]\;\le\;n^{a+b}\,(1-p)^{c(s,a,b)}
+  \qquad(1\le s\le n,\ a,b\le s-1)
+\]
+\leanref{staircase}. With $s=\kappa\log_{b}n$ and $a=b=(\kappa-1)\log_{b}n$
+the exponent is $-(\kappa^{2}/2-2\kappa+1)\log_{b}^{2}n\cdot\ln b$, negative
+exactly when $\kappa>2+\sqrt2$; the empty pair is the block at
+$a=b=\tfrac{\kappa}{2}\log_{b}n$, the slice on which the minimum is $4$.
+
+\begin{theorem}[the dense constant]
+\label{thm:dense}
+For fixed $p\in(0,1)$ and every $\varepsilon>0$, with probability tending to
+one,
+\[
+  (2+\sqrt2-\varepsilon)\log_{b}n\;\le\;n-\mathrm{pw}(G(n,p))\;\le\;(2+\sqrt2+\varepsilon)\log_{b}n,
+  \qquad b=\tfrac1{1-p}.
+\]
+\end{theorem}
+
+The upper bound on $n-\mathrm{pw}$ is the block inequality with the exponent
+just computed, with probability $1-\exp(-(\sqrt2\,\varepsilon+o(1))\ln^{2}n/\ln b)$;
+the finite inequality is in Lean and the page of calculus that reads the
+exponent off it is on paper. The lower bound is a second moment on
+staircases: by symmetry the ratio $\mathbb E[X^{2}]/\mathbb E[X]^{2}$ is the
+expectation of $b^{|F'\cap F_{0}|}$ over a uniform placement $F'$ against a
+fixed staircase $F_{0}$, the overlap of two staircases that share $a'$ of
+the $v$'s and $b'$ of the $u$'s is at most the block cost $c(s,a',b')$, and
+below $2+\sqrt2$ every term with a shared vertex is $O(n^{-\delta})$ for a
+$\delta>0$ uniform in the pair, so the ratio tends to one and the staircase
+exists with probability tending to one. The dangerous overlap is the corner
+block, in the middle of the staircase, exactly where the first moment is
+tightest, which is why the two halves meet. This half is on paper; in Lean it
+is a stated proposition, not a theorem. The constant is in print for
+\emph{bandwidth}: Kuang and McDiarmid proved
+$n-(2+\sqrt2+o(1))\log_{2}n<\mathrm{bw}(G(n,\tfrac12))<n-(2+\sqrt2-o(1))\log_{2}n$
+\citep{KuangMcDiarmid1985}, stated as Theorem~3 of \citet{ErdosHellWinkler1989},
+who write that ``even the constant is determined'' by it. A bandwidth lower
+bound says nothing about pathwidth, and the generalised staircase, whose
+$u$'s may coincide with later $v$'s, is what carries the lower half across;
+their upper bound, since a bandwidth layout is a pathwidth layout, gives the
+other half of Theorem~\ref{thm:dense} at $p=\tfrac12$ without the second
+moment. So the pathwidth and the bandwidth of a dense random graph agree to
+$o(\log n)$. We found no prior statement for pathwidth. At the sizes we can
+prove, $30$ to $60$ vertices at $p=\tfrac12$, the limit is not what the
+graphs show: $\log_{b}n$ is $5$ to $6$ there and the corrections to the
+exponent are of the size of its main term; what the proved widths do show is
+the finite block count, whose threshold is the measured median $n-\mathrm{pw}$
+plus one at every one of the four sizes, and the ratio
+$(n-\mathrm{pw})/\alpha(G)$, which is $1.71$ to $1.77$ against the limit
+$(2+\sqrt2)/2=1.707$. Every statement of this paragraph was checked by brute
+force before it was stated, the lemma in both directions on every labelled
+graph with at most six vertices, and the claim was then handed to a second,
+independent reading with its own code, which confirmed it and found nothing
+to correct beyond wording; its report is \path{reports/dense_staircase_refutation.md}.
 
 \paragraph{A trivial upper bound.}
 The upper end of the sandwich at fixed $c$ has been the degree-sequence bound
@@ -219,8 +296,8 @@ width of a random ordering for $c\ge14.42$: $[0.554,0.808]$ at $c=20$,
 $[0.761,0.903]$ at $50$, $[0.857,0.944]$ at $100$. In the other two regimes
 the same computation is consistent with the brackets above and weaker than
 their ends: at $p$ fixed the random ordering's width is
-$n-(1+o(1))\log_{b}n$, coefficient $1$ against the $[2,4]$ of the
-independence number and Theorem~B; for $c\to\infty$ it is
+$n-(1+o(1))\log_{b}n$, coefficient $1$ against the $2+\sqrt2$ of
+Theorem~\ref{thm:dense}; for $c\to\infty$ it is
 $n-(1+o(1))\,n\ln c/c$, coefficient $1$ against Frieze's $2$, so the
 independence number remains the better upper end there. The finite
 inequality, evaluated at level $0.05$ on the 320 graphs of
@@ -708,7 +785,11 @@ The argument is published twice in cruder form. \citet{Turner1986} used the
 same empty pair, with the count $(en/k)^{2k}$ in place of the entropy, to
 prove that almost every $G(n,p)$ with $p$ fixed has bandwidth at least
 $n-4\log_{1/(1-p)}n$; since bandwidth is at least pathwidth, our dense
-statement implies his and not conversely. \citet{DiazPetitSernaTrevisan2001}
+statement implies his and not conversely, and it reproduces, for pathwidth
+and hence for bandwidth, the lower half of Kuang and McDiarmid's
+$2+\sqrt2$ \citep{KuangMcDiarmid1985,ErdosHellWinkler1989}, which is stronger
+than Turner's; the upper half of Theorem~\ref{thm:dense} is theirs at $p=\tfrac12$
+through $\mathrm{pw}\le\mathrm{bw}$, and ours on paper at every $p$. \citet{DiazPetitSernaTrevisan2001}
 used it for vertex separation on mixing graphs, with a $3^{n}$ count and
 Chernoff slack at a single position, which gives no positive constant below
 $c\approx227$. Neither states the entropy form, a value of $\beta^{*}(c)$, the

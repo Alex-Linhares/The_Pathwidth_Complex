@@ -1834,7 +1834,13 @@ to `v_1..v_{s−i}`; both directions in Lean, checked on every labelled graph to
 and exponential in `log² n` above. So **`n − pw(G(n, p)) = (2 + √2 + o(1)) log_b n` whp**:
 the conjecture of `reports/layout_second_moment.md` §3.4 (constant `4`) is refuted,
 Theorem B's `4` drops to `2 + √2`, and the sandwich `[2, 4]` of the random-graph reports
-and Appendix E is an equality (paper not yet updated). The constant is in print for
+and Appendix E is an equality. **Confirmed the same day by an independent refuter**
+(`reports/dense_staircase_refutation.md`: own code, lemma and block bound in exact
+rationals on every graph to 6 vertices, the second-moment argument re-derived, the
+finite brackets to `n = 10¹⁰⁰`, EHW read verbatim; nothing wrong, three wording points),
+and **in the paper**: Appendix E, paragraph "The dense regime", Theorem "the dense
+constant" (`thm:dense`), Appendix A row `staircase`, references `KuangMcDiarmid1985`
+(Ars Combinatoria 20A, 29–36; not held) and `ErdosHellWinkler1989` (open scan). The constant is in print for
 **bandwidth** — Kuang & McDiarmid (1985), stated by Erdős, Hell & Winkler (1989) — so
 `pw` and `bw` of dense `G(n, p)` agree to `o(log n)`; the pathwidth half (a bandwidth
 lower bound never transfers) is where the generalised staircase carries it; we found no

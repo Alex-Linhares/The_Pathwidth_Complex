@@ -65,7 +65,7 @@ layouts cannot prove anything below the width of a random ordering, which is the
 bound. The weighted cures of the literature (Achlioptas–Peres, Dani–Moore) would have to
 cancel a drift of the whole open-count trajectory, not of one statistic; not attempted.
 
-**The second moment, dense: alive but undecided (§3.4).** At `p` fixed the forced
+**Superseded 2026-11-11 (`reports/dense_staircase.md`, confirmed by `reports/dense_staircase_refutation.md`): the dense constant is `2 + √2`, not `4` — the staircase contains a denser corner block whose first moment vanishes above `(2 + √2) log_b n`, and the second moment on staircases is `1 + o(1)` below it; `n − pw(G(n, p)) = (2 + √2 + o(1)) log_b n`, Theorem of paper 1 Appendix E "The dense regime". §3.4 and §7 item 1 below are the conjecture as it stood.* **The second moment, dense: alive but undecided (§3.4).** At `p` fixed the forced
 structure is `O(log² n)` non-edges, the edge-count lottery vanishes (the Jensen bound at
 `w = n − a log_b n` *decreases* with `n`: `2.4 → 0.6` for `a = 2`, `16 → 5.2` for `a = 3`,
 `53 → 19.5` for `a = 4`, `n = 30 → 100`), and `pw ≤ n − s` is **exactly** the existence of a
