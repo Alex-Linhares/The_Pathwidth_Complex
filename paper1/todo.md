@@ -266,6 +266,20 @@ pass (the hypercube and Mycielski theorems were missing from
       not one as the split-budget note of 2026-11-09 said. Still to do: `dataset_check.py` does
       not yet replay the `obstruction-minor-floor-1` certificates (they fold as floors with the
       verified file as evidence; the checker replays only `spectral-prefix-1`); extend it.
+- [ ] **Lean for the LP side of the dual** (owner, 2026-11-11; prover + refuter agents). Four
+      statements, none needing a complexity framework: (i) weak duality of weightings — for any
+      weights μ on prefix sizes, `min_σ Σ_t μ(t) B_σ(t) ≤ pathwidth G`, and Harper is the point-mass
+      case; (ii) the chain LP with Harper cuts equals Harper's bound (`reports/chain_lp.md` §2: the
+      uniform point `y = t/n`, `s = Φ(t)/n` is feasible and optimal; two lines); (iii) the ceiling
+      theorem (`chain_lp.md` §5): any LP tied to the width only through per-level constraints
+      certifies at most the Lagrangian value L; (iv) the oracle reductions, as explicit constructions
+      with proved equivalences: weights on one size ⇒ the vertex-isoperimetric decision
+      (`min_{|S|=t} |N(S)∖S| ≤ b`), weights across the band ⇒ the pathwidth decision itself — the
+      "constraint generation's oracle is the problem we started with" claim. **Not** in scope: the
+      NP-completeness of pathwidth and Appendix F's two impossibility theorems (P = NP, NP = coNP),
+      which stay cited (Lengauer 1981; Kashiwabara & Fujisawa 1979; Garey & Johnson 1979) — Mathlib
+      has no NP/coNP framework and the chain down to Cook's theorem is out of reach. Beside it, the
+      measured cost of the oracle (the refutation record) is the "immense work", already tabulated.
 - [ ] **Formalise the spectral lower bound in Lean** (owner, 2026-11-10). The component
       entering `_lower_bound` and the dataset's `bound:spectral` floors rests on cited
       theorems and the corpus validation only: (i) the prefix-separator argument — a layout
