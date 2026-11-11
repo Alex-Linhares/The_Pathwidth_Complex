@@ -1,4 +1,4 @@
-records checked: 16972 in 9.8 s
+records checked: 16972 in 9.1 s
 provenance (records, i.e. isomorphism classes):
   certified:refutation    12631   members  15682
   certified:theorem          42   members     43
@@ -9,7 +9,7 @@ certified:bound re-established by the minor certificate: 3535 / 3535; by the che
 certified:refutation (rests on a search, not checkable here): 12631
 certified:minor contraction sequences replayed: 434 / 440 (the refutation on the minor rests on a search, not checkable here)
 certified:theorem hypotheses recomputed (grid recognised, width = min(h, w); branch-lemma certificates replayed: 1): 42 / 42
-solution records with a floor: 318; spectral certificates replayed from the stated eigenvalues: 9 / 9; floors without a certificate (the run's own, below the width): 309, of which the checker's own degeneracy and contraction degeneracy re-establish 117
+solution records with a floor: 321; spectral certificates replayed from the stated eigenvalues: 9 / 9; floors without a certificate (the run's own, below the width): 312, of which the checker's own degeneracy and contraction degeneracy re-establish 102
 members by collection and provenance:
   MOSP: Carvalho & Soma 2015: refutation 38, solution 112
   MOSP: Challenge 2005: refutation 5805, bound 1

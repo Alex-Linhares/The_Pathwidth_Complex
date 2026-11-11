@@ -539,6 +539,10 @@ OPEN_RUNS = [SCRATCH / "dataset_open" / f for f in
     # nested branch-lemma certificate, which dataset_check.py replays (07_open/open_runs_proposal.diff, applied).
     SCRATCH / "graph_split" / "can292" / "results_can292.csv",                   # can_292 = 22 (2026-11-09, the rebuilt
     #                                                                              program; a 146-vertex minor, verified)
+    SCRATCH / "pass2_floors" / "results_pass2_floors.csv",                       # loop0013 pass-2 minor certificates as floors
+    #   on open classes (2026-11-11): `lower` = the minor's proved pathwidth (checker-verified in pass 2, C re-proof);
+    #   the `minor` column carries the contraction sequence (format obstruction-minor-floor-1; not yet replayed by
+    #   dataset_check.py, so it folds as a floor with evidence and no floor_certificate)
     SCRATCH / "spectral_floor" / "results_spectral.csv"]                         # the spectral floor on the nine open
     # classes where it is the best floor on record (reports/layout_lp_literature.md §8; proof empty, the class stays
     # open; `lower` the floor and `minor` its `spectral-prefix-1` certificate, which dataset_check.py replays).

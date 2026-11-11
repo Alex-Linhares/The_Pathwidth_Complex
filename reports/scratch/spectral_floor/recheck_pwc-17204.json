@@ -1,0 +1,77 @@
+{
+ "instance": "reports/scratch/obstruction_search/13_pass1/certificates_2/pwc-17204/instance.txt",
+ "certificate": "reports/scratch/obstruction_search/13_pass1/certificates_2/pwc-17204/minor.json",
+ "checks": [
+  {
+   "check": "instance is an edge list",
+   "ok": true,
+   "detail": "500 vertices, 2907 edges"
+  },
+  {
+   "check": "format is obstruction-minor-1",
+   "ok": true,
+   "detail": "obstruction-minor-1"
+  },
+  {
+   "check": "instance size matches",
+   "ok": true,
+   "detail": "file n=500, certificate n=500"
+  },
+  {
+   "check": "graph edge-list SHA-256 matches",
+   "ok": true,
+   "detail": "8e855f5a27b6236c\u2026 vs 8e855f5a27b6236c\u2026"
+  },
+  {
+   "check": "every pair is an edge of the current graph at its step",
+   "ok": true,
+   "detail": "300 steps, 1 isolated deletions"
+  },
+  {
+   "check": "quotient by branch sets equals the replayed minor",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "minor size matches",
+   "ok": true,
+   "detail": "replayed m=200, certificate m=200"
+  },
+  {
+   "check": "minor edge hash matches the certificate",
+   "ok": true,
+   "detail": "536e32491138083b\u2026 vs 536e32491138083b\u2026"
+  },
+  {
+   "check": "the claim is a pathwidth",
+   "ok": true,
+   "detail": "pathwidth >= 29, floor 30"
+  },
+  {
+   "check": "the C program re-proves pathwidth(minor) >= 29 within 600 s",
+   "ok": true,
+   "detail": "width 30 status upper lower 29 (600.17 s)"
+  }
+ ],
+ "verdict": "verified",
+ "replay_ok": true,
+ "hash_ok": true,
+ "c_ok": true,
+ "rulefree": "skipped",
+ "instance_name": "instance",
+ "n": 500,
+ "m": 200,
+ "minor_edges": 1943,
+ "minor_sha256": "536e32491138083b719c54f90f98deb9c4fbb1d95b0c111f1d654c1bd4b8a272",
+ "floor_claimed": 30,
+ "c_width": 30,
+ "c_status": "upper",
+ "c_lower": 29,
+ "c_seconds": 600.172807522933,
+ "proves": {
+  "pathwidth_at_least": 29,
+  "mosp_at_least": 30,
+  "statement": "the 200-vertex contraction minor has pathwidth >= 29, so pathwidth(G) >= 29 and MOSP >= 30",
+  "theorems": "pathwidth_gt_of_minorOf / pathwidth_minorOf_le (lean/MOSPFormalization/Minor.lean); mospValue_eq_pathwidth_add_one (lean/MOSPFormalization/MOSPGraph.lean); a `bound` status (the minor's contraction degeneracy) rests on pathwidth_ge_of_minor_minDegree / MOSPInstance.mospValue_ge_of_minor_minDegree (lean/MOSPFormalization/ObstructionCertificate.lean) once the degeneracy's own contractions are appended to the sequence; the replay is checkSeq (checkSeq_sound) there"
+ }
+}

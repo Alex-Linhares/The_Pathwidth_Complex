@@ -20,3 +20,9 @@ morning's Foster rows. Stopped on Foster after 23.5 h of wall clock: 6,653 tasks
 subtrees worked through, 2.15e12 nodes, 515 core-hours in total (`run2.out`). **`tasks.csv` is the state**: a
 restart with the same command re-expands the top, skips every refuted key, replays the splits and continues; only
 the tasks in flight at the stop are lost. No decision settled; no class closed; no better layout found.
+
+**Correction (2026-11-11).** The split-budget note of 2026-11-09 said all nine named graphs had "a certified floor
+one below the width". That holds for the six with pass-2 minor certificates; Foster, Ljubljana and Balaban's 11-cage
+have no certificate on disk: their floors on record are pass-1 search floors (16, 17, 18 against widths 20, 22, 24;
+`13_pass1/pass1.csv`, `search_floor`), never written as certificates, and the C program's own floor is degeneracy 7–8.
+Their gaps are four to six units, not one.

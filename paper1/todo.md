@@ -258,6 +258,14 @@ pass (the hypercube and Mycielski theorems were missing from
       "off by default" (guard on the budget) or change the record to "on"; either way the
       docstring, CLAUDE.md and Section 5 must agree with the code. Correctness unaffected
       (validated, zero violations); only time.
+- [ ] **Three open cages without any certificate: Foster, Ljubljana, Balaban 11-cage.** Their
+      only floors are pass-1 search floors (16, 17, 18 against widths 20, 22, 24;
+      `13_pass1/pass1.csv` `search_floor`, no certificate written), not folded into the
+      dataset (unit convention to pin; the fold reads run-format rows). Either re-run the
+      searched-minor pass on the three with certificates written (minutes each at the pass-1
+      budget) or fold the pass-1 floors with evidence and no certificate. The 23 pass-2
+      certificates were folded on 2026-11-11 (`reports/scratch/pass2_floors/`), 321 of 324
+      open classes now carry a floor.
 - [ ] **Formalise the spectral lower bound in Lean** (owner, 2026-11-10). The component
       entering `_lower_bound` and the dataset's `bound:spectral` floors rests on cited
       theorems and the corpus validation only: (i) the prefix-separator argument — a layout
