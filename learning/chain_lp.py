@@ -61,6 +61,8 @@ Usage:
     python -m learning.chain_lp --stage cost                     # LP size and time at 100-125
     python -m learning.chain_lp --stage pairs --workers 4        # L >= Harper + 1/2 by a two-level SAT refutation, the 64
     python -m learning.chain_lp --stage residual --workers 4 --seconds 180   # the record's 11 open instances, floor-raising target
+    python -m learning.chain_lp --stage ceiling11 --workers 4 --pool 300      # the mixture upper bound U on L for the 11, and its mu
+    python -m learning.chain_lp --stage residual_mu --workers 4 --conflicts 2000000   # pairs at mu's sizes where ceil(U) > F
     python -m pytest tests/test_chain_lp.py -q
 """
 from __future__ import annotations
@@ -908,12 +910,184 @@ def pair_floor_candidate(graph, matrix, budget) -> int:
     nothing was proved. For the harness's validity stage on the 11."""
     from learning.extremal import matrix_key
 
-    files = [f for f in (RESIDUAL_CSV, RESIDUAL_CSV.with_name("residual_high.csv")) if f.exists()]
+    files = [f for f in (RESIDUAL_CSV, RESIDUAL_CSV.with_name("residual_high.csv"), RESIDUAL_CSV.with_name("residual_mu.csv")) if f.exists()]
     if not files:
         return 0
     d = pd.concat([pd.read_csv(f) for f in files])
     d = d[(d.matrix_key == matrix_key(np.asarray(matrix, dtype=int))) & (d.status == "unsat")]
     return int(d.proves_optimum_ge.max()) if len(d) else 0
+
+
+# ----------------------------------------------------------------------------
+# the 11 again: the mixture upper bound U on L, and the pairs its μ points to
+# ----------------------------------------------------------------------------
+
+CEILING11_CSV = OUT / "residual" / "ceiling11.csv"
+RESIDUAL_MU_CSV = OUT / "residual" / "residual_mu.csv"
+
+
+def residual_pool(adj: list[int], matrix, ordering, pool_size: int, seed: int = 0,
+                  improve_top: int = 12) -> list[list[int]]:
+    """The stored witness's four layouts, improved; `pool_size` greedy layouts
+    with their reversals and one per start vertex; the best `improve_top` of the
+    greedy ones improved (the descent is O(n⁴) per round, so a dozen, not 2n)."""
+    wit = witness_layouts(matrix, ordering)
+    pool = [improve_layout(adj, o, rounds=2) for o in wit] + wit
+    greedy = greedy_layouts(adj, count=pool_size, seed=seed)
+    greedy.sort(key=lambda o: (vertex_separation_of(adj, o), sum(profile_of(adj, o))))
+    pool += [improve_layout(adj, o, rounds=2) for o in greedy[:improve_top]] + greedy
+    seen, out = set(), []
+    for o in pool:
+        k = tuple(o)
+        if k not in seen:
+            seen.add(k)
+            out.append(o)
+    return out
+
+
+def _ceiling11_job(args) -> dict:
+    name, matrix, optimum, best, pool_size = args
+    from learning.obstruction_ledger import adjacency_from_matrix
+
+    adj = adjacency_from_matrix(matrix)
+    n = len(adj)
+    t0 = time.monotonic()
+    _, _, ordering = certified_optimum_by_name(name)
+    pool = residual_pool(adj, matrix, ordering, pool_size)
+    r = mixture_upper(adj, pool)
+    mu = r["mu"]                         # over outer-boundary levels t = 1 .. n-1 (index t-1)
+    sup = [(t + 1, float(mu[t])) for t in np.flatnonzero(mu > 1e-6)]
+    sup.sort(key=lambda x: -x[1])
+    F = int(best) - 1
+    return {"instance_name": name, "n": n, "optimum": optimum, "vs": optimum - 1, "best_record": best, "F_vs": F,
+            "U": r["upper"], "ceil_U": int(np.ceil(r["upper"] - 1e-9)), "closed_by_U": bool(np.ceil(r["upper"] - 1e-9) <= F),
+            "support": len(sup), "mu_levels": " ".join(f"{t}:{w:.3f}" for t, w in sup),
+            "mixture_support": r["support"], "pool": r["pool"], "best_single": r["best_single"],
+            "seconds": round(time.monotonic() - t0, 1)}
+
+
+def certified_optimum_by_name(name: str):
+    from learning.obstruction_ledger import corpus_instances
+
+    return certified_optimum(corpus_instances()[name][1])
+
+
+def run_ceiling11(workers: int, out_dir: Path, pool_size: int) -> pd.DataFrame:
+    from learning.obstruction_ledger import corpus_instances
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    rec = residual_record()
+    found = corpus_instances()
+    jobs = [(r.instance_name, np.asarray(found[r.instance_name][1].matrix, dtype=int), int(r.optimum), float(r.best), pool_size)
+            for r in rec.itertuples()]
+    t0 = time.monotonic()
+    rows = []
+    with Pool(workers, initializer=_init) as pool:
+        for row in pool.imap_unordered(_ceiling11_job, jobs):
+            rows.append(row)
+            print(f"{time.strftime('%T')} {row['instance_name']:22} vs={row['vs']} F={row['F_vs']} U={row['U']:.3f} "
+                  f"{'CLOSED (ceil U <= F)' if row['closed_by_U'] else 'open'} mu {row['mu_levels']} {row['seconds']}s", flush=True)
+    d = pd.DataFrame(rows).sort_values("instance_name").reset_index(drop=True)
+    d = d.merge(rec[["instance_name", "e_floor", "e_ceiling"]], on="instance_name")
+    d.to_csv(out_dir / "ceiling11.csv", index=False)
+    msg = (f"ceiling11: {len(d)} instances in {time.monotonic() - t0:.0f} s; ceil(U) <= F (route closed by the ceiling) on "
+           f"{int(d.closed_by_U.sum())}; open on {int((~d.closed_by_U).sum())}: {d[~d.closed_by_U].instance_name.tolist()}")
+    print(msg, flush=True)
+    (out_dir / "ceiling11_summary.txt").write_text(msg + "\n")
+    return d
+
+
+def mu_pairs(n: int, mu_levels: str, F: int) -> list[tuple[list[int], list[int]]]:
+    """From the mixture's `μ` (outer levels `t:w`): the two heaviest levels
+    `t_a < t_b`, mapped to the encoding's inner sizes `n − t` (the inner boundary
+    of the `i`-prefix is the outer boundary of the suffix), with weights (1, 1),
+    the integer ratio `μ` suggests if it is not 1:1, and the neighbours
+    `(t_1 ± 1, t_2 ± 1)`; a single-level `μ` gets its two nearest neighbours as
+    the pair. Pairs with `Σ w t ≤ F Σ w` (vacuous) are dropped."""
+    lv = [(int(x.split(":")[0]), float(x.split(":")[1])) for x in mu_levels.split()] if mu_levels else []
+    lv.sort(key=lambda x: -x[1])
+    if not lv:
+        return []
+    if len(lv) == 1:
+        ta, wa = lv[0]
+        cands = [(ta - 1, ta), (ta, ta + 1)]
+        ratios = [[1, 1]]
+    else:
+        (ta, wa), (tb, wb) = lv[0], lv[1]
+        cands = [(min(ta, tb), max(ta, tb))]
+        lo, hi = min(ta, tb), max(ta, tb)
+        cands += [(lo - 1, hi), (lo, hi + 1), (lo + 1, hi) if lo + 1 < hi else (lo, hi - 1) if hi - 1 > lo else (lo, hi)]
+        ratios = [[1, 1]]
+        r = (wa if ta < tb else wb) / (wb if ta < tb else wa)   # weight of the lower level over the higher
+        if r >= 1.5:
+            ratios.append([2, 1])
+        elif r <= 1 / 1.5:
+            ratios.append([1, 2])
+    out = []
+    seen = set()
+    for (t1, t2) in cands:
+        i1, i2 = n - t2, n - t1   # inner sizes, increasing
+        if not (1 <= i1 < i2 <= n - 1):
+            continue
+        for w in ratios:
+            wi = [w[1], w[0]]     # the weight of outer level t goes to inner size n - t
+            key = (i1, i2, tuple(wi))
+            if key in seen or wi[0] * i1 + wi[1] * i2 <= F * sum(wi):
+                continue
+            seen.add(key)
+            out.append(([i1, i2], wi))
+    return out
+
+
+def _residual_mu_job(args) -> dict:
+    name, matrix, optimum, best, sizes, weights, conflicts = args
+    from learning.obstruction_expansion import closed_masks_from_matrix
+    from learning.extremal import matrix_key
+
+    closed = closed_masks_from_matrix(matrix)
+    F = int(best) - 1
+    total = F * sum(weights)
+    r = decide_pair_sum(closed, sizes, weights, total, conflicts=conflicts)
+    status = {False: "unsat", True: "sat", None: "censored"}[r["answer"]]
+    return {"instance_name": name, "n": len(closed), "optimum": optimum, "best_record": best, "F_vs": F,
+            "sizes": " ".join(map(str, sizes)), "weights": " ".join(map(str, weights)), "total": total,
+            "status": status, "proves_optimum_ge": (best + 1) if status == "unsat" else None,
+            "seconds": round(r["seconds"], 1), "conflicts": r["conflicts"], "conflict_budget": conflicts,
+            "matrix_key": matrix_key(matrix)}
+
+
+def run_residual_mu(workers: int, out_dir: Path, conflicts: int) -> pd.DataFrame:
+    from learning.obstruction_ledger import corpus_instances
+
+    c = pd.read_csv(CEILING11_CSV)
+    found = corpus_instances()
+    jobs = []
+    for r in c[~c.closed_by_U].itertuples():
+        mat = np.asarray(found[r.instance_name][1].matrix, dtype=int)
+        for sizes, weights in mu_pairs(int(r.n), str(r.mu_levels) if isinstance(r.mu_levels, str) else "", int(r.F_vs)):
+            jobs.append((r.instance_name, mat, int(r.optimum), float(r.best_record), sizes, weights, conflicts))
+    print(f"residual_mu: {len(jobs)} calls on {len({j[0] for j in jobs})} instances, {conflicts} conflicts each", flush=True)
+    t0 = time.monotonic()
+    rows = []
+    path = out_dir / "residual_mu.csv"
+    with Pool(workers, initializer=_init) as pool:
+        for row in pool.imap_unordered(_residual_mu_job, jobs):
+            rows.append(row)
+            print(f"{time.strftime('%T')} {row['instance_name']:22} sizes {row['sizes']:8} w {row['weights']} total {row['total']:4} "
+                  f"-> {row['status']:8} {row['seconds']:7.1f}s {row['conflicts']} conflicts", flush=True)
+            pd.DataFrame(rows).to_csv(path, index=False)
+    d = pd.DataFrame(rows).sort_values(["instance_name", "sizes", "weights"]).reset_index(drop=True) if rows else pd.DataFrame()
+    if len(d):
+        d.to_csv(path, index=False)
+        bad = d[(d.status == "unsat") & (d.proves_optimum_ge > d.optimum)]
+        if len(bad):
+            raise SystemExit(f"VIOLATION: a refutation above the certified optimum on {bad.instance_name.tolist()}")
+    msg = (f"residual_mu: {len(d)} calls in {time.monotonic() - t0:.0f} s; unsat {int((d.status == 'unsat').sum()) if len(d) else 0}, "
+           f"sat {int((d.status == 'sat').sum()) if len(d) else 0}, censored {int((d.status == 'censored').sum()) if len(d) else 0}; "
+           f"floors raised: {sorted(d[d.status == 'unsat'].instance_name.unique().tolist()) if len(d) else []}")
+    print(msg, flush=True)
+    (out_dir / "residual_mu_summary.txt").write_text(msg + "\n")
+    return d
 
 
 # ----------------------------------------------------------------------------
@@ -1212,7 +1386,7 @@ def run_cost(out_dir: Path, names: tuple[str, ...], cap: int, budget: float) -> 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--stage", choices=("atlas", "lp64", "ceiling", "cost", "pairs", "residual"), required=True)
+    ap.add_argument("--stage", choices=("atlas", "lp64", "ceiling", "cost", "pairs", "residual", "ceiling11", "residual_mu"), required=True)
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--out", type=Path, default=OUT)
     ap.add_argument("--cap", type=int, default=12)
@@ -1239,6 +1413,10 @@ def main() -> None:
         run_pairs(a.workers, a.out, a.max_gap, a.conflicts, a.max_calls, a.n_max)
     elif a.stage == "residual":
         run_residual(a.workers, a.out / "residual", a.seconds, None, a.window)
+    elif a.stage == "ceiling11":
+        run_ceiling11(a.workers, a.out / "residual", a.pool)
+    elif a.stage == "residual_mu":
+        run_residual_mu(a.workers, a.out / "residual", a.conflicts)
     else:
         run_cost(a.out, tuple(a.names), a.cap, a.budget)
 

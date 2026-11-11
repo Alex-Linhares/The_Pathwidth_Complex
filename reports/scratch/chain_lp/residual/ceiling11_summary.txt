@@ -1,0 +1,1 @@
+ceiling11: 11 instances in 327 s; ceil(U) <= F (route closed by the ceiling) on 0; open on 11: ['Random-100-100-4-1_0', 'Random-100-100-4-3_0', 'Random-125-125-2-2_0', 'Random-125-125-4-1_0', 'Random-125-125-4-2_0', 'Random-125-125-4-3_0', 'Random-125-125-4-4_0', 'Random-125-125-6-2_0', 'Random-125-125-6-3_0', 'Random-125-125-6-4_0', 'Random-125-125-6-5_0']

@@ -93,7 +93,7 @@ instances and one `Random-125-125-4`, for the record; the value is Harper
 there too. **§7 (owner's follow-up)**: the two-level sum aimed at the floor on
 the record's 11 open instances — 66 calls at `0.52–0.61 n`, all sat, none
 censored, no floor rises; a high-window pass stopped after two hours with its
-last calls unanswered (pysat's CaDiCaL ignores the time cap), undecided.
+last calls unanswered (pysat's CaDiCaL ignores the time cap), undecided. **§8**: the mixture upper bound `U` on the ceiling is `vs` or within a unit of it on all 11 (closes nothing), and 41 two-level calls at the sizes its `μ` weights, under a 2M-conflict budget, answer 24 sat and 17 censored, 0 unsat: no floor rises.
 
 ## 1. The integer program and its exactness
 
@@ -400,3 +400,45 @@ The LP is affordable at 125 (31,001 variables, 279,285 rows, 2 minutes) and retu
 **Harness.** `learning.bound_harness.evaluate_candidates` on the 11 with the candidate `learning.chain_lp:pair_floor_candidate` (the best value this run proved for the matrix, 0 where none): 0 on all 11, below every certified optimum (`harness_validity.csv`); there is no claimed value to validate, and none above an optimum.
 
 **Verdict for the two-level line on the dense residual.** Dead at the sizes where it is cheap, undecided where it is not. At `0.52–0.61 n` — the band that carried every certificate at 30–50 — every one of the 11 has a nested pair below its floor, so no two-level sum there raises any floor; at `0.66–0.80 n` the few calls that returned were also sat and the rest did not return in two hours. The owner's 1–4 missing stacks on these instances are, on this evidence, not a two-level fact at any size tried: where the gap is 2–4 (`4-1_0`, `4-3_0`, `6-5_0`, `100-4-1_0`) the first-window calls were as quick and as satisfiable as where it is 1. Nothing on record moves; `solutions/` untouched; about 0.6 core-hours for the first window and 8 core-hours for the stopped second.
+
+## 8. The 11 again: the mixture upper bound on `L`, and the pairs its `μ` points to (owner's follow-up, 2026-11-11)
+
+*Regenerate: `nice -n 19 python -m learning.chain_lp --stage ceiling11 --workers 4 --pool 300` (327 s on 4 cores) and `… --stage residual_mu --workers 4 --conflicts 2000000` (851 s on 4 cores); data `reports/scratch/chain_lp/residual/ceiling11.csv`, `residual_mu.csv`, `harness_validity.csv`; logs `reports/scratch/chain_lp/ceiling11_run.out`, `residual_mu_run.out`. About 1.3 core-hours; nothing else of ours running.*
+
+**(1) The mixture upper bound `U` on the ceiling `L(G)`** (§5: `L ≤ U` for the mixture LP over any pool of layouts; `⌈U⌉ ≤ F` would prove `⌈L⌉ ≤ F`, closing every LP/SDP route in layout variables on that instance by the ceiling theorem). Pool per instance: the stored witness ordering's four layouts (opening and closing orders and their reversals), each improved by the one-move descent; 300 greedy layouts with random tie-breaks and their reversals plus one per start vertex (the best dozen improved; the descent is `O(n⁴)` per round, so not all 2n as at 30–50); 812–870 distinct layouts. `F` is the best floor on record in `vs` units (optimum units minus one), as in §7.
+
+| instance | n | vs | Harper on record [floor, ceiling] (opt. units) | best floor (opt. units) | F (vs units) | U | ⌈U⌉ | ⌈U⌉ ≤ F | layouts in the mixture | μ levels (outer size : weight) | pool | seconds |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| `Random-100-100-4-1_0` | 100 | 45 | [34, 44] | 45 | 44 | 45.000 | 45 | no | 1 | 34:0.333 32:0.214 22:0.143 25:0.143 26:0.071 29:0.048 37:0.048 | 816 | 37 |
+| `Random-100-100-4-3_0` | 100 | 42 | [26, 42] | 42 | 41 | 42.000 | 42 | no | 1 | 35:0.600 25:0.400 | 812 | 51 |
+| `Random-125-125-2-2_0` | 125 | 24 | [8, 23] | 24 | 23 | 24.000 | 24 | no | 1 | 51:1.000 | 870 | 72 |
+| `Random-125-125-4-1_0` | 125 | 56 | [37, 55] | 53 | 52 | 56.000 | 56 | no | 1 | 46:1.000 | 870 | 50 |
+| `Random-125-125-4-2_0` | 125 | 56 | [35, 56] | 55 | 54 | 56.000 | 56 | no | 1 | 30:1.000 | 867 | 145 |
+| `Random-125-125-4-3_0` | 125 | 53 | [34, 53] | 52 | 51 | 53.000 | 53 | no | 1 | 49:1.000 | 868 | 70 |
+| `Random-125-125-4-4_0` | 125 | 50 | [24, 50] | 50 | 49 | 50.000 | 50 | no | 1 | 29:0.353 47:0.235 35:0.176 45:0.176 41:0.059 | 869 | 60 |
+| `Random-125-125-6-2_0` | 125 | 76 | [61, 75] | 76 | 75 | 75.500 | 76 | no | 2 | 26:0.500 27:0.500 | 863 | 190 |
+| `Random-125-125-6-3_0` | 125 | 79 | [70, 79] | 79 | 78 | 78.500 | 79 | no | 2 | 22:0.500 25:0.500 | 869 | 100 |
+| `Random-125-125-6-4_0` | 125 | 79 | [69, 79] | 78 | 77 | 78.333 | 79 | no | 3 | 23:0.333 30:0.333 20:0.333 | 866 | 207 |
+| `Random-125-125-6-5_0` | 125 | 73 | [59, 73] | 71 | 70 | 73.000 | 73 | no | 1 | 28:1.000 | 868 | 124 |
+
+**`⌈U⌉ ≤ F` on 0 of 11; `U` closes nothing.** On eight the equilibrium mixture is a *single* layout — the pool's best, of width `vs` — so `U = vs` and `μ` is a point mass at that layout's peak size, carrying no information beyond "where its boundary is largest"; on the three density-6 instances `6-2_0`, `6-3_0`, `6-4_0` a mixture of 2–3 layouts flattens the profile to `vs − ½`, `vs − ½`, `vs − ⅔`, still rounding to `vs`. An upper bound from a heuristic pool proves `L ≤ F` only when the pool holds a mixture averaging below the floor, and at these sizes greedy layouts with different peaks do not combine that way: `U` is weak here, not informative. It therefore does not say that `L` cannot reach `F + 1`; it says nothing either way.
+
+**(2) The two-level sum at `μ`'s sizes.** For each instance the two heaviest `μ` levels `t_a, t_b` (outer sizes) mapped to the encoding's inner sizes `n − t` (the inner boundary of an `i`-prefix is the outer boundary of the complementary suffix), with weights (1, 1), the integer ratio `μ` suggests where it is not 1:1 (`(2,1)` on `100-4-1_0`, `(1,2)` on `4-4_0`), and the neighbours `t ± 1`; a point-mass `μ` gets the two adjacent pairs at its level; pairs with `Σ w t ≤ F Σ w` (vacuous) dropped. Target `F·Σw`: UNSAT proves `vs ≥ F + 1`. **Conflict budget 2,000,000 per call** (the time cap of §7 does not bind on CaDiCaL; at the measured 40–150 µs per conflict a censored call took 73–311 s). 41 calls, 851 s on 4 cores: **0 unsat, 24 sat, 17 censored. No floor rises.**
+
+| instance | F | calls (inner sizes; weights) → answer, conflicts | sat | censored |
+|---|---|---|---|---|
+| `Random-100-100-4-1_0` | 44 | (65,68; 1,1) sat 0.04M, (65,68; 2,1) sat 0.15M, (66,67; 1,1) sat 0.15M, (66,67; 2,1) sat 0.33M, (66,68; 1,1) sat 0.08M, (66,68; 2,1) sat 0.06M, (66,69; 1,1) sat 0.08M, (66,69; 2,1) sat 0.50M | 8 | 0 |
+| `Random-100-100-4-3_0` | 41 | (64,75; 1,1) sat 1.23M, (65,74; 1,1) sat 0.21M, (65,75; 1,1) sat 0.72M, (65,76; 1,1) censored | 3 | 1 |
+| `Random-125-125-2-2_0` | 23 | (73,74; 1,1) sat 0.64M, (74,75; 1,1) censored | 1 | 1 |
+| `Random-125-125-4-1_0` | 52 | (78,79; 1,1) sat 0.50M, (79,80; 1,1) censored | 1 | 1 |
+| `Random-125-125-4-2_0` | 54 | (94,95; 1,1) censored, (95,96; 1,1) sat 0.88M | 1 | 1 |
+| `Random-125-125-4-3_0` | 51 | (75,76; 1,1) sat 0.20M, (76,77; 1,1) sat 1.43M | 2 | 0 |
+| `Random-125-125-4-4_0` | 49 | (77,96; 1,1) sat 0.15M, (77,96; 1,2) censored, (78,95; 1,1) sat 0.15M, (78,95; 1,2) censored, (78,96; 1,1) sat 0.60M, (78,96; 1,2) censored, (78,97; 1,1) sat 0.63M, (78,97; 1,2) censored | 4 | 4 |
+| `Random-125-125-6-2_0` | 75 | (97,99; 1,1) sat 0.63M, (98,100; 1,1) sat 0.25M, (98,99; 1,1) sat 0.50M | 3 | 0 |
+| `Random-125-125-6-3_0` | 78 | (100,102; 1,1) censored, (100,103; 1,1) censored, (100,104; 1,1) censored, (99,103; 1,1) censored | 0 | 4 |
+| `Random-125-125-6-4_0` | 77 | (94,102; 1,1) sat 0.20M, (95,101; 1,1) censored, (95,102; 1,1) censored, (95,103; 1,1) censored | 1 | 3 |
+| `Random-125-125-6-5_0` | 70 | (96,97; 1,1) censored, (97,98; 1,1) censored | 0 | 2 |
+
+Every sat answer's two sets were re-verified from the masks (sizes, nesting, boundary sum `≤ F·Σw`). The harness comparison (`pair_floor_candidate` reading all three residual files; `harness_validity.csv`): 0 claimed on all 11, nothing above any certified optimum.
+
+**Verdict.** The dual's two-level form reaches the last unit on **none of the 11**. It is **not because `U` says it cannot** — `U` is `vs` or within a unit of it on every instance, an uninformative upper bound from pools whose mixtures do not average below the floor — and **not only because the calls censored**: on three instances (`100-4-1_0`, `4-3_0`, `6-2_0`) every pair `μ` pointed to answered **sat**, on `100-4-3_0` three of four did and on `4-4_0` all four (1,1) pairs did — a nested pair below the floor at exactly the sizes the mixture's dual weights, so the two-level form is refuted *there* by a witness; on `6-3_0` and `6-5_0` every call censored (undecided), and on `2-2_0`, `4-1_0`, `4-2_0`, `6-4_0` and the weighted `4-4_0` calls one pair answered sat and the others censored. Taken with §7 (66 sat at `0.52–0.61 n`, 29 sat and 47 unanswered in the high window), the two-level line on the dense residual has no refutation at any size tried and a satisfying nested pair at most of them. Whether a three-level or a full-band sum would do what two levels cannot is the checkpoint study's question (`reports/checkpoint_relaxation.md` §5–§6: at gap 2–4 the certificate is a quarter of the chain, and at 75 the ridge censors), not an LP's. Nothing on record moves; `solutions/` untouched.

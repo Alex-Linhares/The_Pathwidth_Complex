@@ -1,0 +1,1 @@
+residual_mu: 41 calls in 851 s; unsat 0, sat 24, censored 17; floors raised: []
