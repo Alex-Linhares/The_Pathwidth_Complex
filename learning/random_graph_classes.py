@@ -339,6 +339,69 @@ def gnm_floors(n: int, m: int, levels=LEVELS) -> dict[float, int]:
     return union_floors(n, lambda k: gnm_log_bound(n, m, k), levels)
 
 
+def bipartite_pair_rate(c: float, a1: float, a2: float, r1: float, r2: float) -> float:
+    """`G(n, n, p)` with `p = c/n` (mean degree `c`), `N = 2n` vertices: the
+    exponent per vertex of the expected number of empty pairs with `a1 N`,
+    `a2 N` vertices of `A` and `r1 N`, `r2 N` of `R` on the two sides:
+    `(1/2) H(2a1, 2r1, .) + (1/2) H(2a2, 2r2, .) - 2c (a1 r2 + a2 r1)`."""
+    if min(a1, a2, r1, r2) < 0 or 2 * (a1 + r1) > 1 or 2 * (a2 + r2) > 1:
+        return math.inf
+    return 0.5 * entropy3(2 * a1, 2 * r1) + 0.5 * entropy3(2 * a2, 2 * r2) - 2 * c * (a1 * r2 + a2 * r1)
+
+
+def bipartite_shape_rate(c: float, a: float, r: float, grid: int = 48) -> float:
+    """For sides `|A| = a N`, `|R| = r N`: the exponent of the union bound over
+    the *splits* of the pair across the two colour classes, i.e. the maximum
+    of `bipartite_pair_rate` over `a1 in [0, a]`, `r1 in [0, r]` (the pair the
+    lemma produces has a split we do not choose, so the bound must sum over
+    splits; a grid then Nelder--Mead from the best cell)."""
+    from scipy.optimize import minimize
+    best, arg = -math.inf, None
+    for j in range(grid + 1):
+        a1 = a * j / grid
+        for k in range(grid + 1):
+            r1 = r * k / grid
+            v = bipartite_pair_rate(c, a1, a - a1, r1, r - r1)
+            if v < math.inf and v > best:
+                best, arg = v, (a1, r1)
+    if arg is None:
+        return -math.inf
+
+    def obj(x):
+        v = bipartite_pair_rate(c, x[0], a - x[0], x[1], r - x[1])
+        return -v if v < math.inf else 1e9
+
+    res = minimize(obj, arg, method="Nelder-Mead", options={"xatol": 1e-8, "fatol": 1e-11})
+    return max(best, -float(res.fun))
+
+
+def bipartite_min_rate(c: float, beta: float, grid: int = 24) -> float:
+    """`min_{a + r = 1 - beta} bipartite_shape_rate(c, a, r)`: the best shape
+    of the pair (each shape is a valid bound on its own, by Harper's layout
+    form) at width `beta N`."""
+    s = 1 - beta
+    best = math.inf
+    for i in range(1, grid):
+        a = s * i / grid
+        best = min(best, bipartite_shape_rate(c, a, s - a, grid=16))
+    return best
+
+
+def beta_star_bipartite(c: float, step: float = 1e-3) -> float:
+    """The first-moment floor on `lim pw(G(n, n, c/n)) / (2n)`: the largest
+    `beta` with `bipartite_min_rate(c, beta) < 0` (zero if none)."""
+    if bipartite_min_rate(c, step) >= 0:
+        return 0.0
+    lo, hi = step, 1 - step
+    while hi - lo > step:
+        mid = (lo + hi) / 2
+        if bipartite_min_rate(c, mid) < 0:
+            lo = mid
+        else:
+            hi = mid
+    return lo
+
+
 # ----------------------------------------------------------------------------
 # Harvey's generators: rows fixed; both margins fixed
 # ----------------------------------------------------------------------------

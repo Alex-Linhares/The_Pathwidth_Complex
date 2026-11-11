@@ -160,3 +160,10 @@ def test_harvey_family_parser():
     assert harvey_family("Warwick 1: balanced orders, 2 orders per product") == ("wbo", 2)
     assert harvey_family("Warwick 1000: balanced orders and products, 3 products per order") == ("wbop", 3)
     assert harvey_family("Warwick 5: balanced products, 4 products per order") == ("wbp", 4)
+
+
+def test_bipartite_constant_is_near_the_gnp_constant_at_the_same_mean_degree():
+    from learning.random_graph_classes import beta_star_bipartite, bipartite_pair_rate
+    # the degenerate split (A and R on one side) has probability one and entropy > 0
+    assert bipartite_pair_rate(6.0, 0.2, 0.0, 0.2, 0.0) > 0
+    assert beta_star_bipartite(6.0, step=4e-3) == pytest.approx(beta_star_gnp(6.0), abs=6e-3)
