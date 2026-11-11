@@ -1306,9 +1306,10 @@ Oum 2012; Perarnau & Serra 2014; Gao 2006/2012; Do, Erde & Kang 2024; Edwards & 
   w.h.p.; for `p ≫ 1/n`, `tw ≥ n − o(n)`. The theorem's rate is not visible from the
   abstract. **Wanted**: the statement and proof of the `n − o(n)` bound.
 - **Cheung, K. K. H. & Girardet, P.** (2017). Improved approximation of layout problems on
-  random graphs. [arXiv:1710.10339](https://arxiv.org/abs/1710.10339) (read). No journal
-  version found; the "2020" in `refs.bib` (`CheungGirardet2020`) is not confirmed — check
-  the entry. Lemma 7: for `p_n = Ω(n^{−c})`, `c < 1`, w.h.p. `MINVS ≥ (1 − δ)n − 1`; Theorem
+  random graphs. [arXiv:1710.10339](https://arxiv.org/abs/1710.10339) (read); the
+  journal version is *Open J. Discrete Math.* 10(1), 13–30 (2020),
+  [doi:10.4236/ojdm.2020.101003](https://doi.org/10.4236/ojdm.2020.101003), the entry
+  `CheungGirardet2020` of `refs.bib`, which the agent could not reach. Lemma 7: for `p_n = Ω(n^{−c})`, `c < 1`, w.h.p. `MINVS ≥ (1 − δ)n − 1`; Theorem
   4.5 the approximation ratio for vertex separation. No rate.
 - **Turner, J. S.** (1986). On the probable performance of heuristics for bandwidth
   minimization. *SIAM J. Comput.* 15(2), 561–580.
