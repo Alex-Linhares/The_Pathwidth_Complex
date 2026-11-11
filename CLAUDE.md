@@ -1819,6 +1819,29 @@ read 0.826, 0.930, 0.965). Coefficient 1 against the `[2, 4]` brackets of the mi
 so weaker there. Brute-forced to n = 7 before stating. The root `lake build` had been broken by a
 `relabel` name clash between `LayoutMoment` and `SeparatorMoment`; fixed by renaming `layoutRelabel`.
 
+**The dense constant is `2 + √2`, not `4`** *(2026-11-11, one session;
+`reports/dense_staircase.md`, §0 is the summary; `learning/staircase_moment.py`, 751
+tests; `lean/MOSPFormalization/Staircase.lean`, 15 theorems, no `sorry`, three
+standard axioms)*. For fixed `p`, `pw(G) ≤ n − s` **iff** `G` has a *generalised
+staircase* of size `s` (`v_1..v_{s−1}`, `u_1..u_{s−1}`, `u_i` outside and non-adjacent
+to `v_1..v_{s−i}`; both directions in Lean, checked on every labelled graph to
+`n = 6`); the strict form (all distinct) is exactly bandwidth `≤ n − s` for
+`2s − 2 ≤ n`. The staircase's densest sub-configuration is not the empty pair but the
+**corner block** `v_1..v_{(a−1)L}`, `u_1..u_{(a−1)L}`, whose first moment
+(`weightedSum_pathwidth_le_block`: `P(pw ≤ n − s) ≤ n^{a+b}(1 − p)^{c(s,a,b)}`, Lean on
+`Fin n`) vanishes iff `s > (2 + √2) log_b n`; the second moment on staircases is
+`1 + o(1)` exactly below `2 + √2` (on paper, with a finite bracket checked to `n = 7`)
+and exponential in `log² n` above. So **`n − pw(G(n, p)) = (2 + √2 + o(1)) log_b n` whp**:
+the conjecture of `reports/layout_second_moment.md` §3.4 (constant `4`) is refuted,
+Theorem B's `4` drops to `2 + √2`, and the sandwich `[2, 4]` of the random-graph reports
+and Appendix E is an equality (paper not yet updated). The constant is in print for
+**bandwidth** — Kuang & McDiarmid (1985), stated by Erdős, Hell & Winkler (1989) — so
+`pw` and `bw` of dense `G(n, p)` agree to `o(log n)`; the pathwidth half (a bandwidth
+lower bound never transfers) is where the generalised staircase carries it; we found no
+prior statement for pathwidth. At `n = 30–60` the block's finite threshold is the
+measured median `n − pw` plus one at every `n` (`11–14` against `12–15`), where the
+limits are useless (`L ≈ 5`). Nothing re-solved; under one core-hour.
+
 **Unrelated to the plan:**
 - Fix the pathwidth SAT encoding variable ID collision bug in `encoding.py`.
 - ~~Becceneri, Yanasse & Soma (2004) is still missing~~ — **obtained 2026-09-27**,
