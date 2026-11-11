@@ -1533,19 +1533,39 @@ are not repeated.
 
 - **Gaspers, S.** (2026). Path decompositions of sparse graphs via Gaussian sweeps and
   faster exponential algorithms. [arXiv:2611.05146](https://arxiv.org/abs/2611.05146)
-  (3 November 2026; read in part through the arXiv HTML, not held). Theorem 1.1(a):
+  (3 November 2026). **Held since 2026-11-11**:
+  `2026-Gaspers-Path-Decompositions-Sparse-Graphs-Gaussian-Sweeps-arXiv.pdf` (181 pages,
+  v1), read whole for `reports/gaspers_cages.md`. Theorem 1.1(a) = Theorem 8.1:
   `pw ≤ c₃ n + o(n)` for every graph of maximum degree 3, `c₃ = (3/(4π)) arccos(5/6) ≈
-  0.13982` — the constant Lichev & Mitsche had for the bisection of *random* cubic graphs,
-  now deterministic, closing the twenty-year `n/6` of Fomin & Høie; Theorem 1.1(b)
-  `pw ≤ 0.24577 n + o(n)` at maximum degree 4; Theorem 1.3 per-degree weights
-  `a₃ = 5/32, a₄ = 1/4, a₅ = 11/32, a₆ = 7/16`; Corollary 1.4 `pw ≤ 7m/48 + o(n)`; the
-  random-cubic lower bound `pw ≥ 0.103295 n − 2` a.a.s. through `bw ≤ cw ≤ pw + 2`
-  (Makedon & Sudborough; Ellis, Sudborough & Turner), which is the cutwidth route of
-  `reports/complex_lb_search.md` §4.1 and settles the "UNVERIFIED factor-1 transfer" of
-  `reports/random_graph_pathwidth_literature_2.md` §3.2; Conjecture 15.1 `pw ≤ (c₃ −
-  3 p_ch) n + o(n) ≈ 0.1322 n` for cubic graphs (`p_ch` not seen; the HTML was read to
-  its first 100,000 characters). **Wanted**: the PDF, Section 15 and the definition of
-  `p_ch`.
+  0.13982`, closing the twenty-year `n/6` of Fomin & Høie; proved in Lean without
+  hypotheses (Appendix B). Theorem 1.1(b) `pw ≤ F₄ n + o(n)`, `F₄ ≈ 0.24577`, at maximum
+  degree 4; Theorem 1.3 per-degree weights `a₃ = 5/32, a₄ = 1/4, a₅ = 11/32, a₆ = 7/16`;
+  Corollary 1.4 `pw ≤ 7m/48 + o(n)`; Theorem 3.1 the short cut sweep `pw ≤ cw ≤ c* n +
+  o(n)`, `c* = (3/(2π)) arcsin(1/3) ≈ 0.16226`, with the **only explicit remainder in the
+  paper**, `2.55 n / R + 4 n^{7/8}` with `R = ⌊log₂ n / 4⌋`, valid for `n ≥ 2⁴⁶`. The
+  construction (Section 2): independent standard normals `Z_w`, the label `Y_v` the
+  normalised sum of `2^{-dist(v,w)/2} Z_w` over the ball of radius `R` (Definition 5.2;
+  base `p − 1` at maximum degree `p`; mixed arc lengths `½ ln(d(x) − 1)` at minimum degree
+  3), a threshold sweep whose bags are frontiers (Lemma 4.1), the star comparison with
+  the regular simplex (Section 6, Mulgund's theorem), and for degree 3 the
+  *median-switched* layout (Lemma 8.4: inner frontiers below the median, outer above,
+  a connector at zero ordered by Lemma 8.3). The proof of Theorem 8.1 is existential
+  (Chebyshev, a grid of thresholds, a union bound: `(8K₀ + 4) 9^{R+1} < 2 √n`, so no
+  parameter is admissible below `n ≈ 1.9 × 10⁷`); Section 10 makes it a Las Vegas
+  `n^{1+o(1)}` and a deterministic `n^{2+o(1)}` algorithm (finite rational distribution,
+  method of conditional expectations). The random-cubic lower bound `pw ≥ 0.103295 n − 2`
+  a.a.s. is **not his**: it is Lichev & Mitsche's first-moment bisection bound (held,
+  `2023-Lichev-Mitsche-...`) through `bw ≤ cw ≤ pw + 2` (Díaz–Petit–Serna; Makedon &
+  Sudborough; Ellis, Sudborough & Turner), the cutwidth route of
+  `reports/complex_lb_search.md` §4.1. Section 15: Conjecture 15.1 `pw ≤ (c₃ − 3 p_ch) n +
+  o(n) ≈ 0.13225 n` for cubic graphs, `p_ch = 0.00252477819777…` the probability, on the
+  ideal wave of the rooted tree `T₂` with covariance `2^{-d/2}(1 + d/3)`, that two children
+  of the root both have the root as their only neighbour above zero (the "isolated helper"
+  of Lichev & Mitsche, whose printed `0.002818666` the authors confirmed inaccurate). Code
+  and Lean at `https://serggasp.github.io/pathwidth-site/` (not fetched). The paper's
+  Table 2 and Section 1.2 record that the ETH preprints of OpenAI and Anthropic leave its
+  forty-five bounds untouched. What it says about the cages: nothing — the certified floors
+  of all five open cubic cages exceed `c₃ n` (`reports/gaspers_cages.md` §0).
 - **Scheinerman, E. R.** (1988). Random interval graphs. *Combinatorica* 8(4), 357–371.
   [doi:10.1007/BF02189092](https://doi.org/10.1007/BF02189092). Not held; the
   chromatic number `n/2 + o_p(n)` of the uniform-endpoint model is quoted from Diaconis,
