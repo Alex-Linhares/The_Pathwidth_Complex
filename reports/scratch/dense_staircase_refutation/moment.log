@@ -1,0 +1,12 @@
+n=4 s=2 p=1/2: E[X]=6.000000 formula=6.000000 eq=True R=1.166667 R_identity=1.166667 eq=True
+n=4 s=2 p=1/3: E[X]=8.000000 formula=8.000000 eq=True R=1.083333 R_identity=1.083333 eq=True
+n=5 s=2 p=1/2: E[X]=10.000000 formula=10.000000 eq=True R=1.100000 R_identity=1.100000 eq=True
+n=5 s=2 p=1/3: E[X]=13.333333 formula=13.333333 eq=True R=1.050000 R_identity=1.050000 eq=True
+n=5 s=3 p=1/2: E[X]=15.000000 formula=15.000000 eq=True R=2.116667 R_identity=2.116667 eq=True
+n=5 s=3 p=1/3: E[X]=35.555556 formula=35.555556 eq=True R=1.502083 R_identity=1.502083 eq=True
+n=6 s=2 p=1/2: E[X]=15.000000 formula=15.000000 eq=True R=1.066667 R_identity=1.066667 eq=True
+n=6 s=2 p=1/3: E[X]=20.000000 formula=20.000000 eq=True R=1.033333 R_identity=1.033333 eq=True
+n=6 s=3 p=1/2: E[X]=45.000000 formula=45.000000 eq=True R=1.694444 R_identity=1.694444 eq=True
+n=6 s=3 p=1/3: E[X]=106.666667 formula=106.666667 eq=True R=1.322917 R_identity=1.322917 eq=True
+n=6 s=4 p=1/2: E[X]=11.250000 formula=11.250000 eq=True R=6.761111 R_identity=6.761111 eq=True
+n=6 s=4 p=1/3: E[X]=63.209877 formula=63.209877 eq=True R=2.871658 R_identity=2.871658 eq=True

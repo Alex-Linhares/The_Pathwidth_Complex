@@ -1,0 +1,8 @@
+n=6 s=3 p=1/2: Lambda=0.089 <= R_exact=1.694444 <= U=3.333
+n=6 s=2 p=1/2: Lambda=0.733 <= R_exact=1.066667 <= U=1.067
+n=5 s=3 p=1/2: Lambda=0.133 <= R_exact=2.116667 <= U=4.800
+Traceback (most recent call last):
+  File "<stdin>", line 18, in <module>
+  File "<stdin>", line 16, in lnLam
+  File "<string>", line 7, in lfall
+ValueError: math domain error

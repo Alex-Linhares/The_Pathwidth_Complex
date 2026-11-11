@@ -1,0 +1,24 @@
+n=1: lemma violations=0 over 1 graphs
+   DP vs definition: 0 disagreements
+   block first-moment violations: 0
+   bandwidth-lemma violations (2s-2<=n): 0
+n=2: lemma violations=0 over 2 graphs
+   DP vs definition: 0 disagreements
+   block first-moment violations: 0
+   bandwidth-lemma violations (2s-2<=n): 0
+n=3: lemma violations=0 over 8 graphs
+   DP vs definition: 0 disagreements
+   block first-moment violations: 0
+   bandwidth-lemma violations (2s-2<=n): 0
+n=4: lemma violations=0 over 64 graphs
+   DP vs definition: 0 disagreements
+   block first-moment violations: 0
+   bandwidth-lemma violations (2s-2<=n): 0
+n=5: lemma violations=0 over 1024 graphs
+   DP vs definition: 0 disagreements
+   block first-moment violations: 0
+   bandwidth-lemma violations (2s-2<=n): 0
+n=6: lemma violations=0 over 32768 graphs
+   block first-moment violations: 0
+n=7: random lemma violations=0
+n=8: random lemma violations=0
