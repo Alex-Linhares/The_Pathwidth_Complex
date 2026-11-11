@@ -1775,6 +1775,19 @@ memo as a search technique. Unread: Yu's 1986 thesis ("bottleneck hypercycle" bo
 access-restricted). Bachtler–Heinrich's girth bound certifies five dataset widths independently.
 W4 (Hu & Chen's VLSI circuit, 202 nets) is open at 27 with a floor of 26.
 
+**Random graphs, the middle regime (2026-11-11, one agent session; `reports/random_graph_middle.md`;
+Appendix E, now "The pathwidth of random graphs", paragraph "Between the two regimes").** Theorem M:
+for every real `c ≥ 9` and `n ≥ c`, `P(pw(G(n,c/n)) ≤ (1 − 4 ln c/c) n) ≤ c^{−(4 ln(2 ln c) − 9)}`, so for
+any `c(n) → ∞` with `c ≤ n`, `n − pw ≤ 4 n ln c / c` whp — the whole range `np → ∞`, middle and dense
+alike; Theorem A's finite form never needed `c` fixed, one new rate inequality `δ ≥ a(ca + 2 ln a − 2)`
+does the rest. With `pw ≤ n − α(G)` and Frieze 1990's `α = (2 + o(1)) n ln c/c`: the sandwich
+`2 ≤ lim (n − pw) c/(n ln c) ≤ 4` (same `[2, 4]` as the dense `log n` sandwich). The constant 4 is
+the method's ceiling. Lean: 11 theorems in `FirstMomentAsymptotics.lean` ("The middle regime"), no
+sorry, three standard axioms. Data: 320 random graphs at 30–60 vertices, `c = 2 ln n, √n, n^0.7, n/2`,
+all proved by the C program in 167 s; the finite inequality evaluated exactly is within 6 of the
+smallest proved value in every cell. "We found no prior statement" of either end for pathwidth,
+vertex separation or treewidth in this range (Perarnau–Serra 2014's `n − O(√(n/p))` is the nearest).
+
 **Unrelated to the plan:**
 - Fix the pathwidth SAT encoding variable ID collision bug in `encoding.py`.
 - ~~Becceneri, Yanasse & Soma (2004) is still missing~~ — **obtained 2026-09-27**,

@@ -141,6 +141,54 @@ moment simply says nothing. The pathwidth of $G(n,c/n)$ is in fact linear in
 $n$ for every $c>1$ \citep{LeeLeeOum2012}, with a constant that no one has
 made explicit.
 
+\paragraph{Between the two regimes.}
+Theorem~\ref{thm:firstmoment} does not need $c$ to be a constant: it holds for
+every real $c\le n$, so it covers $p=c(n)/n$ with $c(n)\to\infty$, the range
+between the sparse case and the dense one, where the average degree grows like
+$\log n$ or a power of $n$. What it needs there is a closed form for the
+admissible $\beta$, and one inequality gives it: since $\phi(1-2a)\le2a$,
+the rate satisfies $\delta(\beta,c)\ge a\,(ca+2\ln a-2)$, which at
+$a=2\ln c/c$ is $(4\ln c/c)(\ln(2\ln c)-1)$. Hence, for every real $c\ge9$ and
+every integer $n\ge c$,
+\[
+  \Pr\bigl[\mathrm{pw}(G(n,c/n))\le(1-4\ln c/c)\,n\bigr]
+  \;\le\;\exp\!\Bigl(-\tfrac{4\ln c}{c}\bigl(\ln(2\ln c)-1\bigr)n+3\ln n+2\ln c\Bigr)
+  \;\le\; c^{-(4\ln(2\ln c)-9)},
+\]
+the last step for $c\le n$; so whenever $c=c(n)\to\infty$ with $c\le n$, the
+pathwidth exceeds $n-4n\ln c/c$ with probability tending to one~\leanref{firstmomentM}.
+For $c$ fixed this is weaker than $\beta^{*}(c)$ ($0.816$ against $0.857$ at
+$c=100$), and the sharper end of Theorem~\ref{thm:betastar}'s asymptotic form,
+$n-(4\ln c-4\ln\ln c+O(1))n/c$, holds for growing $c$ by the same calculation
+with $a=(2/c)(\ln c+L)$ in place of $2\ln c/c$. At $p$ fixed it reads
+$n-\mathrm{pw}\le(4/p)\ln n+O(1)$, which the dense bound of this appendix,
+$n-(4+\varepsilon)\log_{1/(1-p)}n$, improves to its own form; carrying $-n\ln(1-p)$ through the proof in
+place of $np$ gives $4\log_{1/(1-p)}n+O(1)$ with no $\varepsilon$, on paper.
+The constant~$4$ is the method's: since $\mathrm{pw}\le n-\alpha(G)$ and
+$\alpha(G(n,c/n))=(2+o(1))\,n\ln c/c$ whenever $c\to\infty$ and $c=o(n)$
+\citep{Frieze1990}, $n-\mathrm{pw}$ lies between $2n\ln c/c$ and $4n\ln c/c$
+throughout, the same bracket as in the dense case. We found no prior statement
+of either end for pathwidth, vertex separation or treewidth in this range: the
+published forms are $n-O(\sqrt{n/p})$ for treewidth \citep{PerarnauSerra2014},
+$n-o(n)$ \citep{WangLiuCuiXu2011} and $(1-o(1))n$ for vertex separation when
+$p\ge n^{-1+\varepsilon}$ \citep{CheungGirardet2020}, and
+$(1-\varepsilon)n$ for bandwidth when $p\ge c\log n/n$ \citep{Turner1986},
+which says nothing about pathwidth. On 320 random graphs with 30 to 60
+vertices and $c$ equal to $2\ln n$, $\sqrt n$, $n^{0.7}$ and $n/2$, every one
+with its pathwidth proved, the ratio $(n-\mathrm{pw})\,c/(n\ln c)$ lies between
+$2.0$ and $2.4$, inside the bracket though at sizes where its second-order
+terms are not yet small, and the finite inequality evaluated exactly, the
+largest $k$ with $\Pr[\mathrm{pw}\le k]\le0.05$, is within six of the
+smallest proved value in every cell where it is positive
+(Figure~\ref{fig:middle}).
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\linewidth]{random_graph_middle.pdf}
+\caption{The pathwidth of $G(n,c/n)$ with $c$ growing, in units of $n$, on 400 random graphs with their pathwidth proved (ink: median and range of 20 per cell; the $c=3$ cells are from the sparse pilot). Floors in blue: Theorem~M's $1-4\ln c/c$, $\beta^{*}(c)$ of Theorem~\ref{thm:betastar}, and the finite inequality of Theorem~\ref{thm:firstmoment} evaluated exactly (the largest $k$ with $\Pr[\mathrm{pw}\le k]\le0.05$). Ceilings in orange: $n-\alpha(G)$ and the degree-sequence term of \citet{EdwardsMcDermid2015}, means per cell.}
+\label{fig:middle}
+\end{figure}
+
 \subsection{The proof, in four steps}
 
 \paragraph{Step 1: a narrow layout leaves an empty pair.}
