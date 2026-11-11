@@ -631,6 +631,639 @@ circuits are certified at their published best-known track counts
 \citep[Table~I]{OliveiraLorena2002}; the eleventh, W4 with 202 nets, is open
 at 28 against 27.
 
+ Section 5, computational results and the dataset (loop0009 item 06; was old
+% Sections 4.6-4.7). Sources: paper1/solver_fix.md (cost, re-certification, the
+% split and its addendum), paper1/certificates.md (proof object),
+% paper1/dataset.md (the dataset, its checker and its price). Tables from
+% tables/ (make_tables.py). Setup: lscpu and free on the machine that ran
+% everything, read 2026-10-06; compiler flags from satisfiability/native.py.
+\section{Computational results and a dataset}
+\label{sec:results}
+
+Section~\ref{sec:search} proved our corrected algorithm sound. This section asks
+five practical questions about it and answers each with a measurement. What
+does our correction cost? At most 2\% more search nodes on each group of benchmarks we measured. Do the published
+benchmark optima survive? All 115 that rested on Chu and Stuckey's algorithm
+\citep{ChuStuckey2009} were proved again, and none changed. How good a
+pathwidth solver is it? On every benchmark set with published exact counts it proves as many or more graphs than the published branch and bound of \citet{CoudertMazauricNisse2016}, and it is faster on each of the fourteen graphs whose times they publish. Can a reader check a refutation without
+trusting our code? Yes, up to about 75 customers, through a certificate and an
+independent checker. Finally, what does it make possible? A dataset of 17,714
+graphs from twenty benchmark collections. For 16,634 of them the pathwidth is
+certified, and that gives the exact value of every problem in the exact core.
+
+\subsection{Experimental setup}
+\label{sec:setup}
+
+\paragraph{Machine and code.} Every run in this section used one
+machine, an AMD Ryzen~9 9950X (16 cores, 32 hardware threads) with 128\,GB of
+memory under Ubuntu Linux. Both searches, the open-stacks customer search and
+its port to graphs, are written in C, compiled with gcc 15.2 using the
+flags \texttt{-O3} and \texttt{-march=native}, and driven from Python~3.12. A Python implementation of the
+same rules serves as a reference for cross-checks and emits the certificates
+of Section~\ref{sec:certs}. Our corrected tests are the default in every
+implementation; the tests of Chu and Stuckey's algorithm remain available as an option. The C
+implementation handles components of at most 1,024 vertices; 154 classes of
+the dataset of Section~\ref{sec:dataset} are larger.
+
+\paragraph{Runs.} The basic job asks one question: is the optimum of this
+instance at most $k$? A \emph{worker} is one single-threaded process that
+answers such questions, one at a time. A \emph{node} is one state visited by
+the search, the unit in which we report effort. Up to 32 workers ran at
+once on the machine, so wall-clock times carry load noise. We therefore
+compare node counts and report time only in \emph{core-hours}, the hours of one core summed over workers (32 workers for one hour make 32 core-hours). A \emph{pair} runs
+the same question twice in the same worker, once under Chu and Stuckey's algorithm
+and once under our corrected rules, alternating which goes first. A
+\emph{descent} solves a whole graph: it lowers $k$ from an upper bound until a
+refutation proves the last value optimal. Each table states its time or node
+budget.
+
+\paragraph{Configurations.} The open-stacks runs use two configurations of the
+rules of Section~\ref{sec:search}, which differ only in the better move. The
+\emph{base} configuration leaves it off. The configuration \emph{with better
+move} switches it on for instances whose customers need at most five patterns on
+average. This is the setting under which our implementation of Chu and Stuckey's algorithm certified the benchmark values it proved.
+
+\paragraph{Instances.} The \emph{MOSP corpus} is the 6,376 instance files of
+four public open-stacks collections, one of which is distributed twice. They
+are the 2005 Constraint Modelling Challenge \citep{SmithGent2005}, with a
+second copy of 46 of its files under other names, the random
+instances of \citet{ChuStuckey2009} (30 to 125 customers), those of
+\citet{FaggioliBentivoglio1998}, and the 24 industrial instances of the SCOOP project, real instances from two sawmilling companies \citep{Frinhani2018}. They
+are the first rows of Table~\ref{tab:dataset}. A Chu--Stuckey name such as
+\texttt{Random-125-125-2-4\_0} gives the number of customers, the number of
+patterns, the generator's density class (roughly, the number of customers per pattern) and the instance number. The graph benchmarks are those of Table~\ref{tab:dataset}.
+
+\paragraph{Provenance.} Every stored value comes with a witness, an order that
+attains it, and one of three provenances:
+\begin{itemize}
+\item \emph{certified by search}: a search proved that no order does better,
+  by refuting the value minus one;
+\item \emph{certified by bound}: a lower bound equals the witness's value, so
+  no search was needed;
+\item \emph{upper bound only}: the witness is all there is, and optimality is
+  not proved.
+\end{itemize}
+All 6,376 corpus values are certified; the last two were certified by the
+split search of Section~\ref{sec:practice}.
+
+\subsection{The cost of our correction, and the benchmark values}
+\label{sec:practice}
+
+Our corrected algorithm adds one matching test to the definite move and to the
+better move (Section~\ref{sec:definite}). A candidate that fails the matching
+is passed over, so the corrected tree can only differ where the matching fails.
+Table~\ref{tab:cost} shows how rarely that matters.
+
+\begin{table}[t]
+\centering\small
+\caption{Our correction never changed an answer and costs at most 2\% more
+nodes in total. Each pair runs the same question under Chu and Stuckey's algorithm and under the
+corrected rules in one worker. Totals are over the pairs that finished under
+both rules; a pair stopped by its budget says nothing about cost.
+\emph{Vertices}: customers in the open-stacks rows (the vertices of $G_M$).
+\emph{Largest pair ratio}: the largest ratio of corrected to previous nodes
+over single pairs. Open-stacks pairs refute the optimum minus one, at 600\,s per
+call at 50--100 customers and $2\times10^8$ nodes at 125. The graph pairs run
+whole descents on VSPLIB, the colouring and named graphs, and a sample of 500
+Rome graphs.}
+\label{tab:cost}
+\resizebox{\linewidth}{!}{\input{tables/cost}}
+\end{table}
+
+In every row of Table~\ref{tab:cost} our corrected algorithm and Chu and Stuckey's algorithm gave
+the same answer, and the total node counts differ by at most 2\%. Single
+open-stacks pairs differ by at most 4\%. The time per node also rises, by about 2\% in the C
+implementation, measured on six hard instances at 75 to 125 customers. The
+published test passes and the matching then fails on only 0.07--0.27\% of
+definite-move candidates, a rate that rises with size.
+
+\paragraph{The benchmark values survive.} None of the 115 values changed under
+our corrected rules. Of the 6,374 values certified before this work, 6,259 do
+not depend on the customer search at all. Each was proved in one of four ways:
+\begin{itemize}
+\item by an exhaustive computation over all subsets of customers (up to 15
+  customers);
+\item by a refutation from a SAT (Boolean satisfiability) solver whose proof an
+  independent checker accepted, in DRAT, the standard proof format for SAT
+  solvers;
+\item by an earlier SAT search;
+\item or by a lower bound equal to the value.
+\end{itemize}
+The other 115 rested on the customer search
+of Chu and Stuckey's algorithm. Our corrected algorithm refuted the value minus one on
+all 115, so all 115 values stand. They are 115 benchmark entries on 113
+distinct graphs: SP3 and SP4 are each stored twice.
+
+The seven hardest are 125-customer Chu--Stuckey instances at density classes 2
+and 4. They are too large for one worker, so their search was split:
+the top levels of the tree are expanded into independent subtrees, each
+refuted on its own worker, and the value is refuted when every subtree is.
+This is not the textbook split of a depth-first search, and it is worth
+saying exactly where Chu and Stuckey's algorithm resists it. Its pruning is a
+property of the path, not of the state: under the old move, their Theorem~3,
+a candidate $q$ is dropped at a node because an ancestor or an earlier
+sibling already searched $q$ and found nothing, so the candidate set depends
+on the order in which the tree was walked and on the answers of subtrees that
+finished before it. A right-hand subtree handed to a worker before the
+left-hand one has finished would rest on an answer nobody has. Their nogood
+memo assumes the opposite: a recorded failure at a closed set is reused by
+whatever path reaches it, which is sound only if the search below that set
+does not depend on the path, and under the old move it does; their algorithm
+runs both at once. The driver therefore reproduces the sequential tree's
+order and inheritance exactly, so that every task carries the old moves the
+sequential run would have given it; gives each task an empty, private memo,
+so no recorded failure crosses paths with different histories; re-splits a
+task that exceeds its node cap; and claims nothing until every task has
+answered \emph{unsat}, since an inherited old move is justified only by a
+sibling that refuted. The split is proved sound~\leanref{split}: a larger
+memo changes nothing a run needs, so a task may start from none, and every
+such run lifts to a run of our corrected algorithm. The lifting is stated for
+the corrected rules; with the published definite and better moves there is no
+sound sequential run to lift onto.
+
+\paragraph{\textbf{\emph{Why our version is parallel.}}} Because a task is a complete run of
+the search from a state that is fixed when the task is created and never
+changes afterwards. The state is three things: the closed set, the inherited
+old moves, and an empty memo. The first two come from the driver's expansion
+of the top of the tree, which is the sequential search's own expansion, so
+they are exactly what the sequential run would have carried at that node, and
+nothing a sibling does later can alter them. The memo is private, so nothing
+a sibling records can reach the task either. A task therefore reads nothing
+and writes nothing that another task reads: it takes its state, searches,
+and answers \emph{unsat}, \emph{sat} or \emph{over cap}. Tasks can run in any
+order, on any number of workers, on any machines, and a ledger of finished
+tasks is the whole state of the run, which is why a crash loses only the tasks
+in flight. The one global step is the last: a refutation is the conjunction of
+every task's \emph{unsat}, and that conjunction is what the split theorem~\leanref{split}
+lifts to a sequential run. Chu and Stuckey's algorithm cannot be run this way as
+published, because its tasks would not be self-contained: their candidate sets
+would depend on siblings still running, and their shared nogoods would cross
+paths with different histories. Making the state explicit, and making the
+rules true, is what makes the search parallel. Its price is measured and
+reported beside each count: the memo hits the tasks cannot share, which make
+the split visit more nodes than one worker would, and the nodes of tasks
+that hit their cap and were split again, which we count as waste. Chu and Stuckey's
+algorithm has no parallel form in its authors' papers. All seven were refuted at 18 to 369
+core-hours each, 1,112.6 in total (Table~\ref{tab:split},
+Appendix~\ref{app:split}).
+
+\paragraph{Measured on graphs, and what the memo was hiding.} The split runs
+on graphs through the one-pattern-per-edge instance (Section~\ref{sec:pwsolver}),
+and Table~\ref{tab:splitscale} measures it on four graphs of proved pathwidth
+whose refutation takes minutes to an hour on one core: two Rome graphs, a PACE
+Gaifman graph and the Higman--Sims graph. Each is refuted three ways by the same
+engine under the same rules: on one core with the memo at its default limit of
+four million states, on one core with the limit raised to 64 million, and split
+at the root into about ninety tasks on sixteen workers, each task with a default
+memo of its own. The decomposition does not depend on the number of workers, so
+the split's node count is the same on one worker as on sixteen (checked on the
+first graph at 1, 2, 4, 8 and 16: identical nodes, wall time 58, 30, 15, 13 and
+14 seconds), and only the scheduling changes.
+
+The table says two things, and the second qualifies the first. On the dense
+Higman--Sims graph the split is parallelism and nothing else: the memo size
+does not change the node count, and changes the time only through the larger
+table's cache misses, 519 seconds with the default against 716 with the large
+one, while sixteen workers finish in 64 seconds, with ten of them busy on
+average. On
+the PACE graph the gain is a factor of 2.5, bounded not by the workers but by
+one root task that ran to its three-billion-node cap before it was split; the
+granularity of the split, not the core count, sets the speed-up there. On the
+two sparse Rome graphs, however, most of what the split gains is memory, not
+parallelism. With the default memo the sequential search revisits states it
+has already refuted: on \texttt{grafo8793.100} it visits $8.4\cdot10^{8}$
+nodes, on $4.9\cdot10^{7}$ distinct states, and raising the memo to 64
+million states, which costs 1.1~GB, brings the one-core time from 254 to 33
+seconds, against the split's 14; on \texttt{grafo11458.100} the default memo costs one core eleven times the
+nodes and the time, and one core with the large memo, at 60 seconds, is faster
+than sixteen workers with default memos, at 69. The memo table
+is open addressing at 16 bytes a slot, capped at $2^{26}$ slots in the C, so
+64 million is also its ceiling; the knee of the curve lies between 16 and 64
+million on these graphs. Every hard count in this paper was run under such a limit: the MOSP
+refutations of Table~\ref{tab:split} with the default of four million states,
+and the graph program of Section~\ref{sec:pwsolver} with a table capped at
+512~MB, which at its load rule holds 23.5 million states on graphs of up to
+128 vertices and fewer above, whatever the limit says. The recorded node
+counts are therefore upper bounds on what the same search does with an
+adequate memo; the widths and proofs are unaffected, since the memo changes
+the cost of a run and never its answer~\leanref{split}. On this measurement
+the default is now 64 million states in every entry point of the solver and
+the graph program's table cap is 2~GB. The shipped program then refutes
+\texttt{grafo8793.100} in 40 seconds and 53 million nodes with its default
+rules, where its recorded run took 2,678 seconds and $8.9\cdot10^{9}$
+nodes, and the better move, on or off, makes no difference to it there; the
+40 percent on dense graphs is the known price. The rebuilt program also
+closed one class the comparison had left open on both sides: the
+Harwell--Boeing matrix \texttt{can\_292} (292 vertices), recorded at width 23,
+has pathwidth 22, by a layout of width 22 and a 146-vertex minor on which 21
+is refuted, the certificate verified by the checker of Section~\ref{sec:certs}.
+What the table establishes about the split is therefore the honest form of the
+claim: it divides the wall-clock time of a refutation by the number of
+workers up to the granularity of its tasks, on top of, not instead of, an
+adequately sized memo, and on graphs where the memo is irrelevant the two
+coincide.
+
+\begin{table}[t]
+\centering\small
+\caption{The root split on graphs. The refutation of width minus one by one
+core with the engine's default memo limit (four million states), by one core
+with the limit raised to 64 million states (1.1~GB), and by the split on
+sixteen workers with a default memo per task: nodes and wall seconds, the
+split's summed task CPU seconds in brackets, and the two one-core times
+divided by the split's. The split's node count is identical at every worker
+count. Same engine, same rules, nice~19, other work on the machine.}
+\label{tab:splitscale}
+\resizebox{\linewidth}{!}{\input{tables/split_scaling}}
+\end{table}
+
+\paragraph{Two values never certified before.} The corpus also held two values that
+no method had certified: 25 for \texttt{Random-125-125-2-2\_0} and 21 for
+\texttt{Random-125-125-2-3\_0}. The same split refutes the value minus one on
+each. It refuted 20 for \texttt{Random-125-125-2-3\_0} after
+9,665 subtrees, $4.25\times10^{12}$ nodes and 1,128 core-hours, which
+certifies 21 as its optimum. It refuted 24 for
+\texttt{Random-125-125-2-2\_0}, after 17,001 subtrees,
+$7.38\times10^{12}$ nodes and 2,231 core-hours (Table~\ref{tab:split}), which
+certifies 25; it is the largest refutation in this paper. With it, every value
+of the MOSP corpus is certified. The minor step of Section~\ref{sec:minor}
+reaches two of these values in seconds: a 69-customer minor of \texttt{Random-125-125-2-3\_0} refutes 20 in 666,153
+nodes, under a second of search, against
+1,128 core-hours on the full instance, and an 87-customer minor of
+\texttt{Random-125-125-2-1\_0} refutes 23 in 30\,s with a larger budget, against 366.5 core-hours
+(Table~\ref{tab:split}). It does not reach
+\texttt{Random-125-125-2-2\_0}: every minor of up to 95 customers that we tried admits 24. The minor bound
+also equals the optimum on \texttt{Random-125-125-6-1\_0} (81) and SP4 (53),
+which the search refutes on the full instance within a minute.
+
+\subsection{Our corrected algorithm as a pathwidth solver}
+\label{sec:pwsolver}
+
+Ported to graphs, our corrected algorithm is an exact pathwidth solver. Table~\ref{tab:graphs} gives what it proves on the 11,915 benchmark graphs it was run on, counted as files, beside the run of Chu and Stuckey's
+algorithm under the same caps and the published counts of
+\citet{CoudertMazauricNisse2016}. Where both runs prove a graph, the widths
+agree on every one. The 24 Rome graphs proved only by the corrected run, and the
+13 proved only by the previous one, sit near the 600\,s cap. The comparison with
+\citet{CoudertMazauricNisse2016} in this table is with published numbers obtained on other
+hardware; the head-to-head run on one machine is Section~\ref{sec:sage}. On the fourteen graph-colouring benchmarks of TreewidthLIB whose times
+\citet[Table~4]{CoudertMazauricNisse2016} report, our search proves the same
+pathwidth and is faster on every one: by 150 to 1,800 times on \texttt{david},
+\texttt{miles750} and \texttt{mulsol.i.5}, by 70 to 80 times on
+\texttt{miles1000} and \texttt{zeroin.i.1}, and by 1.4 to 10 times on the
+other nine, where a hardware difference could account for the margin. It also
+proves \texttt{queen11\_11} (pathwidth 87) in 37\,s and \texttt{queen12\_12}
+(103) in 391\,s, beyond their table, and \texttt{fpsol2.i.1} (496 vertices,
+pathwidth 67) in 5.7\,s, against 323\,s for
+\citet{KobayashiKomuroTamaki2014}. Without the minor step, one graph goes the other way: the Mycielski graph
+$M_7$ (\texttt{myciel6}, 95 vertices, pathwidth 38), which their tuned branch
+and bound proves in about ten minutes, while the full refutation of 37 by our
+search does not finish in hours, its floor being 25. Mycielski graphs are
+built to have no triangles and yet to need many colours, so their largest
+cliques are single edges and their degrees are uneven: the degree and clique
+bounds that make up our floor see almost nothing. And their treewidth, 35 here, lies strictly below their pathwidth, so no
+bound through treewidth can reach 38 either.
+
+\paragraph{With the minor step.} The minor step of Section~\ref{sec:minor}
+changes this. A 58-vertex minor of \texttt{myciel6} already has pathwidth 38,
+and the step proves $\pw=38$ in 0.2\,s. On \texttt{myciel7} (191 vertices),
+which \citet{CoudertMazauricNisse2016} leave open with $\pw\le72$, a
+110-vertex minor proves $\pw\ge71$ in seconds, and a 132-vertex minor refutes
+71, in $5.2\times10^{9}$ nodes and 1.6 hours, so $\pw=72$; the best published
+lower bound we found is the treewidth bound 52 of
+\citet{BodlaenderWolleKoster2006}. The pathwidths of the Mycielski graphs
+$M_2,\dots,M_8$ are therefore $1, 2, 5, 10, 20, 38, 72$, a sequence in no
+entry of the OEIS, and no closed form we tried survives a hold-out test (the
+Fibonacci convolution that fits the first six terms predicts 71). For every
+graph $G$ its Mycielskian satisfies
+$\pw(G)+1\le\pw(\mu(G))\le2\,\pw(G)+1$~\leanref{mycielski}, the upper bound by
+interleaving each vertex with its shadow, so $73\le\pw(M_9)\le145$; a layout found by our search lowers this to $\pw(M_9)\le138$. Of the 340 Rome graphs left open by the 600\,s run of
+Table~\ref{tab:graphs}, the step proves 271 within 60\,s each (median 0.5\,s),
+and 292 with a larger budget; we refuted the other 48 without a time limit,
+the longest in 25.4 hours, so the pathwidth of every one of the 11,534 Rome
+graphs is now proved;
+the Harwell--Boeing count rises from 39 to 43, and the colouring benchmarks
+gain \texttt{anna} and \texttt{myciel6}. The VSPLIB grids need no search: each
+is an $n\times n$ grid, whose pathwidth is $n$ by
+\citet[Theorem~4.1]{EllisWarren2008}, and a row-by-row layout of width $n$ attains it, so all 50 are settled where
+search alone proved 9. We machine-checked the theorem~\leanref{grid}, by a
+direct argument on vertex separation: at the first prefix of any layout that
+completes a row or a column, the boundary meets every column or every row.
+That each VSPLIB grid is an $n\times n$ grid is checked by an isomorphism
+test, not in Lean. On graphs proved both with and without
+the step, it lowers the total node count by 55 to 99\% on Rome, the VSPLIB grids,
+Harwell--Boeing and the colouring graphs, adds 1\% on the named graphs and
+20\% on the VSPLIB trees (about 1.5\,s a tree), and costs 4\% of the time on
+a sample of 120 MOSP corpus instances. The minor bounds for \texttt{myciel6},
+\texttt{myciel7} (the bound 71) and the four MOSP instances below were also refuted by a
+separate exact search that uses no dominance rule and writes out every refuted
+set, which an independent checker verifies; the refutation of 71 on the
+132-vertex minor of \texttt{myciel7} rests on our corrected algorithm alone, its
+contraction sequence replayed and checked. Their branch and bound is openly available in SageMath, and the
+head-to-head run on one machine is Section~\ref{sec:sage}.
+
+\begin{table}[t]
+\centering\small
+\caption{Our corrected algorithm as a pathwidth solver. Graphs whose pathwidth it
+proves, under our corrected rules and under Chu and Stuckey's algorithm with the same
+caps (Rome: 10, 120 and 600\,s in stages), without the minor step of
+Section~\ref{sec:minor}, and the published counts of
+\citet{CoudertMazauricNisse2016} under a 10-minute cap. \emph{Width differs}:
+graphs proved by both runs with different widths. $^{a}$All 50 VSPLIB grids:
+each is an $n\times n$ grid, checked by isomorphism, so its pathwidth is $n$ by
+\citet[Theorem~4.1]{EllisWarren2008}; the 41 that search did not prove carry a
+witness layout of width $n$.}
+\label{tab:graphs}
+\resizebox{\linewidth}{!}{\input{tables/graphs}}
+\end{table}
+
+\paragraph{What a proof costs.} Figure~\ref{fig:cost} plots the search nodes
+of every width our search has proved, on 8,510 graphs, against the number of
+vertices $n$ and against $n$ times the width $w$. On the Rome graphs, sparse
+graph-drawing instances, the cost follows one law,
+\[
+  \log_{10}(\text{nodes}) \approx 1.75 + 0.00705\, n w ,
+\]
+with $r^2=0.96$ and a typical graph within a factor of 2.3 of it: each further
+100 in $nw$ multiplies the work about fivefold. Size alone explains less
+($r^2=0.85$), and so does width alone (0.89); the states of the search are
+vertex sets whose boundary has at most $w$ vertices, and their number grows
+with both. The 48 hardest Rome graphs, which we refuted without a time limit
+(the longest in 25.4 hours), lie above the line, so the law ranks
+graphs by hardness but understates the extreme tail. Graphs that the 600\,s
+runs did not finish are absent, so the top of the curve is a lower envelope.
+The structured sets do not follow the Rome law: Harwell--Boeing graphs of up
+to 960 vertices, the colouring and named graphs and the dataset's open classes
+are proved with orders of magnitude fewer nodes than it predicts, mostly
+because a lower bound, often from a minor, meets the width early. Time tracks
+nodes closely ($r^2=0.98$), which is why we report nodes.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\linewidth]{solve_times.pdf}
+\caption{The cost of proving a pathwidth. Search nodes for every width our
+search has proved (8,510 graphs, both axes logarithmic), against $n$ times the
+width (left) and against $n$ alone (right). The dashed line is the fit on the
+Rome graphs, $\text{nodes}=10^{1.75+0.00705\,nw}$. The structured benchmark
+sets fall far below it, and size alone gives no single law.}
+\label{fig:cost}
+\end{figure}
+
+\subsection{Head to head with SageMath}
+\label{sec:sage}
+
+The comparisons above are with published numbers. The branch and bound of
+\citet{CoudertMazauricNisse2016} is openly available as SageMath's exact vertex
+separation (\texttt{vertex\_separation} with \texttt{algorithm="BAB"}, SageMath 10.8), so
+the two solvers can be run on the same graphs on the same machine. The
+machine is the one of Section~\ref{sec:setup}, and it was not idle: other work
+of ours ran beside the comparison throughout, with a one-minute load average
+between 8 and 84 at the moments the pairs were launched (median 18, on 16
+physical cores). The protocol takes that into account rather than waiting for
+quiet. For every graph the two solvers start at the same moment, each pinned to
+its own physical core, both at the lowest scheduling priority, and each with
+the same cap of 600 seconds of \emph{CPU time}, enforced by the operating
+system rather than by the clock, so that whatever the rest of the machine does
+it does to both, and what is recorded is the processor time each solver
+consumed, not the time of day. Six such pairs ran at once. SageMath's solver is
+exact when it returns, so a returned value counts as a proof; ours counts a
+proof when it reports a refutation, a lower bound meeting the width, or a
+minor, and reports a verified upper bound otherwise. The graphs are the sets
+of Table~\ref{tab:graphs}, with the Rome graphs represented by a random sample
+of 500: 881 graphs in all. The program is
+\path{pathwidth_solver/bench/sage_paired.py}; every row of
+\path{paper1/data/sage_paired_600s.csv} holds both widths, both statuses,
+both CPU and wall times, our node count and the load at launch, and
+Table~\ref{tab:sage} is generated from it.
+
+\begin{table}[t]
+\centering\small
+\caption{Head to head with SageMath's branch and bound
+\citep{CoudertMazauricNisse2016} on one machine, both solvers started together
+on the same graph, each on its own physical core with a cap of 600 CPU
+seconds. \emph{Ours} and \emph{SageMath}: graphs whose pathwidth each proved
+within the cap; \emph{both}, \emph{ours only}, \emph{SageMath only},
+\emph{neither}: the four cells of that pair of counts. The widths agree on
+every graph both proved. \emph{Ratio}: the median, over the graphs both proved
+on which SageMath needed at least one second, of SageMath's CPU time divided
+by ours; on the trees SageMath proved, it needed less than a second.}
+\label{tab:sage}
+\resizebox{\linewidth}{!}{\input{tables/sage_paired}}
+\end{table}
+
+Three things are in the table. First, there is no graph that SageMath proves
+and ours does not: the set of graphs it proves within the cap, 550 of the 881,
+is contained in the 768 ours proves, and on every one of the 550 the two
+widths are equal. The 113 graphs that neither proves are the large grids, half
+of the Harwell--Boeing matrices, the dense colouring graphs and 18 of the named
+graphs; on each, ours ends at the cap holding a verified layout and SageMath
+ends at the cap holding nothing. Second, where both prove the width, ours is
+faster on every graph on which SageMath needs at least half a second, by a
+median factor of 34 over the 83 graphs where it needs at least a second and of
+226 over the 29 where it needs five, the largest ratio being above $10^5$;
+over the 550 graphs both prove, SageMath spends 4,182 CPU seconds and ours 20.
+Third, the margin is in the proofs, not only in the time: on the 500 Rome
+graphs ours proves all and SageMath 386; on the 50 VSPLIB trees, all against
+15, with ours taking a median of 2.2 seconds on the 35 trees SageMath does not
+finish; on the colouring graphs 33 against 10. The minor step of
+Section~\ref{sec:minor} is a large part of this: it is the proof on 179 of our
+768, including the 153 Rome graphs and the 13 Harwell--Boeing matrices on
+which the search alone would have run to the cap, and on \texttt{myciel6},
+which \citet{CoudertMazauricNisse2016} report proving in about ten minutes on
+their machine, SageMath did not finish within the cap here while the minor
+step proved $\pw=38$ in 0.2 seconds. What the comparison does not measure is
+our parallel refutation: both solvers ran on one core, which is the only fair
+unit, and the split is a separate claim, measured in Table~\ref{tab:splitscale}
+of Section~\ref{sec:practice}.
+
+Because the machine was loaded, the CPU-time cap is what makes the comparison
+fair, but it cannot make it exact: a process that is descheduled loses its
+cache, and the same graph can cost either solver more or fewer processor
+seconds on a busy machine than on a quiet one. To measure the variance this
+adds, a 50-graph sample drawn from the same sets (28 Rome, 7 grids, 5 named, 4
+trees, 4 Harwell--Boeing, 2 colouring) was run a second time under the same
+protocol, at loads between 12 and 56 at launch. Every outcome was the same:
+each solver proved exactly the graphs it had proved the first time, with the
+same widths, and our node counts were identical on all 39 graphs we proved,
+since the search is deterministic and nodes do not see the load. The CPU
+times moved by factors of 0.6 to 1.6 for SageMath (median 0.84 on the 22
+graphs where it ran half a second or more) and of 0.7 to 1.1 for ours on the
+three such graphs, which is the size of the noise in the ratio column of
+Table~\ref{tab:sage}, against ratios of 34 and more. The rows of both runs
+are published with the data (Section~\ref{sec:data}).
+
+\subsection{A checkable proof of a refutation}
+\label{sec:certs}
+
+A refutation by the search is a claim about a tree of up to $10^{12}$ nodes,
+and Theorem~\ref{thm:main} proves the rules sound, not the code that runs
+them. So the search emits a \emph{certificate}: the tree it explored, every
+pruning step with its rule and its witness, and for each definite and better
+step the matching of Theorem~\ref{thm:matching}. An independent checker, which
+shares no code with the search, reads the instance matrix and the certificate.
+At every node it checks that
+\begin{itemize}
+\item the premise of every pruning step holds, recomputed from the matrix;
+\item every matching is valid: distinct customers, distinct stacks, each stack
+  newly opened by its customer, and at least $\open-1$ edges;
+\item every candidate within the bound is either a child or covered by a
+  pruning step, and every chain of covers ends at a child or an old move,
+  with no cycle;
+\end{itemize}
+and it replays the tree from the root. Each accepted step is a Lean theorem.
+That an acyclic covering by such steps is sound is a short paper argument, not
+yet a formal proof.
+
+\begin{table}[t]
+\centering\small
+\caption{Every certificate the search emitted verifies, none is rejected, and
+checking takes milliseconds. Certificates for our corrected rules, configuration
+with better move, refuting the optimum minus one on the certified MOSP corpus
+at 9--75 customers, with 60\,s to emit each. \emph{Not emitted}: the emitter
+did not finish in time. Size is the compressed certificate; check time is the
+independent checker's.}
+\label{tab:certs}
+\resizebox{\linewidth}{!}{\input{tables/certificates}}
+\end{table}
+
+Table~\ref{tab:certs} gives the results. Every refutation emitted within its
+budget verifies, 6,275 of 6,286, and none is rejected. All 35.5\,MB of
+certificates check in 147\,s. The base configuration gives the same picture:
+6,276 of 6,286 verify and none is rejected. The checker also catches the error
+of Section~\ref{sec:definite}. On the graph of
+Counterexample~\ref{cex:definite}, rooted at $\{2\}$, Chu and Stuckey's algorithm emits
+a complete tree that claims there is no solution. A checker of the published
+premises accepts it. Ours rejects it, even with a largest matching attached,
+because the matching has one edge where two are needed. At 125 customers the
+trees are too large to ship as certificates.
+
+\paragraph{Searched lower bounds, with certificates.} The witness half of
+every certified value is found by a tuned search over orderings. The lower
+bounds that start the descent, the clique, contraction degeneracy, Harper's
+vertex-isoperimetric bound at a cap \citep{Harper1966} and the greedy minor
+step of Section~\ref{sec:minor}, were only ever computed, one formula or one
+greedy rule each. We ran a search over each family of obstruction on
+instances whose optimum is known, so that every answer is a measurement, and
+report the family's duality gap, the optimum minus the best value it
+certifies. Two kinds of family must be told apart. Harper's bound is
+universal, $\pw\ge\min_{|A|=t}|N[A]|-t$ for every $t$, so a set found by
+search proves only that the minimum is at most its value: it gives a
+\emph{ceiling} on what the family could ever certify and no bound at all, and
+the floor needs the minimum proved, by branch and bound to a cap or by a SAT
+refutation with a DRAT proof. Cliques, contraction minors and separator
+branches are maximisations, and a found object is a certificate. Each
+certificate has a format and an independent checker sharing no code with the
+search: it regenerates the CNF of an expansion level and runs
+\texttt{drat-trim}; replays a contraction sequence with its own code, rebuilds
+the minor, re-runs our search on it and, to 80 vertices, a rule-free
+enumeration of refuted prefixes; checks a separator's branches by its own
+breadth-first search. That a verified certificate implies the bound is proved
+in Lean, and \texttt{decide} closes a 30-customer record instance from its
+own matrix~\leanref{obstruction}.
+
+On the 338 instances of the MOSP corpus where the solver's own bound misses
+the optimum by two or more (20 to 134 customers), the best floor on record was
+tight on 81. Searched contraction minors, each refuted on the minor by our
+corrected algorithm under a cap of 2 to 10\,s per call, are tight on 327: at 20
+to 50 customers on 251 of 251, beating the greedy ladder of
+Section~\ref{sec:minor} on 29, always by one; above 60 customers on 76 of 87.
+They reach 93 on \texttt{Random-125-125-8-2\_0}, its optimum, on a 118-customer
+minor, and shrink the minor that certifies \texttt{Random-125-125-2-3\_0} from
+about 70 customers to 51, refuting 20 in 145,355 nodes; none of the minors
+of up to 110 customers we tried certifies \texttt{Random-125-125-2-2\_0}.
+Harper's ceiling is below the optimum on 320 of the 338, so no computation of
+that bound could close them; its exact floor, by SAT with a checked DRAT
+proof, settles every bracket at 30 to 60 customers and almost none at 75 and
+beyond, and closes 12. Separator branches close none. The 11 instances left
+are dense Chu and Stuckey instances at 100 to 125 customers with the best
+floor one to four stacks below the optimum. Of the dataset's 24 open classes
+(Section~\ref{sec:dataset}), two are closed by certificates filed with the
+code (the dataset's records are unchanged): the complete ternary tree of
+height 5 by the branch lemma, at the pathwidth that \citet{EllisSudboroughTurner1994}
+compute for trees, and the PACE instance \texttt{NY\_13} (283 vertices, width
+10) by an 85-vertex contraction minor of pathwidth 10, refuted in 0.07\,s
+where 236.7 core-hours on the whole graph had found nothing. Harper's ceiling
+is below the recorded width on all 24. Every certificate verifies: 158
+expansion levels, 441 minors, 156 separators and 47 on the open classes, at
+about 35 core-hours in all. We found no prior report of a searched
+contraction-minor or searched vertex-isoperimetric lower bound on benchmark
+instances. The searches, the checker and the certificates are in the
+repository (Section~\ref{sec:data}).
+
+\subsection{A dataset with certified pathwidth}
+\label{sec:dataset}
+
+Section~\ref{sec:equiv} showed that one certified pathwidth $w$ answers every
+problem in the exact core. Pathwidth, vertex separation and the vertex
+separator game take the value $w$, and MOSP, gate matrix layout (which
+multiple folding equals), one-dimensional logic, interval thickness,
+narrowness, node search, progressive pebbling, the vertex search of
+\citet{BRST1991} and the maximum wavefront take $w+1$: twelve problems in all, counting multiple folding with gate matrix layout. We therefore built one dataset from every benchmark collection of
+those problems that we could obtain, including the MOSP corpus.
+
+The unit of the dataset is the \emph{isomorphism class}: the set of instances
+whose graphs are the same up to renaming the vertices. For a matrix instance
+the graph is its MOSP graph. Two instances in one class have the same value
+under every problem, so the dataset holds one record per class, with its
+members and the renaming that maps each onto the record's graph. Classes were
+found with nauty, a standard tool that computes a canonical form for each
+graph. Each record carries the graph, the width $w$, its provenance, and a
+witness layout of exactly that width. A record certified by bound also carries
+a \emph{minor certificate}: a list of vertex deletions and edge contractions
+after which every vertex has degree at least $w$. Any checker can replay it,
+and it proves the pathwidth is at least $w$. A record certified on a minor
+carries, when it is stored, the sequence of edge contractions that gives
+the minor on which our search refuted width $w-1$, which proves $\pw\ge w$ by
+Theorem~\ref{thm:minor}. A record certified by theorem names the theorem and
+its Lean proof; so far these are the VSPLIB grids, whose pathwidth is given by
+the grid theorem~\leanref{grid}.
+
+\begin{table}[t]
+\centering\small
+\caption{Twenty collections, 21,754 instance files, reduce to 17,714
+isomorphism classes, and 16,634 of them have a certified pathwidth with a
+witness layout. Largely open: PACE, the VSPLIB Harwell--Boeing graphs, and the
+MOSP sets of de Carvalho and Soma and of Frinhani et al. \emph{Classes}: isomorphism classes within the
+collection (78 graphs above 5,000 vertices are compared by file content only).
+\emph{Counted here}: classes whose first member, in the order of the table,
+is in this collection, so the column sums to the dataset's class count. The
+next six columns split those classes by provenance: certified by search on
+the graph, by search on a contracted minor (Theorem~\ref{thm:minor}), by a
+lower bound, or by a theorem; or an upper bound only. \emph{No witnessed
+value}: no layout is stored yet; this includes one Rome class whose pathwidth
+is certified but which has no stored layout of that width. $^{a}$The same 46 files distributed a second
+time under other names; every class is counted under its first copy.}
+\label{tab:dataset}
+\resizebox{\linewidth}{!}{\input{tables/dataset}}
+\end{table}
+
+Table~\ref{tab:dataset} gives the counts. The collections are the MOSP
+collections
+\citep{SmithGent2005,FaggioliBentivoglio1998,ChuStuckey2009,CarvalhoSoma2015,Frinhani2018},
+eleven VLSI gate matrix circuits \citep{OliveiraLorena2002}, the VSPLIB sets
+\citep{Duarte2012} and the Small graphs \citep{MartiCamposPinana2008}, the Rome
+graphs \citep{DiBattista1997}, and treewidth collections used as pathwidth
+benchmarks \citep{TreewidthLIB,freetdi,PACE2016,PACE2017}. Of the 17,714
+classes, 16,634 carry a certified pathwidth with a witness layout and 337 a witnessed upper bound, and 743 have no witnessed value yet; one of those, a Rome class certified by refutation, has a certified pathwidth but no layout on file. The 610 large instances of \citet{Frinhani2018}, with
+400 to 1,000 customers, are included so that the dataset covers every
+published MOSP collection we have. None of them has a value yet, because an
+exact search at that size is out of reach.
+
+An independent checker, sharing no code with the solvers, verifies the
+dataset. It re-reads all 20,984 member files with its own readers, maps each
+onto its record's graph by its renaming, recomputes the width of every witness
+layout, replays every minor certificate and every stored contraction sequence
+(424 of the 429 records certified on a minor), and recognises each grid
+certified by theorem from its edges alone. It reports no failure on the
+16,971 records, the 16,634 certified classes and the 337 with an upper bound. A value certified by search cannot be checked from its record,
+and neither can the refutation on a minor;
+both rest on our corrected algorithm, and for instances within reach of the emitter
+the certificate of Section~\ref{sec:certs} is how a third party can check it.
+
+\paragraph{Agreement with published values.} All 84 Small graphs agree with
+the pathwidths of \citet[Tables~4--5]{Mallach2018}. Ten of the eleven VLSI
+circuits are certified at their published best-known track counts
+\citep[Table~I]{OliveiraLorena2002}; the eleventh, W4 with 202 nets, is open
+at 28 against 27.
+
 \paragraph{A caution about MOSP files.} A MOSP file can be read with rows as
 customers or with rows as patterns, and the two readings give different
 graphs. The same public repository ships the

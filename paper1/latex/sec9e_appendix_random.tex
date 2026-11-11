@@ -13,10 +13,11 @@
 
 The equivalences of Section~\ref{sec:equiv} make every statement about the
 pathwidth of a graph a statement about the open stacks of an instance. This
-appendix proves one such statement for random graphs, in plain language, and
-records what of it is checked in Lean. The result is that a sparse random
-graph has pathwidth proportional to its number of vertices, with an explicit
-constant. The argument is a first moment, an old tool; what is new here is the
+appendix proves such statements for random graphs and records what of them is
+checked in Lean. The results are that a sparse random graph has pathwidth
+proportional to its number of vertices, with an explicit constant; that a
+dense one has pathwidth within a few logarithms of its number of vertices,
+with its constant; and that one statement covers the regimes between. The argument is a first moment, an old tool; what is new here is the
 exact form of its deterministic step, the constant it yields, and the
 machine check. We found no prior statement of the constant.
 
@@ -32,7 +33,10 @@ closed, every pattern the customer needs has been made. \emph{Open}: not done,
 but at least one of the customer's patterns has been made, so the stack is
 open. \emph{Untouched}: none of the customer's patterns has been made. The
 number of open stacks at that moment is the size of the open group, and a
-sequence of value $k+1$ never has more than $k$ customers open at once. A
+sequence of MOSP value $k+1$ never has more than $k$ customers open at once:
+at the moment the last pattern of the customer who has just closed was made,
+that customer was open together with everyone who is open now, and the value
+counts them all. A
 done customer and an untouched customer can share no pattern: a shared pattern
 would already have been made for the done customer and would have opened the
 untouched one. So at every moment the done group and the untouched group are
