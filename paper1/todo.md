@@ -280,6 +280,21 @@ pass (the hypercube and Mycielski theorems were missing from
       which stay cited (Lengauer 1981; Kashiwabara & Fujisawa 1979; Garey & Johnson 1979) — Mathlib
       has no NP/coNP framework and the chain down to Cook's theorem is out of reach. Beside it, the
       measured cost of the oracle (the refutation record) is the "immense work", already tabulated.
+- [ ] **What the random-graph theory says for well-studied graph classes** (owner, 2026-11-11).
+      The first moment (empty pairs, `FirstMoment.lean`), the random-ordering chain
+      (`LayoutMoment.lean`) and the staircase reduction are statements about any product
+      measure on edges, not only `G(n,p)`; ask what they give, and what is measured, on the classes
+      the literature studies: random regular graphs (`G_{n,d}`: the cubic cages are the hard open
+      instances; Fomin–Høie's `n/6 + o(n)` upper bound; configuration-model first moment),
+      random geometric / disc graphs (Mitsche–Perarnau 2012 held), random planar / outerplanar,
+      random bipartite `G(n,n,p)` and the MOSP generators (Chu & Stuckey's `d`-uniform covers —
+      `CliqueCoverMoment.lean` already; Faggioli–Bentivoglio; Harvey's constant row/column sums),
+      preferential-attachment / power-law, random interval and chordal graphs (pw = tw + small),
+      hypercubes and grids (deterministic; Harper's own setting), and the Chu & Stuckey ridge
+      classes. Per class: the model, what our theorems give (the constant or the order), what is
+      known in print, what the corpus/dataset measures, and whether a bound family of Section 5 is
+      tight there. A survey-plus-computation item, half a day; the cages row is the one that
+      matters for the open instances.
 - [ ] **Random graphs, two items from the layout second moment** (2026-11-11,
       `reports/layout_second_moment.md`): (a) put the random-ordering upper bound
       `pw ≤ β_typ(c) n`, `β_typ = max_x (1−x)(1−e^{−cx})`, into Appendix E as the upper end of the
