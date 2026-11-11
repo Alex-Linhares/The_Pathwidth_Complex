@@ -1343,3 +1343,100 @@ Oum 2012; Perarnau & Serra 2014; Gao 2006/2012; Do, Erde & Kang 2024; Edwards & 
 - **Mareček, J.** (2009). Some probabilistic results on width measures of graphs.
   [arXiv:0908.1772](https://arxiv.org/abs/0908.1772). `Ω(n)` lower bounds on treewidth,
   branchwidth, clique-width and rank-width at `G(n, 1/2)`; no constants.
+
+## Second moment on layouts (2026-11-11)
+
+Survey behind `reports/layout_second_moment.md` §5: second-moment (Paley–Zygmund)
+arguments for layout and ordering parameters of random graphs, the template second
+moments on random CSPs, the width of a random ordering, and pathwidth upper bounds on
+`G(n, c/n)` other than Edwards & McDermid (2015). Read from abstract and landing pages by a
+search agent (25 searches); nothing downloaded; one held PDF read in full (Díaz, Petit,
+Serna & Trevisan 2001, `literature/2001-Diaz-Petit-Serna-Trevisan-...pdf`: Lemma 3 is the
+`(1/2 − ε) n` vertex-separation floor for *every* layout of a mixing graph, a Chernoff
+form of the empty-pair argument; no second moment, no variance, nothing on a random
+ordering). **We found no statement** of a second moment on the number of layouts or path
+decompositions of bounded width in any random graph model; of the expected vertex
+separation, cutwidth or open-stack count of a uniformly random ordering of `G(n, p)`; of
+the open-count chain ("the placed vertex is open with probability `k/(n − t + 1)`"); of a
+cutwidth, vertex-separation or pathwidth result on random regular graphs (bisection and
+treewidth only); or of a pathwidth upper bound on `G(n, c/n)` other than Edwards & McDermid.
+The template papers each document the failure measured in the report (the plain second
+moment exponentially above `E[X]²`) and cure it one of three ways: balanced objects,
+weights that cancel the drift the conditioning induces, or a complement symmetry.
+Used in the report (template and verdict), none held:
+
+- **Achlioptas, D. & Naor, A.** (2005). The two possible values of the chromatic number
+  of a random graph. *Annals of Mathematics* 162(3), 1335–1351.
+  [doi:10.4007/annals.2005.162.1335](https://doi.org/10.4007/annals.2005.162.1335),
+  [arXiv:0706.1725](https://arxiv.org/abs/0706.1725). Second moment of the number of
+  *balanced* `k`-colourings; the pair probability depends on the `k × k` overlap matrix
+  only and the sum is maximised at the flat overlap. The closest template: a count of
+  combinatorial objects with an overlap-parameterised pair probability. **Wanted.**
+- **Achlioptas, D. & Peres, Y.** (2004). The threshold for random `k`-SAT is
+  `2^k ln 2 − O(k)`. *J. Amer. Math. Soc.* 17(4), 947–973.
+  [doi:10.1090/S0894-0347-04-00464-3](https://doi.org/10.1090/S0894-0347-04-00464-3),
+  [arXiv:cs/0305009](https://arxiv.org/abs/cs/0305009). §2.1 "the vanilla second moment
+  method fails"; the cure is a *weighted* count, each satisfying assignment weighted by a
+  product over clauses so that the weighted measure has no drift toward the majority
+  assignment. The canonical lottery fix. **Wanted** for §2–3.
+- **Dani, V. & Moore, C.** (2011). Independent sets in random graphs from the weighted
+  second moment method. *RANDOM 2011*, LNCS 6845;
+  [arXiv:1011.0180](https://arxiv.org/abs/1011.0180). "A weighted version of the second
+  moment method, where we give each independent set a weight based on the total degree of
+  its vertices": the plain count's second moment is exponentially larger than the squared
+  expectation because a planted set makes the graph locally sparser — the exact effect
+  the report measures on layouts (the planted graph is atypically sparse). The most direct
+  analogue. **Wanted.**
+- **Achlioptas, D. & Moore, C.** (2006). Random `k`-SAT: two moments suffice to cross a
+  sharp threshold. *SIAM J. Comput.* 36(3), 740–762;
+  [arXiv:cond-mat/0310227](https://arxiv.org/abs/cond-mat/0310227). The plain second
+  moment works on NAE-`k`-SAT because the complement symmetry kills the drift; layouts have
+  no such symmetry (reversal preserves width but not the edge count's drift).
+- **Achlioptas, D. & Moore, C.** (2004). The chromatic number of random regular graphs.
+  *RANDOM 2004*, LNCS 3122; [arXiv:cond-mat/0407278](https://arxiv.org/abs/cond-mat/0407278);
+  **Kemkes, G., Pérez-Giménez, X. & Wormald, N.** (2010). On the chromatic number of
+  random `d`-regular graphs. *Adv. Math.* 223; [arXiv:0812.2937](https://arxiv.org/abs/0812.2937).
+  Balanced second moment plus small subgraph conditioning — the tool when the ratio tends
+  to a constant above 1, which is not the case here (it is exponential).
+- **Coja-Oghlan, A. & Efthymiou, C.** (2015). On independent sets in random graphs.
+  *Random Structures & Algorithms*; [arXiv:1007.1378](https://arxiv.org/abs/1007.1378).
+  States why the second moment fails for the independence number and how Frieze (1990)
+  bridged the gap with Azuma / Talagrand: the bootstrapping route when the ratio is
+  sub-exponential, which it is not for layouts.
+- **Coja-Oghlan, A. & Zdeborová, L.** (2012). The condensation transition in random
+  hypergraph 2-coloring. *SODA 2012*; [arXiv:1107.2341](https://arxiv.org/abs/1107.2341);
+  **Coja-Oghlan, A. & Vilenchik, D.** (2013). Chasing the `k`-colorability threshold.
+  *FOCS 2013*; [arXiv:1304.1063](https://arxiv.org/abs/1304.1063); **Bapst, V.,
+  Coja-Oghlan, A., Hetterich, S., Raßmann, F. & Vilenchik, D.** (2016). The condensation
+  phase transition in random graph coloring. *Comm. Math. Phys.* 341;
+  [arXiv:1404.5513](https://arxiv.org/abs/1404.5513). When the lottery effect is a
+  condensation transition that no weighting removes.
+- **Coja-Oghlan, A. & Panagiotou, K.** (2012, 2013). Catching the `k`-NAESAT threshold,
+  *STOC 2012*, [arXiv:1111.1274](https://arxiv.org/abs/1111.1274); Going after the `k`-SAT
+  threshold, *STOC 2013*, [arXiv:1212.1682](https://arxiv.org/abs/1212.1682). Counting
+  clusters (covers) instead of solutions: the analogue would count one representative per
+  class of narrow layouts under local swaps.
+- **Gerencsér, B. & Harangi, V.** (2025). Boosted second moment method in random regular
+  graphs. [arXiv:2510.12600](https://arxiv.org/abs/2510.12600). The second moment's witness
+  has a spatial Markov property and is improved by local modifications.
+- **Bollobás, B.** (1988). The chromatic number of random graphs. *Combinatorica* 8(1),
+  49–55. [doi:10.1007/BF02122551](https://doi.org/10.1007/BF02122551). The dense-regime
+  template is a martingale, not a second moment on colourings.
+- **Bohman, T. & van der Hofstad, R.** (2024). Two-point concentration of the independence
+  number of the random graph. *Forum Math. Sigma* 12, e20 (open access). Second moment
+  plus a large-deviation inequality, the modern form of Frieze's route.
+- Linear extensions of finite posets, survey, [arXiv:2311.02743](https://arxiv.org/abs/2311.02743):
+  the one second-moment inequality on a *count of orderings* we found (for posets, ratio
+  between 1 and 2), not for graphs.
+- Random regular treewidth, [arXiv:2410.20333](https://arxiv.org/abs/2410.20333), Cor. 4.34:
+  `tw ≥ (1 − 6/√d) n − 1` a.a.s. for even `d` (expander mixing); Thm 4.37 an upper bound
+  for `d ≥ 146`. For the dense-degree constant only.
+- Unverified bandwidth leads: a 1986 *SIAM J. Comput.* bandwidth paper hosted at
+  `arl.wustl.edu/~jon.turner/pubs/1986/siamjc86.pdf` (presumably Turner 1986, already
+  held under the previous heading) and Erdős et al. (1989), *Annals of Discrete Math.* 41,
+  117–130, which cites a McDiarmid result on the bandwidth of random graphs; the
+  "bandwidth theorem in random graphs" literature (Huang–Lee–Sudakov 2012;
+  Allen–Böttcher–Ehrenmüller–Schnitzer–Taraz 2022) is about embeddings, not the bandwidth
+  of `G(n, p)`.
+- A title "Typical Pathwidth of Random Graphs" cited by an AI-generated blog returns no
+  arXiv result; treat as non-existent.

@@ -24,6 +24,7 @@ import MOSPFormalization.Sandwich
 import MOSPFormalization.EmptyPair
 import MOSPFormalization.FirstMoment
 import MOSPFormalization.FirstMomentAsymptotics
+import MOSPFormalization.LayoutMoment
 import MOSPFormalization.CliqueCoverMoment
 import MOSPFormalization.SeparatorMoment
 import MOSPFormalization.IndependenceBound
