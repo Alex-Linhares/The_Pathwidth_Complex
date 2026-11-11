@@ -258,14 +258,14 @@ pass (the hypercube and Mycielski theorems were missing from
       "off by default" (guard on the budget) or change the record to "on"; either way the
       docstring, CLAUDE.md and Section 5 must agree with the code. Correctness unaffected
       (validated, zero violations); only time.
-- [ ] **Three open cages without any certificate: Foster, Ljubljana, Balaban 11-cage.** Their
-      only floors are pass-1 search floors (16, 17, 18 against widths 20, 22, 24;
-      `13_pass1/pass1.csv` `search_floor`, no certificate written), not folded into the
-      dataset (unit convention to pin; the fold reads run-format rows). Either re-run the
-      searched-minor pass on the three with certificates written (minutes each at the pass-1
-      budget) or fold the pass-1 floors with evidence and no certificate. The 23 pass-2
-      certificates were folded on 2026-11-11 (`reports/scratch/pass2_floors/`), 321 of 324
-      open classes now carry a floor.
+- [x] **Every open class now carries a certified floor** (2026-11-11): the 112 pass-1 minor
+      certificates (`13_pass1/certificates/`, each re-checked by `obstruction_check` with the C
+      re-proof, 112 of 112 verified: `reports/scratch/pass1_floors/`) and the 23 pass-2 ones
+      folded as floors; 324 of 324 open classes have a floor. The three cages have theirs:
+      Foster 15 / width 20, Ljubljana 16 / 22, Balaban 11-cage 17 / 24 — gaps of five to seven,
+      not one as the split-budget note of 2026-11-09 said. Still to do: `dataset_check.py` does
+      not yet replay the `obstruction-minor-floor-1` certificates (they fold as floors with the
+      verified file as evidence; the checker replays only `spectral-prefix-1`); extend it.
 - [ ] **Formalise the spectral lower bound in Lean** (owner, 2026-11-10). The component
       entering `_lower_bound` and the dataset's `bound:spectral` floors rests on cited
       theorems and the corpus validation only: (i) the prefix-separator argument — a layout

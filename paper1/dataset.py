@@ -539,6 +539,9 @@ OPEN_RUNS = [SCRATCH / "dataset_open" / f for f in
     # nested branch-lemma certificate, which dataset_check.py replays (07_open/open_runs_proposal.diff, applied).
     SCRATCH / "graph_split" / "can292" / "results_can292.csv",                   # can_292 = 22 (2026-11-09, the rebuilt
     #                                                                              program; a 146-vertex minor, verified)
+    SCRATCH / "pass1_floors" / "results_pass1_floors.csv",                       # loop0013 pass-1 minor certificates as floors
+    #   on open classes (2026-11-11; `13_pass1/certificates/<id>/minor.json`, each re-checked by obstruction_check
+    #   before folding; the pass-2 rows below carry the stronger certificate where both exist)
     SCRATCH / "pass2_floors" / "results_pass2_floors.csv",                       # loop0013 pass-2 minor certificates as floors
     #   on open classes (2026-11-11): `lower` = the minor's proved pathwidth (checker-verified in pass 2, C re-proof);
     #   the `minor` column carries the contraction sequence (format obstruction-minor-floor-1; not yet replayed by

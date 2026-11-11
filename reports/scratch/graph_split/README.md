@@ -23,6 +23,6 @@ the tasks in flight at the stop are lost. No decision settled; no class closed; 
 
 **Correction (2026-11-11).** The split-budget note of 2026-11-09 said all nine named graphs had "a certified floor
 one below the width". That holds for the six with pass-2 minor certificates; Foster, Ljubljana and Balaban's 11-cage
-have no certificate on disk: their floors on record are pass-1 search floors (16, 17, 18 against widths 20, 22, 24;
-`13_pass1/pass1.csv`, `search_floor`), never written as certificates, and the C program's own floor is degeneracy 7–8.
-Their gaps are four to six units, not one.
+do have pass-1 minor certificates (`13_pass1/certificates/`, re-verified 2026-11-11), at pathwidth 15, 16 and 17
+against widths 20, 22 and 24 (the `search_floor` column of `pass1.csv` is in optimum units, one above): gaps of
+five to seven units, not one.
