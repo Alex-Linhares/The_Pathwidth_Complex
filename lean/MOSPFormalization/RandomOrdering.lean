@@ -204,34 +204,34 @@ theorem sum_gnpWeight_blocks {ι : Type*} [DecidableEq ι] (p : ℝ) (E : Finset
 /-! ### The open count at a position is binomial -/
 
 /-- The pairs joining `v` to the vertices of `A`. -/
-def starPairs (A : Finset V) (v : V) : Finset (Sym2 V) := A.image (fun u => s(u, v))
+def prefixPairs (A : Finset V) (v : V) : Finset (Sym2 V) := A.image (fun u => s(u, v))
 
-theorem mem_starPairs {A : Finset V} {v : V} {e : Sym2 V} :
-    e ∈ starPairs A v ↔ ∃ u ∈ A, s(u, v) = e := by
-  simp [starPairs]
+theorem mem_prefixPairs {A : Finset V} {v : V} {e : Sym2 V} :
+    e ∈ prefixPairs A v ↔ ∃ u ∈ A, s(u, v) = e := by
+  simp [prefixPairs]
 
-theorem starPairs_subset_top {A : Finset V} {v : V} (hv : v ∉ A) :
-    starPairs A v ⊆ edges (⊤ : SimpleGraph V) := by
+theorem prefixPairs_subset_top {A : Finset V} {v : V} (hv : v ∉ A) :
+    prefixPairs A v ⊆ edges (⊤ : SimpleGraph V) := by
   intro e he
-  obtain ⟨u, hu, rfl⟩ := mem_starPairs.1 he
+  obtain ⟨u, hu, rfl⟩ := mem_prefixPairs.1 he
   rw [mem_edges_top, Sym2.mk_isDiag_iff]
   rintro rfl
   exact hv hu
 
-theorem card_starPairs {A : Finset V} {v : V} (hv : v ∉ A) : (starPairs A v).card = A.card := by
-  unfold starPairs
+theorem card_prefixPairs {A : Finset V} {v : V} (hv : v ∉ A) : (prefixPairs A v).card = A.card := by
+  unfold prefixPairs
   rw [card_image_of_injOn]
   intro u hu u' hu' h
   rcases Sym2.eq_iff.1 h with ⟨h1, _⟩ | ⟨h1, _⟩
   · exact h1
   · exact absurd (h1 ▸ hu) hv
 
-theorem starPairs_disjoint {A : Finset V} {v v' : V} (hv : v ∉ A) (hne : v ≠ v') :
-    Disjoint (starPairs A v) (starPairs A v') := by
+theorem prefixPairs_disjoint {A : Finset V} {v v' : V} (hv : v ∉ A) (hne : v ≠ v') :
+    Disjoint (prefixPairs A v) (prefixPairs A v') := by
   rw [disjoint_left]
   intro e he he'
-  obtain ⟨u, hu, rfl⟩ := mem_starPairs.1 he
-  obtain ⟨u', hu', h⟩ := mem_starPairs.1 he'
+  obtain ⟨u, hu, rfl⟩ := mem_prefixPairs.1 he
+  obtain ⟨u', hu', h⟩ := mem_prefixPairs.1 he'
   rcases Sym2.eq_iff.1 h with ⟨_, h2⟩ | ⟨h1, _⟩
   · exact hne h2.symm
   · exact hv (h1 ▸ hu')
@@ -240,14 +240,14 @@ theorem starPairs_disjoint {A : Finset V} {v v' : V} (hv : v ∉ A) (hne : v ≠
 theorem mem_activeSuffix_iff_inter (G : SimpleGraph V) [DecidableRel G.Adj] (σ : LinearLayout V)
     (i : ℕ) (v : V) :
     v ∈ activeSuffix G σ i ↔
-      v ∈ suffixSet σ i ∧ (edges G ∩ starPairs (prefixSet σ i) v).Nonempty := by
+      v ∈ suffixSet σ i ∧ (edges G ∩ prefixPairs (prefixSet σ i) v).Nonempty := by
   rw [mem_activeSuffix_iff, mem_suffixSet_iff]
   constructor
   · rintro ⟨hv, u, hu, hadj⟩
-    exact ⟨hv, s(u, v), mem_inter.2 ⟨mem_edges.2 hadj, mem_starPairs.2 ⟨u, hu, rfl⟩⟩⟩
+    exact ⟨hv, s(u, v), mem_inter.2 ⟨mem_edges.2 hadj, mem_prefixPairs.2 ⟨u, hu, rfl⟩⟩⟩
   · rintro ⟨hv, e, he⟩
     obtain ⟨heG, heS⟩ := mem_inter.1 he
-    obtain ⟨u, hu, rfl⟩ := mem_starPairs.1 heS
+    obtain ⟨u, hu, rfl⟩ := mem_prefixPairs.1 heS
     exact ⟨hv, u, hu, mem_edges.1 heG⟩
 
 /-- The weight of the nonempty patterns on the pairs of `F` is `1 − (1 − p)^|F|`. -/
@@ -295,7 +295,7 @@ theorem sum_gnpWeight_activeSuffix_eq (p : ℝ) (σ : LinearLayout V) (i : ℕ) 
     rw [hSf, mem_suffixSet_iff] at hv
     rw [hA, mem_prefixSet_iff] at ha
     omega
-  let F : V → Finset (Sym2 V) := fun v => starPairs A v
+  let F : V → Finset (Sym2 V) := fun v => prefixPairs A v
   let P : V → Finset (Finset (Sym2 V)) := fun v =>
     if v ∈ B then (F v).powerset.filter (fun S => S.Nonempty) else {∅}
   have hiff : ∀ G : SimpleGraph V,
@@ -327,7 +327,7 @@ theorem sum_gnpWeight_activeSuffix_eq (p : ℝ) (σ : LinearLayout V) (i : ℕ) 
         simp only [P, hvB, ite_true, mem_filter] at this
         exact this.2
   have hb := sum_gnpWeight_blocks p univ Sf F P
-    (fun v hv => starPairs_subset_top (hAS v hv))
+    (fun v hv => prefixPairs_subset_top (hAS v hv))
     (fun v hv S hS => by
       by_cases hvB : v ∈ B
       · simp only [P, hvB, ite_true, mem_filter, mem_powerset] at hS
@@ -335,7 +335,7 @@ theorem sum_gnpWeight_activeSuffix_eq (p : ℝ) (σ : LinearLayout V) (i : ℕ) 
       · simp only [P, hvB, ite_false, mem_singleton] at hS
         rw [hS]
         exact empty_subset _)
-    (fun v hv v' _ hne => starPairs_disjoint (hAS v hv) hne)
+    (fun v hv v' _ hne => prefixPairs_disjoint (hAS v hv) hne)
     (determinedOutside_univ _)
   rw [sum_gnpWeight_univ, mul_one] at hb
   refine Eq.trans ?_ (hb.trans ?_)
@@ -348,9 +348,9 @@ theorem sum_gnpWeight_activeSuffix_eq (p : ℝ) (σ : LinearLayout V) (i : ℕ) 
     intro v hv
     by_cases hvB : v ∈ B
     · simp only [P, hvB, ite_true]
-      rw [sum_nonempty_patterns, card_starPairs (hAS v hv)]
+      rw [sum_nonempty_patterns, card_prefixPairs (hAS v hv)]
     · simp only [P, hvB, ite_false, sum_singleton, card_empty, pow_zero, one_mul, Nat.sub_zero]
-      rw [card_starPairs (hAS v hv)]
+      rw [card_prefixPairs (hAS v hv)]
   rw [prod_congr rfl hfac, prod_ite, prod_const, prod_const]
   have h1 : Sf.filter (fun v => v ∈ B) = B := by
     rw [filter_mem_eq_inter, inter_eq_right.2 hB]

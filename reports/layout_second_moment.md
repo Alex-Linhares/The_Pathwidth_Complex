@@ -338,8 +338,8 @@ registered in `MOSPFormalization.lean`); `lake build` passes; `#print axioms` on
 
 | name | statement |
 |---|---|
-| `relabel σ τ : V ≃ V` | `τ (relabel σ τ v) = σ v` |
-| `prefixSet_relabel`, `activeSuffix_comap_relabel`, `vertexSepAt_comap_relabel` | the prefix, the active suffix and the separation at every position transport along `G ↦ G.comap (relabel σ τ).symm` |
+| `layoutRelabel σ τ : V ≃ V` | `τ (layoutRelabel σ τ v) = σ v` |
+| `prefixSet_relabel`, `activeSuffix_comap_relabel`, `vertexSepAt_comap_relabel` | the prefix, the active suffix and the separation at every position transport along `G ↦ G.comap (layoutRelabel σ τ).symm` |
 | `vertexSepOfLayout_comap_relabel` | `vs(G.comap φ.symm, τ) = vs(G, σ)` |
 | `edges_comap`, `card_edges_comap`, `gnpWeight_comap` | the edge set maps by `Sym2.map φ`; the weight is preserved |
 | `comapEquiv φ : SimpleGraph V ≃ SimpleGraph V` | pulling back along a bijection is a bijection of graphs |

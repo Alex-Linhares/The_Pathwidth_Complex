@@ -14,7 +14,7 @@ labelled graph to 10 vertices); its derivation uses one probabilistic fact about
 `G(n, p)`, that the edges at a fixed set of pairs are independent of any event
 determined by the other pairs.  Both are here:
 
-* `relabel σ τ : V ≃ V` and the transport lemmas `prefixSet_relabel`,
+* `layoutRelabel σ τ : V ≃ V` and the transport lemmas `prefixSet_relabel`,
   `activeSuffix_comap_relabel`, `vertexSepOfLayout_comap_relabel`: pulling `G`
   back along the relabelling turns the layout `σ` into `τ` with the same vertex
   separation at every position; `card_edges_comap`, `gnpWeight_comap`: the weight
@@ -53,50 +53,50 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 /-! ### Transport of a layout along a relabelling -/
 
 /-- The relabelling that sends the vertex at `σ`-position `i` to the vertex at
-`τ`-position `i`: `τ (relabel σ τ v) = σ v`. -/
-def relabel (σ τ : LinearLayout V) : V ≃ V := σ.trans τ.symm
+`τ`-position `i`: `τ (layoutRelabel σ τ v) = σ v`. -/
+def layoutRelabel (σ τ : LinearLayout V) : V ≃ V := σ.trans τ.symm
 
-@[simp] theorem relabel_apply (σ τ : LinearLayout V) (v : V) : τ (relabel σ τ v) = σ v := by
-  simp [relabel]
+@[simp] theorem layoutRelabel_apply (σ τ : LinearLayout V) (v : V) : τ (layoutRelabel σ τ v) = σ v := by
+  simp [layoutRelabel]
 
 @[simp] theorem relabel_symm_apply (σ τ : LinearLayout V) (v : V) :
-    σ ((relabel σ τ).symm v) = τ v := by
-  simp [relabel]
+    σ ((layoutRelabel σ τ).symm v) = τ v := by
+  simp [layoutRelabel]
 
 theorem prefixSet_relabel (σ τ : LinearLayout V) (i : ℕ) :
-    prefixSet τ i = (prefixSet σ i).map (relabel σ τ).toEmbedding := by
+    prefixSet τ i = (prefixSet σ i).map (layoutRelabel σ τ).toEmbedding := by
   ext v
   rw [mem_map_equiv, mem_prefixSet_iff, mem_prefixSet_iff, relabel_symm_apply]
 
 theorem activeSuffix_comap_relabel (G : SimpleGraph V) [DecidableRel G.Adj]
-    (σ τ : LinearLayout V) (i : ℕ) [DecidableRel (G.comap (relabel σ τ).symm).Adj] :
-    activeSuffix (G.comap (relabel σ τ).symm) τ i =
-      (activeSuffix G σ i).map (relabel σ τ).toEmbedding := by
+    (σ τ : LinearLayout V) (i : ℕ) [DecidableRel (G.comap (layoutRelabel σ τ).symm).Adj] :
+    activeSuffix (G.comap (layoutRelabel σ τ).symm) τ i =
+      (activeSuffix G σ i).map (layoutRelabel σ τ).toEmbedding := by
   ext v
   rw [mem_map_equiv, mem_activeSuffix_iff, mem_activeSuffix_iff, prefixSet_relabel σ τ,
     relabel_symm_apply]
   constructor
   · rintro ⟨hv, u, hu, hadj⟩
     rw [mem_map_equiv] at hu
-    exact ⟨hv, (relabel σ τ).symm u, hu, hadj⟩
+    exact ⟨hv, (layoutRelabel σ τ).symm u, hu, hadj⟩
   · rintro ⟨hv, u, hu, hadj⟩
-    refine ⟨hv, relabel σ τ u, ?_, ?_⟩
+    refine ⟨hv, layoutRelabel σ τ u, ?_, ?_⟩
     · rw [mem_map_equiv, Equiv.symm_apply_apply]
       exact hu
     · rw [SimpleGraph.comap_adj, Equiv.symm_apply_apply]
       exact hadj
 
 theorem vertexSepAt_comap_relabel (G : SimpleGraph V) [DecidableRel G.Adj]
-    (σ τ : LinearLayout V) (i : ℕ) [DecidableRel (G.comap (relabel σ τ).symm).Adj] :
-    vertexSepAt (G.comap (relabel σ τ).symm) τ i = vertexSepAt G σ i := by
+    (σ τ : LinearLayout V) (i : ℕ) [DecidableRel (G.comap (layoutRelabel σ τ).symm).Adj] :
+    vertexSepAt (G.comap (layoutRelabel σ τ).symm) τ i = vertexSepAt G σ i := by
   unfold vertexSepAt
   rw [activeSuffix_comap_relabel, card_map]
 
-/-- Pulling `G` back along `relabel σ τ` turns the layout `σ` into the layout `τ`:
+/-- Pulling `G` back along `layoutRelabel σ τ` turns the layout `σ` into the layout `τ`:
 the vertex separation is the same. -/
 theorem vertexSepOfLayout_comap_relabel (G : SimpleGraph V) [DecidableRel G.Adj]
-    (σ τ : LinearLayout V) [DecidableRel (G.comap (relabel σ τ).symm).Adj] :
-    vertexSepOfLayout (G.comap (relabel σ τ).symm) τ = vertexSepOfLayout G σ := by
+    (σ τ : LinearLayout V) [DecidableRel (G.comap (layoutRelabel σ τ).symm).Adj] :
+    vertexSepOfLayout (G.comap (layoutRelabel σ τ).symm) τ = vertexSepOfLayout G σ := by
   unfold vertexSepOfLayout
   split_ifs with h
   · rfl
@@ -153,7 +153,7 @@ open scoped Classical in
 theorem narrowWeight_eq (p : ℝ) (σ τ : LinearLayout V) (w : ℕ) :
     narrowWeight p σ w = narrowWeight p τ w := by
   unfold narrowWeight
-  refine Fintype.sum_equiv (comapEquiv (relabel σ τ)) _ _ (fun G => ?_)
+  refine Fintype.sum_equiv (comapEquiv (layoutRelabel σ τ)) _ _ (fun G => ?_)
   rw [comapEquiv_apply, vertexSepOfLayout_comap_relabel, gnpWeight_comap]
 
 open scoped Classical in
