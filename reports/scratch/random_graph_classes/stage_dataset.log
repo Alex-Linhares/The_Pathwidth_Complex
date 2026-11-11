@@ -1,0 +1,20 @@
+
+## dataset (1.4 s)
+
+| id        | graph                              |   n |    m |   mean_degree |   width | provenance           | model           |   floor_0.05 |   beta_star | note                                                      |
+|:----------|:-----------------------------------|----:|-----:|--------------:|--------:|:---------------------|:----------------|-------------:|------------:|:----------------------------------------------------------|
+| pwc-17163 | RandomGNM_100_100                  | 100 |  100 |         2.000 |       7 | certified:refutation | gnm             |        0.000 |       0.000 |                                                           |
+| pwc-17206 | RandomGNM_250_1000                 | 250 | 1000 |         8.000 |      96 | solution             | gnm             |       80.000 |       0.263 |                                                           |
+| pwc-17207 | RandomGNM_500_500                  | 500 |  500 |         2.000 |      22 | solution             | gnm             |        0.000 |       0.000 |                                                           |
+| pwc-17194 | random4reg                         |  48 |   96 |         4.000 |      13 | certified:refutation | gnd             |        8.000 |       0.145 |                                                           |
+| pwc-17161 | RandomBarabasiAlbert_100_2         | 100 |  196 |         3.920 |      13 | certified:minor      | gnp-matched     |        6.000 |       0.057 | G(n,p) at the same mean degree: a comparison, not a bound |
+| pwc-17205 | RandomBarabasiAlbert_100_5         | 100 |  475 |         9.500 |      34 | certified:refutation | gnp-matched     |       34.000 |       0.320 | G(n,p) at the same mean degree: a comparison, not a bound |
+| pwc-17208 | RandomHolmeKim_300_2_2             | 300 |  596 |         3.973 |      27 | solution             | gnp-matched     |       20.000 |       0.060 | G(n,p) at the same mean degree: a comparison, not a bound |
+| pwc-17209 | RandomHolmeKim_700_2_2             | 700 | 1396 |         3.989 |      57 | solution             | gnp-matched     |       44.000 |       0.061 | G(n,p) at the same mean degree: a comparison, not a bound |
+| pwc-17210 | RandomNewmanWattsStrogatz_100_5_3  | 100 |  269 |         5.380 |      20 | certified:minor      | gnp-matched     |       16.000 |       0.138 | G(n,p) at the same mean degree: a comparison, not a bound |
+| pwc-17211 | RandomNewmanWattsStrogatz_250_10_3 | 250 | 1636 |        13.088 |      91 | solution             | gnp-matched     |      110.000 |       0.425 | G(n,p) at the same mean degree: a comparison, not a bound |
+| pwc-17212 | RandomTriangulation_800            | 800 | 2394 |         5.985 |      40 | solution             | planar          |      nan     |     nan     |                                                           |
+| pwc-15951 | CubeGraph_6                        |  64 |  192 |         6.000 |      23 | certified:refutation | hypercube       |       23.000 |     nan     | Harper's theorem: exact                                   |
+| pwc-15966 | FoldedCubeGraph_7                  |  64 |  224 |         7.000 |      31 | certified:refutation | none            |      nan     |     nan     |                                                           |
+| pwc-17192 | RandomBoundedToleranceGraph_60     |  60 | 1168 |        38.933 |      30 | certified:bound      | cocomparability |      nan     |     nan     |                                                           |
+| pwc-17193 | RandomBoundedToleranceGraph_80     |  80 | 1717 |        42.925 |      32 | certified:bound      | cocomparability |      nan     |     nan     |                                                           |

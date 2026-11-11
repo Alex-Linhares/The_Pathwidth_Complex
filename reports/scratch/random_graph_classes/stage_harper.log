@@ -1,0 +1,15 @@
+
+## harper (17.7 s)
+
+| graph    |   n |   pw_exact |   harper_simplicial |   harper_bb | bb_complete   |
+|:---------|----:|-----------:|--------------------:|------------:|:--------------|
+| Q_3      |   8 |          4 |               4.000 |       4.000 | True          |
+| Q_4      |  16 |          7 |               7.000 |       7.000 | True          |
+| Q_5      |  32 |         13 |              13.000 |     nan     | False         |
+| Q_6      |  64 |         23 |              23.000 |     nan     | False         |
+| grid 3x3 |   9 |          3 |             nan     |       3.000 | True          |
+| grid 4x4 |  16 |          4 |             nan     |       4.000 | True          |
+| grid 4x6 |  24 |          4 |             nan     |       4.000 | True          |
+| grid 5x5 |  25 |          5 |             nan     |       5.000 | True          |
+| grid 6x6 |  36 |          6 |             nan     |       6.000 | True          |
+ALLDONE
