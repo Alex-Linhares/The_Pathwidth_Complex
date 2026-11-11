@@ -871,3 +871,267 @@ nothing downloaded.
   (`https://hal.archives-ouvertes.fr/hal-01271838`, open). ILP formulations for pathwidth,
   cutwidth, bandwidth, SumCut and MinLA; results for very sparse graphs on 16–24 vertices
   (as characterised by arXiv 2301.03900). Not held.
+
+## Lower bounds: the search-game and interval members of the complex (2026-11-11)
+
+Behind `reports/complex_lb_search.md` (the survey of lower-bound techniques for
+node, edge, mixed, connected and non-deterministic search, interval thickness,
+narrowness, vertex separation, proper pathwidth and linear-width, and the cubic /
+cage families). Nothing was downloaded into `literature/`; open copies were read
+from a scratch directory. Verdict there: everything in print reduces to clique,
+degree, branch, minor, Harper or a hand-written blockage, except the subcubic
+cutwidth route (`pw ≥ cw − 2` when `Δ ≤ 3`) and Bachtler–Heinrich's girth bound.
+Worth obtaining, with open links where they exist:
+
+- **Makedon, F. & Sudborough, I. H.** (1989). On minimizing width in linear layouts.
+  *Discrete Applied Mathematics* 23(3), 243–265. DOI 10.1016/0166-218X(89)90016-4
+  (Elsevier open archive, browser only; `sciencedirect` returns 403 to scripts).
+  Conference version: Minimizing width in linear layouts, ICALP 1983, LNCS 154,
+  478–490, DOI 10.1007/BFb0036931. **The load-bearing citation**: edge search number
+  = cutwidth on graphs of maximum degree 3 (as cited by Fomin & Thilikos 2008 p. 13
+  and by Ellis, Sudborough & Turner 1994 as "[Makedon 1983]"); with Ellis et al.'s
+  `es ≤ vs + 2` it gives `pw ≥ cw − 2` on subcubic graphs (§4.1 of the report).
+  Already on the 2026-11-05 list above without this role; not held.
+- **Bachtler, O. & Heinrich, I.** (2023). Automated testing and interactive
+  construction of unavoidable sets for graph classes of small path-width. *Journal
+  of Graph Theory* (2023), DOI 10.1002/jgt.22964; arXiv 2010.08373 (open,
+  `https://arxiv.org/abs/2010.08373`); author copy at TUprints
+  `https://tuprints.ulb.tu-darmstadt.de/24690/1/JGT_JGT22964.pdf`. Theorems 1.1–1.3:
+  `ξ(k) ≤ (2/3)k + 10/3`, `ξ(k) ≤ k − 2` for `k ≥ 10`, the table of extremal girths
+  and the smallest cubic graphs (K₃,₃, cube and twisted cube, Petersen, Heawood,
+  Pappus, McGee, Tutte–Coxeter, G(10)). The only girth-based pathwidth bound in
+  print; five of its exact values agree with the dataset (`pwc-16021`, `-15984`,
+  `-16027`, `-16010`, `-16065`). Read whole from arXiv; not held.
+- **Bachtler, O.** (2023). *On algorithmic certification of graph structures.*
+  Dissertation, RPTU Kaiserslautern-Landau; open at KLUEDO
+  `https://kluedo.ub.rptu.de/frontdoor/deliver/index/docId/7354/file/Dissertation_Bachtler.pdf`.
+  Chapter 8 is the JGT paper with Theorems 8.6 and 8.11 and the computational table
+  8.1. Read; not held.
+- **Alspach, B., Dyer, D., Hanson, D. & Yang, B.** (2007). Lower bounds on edge
+  searching. ESCAPE 2007, LNCS 4614, 516–527. DOI 10.1007/978-3-540-74450-4_46. Not
+  open. Abstract: bounds on the edge search number from minimum degree, girth,
+  chromatic number and colouring number — degree-type except the girth clause.
+- **Yang, B., Dyer, D. & Alspach, B.** (2009). Sweeping graphs with large clique
+  number. *Discrete Mathematics* 309(18), 5770–5780. DOI 10.1016/j.disc.2008.05.033
+  (Elsevier open archive, browser only); ISAAC 2004, LNCS 3341, 908–920. The clique
+  lower bound on the sweep number and the minor monotonicity `s(H) ≤ s(G)` that
+  Clarke & Messinger (2019, held) cite as Corollary 6.
+- **Dyer, D.** (2004). *Sweeping graphs and digraphs.* PhD thesis, Simon Fraser
+  University. The `core.ac.uk/download/56366685.pdf` link returns an HTML stub; the
+  SFU Summit record should carry the PDF. Chapter on clique, degree, chromatic and
+  girth lower bounds for the sweep number.
+- **Ellis, J. A., Sudborough, I. H. & Turner, J. S.** (1994). The vertex separation
+  and search number of a graph. *Information and Computation* 113(1), 50–79 (DOI not verified here). **Held as a scanned PDF with no text layer**
+  (`ellis_sudborough_turner_1994_vertex_separation_search_number.pdf`: `pdftotext`
+  returns nothing). The open technical report WUCS-87-11 is at
+  `https://openscholarship.wustl.edu/cse_research/796` (the direct `viewcontent.cgi`
+  link returned an HTML stub to a script; browser download). Worth replacing the scan
+  with a text-bearing copy or OCR-ing it.
+- **Scheffler, P.** (1990). A linear algorithm for the pathwidth of trees. In
+  *Topics in Combinatorics and Graph Theory* (R. Bodendiek & R. Henn, eds.),
+  Physica-Verlag, 613–620 (DOI not verified here). Not open. The
+  three-branch characterisation in node-search / pathwidth form (quoted as Lemma 8 of
+  Peng et al. 2000 and Theorem 5 of Coudert, Huc & Sereni 2009, both held).
+- **Parsons, T. D.** (1978). Pursuit-evasion in a graph. In *Theory and Applications
+  of Graphs*, LNM 642, Springer, 426–441 (DOI not verified here). Not open. Parsons'
+  Lemma (quoted on p. 21 of Megiddo et al. 1988, held).
+- **Kornai, A. & Tuza, Z.** (1992). Narrowness, pathwidth, and their application in
+  natural language processing. *Discrete Applied Mathematics* 36, 87–92 (DOI not verified here). Open preprint at SZTAKI,
+  `https://eprints.sztaki.hu/108/1/Kornai_159565_ny.pdf` (read whole). Proposition
+  3.1 (`ν = pw + 1`), Theorem 4.1 (trees: contractible to `T_k`; the contraction-minimal
+  trees have `(5·3^{k−2} − 1)/2` vertices — the extremal family of `TreeBound.lean`).
+  Not held; worth holding for the citation beside Ellis et al.
+- **Takahashi, A., Ueno, S. & Kajitani, Y.** (1995). Mixed searching and
+  proper-path-width. *Theoretical Computer Science* 137(2), 253–268 (DOI not verified here;
+  Elsevier open archive, browser only). `ms = ppw`;
+  with Fomin & Thilikos 2006 Lemma 2 (held), `pw ≤ ppw ≤ pw + 1`.
+- **Thilikos, D. M.** (2000). Algorithms and obstructions for linear-width and
+  related search parameters. *Discrete Applied Mathematics* 105(1–3), 239–271. DOI
+  10.1016/S0166-218X(00)00175-X. Open as Utrecht TR CS-1997-35,
+  `https://ics-archive.science.uu.nl/research/techreps/repo/CS-1997/1997-35.pdf`
+  (read: Theorems 3–4, pp. 22–23, `ms = lw`; the 57 obstructions for `lw ≤ 2`).
+- **Fomin, F. V. & Thilikos, D. M.** (2008). An annotated bibliography on
+  guaranteed graph searching. *TCS* 399(3), 236–245. Already listed twice above; the
+  GRASTA 2009 reprint `https://kam.mff.cuni.cz/kamserie/clanky/2009/s939.pdf` is
+  readable with `pdftotext` (pp. 10–13 of the booklet carry the certificate and
+  parameter paragraphs quoted in the report).
+- **Dendris, N. D., Kirousis, L. M. & Thilikos, D. M.** (1997). Fugitive-search
+  games on graphs and related parameters. *TCS* 172(1–2), 233–254. Already listed
+  (2026-10-11); its new role: the lazy fugitive of speed 1 is the degeneracy, of
+  unbounded speed the treewidth — the game form of the treewidth ceiling on the
+  degree family. Not open.
+- **Fomin, F. V., Fraigniaud, P. & Nisse, N.** (2009). Nondeterministic graph
+  searching: from pathwidth to treewidth. *Algorithmica* 53(3), 358–373. DOI
+  10.1007/s00453-007-9041-6. Author copy `https://folk.uib.no/nmiff/articles/2009/2009a.pdf`
+  (returned an HTML stub to a script; browser). `tw + 1 ≤ s_q ≤ pw + 1`.
+- **Mazoit, F. & Nisse, N.** (2008). Monotonicity of non-deterministic graph
+  searching. *TCS* 399(3), 169–178; WG 2007. HAL `hal-00351481` (open).
+- **Dereniowski, D., Dyer, D., Tifenbach, R. & Yang, B.** (2015). Zero-visibility
+  cops and robber and the pathwidth of a graph. *Journal of Combinatorial
+  Optimization* 29 (2015) (DOI not verified here). Open author copy via
+  MOST Wiedzy (`https://mostwiedzy.pl/en/publication/zero-visibility-cops-and-robber-and-the-pathwidth-of-a-graph,130501-1`).
+  `c_0 ≤ pw`, no lower function of `pw`; a monotone variant within constant factors.
+- **Xue, Y., Yang, B. & Zilles, S.** (2022). Lower bounds for the zero-visibility
+  cops and robber game (title as indexed: a matching-number lower-bound method).
+  *Journal of Combinatorial Optimization* 43(5). DOI 10.1007/s10878-021-00710-8. Not
+  open. For the record only: the bound transfers to `pw` but `c_0` is unboundedly
+  below it.
+- **Habib, M. & Möhring, R. H.** (1994). Treewidth of cocomparability graphs and a
+  new order-theoretic parameter. *Order* 11, 47–60 (DOI not verified here). TU Berlin
+  TR 336-1992 abstract at
+  `https://page.math.tu-berlin.de/~combi/coga-old/publications/techreports/1992/Report-336-1992.html`.
+  `pw = tw` on cocomparability graphs — the interval literature's one structural
+  theorem, and exactly the regime our gap instances are not in.
+- **Monien, B. & Preis, R.** (2006). Upper bounds on the bisection width of 3- and
+  4-regular graphs. *Journal of Discrete Algorithms* 4(3), 475–498 (DOI not verified here). `bw ≤ (1/6 + o(1)) n` for cubic graphs: the ceiling of
+  the cutwidth route of the report's §4.1 on the 12-cage.
+- **Clark, L. H. & Entringer, R. C.** (1988). The bisection width of cubic graphs.
+  *Bull. Austral. Math. Soc.* (open at Cambridge Core; volume and pages not verified here); **Jobson, A. S.,
+  Kézdy, A. E. & Lehel, J.**, Note on the bisection width of cubic graphs (`bw < n/2`
+  for even `n ≥ 16`). Upper bounds on the same quantity; for the record.
+- **Warren, R. B.** (2005). *Lower bounds for node search number on grid-like
+  graphs.* MSc thesis, University of Victoria. The long form of Ellis & Warren 2008
+  (held). Not located online.
+- **Yang, B.** (2007). Strong-mixed searching and pathwidth. *Journal of
+  Combinatorial Optimization* 13(1), 47–59. DOI 10.1007/s10878-006-9013-9. Not open.
+  Strong mixed search number `= pw`; an equality, no bound.
+- **Kirousis, L. M. & Papadimitriou, C. H.** (1985). Interval graphs and searching.
+  *Discrete Mathematics* 55(2), 181–184. DOI 10.1016/0012-365X(85)90046-9 (Elsevier
+  open archive, browser only). The interval-thickness paper of Table 1 row 5; not
+  held (the 1986 TCS paper is).
+- **Korach, E. & Solel, N.** (1993). Tree-width, path-width, and cutwidth. *DAM*
+  43(1), 97–101. Already listed (2026-11-05); its role here is `pw ≤ cw`.
+- **Bodlaender, H. L., Bonnet, É., Jaffke, L., Knop, D., Lima, P. T., Milanič, M.,
+  Ordyniak, S., Pandey, S. & Suchý, O.** (2025). Treewidth is NP-complete on cubic
+  graphs. *Electronic Journal of Combinatorics* 32(3), P3.36 (open,
+  `https://www.combinatorics.org/ojs/index.php/eljc/article/view/v32i3p36`); the
+  arXiv 2301.10031 version is listed above (2026-11-07). Read for its cutwidth
+  citations (Theorem 6, Monien & Sudborough) and Claim 10 (`tw = pw = cw + 3n + 2` on
+  the Arnborg–Corneil–Proskurowski gadget).
+
+## Lower bounds: the VLSI members of the complex (2026-11-11)
+
+Literature session behind `reports/complex_lb_vlsi.md` (every lower bound the gate
+matrix layout, one-dimensional logic, PLA folding and interval-completion literature
+states, classified against our families; verdict there: all covered — column sum,
+clique, clique minor, obstruction minors, split, branch — with one object unread,
+Yu's "bottleneck hypercycle"). Nothing downloaded into `literature/`; two open full
+texts (Hu & Chen 1990; Govindan, Langston & Ramachandramurthi 1997) were read from a
+scratch directory and not kept. Worth obtaining, with open links where they exist:
+
+- **Yu, M.-L.** (1986). *Automatic random logic layout synthesis — a module generator
+  approach*. PhD thesis, Computer Science, University of Illinois at Urbana-Champaign.
+  IDEALS item `https://ideals.illinois.edu/items/69722` (restricted to the Illinois
+  community; ProQuest). **The one item that could be of a different kind**: Hu & Chen
+  (1990, p. 838) cite pp. 55–57 for "the size of a 'bottleneck hypercycle' is the
+  optimal lower bound of track numbers required in a gate matrix layout", NP-complete to
+  find, and p. 57 for the proof that `wsn` needs 8 tracks (column sum 4; our dataset
+  certifies 8 by refutation). Provisionally a ring-of-cliques minor bound; cannot be
+  settled without the text. Interlibrary loan.
+- **Hu, Y. H. & Chen, S.-J.** (1990). GM_Plan: a gate matrix layout algorithm based on
+  artificial intelligence planning techniques. *IEEE TCAD* 9(8), 836–845.
+  DOI 10.1109/43.57791. Open copy (read 2026-11-11, not kept):
+  `https://minds.wisconsin.edu/bitstream/handle/1793/9938/file_1.pdf?sequence=1&isAllowed=y`
+  (redirects to `minds.wisc.edu`). §2.1 "Lower Bound of the Solution" (p. 837) is the
+  column-sum bound with the cycle caveat; Table II (p. 844) the eleven circuits.
+- **Hu, T. C. & Kuh, E. S.** (1985). Theory and concepts of circuit layout. In *VLSI
+  Circuit Layout: Theory and Design* (Hu & Kuh, eds.), IEEE Press. The source of
+  "hypercycle" (p. 55) by Hu & Chen's citation. Not located online.
+- **Deo, N., Krishnamoorthy, M. S. & Langston, M. A.** (1987). Exact and approximate
+  solutions for the gate matrix layout problem. *IEEE TCAD* 6(1), 79–84.
+  [Google](https://www.google.com/search?q=Deo+Krishnamoorthy+Langston+%22Exact+and+approximate+solutions+for+the+gate+matrix+layout+problem%22).
+  The subset DP, the two-track test, the no-additive-approximation theorem (Möhring 1990
+  Thm 5.1). Abstract only; no bound expected.
+- **Das, S. K., Deo, N. & Prasad, S.** (1989). Gate matrix layout revisited: algorithmic
+  performance and probabilistic analysis. *FSTTCS 1989*, LNCS 405, 280–290.
+  DOI 10.1007/3-540-52048-1_50; abstract at `https://stars.library.ucf.edu/facultybib1980/765`.
+  "An expression for the expected number of tracks" under a probabilistic model — the
+  period's random-gate-matrix analysis, for Appendix E's related work, not a bound.
+- **Prasad, S.** (1986). *Gate matrix layout: expected-case analysis and performance of
+  algorithms*. MS thesis, Computer Science, Washington State University, Pullman. The
+  source of the expectation above. Not located online.
+- **Hwang, D. K., Fuchs, W. K. & Kang, S. M.** (1987). An efficient approach to gate
+  matrix layout. *IEEE TCAD* 6(5), 802–809. DOI 10.1109/TCAD.1987.1270323. Dynamic
+  net-lists, modified min-net-cut ordering, "an ideal min-net-cut algorithm … is at
+  worst a log n approximation". Abstract only. (Presumably the brief's "Hwang, Dutt &
+  Ouyang", under which we found nothing.)
+- **Huang, S. & Wing, O.** (1989). Improved gate matrix layout. *IEEE TCAD* 8(8),
+  875–889. DOI 10.1109/43.31547. Asano's approximate search plus zone-net assignment;
+  abstract only. Also **Huang & Wing** (1989), Gate matrix partitioning, *IEEE TCAD* 8,
+  756–767, and **Huang & Wing** (1986), Improved gate matrix layout, *ICCAD*, 320–323.
+- **Wing, O.** (1982). Automated gate matrix layout. *ISCAS 1982*, 681–685; and
+  **Wing, O.** (1983). Interval-graph-based circuit layout. *ICCAD 1983*, 84–85. The
+  first papers with the interval-graph augmentation view (Möhring 1990, p. 28). Not
+  located online. (Presumably the brief's "Lin & Wing".)
+- **Hong, Y.-S., Park, K.-H. & Kim, M.** (1989). A heuristic algorithm for ordering the
+  columns in one-dimensional logic arrays. *IEEE TCAD* 8(5), 547–562.
+  DOI 10.1109/43.24883. Seeded ordering with a cut estimate, simulated annealing; the
+  `Fujii`–`Data VI` circuits of Linhares (2001) Table 3.1. Abstract only.
+- **Fujii, T., Horikawa, H., Kikuno, T. & Yoshida, N.** (1987). A heuristic algorithm for
+  gate assignment in one-dimensional array approach. *IEEE TCAD* 6(2). dblp
+  `journals/tcad/FujiiHKY87`. Heuristic; abstract only.
+- **Nakatani, K., Fujii, T., Kikuno, T. & Yoshida, N.** (1986). A heuristic algorithm for
+  gate matrix layout. *ICCAD 1986*, 324–327. The source of `x0`. Not located online.
+- **Asano, T.** (1982). An optimum gate placement algorithm for MOS one-dimensional
+  arrays. *J. Digital Systems* VI(1), 1–27; and **Asano, T. & Tanaka, K.** (1978). A gate
+  placement algorithm for one-dimensional arrays. *J. Inform. Proc.* 1(1), 47–52. A
+  branch and bound (Hu & Chen 1990: optimal to about fifty gates in a minute); its bound
+  not read. Not located online.
+- **Leong, H. W.** (1986). A new algorithm for gate matrix layout. *ICCAD 1986*, 316–319;
+  **Li, J. T.** (1983). Algorithms for gate matrix layout. *ISCAS 1983*, 1013–1016. Hu &
+  Chen's refs [26], [11]; the sources of `v1` and `wli`. Not located online.
+- **Fellows, M. R. & Langston, M. A.** (1991). Fast search algorithms for layout
+  permutation problems. *Integration, the VLSI Journal* 12(3), 321–337 (dblp; a UTK
+  reference list gives *Int'l J. Computer Aided VLSI Design* 3, 325–341 — check before
+  citing). Self-reduction; abstract only.
+- **Govindan, R., Langston, M. A. & Ramachandramurthi, S.** (1997). Constructive
+  algorithms based on graph minors. UTK technical report UT-CS-97-345, open at
+  `https://library.eecs.utk.edu/files/ut-cs-97-345.pdf` (read 2026-11-11, not kept).
+  The approximate three-track test on the six smallest obstructions. Also
+  **Kinnersley & Langston** (1991), UT-CS-91-126, open at
+  `https://library.eecs.utk.edu/files/ut-cs-91-126.pdf` (the DAM 1994 version is held).
+- **Oliveira, A. C. M. & Lorena, L. A. N.** (2002). A constructive genetic algorithm for
+  gate matrix layout problems. *IEEE TCAD* 21(8), 969–974. DOI 10.1109/TCAD.2002.800454.
+  Table I: the column-sum `LB` beside the best known tracks of the eleven circuits.
+  Open copy at `http://www.lac.inpe.br/~lorena/alexandre/CGA_GMLP_2266.pdf` (host
+  unreliable). **Chen, S.-J. & Hu, Y. H.** (1990), GM_Learn: an iterative learning
+  algorithm for CMOS gate matrix layout (venue not verified; cited by Linhares 2001 and
+  Oliveira & Lorena 2002), the same `LB`.
+- **Su, C. C. & Sarrafzadeh, M.** (1990). Optimal gate-matrix layout of CMOS functional
+  cells. *Integration* 9(1), 3–23. DOI 10.1016/0167-9260(90)90003-j. No abstract online;
+  functional-cell chaining, probably no track bound.
+- **Hu, T. C. & Kuo, Y. S.** (1987). Graph folding and programmable logic array.
+  *Networks* 17(1), 19–37. DOI 10.1002/net.3230170103. Upper and lower bounds on the
+  size of a *simple* folding in edges and vertices; Möhring's Prop. 3.16 (`Z_{m,m}`).
+  Not a pathwidth bound. Abstract only.
+- **Hachtel, G. D., Newton, A. R. & Sangiovanni-Vincentelli, A. L.** (1982). An algorithm
+  for optimal PLA folding. *IEEE TCAD* 1(2), 63–77; **De Micheli, G. &
+  Sangiovanni-Vincentelli, A. L.** (1983). Multiple constrained folding of programmable
+  logic arrays: theory and applications. *IEEE TCAD* 2(3), 151–167,
+  DOI 10.1109/TCAD.1983.1270033 (correction 10.1109/TCAD.1984.1270083); PLEASURE's
+  Berkeley report `https://www2.eecs.berkeley.edu/Pubs/TechRpts/1982/9615.html`;
+  **Lewandowski, J. L. & Liu, C. L.** (1984). A branch and bound algorithm for optimal
+  PLA folding. *DAC 1984*, 425–433; **Luby, M., Vazirani, U., Vazirani, V. &
+  Sangiovanni-Vincentelli, A.** (1982). Some theoretical results on the optimal PLA
+  folding problem. *ICCC 1982*, 165–170; **Ravi, S. S. & Lloyd, E. L.** (1988). The
+  complexity of near-optimal programmable logic array folding. *SIAM J. Comput.* 17(4),
+  696–710, DOI 10.1137/0217045. All on simple folding (not `pw + 1`); abstracts only;
+  for completeness of the PLA row.
+- **Ohtsuki, T., Mori, H., Kashiwabara, T. & Fujisawa, T.** (1981). On minimal
+  augmentation of a graph to obtain an interval graph. *J. Comput. System Sci.* 22(1),
+  60–97. DOI 10.1016/0022-0000(81)90022-2. The `O(nm')` minimal-completion algorithm;
+  no bound. (Kashiwabara & Fujisawa 1979 is listed above under *Pathwidth lower bounds
+  and NP ∩ coNP*.)
+- **Li, F.** (1989). A heuristic algorithm for one-dimensional logic gate layout (in
+  Chinese). *Acta Electronica Sinica* (电子学报), record
+  `https://www.ejournal.org.cn/en/article/34270512/`; and **Wu & Chan** (1987). A
+  graph-theoretic approach for one-dimensional logic gate assignment of VLSI circuit
+  layout. *IEEJ Trans.* (title only). The two non-English items the search surfaced;
+  heuristics, no bound seen.
+
+What the search did not find: any lower bound in this literature other than the column
+sum, the clique and clique-minor statements, obstruction minors, Möhring's split and
+branch lemmas, and Yu's unread hypercycle; no "dominating net" bound; no LP or
+Lagrangean bound on tracks (the TU Berlin Lagrangean of Möhring 1990 p. 48 is for
+constrained block folding and we found no publication of it); nothing in Japanese; two
+Chinese heuristics. Full search list in `reports/complex_lb_vlsi.md` §5.
