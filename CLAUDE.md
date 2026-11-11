@@ -1883,6 +1883,26 @@ then fails to refute record − 1 — **no record moved** (20, 19, 22, 24, 26). 
 dataset's `layout` field is a *closing order* (C `-u` convention), its reverse is the textbook layout
 (all 16 records read); the C program's own `lower=` (13–16) is below the dataset floors (15–20).
 
+**Garey & Johnson's list against the complex (2026-11-11, one agent session;
+`reports/garey_johnson_complex.md`, §0 is the summary; `reports/scratch/garey_johnson/`,
+six brute-force scripts, graphs to 8 vertices; 17 entries added to `literature/MISSING.md`).**
+The held copies: three PDFs without a text layer (the same file) and a djvu whose OCR layer
+is now `literature/1979-Garey-Johnson-…ocr.txt` (137,340 words; `tools/djvutext.py`,
+libdjvulibre by ctypes, since no djvu tool is installed). All 65 GT entries and 20 others
+read in full from the rendered sheets. **No member of the complex, exact or sandwich, is in
+the 1979 list** (no searching, interval-thickness, gate-matrix or vertex-separation entry).
+Relatives already in our table under other names: GT40 bandwidth, GT44 min-cut linear
+arrangement = cutwidth, GT42/43 MinLA; **GT35 interval graph completion is the profile
+(`min |E′ − E| = profile − |E|`, checked to 6 vertices), not interval thickness**; GT47
+elimination degree sequence is the degeneracy exactly; SR16 consecutive-ones augmentation
+is the sum of stack lifetimes. **Two problems contain the complex**: SS7 (sequencing to
+minimise maximum cumulative cost, Abdel-Wahab 1976) contains MOSP exactly (open +1, close −1,
+product 0; equal on 300 instances) and PO1 register sufficiency (Sethi 1975) = one-shot black
+pebbling with `pb ≥ pbw = pw(G_u) + 1`, strict from 5 vertices, gap 2 at 7–8, boundedness open;
+`pb = 1 + min over topological layouts of the pre-placement left boundary` (33,867 dags).
+Fourteen `refs.bib` entries proposed, not applied; three bibliographic records from memory,
+flagged. Nothing on record touched.
+
 **Unrelated to the plan:**
 - Fix the pathwidth SAT encoding variable ID collision bug in `encoding.py`.
 - ~~Becceneri, Yanasse & Soma (2004) is still missing~~ — **obtained 2026-09-27**,
