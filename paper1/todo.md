@@ -295,6 +295,18 @@ pass (the hypercube and Mycielski theorems were missing from
       known in print, what the corpus/dataset measures, and whether a bound family of Section 5 is
       tight there. A survey-plus-computation item, half a day; the cages row is the one that
       matters for the open instances.
+- [ ] **Gaspers (arXiv 2611.05146, 3 Nov 2026) on the open cubic cages.** His
+      "Gaussian sweeps" give `pw ≤ 0.1398 n + o(n)` for every max-degree-3 graph, far below the
+      cages' recorded widths (0.19–0.21 n at 90–126 vertices) though the `o(n)` may swallow it at
+      these sizes. If the construction is algorithmic, run it (or reimplement the sweep) on Foster,
+      Biggs–Smith, Ljubljana, Balaban 11-cage, Tutte 12-cage for **better layouts** — unsolved
+      instances, within the compute rule; a width below the record is a result either way. Also
+      cite him in Section 5 beside Fomin–Høie and in Appendix E for the random-cubic constant
+      (`0.1033 n − 2` a.a.s.); obtain the paper (`literature/MISSING.md`).
+- [ ] **`Grid2dGraph_20_40` provenance**: width 20 equals Ellis–Warren's theorem value (`Grid.lean`);
+      the dataset row is still `solution` — fold as `certified:theorem` at the next rebuild.
+- [ ] **`learning/data/instances.csv` is stale** on the two 125×125 provenances (`solutions/` says
+      `certified:refutation`); it breaks `python -m learning.first_moment`'s CS table. Regenerate.
 - [ ] **Random graphs, two items from the layout second moment** (2026-11-11,
       `reports/layout_second_moment.md`): (a) put the random-ordering upper bound
       `pw ≤ β_typ(c) n`, `β_typ = max_x (1−x)(1−e^{−cx})`, into Appendix E as the upper end of the

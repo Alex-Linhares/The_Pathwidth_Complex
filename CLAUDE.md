@@ -1842,6 +1842,26 @@ prior statement for pathwidth. At `n = 30–60` the block's finite threshold is 
 measured median `n − pw` plus one at every `n` (`11–14` against `12–15`), where the
 limits are useless (`L ≈ 5`). Nothing re-solved; under one core-hour.
 
+**The random-graph theory on well-studied classes (2026-11-11, one agent session;
+`reports/random_graph_classes.md`, `learning/random_graph_classes.py`, 39 tests).** Eight rows. Random
+regular `G_{n,d}` (pairing model): our empty-pair constant `β*_d = 0.070, 0.145, 0.211, 0.268, 0.357,
+0.424` at d = 3..10 reproduces Kolesnik–Wormald's bound to 0.004; **Gaspers (arXiv 2611.05146, 3 Nov
+2026)** gives `pw ≥ 0.1033 n − 2` a.a.s. for random cubic and `pw ≤ 0.1398 n + o(n)` for *every*
+max-degree-3 graph (closing Fomin–Høie's n/6) — the five open cubic cages (floors 0.15–0.17 n, widths
+0.19–0.21 n) sit above every random-cubic constant and above the asymptotic ceiling: **extremal, not
+typical**, so no class statement reaches them. Random geometric: covered in print (Díaz–Penrose–Petit–
+Serna's `vs/(nr) → 1`; Mitsche–Perarnau). Random planar: no statement of the order of pw in print found
+(open). `G(n,n,p)`: a new small constant, equal to Erdős–Rényi's to 0.003. **Chu & Stuckey covers: our own
+`CliqueCoverMoment.lean` theorem tested on all 200 certified optima — 0 violations, 0 tight, floor 2–12
+stacks below**; Harvey's three generators (two needed new pair probabilities, derived) 0 violations on
+2,130; the designed sets (Wilson 14/20, Shaw 2/25, SCOOP 1/24 *below* the floor) are not random covers —
+the floor is a structure detector off the model. Preferential attachment: the product step fails (open).
+Interval/chordal/split: covered by identities (`pw = tw` on cocomparability graphs). Hypercubes and
+grids: Harper exact on `Q_3..Q_6` and grids to 6×6; `Grid2dGraph_20_40` width 20 = the theorem value
+with provenance still `solution`. The ridge: the first-moment gap peaks on the dense shoulder, not the
+ridge. Stale: `learning/data/instances.csv`'s two 125×125 provenances (breaks `learning.first_moment`'s
+CS table).
+
 **Unrelated to the plan:**
 - Fix the pathwidth SAT encoding variable ID collision bug in `encoding.py`.
 - ~~Becceneri, Yanasse & Soma (2004) is still missing~~ — **obtained 2026-09-27**,
