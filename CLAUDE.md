@@ -1862,6 +1862,21 @@ with provenance still `solution`. The ridge: the first-moment gap peaks on the d
 ridge. Stale: `learning/data/instances.csv`'s two 125×125 provenances (breaks `learning.first_moment`'s
 CS table).
 
+**Gaspers's Gaussian sweep on the five open cubic cages (2026-11-11, one agent session;
+`reports/gaspers_cages.md`, `learning/gaspers_sweep.py`, 65 tests; the paper held as
+`literature/2026-Gaspers-…arXiv.pdf`).** The construction is a threshold sweep through a correlated
+Gaussian labelling (ball-smoothed normals; bags = frontiers of sublevel sets; a median switch for degree
+3). Its bound `pw ≤ 0.1398 n + o(n)` says nothing at 90–126 vertices: the remainder is not explicit, the
+proof's union-bound condition needs `n ≳ 1.9 × 10⁷`, and **the certified floors of all five cages exceed
+`c₃ n`** (Foster 15 > 12.6, Tutte 12-cage 20 > 17.6), so the cages are lower bounds on the paper's
+remainder. The paper's random-cubic lower bound is Lichev–Mitsche's bisection bound through
+`bw ≤ cw ≤ pw + 2`. Experiment (20,000 restarts per cage × 2 batches, every width recomputed
+independently, then the C program 600 s from the best layout): the sweep reaches the record on Foster
+and sits 1–2 above elsewhere; the C program descends to exactly the record from every sweep layout and
+then fails to refute record − 1 — **no record moved** (20, 19, 22, 24, 26). Two record facts: the
+dataset's `layout` field is a *closing order* (C `-u` convention), its reverse is the textbook layout
+(all 16 records read); the C program's own `lower=` (13–16) is below the dataset floors (15–20).
+
 **Unrelated to the plan:**
 - Fix the pathwidth SAT encoding variable ID collision bug in `encoding.py`.
 - ~~Becceneri, Yanasse & Soma (2004) is still missing~~ — **obtained 2026-09-27**,

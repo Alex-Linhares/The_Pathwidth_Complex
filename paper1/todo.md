@@ -295,7 +295,7 @@ pass (the hypercube and Mycielski theorems were missing from
       known in print, what the corpus/dataset measures, and whether a bound family of Section 5 is
       tight there. A survey-plus-computation item, half a day; the cages row is the one that
       matters for the open instances.
-- [ ] **Gaspers (arXiv 2611.05146, 3 Nov 2026) on the open cubic cages.** His
+- [x] **Gaspers (arXiv 2611.05146, 3 Nov 2026) on the open cubic cages** — done 2026-11-11 (`reports/gaspers_cages.md`): the bound is silent at these sizes, the sweep reaches the records and the C program cannot pass them; no record moved. Was: His
       "Gaussian sweeps" give `pw ≤ 0.1398 n + o(n)` for every max-degree-3 graph, far below the
       cages' recorded widths (0.19–0.21 n at 90–126 vertices) though the `o(n)` may swallow it at
       these sizes. If the construction is algorithmic, run it (or reimplement the sweep) on Foster,
