@@ -1,0 +1,5 @@
+3 {'graphs': 8, 'violations': 0, 'pairs': 16} 0.0
+4 {'graphs': 64, 'violations': 0, 'pairs': 192} 0.0
+5 {'graphs': 1024, 'violations': 0, 'pairs': 3072} 0.1
+6 {'graphs': 300, 'violations': 0, 'pairs': 1200} 0.2
+7 {'graphs': 60, 'violations': 0, 'pairs': 240} 0.4

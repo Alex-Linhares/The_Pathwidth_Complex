@@ -28,6 +28,7 @@ import MOSPFormalization.LayoutMoment
 import MOSPFormalization.RandomOrdering
 import MOSPFormalization.CliqueCoverMoment
 import MOSPFormalization.SeparatorMoment
+import MOSPFormalization.Staircase
 import MOSPFormalization.IndependenceBound
 import MOSPFormalization.TreeBound
 import MOSPFormalization.ForestCover

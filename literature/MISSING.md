@@ -1440,3 +1440,168 @@ Used in the report (template and verdict), none held:
   of `G(n, p)`.
 - A title "Typical Pathwidth of Random Graphs" cited by an AI-generated blog returns no
   arXiv result; treat as non-existent.
+
+## Dense random graphs: the staircase constant (2026-11-11)
+
+Survey behind `reports/dense_staircase.md` §5, by a search agent (about 30 searches, 20
+landing pages; nothing downloaded; one open scan read through its text layer). The
+question was whether `n − parameter = c · log_b n` with an exact constant is in print for
+any layout parameter of `G(n, p)` at fixed `p`, and whether `2 + √2` appears anywhere.
+
+**It does, for bandwidth, since 1985.** Erdős, Hell & Winkler (1989) state as their
+Theorem 3, "proved in [13]" = Kuang & McDiarmid (1985): with probability `→ 1`, for
+`G(n, ½)`, `n − (2 + √2 + o(1)) lg n < bw < n − (2 + √2 − o(1)) lg n`, and add that
+"even the constant `c` is determined by the result of Kuang and McDiarmid", that before
+finding [13] they "had the constant `2 + √2` in the lower bound, but not in the upper
+bound", that Theorem 3 is stronger than Turner (1983/86) and de la Vega (1983) and weaker
+than "the most general version of [13]" (general `p`, "easily generalized"). Read verbatim
+from the text layer of the Rényi Institute scan (`static.renyi.hu/~p_erdos/1989-05.pdf`).
+The strict staircase of `reports/dense_staircase.md` §1 (first `s − 1` and last `s − 1`
+positions) is exactly the structure of `bw ≤ n − s` when `2s − 2 ≤ n`
+(`learning.staircase_moment.check_bandwidth_lemma`), so Kuang & McDiarmid's upper bound
+with `pw ≤ bw` gives the second-moment half of the pathwidth statement for free; their
+lower bound says nothing about pathwidth (a bandwidth lower bound never does), and that
+half — the generalised staircase with coincidences, and the corner block — is where
+`reports/dense_staircase.md` §2 goes beyond the record. **We found no prior statement for
+pathwidth, vertex separation, treewidth or any other member of the complex.** Füredi &
+West (2001) name the structure the *halfgraph* in a Ramsey/Turán context and quote the
+Kuang–McDiarmid value.
+
+- **Kuang, Y. & McDiarmid, C.** (1985). On the bandwidth of a random graph. *Ars
+  Combinatoria* 20A, 29–36. zbMATH 0606.05055; no DOI, not online (the BCC 1985
+  proceedings volume; EHW cite it as "Probabilistic analysis of bandwidth problems, Proc.
+  British Combinatorial Conference 1985, to appear" — the same paper, inferred). The
+  primary source of `2 + √2`. **Wanted, highest priority** (library scan, or the author).
+- **Erdős, P., Hell, P. & Winkler, P.** (1989). Bandwidth versus bandsize. *Annals of
+  Discrete Mathematics* 41, 117–129. zbMATH 0684.05043. Open scan with text layer:
+  [static.renyi.hu/~p_erdos/1989-05.pdf](https://static.renyi.hu/~p_erdos/1989-05.pdf).
+  Theorem 3 as above; Theorem 4 on bandsize. **Wanted** (the scan is citable; not placed
+  in `literature/`).
+- **Füredi, Z. & West, D. B.** (2001). Ramsey theory and bandwidth of graphs. *Graphs and
+  Combinatorics* 17(3), 463–471. [doi:10.1007/PL00013410](https://doi.org/10.1007/PL00013410).
+  `bw(G) + bw(Ḡ) ≤ 2n − 4 log₂ n + o(log n)` always, against the almost-sure value from
+  Kuang–McDiarmid; the halfgraph. Paywalled; abstract only.
+- **Fernández de la Vega, W.** (1983). On the bandwidth of random graphs. *Annals of
+  Discrete Mathematics* 17, 633–638.
+  [doi:10.1016/S0304-0208(08)73443-1](https://doi.org/10.1016/S0304-0208(08)73443-1).
+  Weaker than Theorem 3 per EHW; unread.
+- **Turner, J. S.** (1986). *SIAM J. Comput.* 15(2), 561–580,
+  [doi:10.1137/0215041](https://doi.org/10.1137/0215041) — held
+  (`reports/scratch/first_moment/lit/turner1986.pdf`); constant 4, the empty pair.
+- **Perarnau, G. & Serra, O.** (2014) (held) and **Lee, Lee & Oum** (2012) (held): the
+  only dense-regime width results found — `td, tw = n − O(√(n/p))` and
+  `rw = ⌈n/3⌉ − O(1)`; nothing of the form `n − c log n` for pathwidth or treewidth.
+  Wang, Liu, Cui & Xu (2011, COCOA) give only `tw ≥ n − o(n)` (indexed abstract).
+- **The second-moment template and the densest-substructure criterion.** Frieze &
+  Karoński, *Introduction to Random Graphs* (CUP 2016; free PDF
+  [math.cmu.edu/~af1p/BOOK.pdf](https://www.math.cmu.edu/~af1p/BOOK.pdf)): Theorem 7.3,
+  `α(G(n, p)) ≈ 2 log_b n` whp (first moment at `⌈2 log_b n⌉`, second moment by Janson's
+  inequality at `⌊2 log_b n − 5 log_b log n⌋`; "first proved by Matula [762]" = Matula
+  1976, SMU technical report); Theorem 5.3, the subgraph threshold `n^{−1/m(H)}` with
+  `m(H) = max_{K ⊆ H} d(K)` ("Erdős and Rényi proved this result for balanced graphs. The
+  threshold for any graph `H` was first found by Bollobás"), both read verbatim.
+  **Bollobás, B.** (1981). Threshold functions for small subgraphs. *Math. Proc. Camb.
+  Phil. Soc.* 90(2), 197–206. **Bollobás, B. & Erdős, P.** (1976). Cliques in random
+  graphs. *Math. Proc. Camb. Phil. Soc.* 80(3), 419–427,
+  [doi:10.1017/S0305004100053056](https://doi.org/10.1017/S0305004100053056) (scan without
+  text layer at `static.renyi.hu/~p_erdos/1976-05.pdf`). **Grimmett & McDiarmid** (1975),
+  *Math. Proc. Camb. Phil. Soc.* 77(2), 313–324,
+  [doi:10.1017/S0305004100051124](https://doi.org/10.1017/S0305004100051124). Janson,
+  Łuczak & Ruciński (2000), *Random Graphs*, Ch. 3 (theorem numbers not checked in the
+  book). The corner-block argument of `reports/dense_staircase.md` §2 is the
+  densest-sub-configuration step applied to a pattern of *forbidden* edges (a subgraph of
+  the complement, `G(n, 1 − p)`); cite it as "in the manner of Bollobás (1981)", not as an
+  instance of the sparse theorem.
+- Interval completion / largest induced interval subgraph of `G(n, p)`: nothing found
+  (four searches); the nearest are induced trees, paths and matchings at
+  `(2 + o(1)) log_q(np)` (Dutta & Subramanian, arXiv:2004.03359, 2004.02800). Since
+  `pw + 1` is the least clique number of an interval supergraph (Ohtsuki et al. 1979,
+  held), the pathwidth statement is itself the interval-completion one; we found no prior
+  statement.
+
+## Random graph classes (2026-11-11)
+
+Survey behind `reports/random_graph_classes.md`: what is in print on the pathwidth (or
+treewidth, vertex separation, bisection) of random regular, geometric, planar, bipartite,
+preferential-attachment, interval / chordal / split graphs, hypercubes and grids, against
+what our first-moment theorems give on each. Read from open copies and from held PDFs;
+nothing downloaded. Papers already held under other headings (Fomin & Høie 2006; Lichev &
+Mitsche 2023; Kolesnik & Wormald 2014; Díaz, Diner, Serna & Serra 2022; Mitsche &
+Perarnau 2012; Gao 2012; Perarnau & Serra 2014; Lee, Lee & Oum 2012; Edwards & McDermid
+2015; Chandran & Kavitha 2006; Ellis & Warren 2008; Harper 1966; Bezrukov et al. 2004)
+are not repeated.
+
+- **Gaspers, S.** (2026). Path decompositions of sparse graphs via Gaussian sweeps and
+  faster exponential algorithms. [arXiv:2611.05146](https://arxiv.org/abs/2611.05146)
+  (3 November 2026; read in part through the arXiv HTML, not held). Theorem 1.1(a):
+  `pw ≤ c₃ n + o(n)` for every graph of maximum degree 3, `c₃ = (3/(4π)) arccos(5/6) ≈
+  0.13982` — the constant Lichev & Mitsche had for the bisection of *random* cubic graphs,
+  now deterministic, closing the twenty-year `n/6` of Fomin & Høie; Theorem 1.1(b)
+  `pw ≤ 0.24577 n + o(n)` at maximum degree 4; Theorem 1.3 per-degree weights
+  `a₃ = 5/32, a₄ = 1/4, a₅ = 11/32, a₆ = 7/16`; Corollary 1.4 `pw ≤ 7m/48 + o(n)`; the
+  random-cubic lower bound `pw ≥ 0.103295 n − 2` a.a.s. through `bw ≤ cw ≤ pw + 2`
+  (Makedon & Sudborough; Ellis, Sudborough & Turner), which is the cutwidth route of
+  `reports/complex_lb_search.md` §4.1 and settles the "UNVERIFIED factor-1 transfer" of
+  `reports/random_graph_pathwidth_literature_2.md` §3.2; Conjecture 15.1 `pw ≤ (c₃ −
+  3 p_ch) n + o(n) ≈ 0.1322 n` for cubic graphs (`p_ch` not seen; the HTML was read to
+  its first 100,000 characters). **Wanted**: the PDF, Section 15 and the definition of
+  `p_ch`.
+- **Scheinerman, E. R.** (1988). Random interval graphs. *Combinatorica* 8(4), 357–371.
+  [doi:10.1007/BF02189092](https://doi.org/10.1007/BF02189092). Not held; the
+  chromatic number `n/2 + o_p(n)` of the uniform-endpoint model is quoted from Diaconis,
+  Holmes & Janson, *Interval graph limits* ([arXiv:1102.2841](https://arxiv.org/abs/1102.2841)),
+  and the clique number follows by perfection. **Wanted**: the theorem and its error term
+  (the pathwidth of a random interval graph is this clique number minus one).
+- **Justicz, J., Scheinerman, E. R. & Winkler, P. M.** (1990). Random intervals. *Amer.
+  Math. Monthly* 97(10), 881–889. [doi:10.2307/2324324](https://doi.org/10.2307/2324324).
+  Not held; cited for the maximum degree `n − 1` with probability exactly `2/3`.
+- **Habib, M. & Möhring, R. H.** (1994). Treewidth of cocomparability graphs and a new
+  order-theoretic parameter. *Order* 11(1), 47–60.
+  [doi:10.1007/BF01462229](https://doi.org/10.1007/BF01462229). Not held; `pw = tw` on
+  cocomparability graphs (hence on interval, permutation and bounded tolerance graphs);
+  abstract read. **Wanted** for Section 5's "where the clique bound is exact".
+- **Gustedt, J.** (1993). On the pathwidth of chordal graphs. *Discrete Applied
+  Mathematics* 45(3), 233–248.
+  [doi:10.1016/0166-218X(93)90012-D](https://doi.org/10.1016/0166-218X(93)90012-D). Not
+  held; pathwidth is NP-complete on chordal graphs (abstract read).
+- **Chapuy, G., Fusy, É., Giménez, O. & Noy, M.** (2015). On the diameter of random planar
+  graphs. *Combinatorics, Probability and Computing* 24(1), 145–178.
+  [doi:10.1017/S0963548314000467](https://doi.org/10.1017/S0963548314000467); arXiv
+  [1203.3079](https://arxiv.org/abs/1203.3079). Not held; the diameter of a random
+  connected labelled planar graph is in `(n^{1/4−ε}, n^{1/4+ε})` a.a.s. (Theorem 1.1, via
+  the abstract and Noy's ICM survey item 13). With `tw ≤ 3·diam + 1` on planar graphs
+  (Robertson & Seymour 1984; Eppstein 2000) this is the only upper bound on the treewidth
+  of random planar graphs we found; no lower bound beyond the trivial is in print.
+- **Noy, M.** (2014). Random planar graphs and beyond. *Proc. ICM 2014*, Seoul, vol. IV,
+  407–430. Open copy read
+  ([web.mat.upc.edu/marc.noy/uploads/2013/05/ICM-2014.pdf](https://web.mat.upc.edu/marc.noy/uploads/2013/05/ICM-2014.pdf));
+  its only treewidth statement is the deterministic `O(√n)` of the separator theorem
+  (reference [2], Alon, Seymour & Thomas), for minor-closed classes. **We found no
+  published statement** of the order of `tw` or `pw` of a random planar graph.
+- **Eppstein, D.** (2000). Diameter and treewidth in minor-closed graph families.
+  *Algorithmica* 27(3), 275–291. [doi:10.1007/s004530010020](https://doi.org/10.1007/s004530010020).
+  Not held; `tw ≤ 3·diam + 1` for planar graphs is cited from it (and from Robertson &
+  Seymour, Graph Minors III, 1984).
+- **Bender, E. A. & Canfield, E. R.** (1978). The asymptotic number of labeled graphs with
+  given degree sequences. *J. Combin. Theory Ser. A* 24(3), 296–307; **Bollobás, B.**
+  (1980). A probabilistic proof of an asymptotic formula for the number of labelled
+  regular graphs. *European J. Combin.* 1(4), 311–316. Not held; the probability that the
+  pairing model is simple, `→ exp(−(d² − 1)/4)`, is the constant behind
+  `learning.random_graph_classes.simple_correction`.
+- **Bollobás, B. & Leader, I.** (1991). Compressions and isoperimetric inequalities.
+  *J. Combin. Theory Ser. A* 56(1), 47–62. Not held; the vertex-isoperimetric inequality
+  on the grid `[k]^n`, which is why Harper's bound is exact on grids (checked by exact
+  computation to `6 × 6` in the report instead).
+- **Cooper, C., Frieze, A. & Uehara, R.** (2014). The height of random k-trees and related
+  graphs. *Discrete Math. Theor. Comput. Sci.* 16(2), 35–48. Not held; height `~ c log n`
+  for random (increasing) `k`-trees, the only shape parameter of a random chordal model we
+  found; nothing on their pathwidth.
+- **Castellví, J. & Stufler, B.** (2023). Limits of chordal graphs with bounded tree-width.
+  [arXiv:2310.20423](https://arxiv.org/abs/2310.20423). Open; scaling and local limits of
+  uniform chordal graphs of bounded treewidth; nothing on pathwidth.
+- **Scale-free and small-world generators of the dataset** (`RandomBarabasiAlbert_100_2`,
+  `_100_5`, `RandomHolmeKim_300_2_2`, `_700_2_2`, `RandomNewmanWattsStrogatz_100_5_3`,
+  `_250_10_3`, `RandomTriangulation_800`, `RandomBoundedToleranceGraph_60`, `_80`,
+  `random4reg`, `RandomGNM_*`): the PACE 2016 named instances, generated with SageMath /
+  NetworkX; their seeds are not recorded with the files, so they are single draws and no
+  ensemble statement rests on them.

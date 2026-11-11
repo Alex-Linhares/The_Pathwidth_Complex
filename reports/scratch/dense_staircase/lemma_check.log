@@ -1,0 +1,4 @@
+6 {'graphs': 32768, 'violations': 0, 'strict_gap': 6509, 'pairs': 196608} 28.3
+7 0.3 {'graphs': 100, 'violations': 0, 'strict_gap': 115, 'pairs': 700} 28.7
+7 0.5 {'graphs': 100, 'violations': 0, 'strict_gap': 38, 'pairs': 700} 29.1
+7 0.7 {'graphs': 100, 'violations': 0, 'strict_gap': 13, 'pairs': 700} 29.6

@@ -1,0 +1,16 @@
+'MOSPFormalization.Staircase.pathwidth_le_of_isGenStaircase' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Staircase.pathwidth_le_of_isStaircase' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Staircase.exists_isGenStaircase_of_pathwidth_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Staircase.pathwidth_le_iff_exists_isGenStaircase' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Staircase.forcedSet_card' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Staircase.weightedSum_graphsOfPathwidthLe_le_block' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Staircase.weightedSum_pathwidth_le_block' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Staircase.sum_gnpWeight_univ_eq_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Staircase.exists_layout_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Staircase.exists_injOn_mem' depends on axioms: [propext, Classical.choice, Quot.sound]

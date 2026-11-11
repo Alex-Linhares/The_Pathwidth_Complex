@@ -1,0 +1,12 @@
+import MOSPFormalization.Staircase
+open MOSPFormalization.Staircase
+#print axioms pathwidth_le_of_isGenStaircase
+#print axioms pathwidth_le_of_isStaircase
+#print axioms exists_isGenStaircase_of_pathwidth_le
+#print axioms pathwidth_le_iff_exists_isGenStaircase
+#print axioms forcedSet_card
+#print axioms weightedSum_graphsOfPathwidthLe_le_block
+#print axioms weightedSum_pathwidth_le_block
+#print axioms sum_gnpWeight_univ_eq_one
+#print axioms exists_layout_prefix
+#print axioms exists_injOn_mem
