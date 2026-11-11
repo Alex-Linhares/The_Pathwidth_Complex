@@ -1754,6 +1754,27 @@ call. Literature recorded in `literature/MISSING.md` (spectral; LP bounds for la
 Caprara & Salazar-González 2005, Caprara–Letchford–Salazar-González 2011, Mallach 2018, Coudert
 2016).
 
+**The lower-bound literature of the whole complex, surveyed (2026-11-11, three agent sessions;
+`reports/complex_lb_vlsi.md`, `reports/complex_lb_search.md`, `reports/complex_lb_layout.md`,
+§0 of each; about 75 papers and 60 techniques, 75 entries added to `literature/MISSING.md` under
+three dated headings).** Every lower bound the other members' communities state — gate matrix
+layout, one-dimensional logic, PLA folding, interval completion; node/edge/mixed search, interval
+thickness, narrowness, vertex separation, linear-width; cutwidth, bandwidth, split bandwidth,
+MinLA, profile, treewidth, tree-depth, directed pathwidth — is, after translation through
+`paper1/equivalences.md`, a clique, a degree bound, a minor, a branch, Harper, a spectral
+inequality (under Harper) or an LP (under the Lagrangian ceiling of `chain_lp.md` §5): the families
+whose ceilings are measured. The VLSI literature computed only the column sum (our trivial bound);
+Fomin & Thilikos name brambles and blockages as the only certificates; Dendris–Kirousis–Thilikos
+is the treewidth ceiling as a game (any bound that lets the fugitive wait is ≤ tw + 1); cutwidth,
+MinLA and tree-depth bounds arrive divided by Δ, nΔ or log n; bandwidth transfers nothing.
+Built and killed at toy scale: Harper in gate vocabulary (VLSI), Harper on the edge lattice
+(linear-width). Left with kill criteria, not run: the subcubic cutwidth route (pw ≥ cw − 2 on
+subcubic graphs, Harper on the edge boundary) on the five open cubic cages; the Lagrangian
+ceiling's mixture upper bound on the 11 residual instances; the tree-depth solvers' isomorphism
+memo as a search technique. Unread: Yu's 1986 thesis ("bottleneck hypercycle" bound,
+access-restricted). Bachtler–Heinrich's girth bound certifies five dataset widths independently.
+W4 (Hu & Chen's VLSI circuit, 202 nets) is open at 27 with a floor of 26.
+
 **Unrelated to the plan:**
 - Fix the pathwidth SAT encoding variable ID collision bug in `encoding.py`.
 - ~~Becceneri, Yanasse & Soma (2004) is still missing~~ — **obtained 2026-09-27**,
