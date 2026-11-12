@@ -1,0 +1,8 @@
+a < b, cost(a)=+1, cost(b)=-1: 1  (values over extensions {1} )
+b < a, cost(a)=+1, cost(b)=-1: 0  (values over extensions {0} )
+k=1: antichain A_k of +1 tasks: 1; matched pairs D_k: 1
+k=2: antichain A_k of +1 tasks: 2; matched pairs D_k: 1
+k=3: antichain A_k of +1 tasks: 3; matched pairs D_k: 1
+k=4: antichain A_k of +1 tasks: 4; matched pairs D_k: 1
+chain of 5 tasks at +1: 5 ; alternating chain +1,-1,...: 1
+embedded order N-free  <=>  customers sharing a pattern have equal pattern sets: 673 matrices (<=3x3), 225 series-parallel, mismatches = 0

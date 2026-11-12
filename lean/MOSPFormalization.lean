@@ -57,6 +57,13 @@ import MOSPFormalization.Complex.Pebbling
 import MOSPFormalization.Complex.PebblingGu
 import MOSPFormalization.Complex.Wavefront
 import MOSPFormalization.Complex.VertexSearch
+import MOSPFormalization.Complex.SequencingMaxCost
+import MOSPFormalization.Complex.RegisterSufficiency
+import MOSPFormalization.Complex.RegisterSufficiencyFormula
+import MOSPFormalization.Complex.BinaryOutTree
+import MOSPFormalization.Complex.BinaryOutTreeWidth
+import MOSPFormalization.Complex.BinaryOutTreeDemand
+import MOSPFormalization.Complex.BinaryOutTreeGap
 import MOSPFormalization.Search.Basic
 import MOSPFormalization.Search.DefiniteMove
 import MOSPFormalization.Search.DefiniteMatching

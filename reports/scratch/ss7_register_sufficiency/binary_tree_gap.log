@@ -1,0 +1,13 @@
+h  n   pb(T_h out)  pw(T_h)  pbw  gap   (pb: ideal DP to h = 4, recursion g(T) above; pw exact: subset DP to 15 vertices, the C program with a refutation above)
+0   1     1           0       1    0   [0s]
+1   3     2           1       2    0   [0s]
+2   7     3           1       2    1   [0s]
+3  15     4           2       3    1   [0s]
+4  31     5           2       3    2   [2s]
+5  63     6           3       4    2   [2s]
+6  127     7           3       4    3   [2s]
+T_3 with its 8 leaves retained (G&J outputs): pb = 9 vs 4 unretained
+T_3 as an in-tree (arcs child -> parent): pb = 5, pw(G_u) + 1 = 4
+ternary out-tree height 1 (4 vertices): pb = 2, pw + 1 = 2
+ternary out-tree height 2 (13 vertices): pb = 3, pw + 1 = 3
+out-tree recursion pb = g(T) + 1, g = max(g1, g2 + 1): 4200 random out-trees on 1..14 vertices, mismatches = 0  [3s]

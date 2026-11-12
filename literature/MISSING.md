@@ -1737,3 +1737,124 @@ is identical — no novelty is claimed.**
 inequality in sub-Gaussian form (`Mathlib/Probability/Moments/SubGaussian.lean`,
 `measure_sum_ge_le_of_hasCondSubgaussianMGF`); no McDiarmid, no bounded-differences
 variance bound, no Efron–Stein.
+
+## SS7 and register sufficiency (2026-11-12)
+
+Behind the `paper1/todo.md` item "SS7 and register sufficiency (the two Garey &
+Johnson containers of the complex)". The four sources asked for, none of which is
+openly served; three neighbours obtained in their place. Garey & Johnson's own
+bibliography entry (p. 291 of the held OCR, DJVU page 151) reads: "ABDEL-WAHAB, H. M.
+[1976], Scheduling with Applications to Register Allocation and Deadlock Problems,
+Doctoral Thesis, Dept. of Electrical Engineering, University of Waterloo, Waterloo,
+Ontario. (A5.1)" — **Waterloo, not Toronto**; the Monma & Sidney TR (obtained, below)
+cites it the same way, ref. [1].
+
+**Missing.**
+
+- **Abdel-Wahab, H. M.** (1976). *Scheduling with Applications to Register Allocation
+  and Deadlock Problems*. Doctoral thesis, Dept. of Electrical Engineering, University
+  of Waterloo. G&J's reference for SS7 ("Transformation from REGISTER SUFFICIENCY") and,
+  per Monma & Sidney 1977 Table I, the source of CC_max's NP-hardness under general
+  precedence; needed for the exact form of the SS7 ⊃ register sufficiency reduction and
+  for whether the thesis mentions any interval or layout structure. Looked: UWSpace
+  (DSpace REST at `dspacemainprd01.lib.uwaterloo.ca`, queries "Abdel-Wahab scheduling",
+  "register allocation deadlock": nothing of 1976; the repository's digitised theses do
+  not reach it); Google Scholar (bot wall); Library and Archives Canada collection search
+  (Cloudflare wall); web search finds only a catalogue record ("Microfiche of typescript",
+  216 leaves) and citations. Exists on microfiche only, as far as we found.
+- **Abdel-Wahab, H. M. & Kameda, T.** (1978). Scheduling to minimize maximum cumulative
+  cost subject to series-parallel precedence constraints. *Operations Research* 26(1),
+  141–158, doi 10.1287/opre.26.1.141. The polynomial case of SS7; needed for (a) the
+  encoding of register allocation as cumulative-cost sequencing in their introduction and
+  (c) the series-parallel definition and the algorithm. Unpaywall and Semantic Scholar:
+  closed, no repository copy; Kameda's SFU page lists publications from 2010 only; no
+  Waterloo research-report version found. The abstract (RePEc) says: "It is known that
+  this problem is in general NP-complete. For the special case where the precedence
+  constraints can be represented by a series-parallel graph, we present an algorithm for
+  finding an optimal schedule whose running time does not grow faster than the square of
+  the number of events." Companion papers, also closed: **Abdel-Wahab & Kameda** (1978),
+  *On the C-optimal scheduling problem*, Dept. of Electrical Engineering, University of
+  Waterloo (Monma & Sidney ref. [3]); **Abdel-Wahab & Kameda** (1980), On strictly optimal
+  schedules for the cumulative cost-optimal scheduling problem, *Computing* 24, 61–86
+  (O(n log n) for the series-parallel case); **Monma, C. L.** (1980), Sequencing to
+  minimize the maximum job cost, *Operations Research* 28(4), 942–951 (abstract: the
+  maximum cumulative cost problem is a special case of the two-machine maximum completion
+  time flow-shop problem, hence the latter is NP-hard under general precedence).
+- **Sethi, R.** (1975). Complete register allocation problems. *SIAM J. Comput.* 4(3),
+  226–248, doi 10.1137/0204020; conference version STOC 1973, 182–195, doi
+  10.1145/800125.804049. PO1; needed for the exact definition of register sufficiency and
+  the NP-completeness proof. SIAM: closed (Unpaywall). ACM: the STOC version is in the
+  openly served 1951–2000 backfile (Unpaywall and Semantic Scholar list it "bronze" at
+  `dl.acm.org/doi/pdf/10.1145/800125.804049`), but `dl.acm.org` returns 403 to every
+  non-browser client, so it is browser-only; not fetched. Sethi's Arizona publication list
+  carries no PDF; no Penn State technical-report version found. Until held, G&J's PO1
+  entry (p. 272) is the definition used: a computation is an ordering `v_1..v_n` and
+  sets `S_0..S_n` with `|S_i| ≤ K`, `v_i ∈ S_i`, `S_i − {v_i} ⊆ S_{i−1}`, and `S_{i−1}`
+  containing every `u` with `(v_i, u) ∈ A` — one-shot, registers freed at will, no
+  retention of outputs; "Remains NP-complete even if all vertices of G have out-degree 2
+  or less"; the recomputation variant "is NP-hard and is not known to be in NP".
+- **Gilbert, J. R., Lengauer, T. & Tarjan, R. E.** (1980). The pebbling problem is
+  complete in polynomial space. *SIAM J. Comput.* 9(3), 513–524, doi 10.1137/0209038;
+  STOC 1979, 237–248, doi 10.1145/800135.804418. The recomputation variant of PO1. SIAM:
+  closed. ACM STOC version: same bronze-but-403 situation as Sethi's. No Stanford
+  technical-report version found: the Stanford CS TR archive hosts (`i.stanford.edu`,
+  `infolab.stanford.edu`) refuse connections, SearchWorks and DTIC sit behind bot walls,
+  and the DTIC copy of a Stanford pebbling report of July 1979 (ADA076264) is Lengauer's
+  STAN-CS-79-745 *Upper and lower bounds on time-space tradeoffs in a pebble game*, a
+  different paper. Hertel & Pitassi (obtained, below) describe the result: "In 1980,
+  Gilbert, Lengauer, and Tarjan elaborated on the basic structure of Lingas's
+  construction to prove the PSPACE-completeness of the black pebbling game on DAGs
+  [GLT80]" (p. 2623), the game being the standard black pebbling with removal and
+  re-placement allowed; they say nothing about the one-shot variant.
+
+**Obtained** (into `literature/`, each from an open repository or an author's page):
+
+- `1977-Monma-Sidney-Sequencing-Series-Parallel-Precedence-Constraints-TR-Cornell-ORIE-347.pdf`
+  — **Monma, C. L. & Sidney, J. B.** (1977). *Sequencing with Series-Parallel Precedence
+  Constraints* (eCommons title: *A General Algorithm for Optimal Job Sequencing with
+  Series-Parallel Precedence Constraints*), Report 347, School of OR/IE, Cornell
+  University, marked "Revised for Mathematics of Operations Research"; Cornell eCommons
+  handle 1813/8467. G&J's second reference for the series-parallel case of SS7. A scan
+  without a text layer. It defines series-parallel precedence graphs (p. 4: "A precedence
+  graph is called series-parallel if it can be reduced to a chain by the recursive
+  replacement of any parallel-chains job module by a single (feasible) chain of its
+  jobs"), gives the O(n log n)-comparison algorithm for cost functions with the ASI and
+  SND properties (p. 18), defines the "maximum cumulative excess cost problem" CE_max on
+  a single-item inventory with per-job net change `c_j`, maximum net increase `m_j` and
+  target `e_j` (pp. 19–20), and states (p. 20) that "Johnson's [10] two-machine maximum
+  completion time flow-shop problem (C_max) and the maximum cumulative cost problem
+  (CC_max) [2,3] are shown to be special cases of CE_max in [22]"; Table I (p. 24) gives
+  CC_max under general precedence as "NP Hard [1]", [1] being the Abdel-Wahab thesis.
+  No mention of registers, pebbles, intervals or layouts.
+- `2011-Austrin-Pitassi-Wu-Inapproximability-Treewidth-One-Shot-Pebbling-Layout-Problems-arXiv-1109.4910.pdf`
+  — **Austrin, P., Pitassi, T. & Wu, Y.** (2011/2012). Inapproximability of treewidth,
+  one-shot pebbling, and related layout problems. arXiv:1109.4910 (APPROX 2012). Open
+  (arXiv). The best statement in print we found of the register-sufficiency–layout
+  relation: "One-shot pebbling is also equivalent to a problem known as Register
+  Sufficiency [RAK91]" (p. 4); Table 1 (p. 9) lists "One-shot Black Pebbling / Register
+  Sufficiency" as the directed max-vertex layout problem and "Pathwidth / One-shot
+  Black-White Pebbling / Vertex Separation" as the undirected one; Lemma 2.12 (p. 10):
+  `BP1s(D) = Layout(D, V, max)` over topological orderings; Lemmas 2.13–2.14 restate
+  Lengauer 1981's two reductions between one-shot black-white pebbling and vertex
+  separation.
+- `2010-Hertel-Pitassi-PSPACE-Completeness-Black-White-Pebbling-SICOMP.pdf` — **Hertel,
+  P. & Pitassi, T.** (2010). The PSPACE-completeness of black-white pebbling. *SIAM J.
+  Comput.* 39(6), 2622–2682. From Pitassi's Toronto page (a SIAM-watermarked author
+  copy). The secondary source on Gilbert–Lengauer–Tarjan above.
+
+**Read for the relation MOSP ⊂ SS7 (open stacks as cumulative-cost sequencing with an
+opening task +1, a closing task −1 per customer and a cost-0 task per pattern).** We found
+no prior statement of it: not in G&J's SS7 or PO1 entries, not in the Monma & Sidney TR
+(whose CE_max is the nearest object, with fixed per-job `m_j`, `c_j`), not in the
+Abdel-Wahab & Kameda or Monma abstracts, and no web search (Google Scholar blocked;
+Semantic Scholar rate-limited; general search on "open stacks" / "gate matrix layout" with
+"cumulative cost" / "register sufficiency" / "pebbling") returned a paper connecting open
+stacks or gate matrix layout to cumulative-cost sequencing, to Abdel-Wahab, or to register
+sufficiency. The register-sufficiency–pathwidth side is in print through the held Lengauer
+(1981) and Kirousis & Papadimitriou (1986) and the Austrin–Pitassi–Wu paper above;
+**Bansal, N. & Katzelnick, D.** (2023/24), On approximating cutwidth and pathwidth,
+arXiv:2311.15639 (read, not filed), define Minimum Register Sufficiency as the directed
+min-max node-cut layout problem and leave its approximation open ("Open Question 6");
+**Ravi, R., Agrawal, A. & Klein, P.** (1991), Ordering problems approximated:
+single-processor scheduling and interval graph completion, ICALP 1991 — the O(log² n)
+approximation and the source of the name — is not held.

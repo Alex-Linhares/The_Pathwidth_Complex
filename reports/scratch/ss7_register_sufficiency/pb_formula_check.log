@@ -1,0 +1,2 @@
+all 33867 labelled dags on 1..6 vertices: game vs ideal formula mismatches = 0 (no retention), 0 (outputs retained); ideal DP vs brute force over topological orderings: 0, 0  [48s]
+2000 random dags on 9 vertices: mismatches = 0 (no retention), 0 (outputs retained); max pb = 9  [52s]

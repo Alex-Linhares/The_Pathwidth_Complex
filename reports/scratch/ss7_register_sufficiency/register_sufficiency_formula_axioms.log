@@ -1,0 +1,61 @@
+'MOSPFormalization.Complex.BlackMove.legalR_empty_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.blackStepR_empty_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.blackStepR_empty' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.BlackStepR.numPebbles_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.BlackStepR.mono' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.BlackStepR.reflTransGen_mono' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.BlackPebblesWithinR.mono' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.BlackMove.LegalR.of_subset' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.BlackStepR.of_subset' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.BlackStepR.reflTransGen_of_subset' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.blackPebblesWithinR_of_subset' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.pbR_le_pbR_of_subset' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.PebblePhase.ne_fresh_iff_rank' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.BlackStepR.rank_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.BlackStepR.eq_target' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.BlackStepR.of_placed' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.BlackStepR.retained' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.BlackStepR.ne_done' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.BlackStepR.ne_white' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.reflTransGen_ne_white' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.reflTransGen_ne_done_of_mem' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.reflTransGen_numPebbles_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.seqR_rank_mono' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.seqR_retained' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.seqR_numPebbles_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.numPebbles_update_done_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.reach_done_of_black' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.blackPebblesWithinR_empty_iff_reflTransGen' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.blackPebblesWithinR_empty_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.pbR_empty' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.exists_isTopological_of_blackPebblesWithinR' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.doneR' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.mem_doneR_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.rreach_place' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.rreach_remove_set' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.rreach_step' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.gpos_doneR_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.gpos_doneR_card_ne_fresh' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.blackPebblesWithinR_of_isTopological_of_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.blackPebblesWithinR_of_isTopological' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.pbR_eq_topologicalDemand' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.pb_eq_topologicalDemand' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.registerDemand_eq_topologicalDemand' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.pbw_le_pb_of_exists' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.pathwidth_lengauerU_add_one_le_pb' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.pb_binaryOutTree' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.pb_sub_pbw_binaryOutTree' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.exists_gap_binaryOutTree' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.pathwidth_lengauerU_add_le_pb_binaryOutTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

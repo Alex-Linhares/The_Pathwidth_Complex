@@ -1,0 +1,3 @@
+SS7(embed M) = MOSP(M) = pw(G_M)+1 on all 673 matrices with <=3 customers, <=3 patterns and some requirement: mismatches = 0
+without the pair open(c) < close(c) the equality fails on 232 of them (every one with a customer requiring nothing)
+edge cases (no requirement): (n, m, SS7, MOSP) = [(0, 0, 0, 0), (0, 1, 0, 0), (0, 2, 0, 0), (0, 3, 0, 0), (1, 0, 1, 0), (1, 1, 1, 0), (1, 2, 1, 0), (1, 3, 1, 0), (2, 0, 1, 0), (2, 1, 1, 0), (2, 2, 1, 0), (2, 3, 1, 0), (3, 0, 1, 0), (3, 1, 1, 0), (3, 2, 1, 0), (3, 3, 1, 0)]

@@ -84,7 +84,14 @@ Started 2026-10-09. Check items off as they are done.
 From `reports/garey_johnson_complex.md` §3 (the 1979 list holds no member of the
 complex, but these two contain it):
 
-- [ ] **SS7, sequencing to minimise maximum cumulative cost** (Abdel-Wahab 1976;
+- [x] *(2026-11-12, `reports/ss7_register_sufficiency.md` §0–§2; Lean
+      `Complex/SequencingMaxCost.lean`, `ss7Value_toSS7` both directions, no sorry; verdict
+      **container**: no derived graph — `exists_same_compGraph_cost_ne_ss7Value`,
+      `no_local_derived_graph`, `no_local_derived_graph_band`; the MOSP-shaped restriction is a
+      member; series-parallel meets MOSP only on disjoint cliques; (c) the thesis is Waterloo,
+      microfiche only, and both papers are closed, `literature/MISSING.md`; (d) proposed in §6,
+      not applied.)*
+      **SS7, sequencing to minimise maximum cumulative cost** (Abdel-Wahab 1976;
       G&J p. 238, NP-complete even with costs in {−1, 0, 1}, polynomial on
       series-parallel orders, Abdel-Wahab & Kameda 1978). MOSP is the special case
       with an opening task (+1) and a closing task (−1) per customer, product tasks
@@ -98,7 +105,14 @@ complex, but these two contain it):
       member, in Section 3; (c) obtain Abdel-Wahab 1976 and Abdel-Wahab & Kameda
       1978 (`literature/MISSING.md`); (d) one paragraph in the paper's related
       work: the 1979 list carries open stacks without naming them.
-- [ ] **PO1, register sufficiency** (Sethi 1975; G&J p. 272) = one-shot black
+- [x] *(2026-11-12, the same report §3; Lean `Complex/RegisterSufficiency{,Formula}.lean`,
+      `pbR_eq_topologicalDemand` for every digraph and retained set — the formula is Austrin,
+      Pitassi & Wu 2011 Lemma 2.12 up to the pebble being placed; `Complex/BinaryOutTree*.lean`:
+      `pb_binaryOutTree h = h + 1`, `pbw_binaryOutTree_le ≤ ⌈h/2⌉ + 1`, `exists_gap_binaryOutTree`
+      — the gap is unbounded, verdict **container**; `pb ≤ 2 pw + 2` on out-forests on paper and
+      `≤ 2 pw(G_u) + 1` on every dag on record, open in general; (c) both SIAM papers closed,
+      STOC versions browser-only at ACM, `literature/MISSING.md`.)*
+      **PO1, register sufficiency** (Sethi 1975; G&J p. 272) = one-shot black
       pebbling with outputs retained. Proved: `pb(D) ≥ pbw(D) = pw(G_u) + 1` (row
       13's Lean theorem plus "a black play is a black-white play"), strict from 5
       vertices (`0→1, 0→2, 1→4, 2→3`: pb 3, pbw 2), gap 2 at 7–8 (all dags to 6,

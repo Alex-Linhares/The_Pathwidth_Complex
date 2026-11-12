@@ -1,0 +1,134 @@
+'MOSPFormalization.Complex.SS7Instance' does not depend on any axioms
+'MOSPFormalization.Complex.SS7Instance.IsLinearExtension' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.SS7Instance.prefixCost' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.SS7Instance.WithinCost' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.SS7Instance.ss7Value' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.SS7Instance.isLinearExtension_transGen_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.SS7Instance.withinCost_mono' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.SS7Instance.ss7Value_le_of_withinCost' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.SS7Instance.withinCost_ss7Value' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.SS7Instance.le_ss7Value' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.SS7Instance.ss7Value_le_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.SS7Instance.prefixCost_eq_sum_ite' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.SS7Instance.prefixCost_of_card_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.SS7Instance.prefixCost_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.SS7Instance.isLinearExtension_of_key' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.SS7Instance.relabel' depends on axioms: [Quot.sound]
+'MOSPFormalization.Complex.SS7Instance.relabelLayout' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.SS7Instance.relabelLayout_apply' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.SS7Instance.prefixCost_relabel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.SS7Instance.withinCost_relabel_of' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.SS7Instance.relabel_relabel_symm' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.SS7Instance.withinCost_relabel_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.SS7Instance.ss7Value_relabel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.SS7Instance.compGraph' does not depend on any axioms
+'MOSPFormalization.Complex.SS7Instance.dual' does not depend on any axioms
+'MOSPFormalization.Complex.SS7Instance.compGraph_dual' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.Mutual' does not depend on any axioms
+'MOSPFormalization.Complex.SS7Instance.mutualOrder' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.SS7Instance.mutualOrder_eq_none' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.localGraph' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.toSS7' depends on axioms: [propext]
+'MOSPFormalization.Complex.MOSPInstance.toSS7_prec_open_close' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.toSS7_prec_open_pattern' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.toSS7_prec_pattern_close' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.toSS7_not_prec_open_open' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.toSS7_cost_mem' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.openAt' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.mem_openAt_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.prefixCost_toSS7' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.prefixCost_toSS7_eq_card_openAt' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.firstPos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.lastPos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.patterns_nonempty_of_requires' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.firstPos_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.le_lastPos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.exists_eq_firstPos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.exists_eq_lastPos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.firstPos_le_lastPos' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.lastPos_lt_card' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.isActive_of_firstPos_le_of_le_lastPos' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.embedKey' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.embedKey_open' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.embedKey_close' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.embedKey_pattern' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.embedKey_lt_of_prec' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.isLinearExtension_of_sorted' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.card_openAt_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.exists_linearExtension_of_layout' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.exists_layout_of_linearExtension' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.withinCost_toSS7_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.ss7Value_toSS7' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.ss7Value_toSS7_eq_pathwidth_add_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.maxOpenStacks_eq_zero_of_forall_not' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.withinCost_toSS7_one_of_forall_not' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.ss7Value_toSS7_eq_one_of_forall_not' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.MOSPInstance.ss7Value_toSS7_eq_zero_of_isEmpty' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.dualWitness' depends on axioms: [propext]
+'MOSPFormalization.Complex.idLayout' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.idLayout_apply' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.ss7Value_dualWitness' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.ss7Value_dualWitness_dual' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.ss7Value_dual_ne' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.exists_same_compGraph_cost_ne_ss7Value' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.pathwidth_eq_zero_of_forall_not_adj' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.antichain' does not depend on any axioms
+'MOSPFormalization.Complex.ss7Value_antichain' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.antichain_mutualOrder' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.localGraph_antichain_adj_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.pathwidth_localGraph_antichain' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.pairsMOSP' does not depend on any axioms
+'MOSPFormalization.Complex.pairsInstance' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.ss7Value_pairsInstance' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.pairsOpens' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.card_pairsOpens' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.pairsInstance_cost_open' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.pairsInstance_mutualOrder_open' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.pairsOpens_isClique' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.le_pathwidth_localGraph_pairsInstance' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.no_local_derived_graph' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.no_local_derived_graph_band' depends on axioms: [propext, Classical.choice, Quot.sound]

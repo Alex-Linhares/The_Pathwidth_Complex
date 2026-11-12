@@ -1,0 +1,29 @@
+'MOSPFormalization.Complex.mem_keyCut_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.bnone_ne_bsome' does not depend on any axioms
+'MOSPFormalization.Complex.bsome_inj' does not depend on any axioms
+'MOSPFormalization.Complex.binaryOutAdj_bnone_bsome' depends on axioms: [propext]
+'MOSPFormalization.Complex.binaryOutAdj_bsome_bsome' depends on axioms: [propext]
+'MOSPFormalization.Complex.subKey_apply' does not depend on any axioms
+'MOSPFormalization.Complex.keyTopological_subKey' depends on axioms: [propext]
+'MOSPFormalization.Complex.bsome_injective' does not depend on any axioms
+'MOSPFormalization.Complex.root_lt_of_keyTopological' depends on axioms: [propext]
+'MOSPFormalization.Complex.exists_adj_across' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.image_keyCut_subKey_subset' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.card_keyCut_succ_ge' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.exists_keyCut_card_ge' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.preBoundary_eq_keyCut' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.exists_preBoundary_binaryOutTree' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.layoutDemand_binaryOutTree_ge' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.fin2_cases' depends on axioms: [propext]
+'MOSPFormalization.Complex.dfsKey_bnone' depends on axioms: [propext]
+'MOSPFormalization.Complex.dfsKey_bsome_zero' depends on axioms: [propext]
+'MOSPFormalization.Complex.dfsKey_bsome_one' depends on axioms: [propext, Quot.sound]
+'MOSPFormalization.Complex.keyCut_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.keyCut_dfsKey_subset' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.exists_key_keyCut_card_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.exists_layout_of_injective_key' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.preBoundary_eq_keyCut_of_key' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MOSPFormalization.Complex.exists_isTopological_layoutDemand_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'MOSPFormalization.Complex.topologicalDemand_binaryOutTree' depends on axioms: [propext, Classical.choice, Quot.sound]
