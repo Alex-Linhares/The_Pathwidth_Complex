@@ -90,3 +90,6 @@ reports/scratch/minor_tabu/*.seed
 reports/scratch/minor_tabu/*.restart.seed
 # blockage size census at 9 vertices: 27 MB raw, committed as census_n9.csv.gz
 reports/scratch/blockage_size/census_n9.csv
+
+# quick estimate (2026-11-12): the 22 MB per-instance table, regenerable; its sha256 is committed beside it
+reports/scratch/quick_estimate/estimates.csv

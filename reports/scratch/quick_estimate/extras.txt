@@ -1,0 +1,23 @@
+random-model certified: 57673; dense share 0.652; in bracket 0.9962; floor tight 0.0087; floor within 1 0.204
+sparse: clipping changes tw on 196 of 20077 (tw < floor 0, tw > ceiling 196); where it binds tw MAE 0.000, clipped MAE 1.000, median n 10
+dense p in [0.3, 0.4): 3258; block MAE 2.331 bias +2.081; tw MAE 0.654 bias +0.428
+dense p in [0.4, 0.5): 2997; block MAE 2.201 bias +2.126; tw MAE 0.589 bias +0.389
+dense p in [0.5, 0.6): 3005; block MAE 2.307 bias +2.280; tw MAE 0.561 bias +0.386
+dense p in [0.6, 1.01): 28336; block MAE 0.820 bias +0.818; tw MAE 0.119 bias +0.063
+G(n, p) dense: 623; block MAE 0.637; tw MAE 0.446
+floor vs lb_best (random-model): floor > lb 1439, equal 1517, floor < lb 54717; mean truth - floor 3.01, truth - lb 0.76
+Chu & Stuckey n = 30: 25; truth - floor 2.8; truth - lb 0.6; tw bias -0.12; recipe bias +1.60; ceiling - truth 4.7
+Chu & Stuckey n = 40: 25; truth - floor 3.8; truth - lb 0.8; tw bias +0.44; recipe bias +2.24; ceiling - truth 7.2
+Chu & Stuckey n = 50: 50; truth - floor 3.7; truth - lb 1.4; tw bias +0.52; recipe bias +2.14; ceiling - truth 7.8
+Chu & Stuckey n = 75: 25; truth - floor 5.5; truth - lb 4.5; tw bias +1.28; recipe bias +3.52; ceiling - truth 16.4
+Chu & Stuckey n = 100: 50; truth - floor 8.3; truth - lb 10.3; tw bias +2.90; recipe bias +5.80; ceiling - truth 28.8
+Chu & Stuckey n = 125: 25; truth - floor 7.5; truth - lb 14.0; tw bias +4.32; recipe bias +6.08; ceiling - truth 30.5
+n 10-20: 21473; tw MAE 0.08 bias -0.05 exact 0.93; recipe MAE 0.35
+n 21-30: 13918; tw MAE 0.21 bias -0.02 exact 0.80; recipe MAE 0.84
+n 31-40: 12308; tw MAE 0.33 bias +0.10 exact 0.69; recipe MAE 1.08
+n 41-50: 3666; tw MAE 0.66 bias +0.31 exact 0.47; recipe MAE 1.61
+n 51-60: 3549; tw MAE 0.90 bias +0.60 exact 0.39; recipe MAE 1.95
+n 61-75: 2363; tw MAE 1.43 bias +1.20 exact 0.25; recipe MAE 3.21
+n 76-100: 306; tw MAE 1.20 bias +0.44 exact 0.34; recipe MAE 1.67
+n 101-125: 80; tw MAE 1.75 bias +1.00 exact 0.30; recipe MAE 2.30
+ceiling_em below truth (certified): 0.437; our min-fill equals the record's on 0.9929 of 50927 (MAE 0.290 against 0.290)
