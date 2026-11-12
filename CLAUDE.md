@@ -1927,6 +1927,31 @@ bounded excluded, `√n` and `n^{1/2−o(1)}` indistinguishable at these sizes. 
 agent's first write overwrote `learning/concentration.py` (loop0002's module); restored from
 HEAD before committing, nothing lost.
 
+**SS7 and register sufficiency: two containers, not members (2026-11-12, one agent session;
+`reports/ss7_register_sufficiency.md`, §0 the summary; `paper1/ss7_register.py`, 16 tests;
+Lean under `Complex/`: `SequencingMaxCost.lean`, `RegisterSufficiency.lean`,
+`RegisterSufficiencyFormula.lean`, `BinaryOutTree*.lean`, 196 declarations, no `sorry`, three
+standard axioms; paper 1 Section 3 paragraph "Two containers in Garey and Johnson's list",
+Appendix A row `containers`, `paper1/equivalences.md` rows 14–15 with the new status label
+**container**; nothing re-solved, under one core-hour).** **SS7** (max cumulative cost, G&J
+p. 238): MOSP embeds — open(c) at +1, close(c) at −1, patterns at 0, open ≺ p ≺ close and
+**open(c) ≺ close(c)** (needed: a pattern-less customer otherwise lowers every prefix sum) —
+and `ss7Value (toSS7 M) = mospValue M = pw + 1` (Lean, both directions; 673 matrices ≤ 3×3
+exhaustively); costs in `{−1, 0, 1}`, the restriction G&J record NP-complete. **No derived
+graph**: the value is not a function of comparability graph + costs (two tasks: `a ≺ b` at
+(+1, −1) has value 1, its dual 0), and no graph read off pairs or bounded Hasse neighbourhoods
+is within any constant (`no_local_derived_graph`, `_band`). **PO1** (register sufficiency):
+`pb_R(D) = 1 + min over topological layouts of the pre-placement boundary` (Lean; 33,867 dags
++ 2,000 at 9 vertices, 0 mismatches) — **in print as Austrin–Pitassi–Wu 2011 Lemma 2.12**,
+without the +1; `pw(G_u) + 1 = pbw ≤ pb`, and on the complete binary out-tree of height `h`,
+`pb = h + 1` against `pbw ≤ ⌈h/2⌉ + 1` (Lean): **unbounded gap, no band**; `pb ≤ 2 pw(G_u) + 1`
+on every dag on record, open in general; the complex reaches PO1 through the best orientation
+(KP Thm 3.1, row 13). Literature: all four sources closed (Abdel-Wahab 1976 is a Waterloo
+thesis on microfiche; Sethi 1975 and GLT 1980 have STOC versions in ACM's open backfile,
+browser-only); Monma–Sidney 1977, Austrin–Pitassi–Wu 2011, Hertel–Pitassi 2010 obtained. Side
+finding: `fixed_parameter_algorithm/pathwidth_fpt.py` returns 1 on complete binary trees of
+height 4 and 5 (true 2, 3) — the known tree bug of the todo, not fixed.
+
 **Unrelated to the plan:**
 - Fix the pathwidth SAT encoding variable ID collision bug in `encoding.py`.
 - ~~Becceneri, Yanasse & Soma (2004) is still missing~~ — **obtained 2026-09-27**,

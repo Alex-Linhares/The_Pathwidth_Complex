@@ -57,6 +57,8 @@ labels, in this order of strength:
   and used only as an explicit hypothesis, never asserted (no `sorry`);
 - **false as stated** — Table 1's claim fails; the counterexample is proved in
   Lean.
+- **container** — the problem contains a member as a special case and has no
+  derived graph of its own (proved); not a member (added 2026-11-12).
 
 All Lean names are in namespace `MOSPFormalization` (with `Complex.` for the
 files under `Complex/`); every one listed here depends only on `propext`,
@@ -77,6 +79,8 @@ files under `Complex/`); every one listed here depends only on `propext`,
 | 11 | Edge separation | [14] Lengauer 1981, misattributed: its edge game is cutwidth (p. 468), Def. 6 modified cutwidth; its vertex game VSG is `vs` | `cw`, `mcw` unbounded against `pw` (stars); `VSG = max(1, vs)`; Thm 4 `vs(G_du) = vs + 1` (≥ 1 edge) | `cutwidth_unbounded`, `modCutwidth_unbounded`, `vsg_eq_max`, `vertexSeparation_triangleGraph` (`EdgeSeparation.lean`) | **false as stated** (and misattributed); VSG **proved** |
 | 12 | Vertex separation | [13] Kinnersley 1992 Thm 3.1 | `vs = pw` | `vertexSeparation_eq_pathwidth` (`VSEquivPW.lean`) | **proved** |
 | 13 | Progressive pebbling (not in Table 1; loop0006, P.1–P.9) | Lengauer 1981 Thms 2, 3; [10] K&P 1986 Thm 3.1 | `mpb = mpbw = vs + 1 = pw + 1` (V nonempty), `= ns` (≥ 1 edge); `pbw(D) = vs(D_u) + 1 = pw(D_u) + 1 = Z(M_D)` (D nonempty, any digraph); `pbw(G_d) = vs + 2 = pw + 2` (≥ 1 edge), `= 1` edgeless | `mpb_eq_mpbw`, `mpb_eq_pathwidth_add_one`, `mpb_eq_nodeSearch`, `pbw_eq_pathwidth_lengauerU_add_one`, `pbw_eq_mospValue_pebbleMatrix` (`PebblingGu.lean`); `pbw_lengauerD_eq_pathwidth` (`Pebbling.lean`) | **proved**; **false as stated** on edge cases: K&P's `mpb = ns` on edgeless graphs, Lengauer's Thm 2 instance form at K = 1 |
+| 14 | SS7, sequencing to minimise maximum cumulative cost (not in Table 1; G&J p. 238, `reports/ss7_register_sufficiency.md`) | Abdel-Wahab 1976; G&J SS7 | contains MOSP: `ss7Value (toSS7 M) = Z(M) = pw(G_M) + 1` (costs in `{−1, 0, 1}`, the restriction G&J record NP-complete) and register sufficiency (Abdel-Wahab's encoding); no derived graph — not a function of comparability graph + costs (2 tasks), no pairwise-local or bounded-radius rule within any constant; the MOSP-shaped restriction is row 1 | `ss7Value_toSS7`, `ss7Value_toSS7_eq_pathwidth_add_one`, `toSS7_cost_mem`, `exists_same_compGraph_cost_ne_ss7Value`, `no_local_derived_graph`, `no_local_derived_graph_band` (`Complex/SequencingMaxCost.lean`) | **container** |
+| 15 | PO1, register sufficiency (not in Table 1; G&J p. 272) | Sethi 1975; Austrin, Pitassi & Wu 2011 Lemma 2.12 (the layout formula, without the +1) | `pb_R(D) = 1 + min over topological layouts of max_i |preBoundary|` (vertex separation with a precedence constraint; `R = ∅` is KP's `pb`, `R` = outputs is G&J's); `pw(G_u) + 1 = pbw ≤ pb`, gap `⌊h/2⌋` on the binary out-tree of height `h`, unbounded; `≤ 2 pw(G_u) + 1` on every dag on record (to 6, 20,500 random to 11), open in general; `min over orientations of pb = pw + 1` (row 13) | `pbR_eq_topologicalDemand`, `pb_eq_topologicalDemand`, `registerDemand_eq_topologicalDemand` (`Complex/RegisterSufficiencyFormula.lean`); `pb_binaryOutTree`, `pbw_binaryOutTree_le`, `exists_gap_binaryOutTree` (`Complex/BinaryOutTree*.lean`) | **container** |
 
 **Tally.** Proved exactly: MOSP, gate matrix layout, one-dimensional logic,
 interval thickness, node search (full game), narrowness, vertex separation

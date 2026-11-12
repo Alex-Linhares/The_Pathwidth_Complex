@@ -392,3 +392,37 @@ vertex search of \citet{BRST1991}, and the maximum wavefront of
 $\es=\pes$, and no row needs it.
 One of the table's references, Kashiwabara and Fujisawa (1979), is one we could not obtain; its
 row is proved from \citet{LY2002ref6} and \citet{LY2002ref9}.
+
+\paragraph{Two containers in Garey and Johnson's list.} The problem list of
+\citet{GareyJohnson1979} has no member of the complex, exact or band: it was
+read entry by entry for this paper, and it holds no searching,
+interval-thickness, gate-matrix or vertex-separation problem, those names
+being later. Two of its entries contain the complex instead. SS7,
+\emph{sequencing to minimise maximum cumulative cost}
+\citep{AbdelWahab1976}, asks for a linear extension of a partial order on
+tasks with integer costs that minimises the largest prefix sum. Give every
+customer an opening task at cost $+1$ and a closing task at cost $-1$, every
+pattern a task at cost $0$, and order opening before pattern before closing
+for every requirement and opening before closing for every customer; then the
+least maximum prefix sum over linear extensions is the number of open stacks,
+so SS7 restricted to costs in $\{-1,0,1\}$, the case the list records as
+NP-complete, carries the open-stacks problem without naming
+it~\leanref{containers}. SS7 itself has no derived graph: its value is not
+determined by the comparability graph and the costs (two tasks suffice: $a$
+before $b$ at costs $(+1,-1)$ has value $1$ and the reversed order value
+$0$), and no graph read off pairs of tasks, or off bounded neighbourhoods in
+the Hasse diagram, is within any constant of it~\leanref{containers}. PO1,
+\emph{register sufficiency} \citep{Sethi1975}, is the one-shot black pebble
+game with the outputs retained. It equals pathwidth with a precedence
+constraint on the layout: one plus the least, over topological orderings, of
+the largest number of placed vertices still waiting for a successor, a
+formula \citet{AustrinPitassiWu2011} state as their Lemma~2.12 without the
+one~\leanref{containers}. It exceeds the black-and-white value $\pw(G_u)+1$
+of the progressive pebbling row without bound: on the complete binary
+out-tree of height $h$ it is $h+1$ against at most $\lceil h/2\rceil+1$, so
+no band holds, and the complex reaches it only through the best orientation,
+by Theorem~3.1 of \citet{LY2002ref10}. On every dag we tried, all to six
+vertices and 20,500 sparse random ones to eleven, register sufficiency is at
+most $2\pw(G_u)+1$, with equality at pathwidth one and two; whether a bound
+in the pathwidth holds in general is open. We found no prior statement of
+either containment.
