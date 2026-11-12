@@ -79,6 +79,66 @@ Started 2026-10-09. Check items off as they are done.
     and **GT47 Elimination Degree Sequence** (p. 201) — the chordal /
     treewidth side, out.
 
+## Two Garey & Johnson problems that contain the complex (owner, 2026-11-12)
+
+From `reports/garey_johnson_complex.md` §3 (the 1979 list holds no member of the
+complex, but these two contain it):
+
+- [ ] **SS7, sequencing to minimise maximum cumulative cost** (Abdel-Wahab 1976;
+      G&J p. 238, NP-complete even with costs in {−1, 0, 1}, polynomial on
+      series-parallel orders, Abdel-Wahab & Kameda 1978). MOSP is the special case
+      with an opening task (+1) and a closing task (−1) per customer, product tasks
+      at 0, open ≺ product ≺ close (checked exact on 300 instances), and PO1 is a
+      special case too (Abdel-Wahab's encoding, all 1,099 dags to 5 vertices). To
+      do: (a) prove the MOSP embedding in Lean on top of `MOSPGraph.lean` (the
+      value of the embedded instance equals `mospValue`); (b) decide whether a
+      derived graph exists for general SS7 — §3.1 gives the obstructions (the
+      orientation of ≺ against the signs decides the value on a 2-element poset; a
+      chain of +1 tasks); if none, state SS7 as a *container* of the complex, not a
+      member, in Section 3; (c) obtain Abdel-Wahab 1976 and Abdel-Wahab & Kameda
+      1978 (`literature/MISSING.md`); (d) one paragraph in the paper's related
+      work: the 1979 list carries open stacks without naming them.
+- [ ] **PO1, register sufficiency** (Sethi 1975; G&J p. 272) = one-shot black
+      pebbling with outputs retained. Proved: `pb(D) ≥ pbw(D) = pw(G_u) + 1` (row
+      13's Lean theorem plus "a black play is a black-white play"), strict from 5
+      vertices (`0→1, 0→2, 1→4, 2→3`: pb 3, pbw 2), gap 2 at 7–8 (all dags to 6,
+      4,000 random at 7–8); by brute force on 33,867 dags, `pb = 1 + min over
+      topological layouts of the pre-placement left boundary`, i.e. pathwidth with
+      a precedence constraint on the layout. To do: (a) prove the layout formula
+      (it is Sethi's one-shot game read as a layout; state it first, brute-force
+      it again at 9 vertices, then Lean on top of `PebblingGu.lean`); (b) decide
+      whether `pb − pw(G_u)` is bounded by a function of `pw(G_u)` or unbounded —
+      a family with growing gap (long paths of out-trees?) or a proof; if bounded,
+      PO1 is a sandwich member and gets a row; if unbounded, a container; (c)
+      Sethi 1975 and Gilbert–Lengauer–Tarjan 1980 to `literature/`.
+
+## The standard deviation of the pathwidth of a random graph (owner, 2026-11-12)
+
+- [ ] **What is proved cheaply**: pathwidth changes by at most one when one vertex's
+      edges change, so the vertex-exposure martingale (McDiarmid's inequality)
+      gives concentration of `pw(G(n, p))` within `O(√n)` of its median for every
+      `p`, Gaussian tails — the Shamir–Spencer argument for the chromatic number.
+      State and prove it (on paper; in Lean if Mathlib has Azuma/McDiarmid — check
+      `Mathlib.Probability` first, else state the Lipschitz lemma in Lean and cite
+      the inequality), one paragraph in Appendix E.
+- [ ] **Dense regime, `p` fixed**: `n − pw = (2 + √2 + o(1)) log_b n` with a window
+      of `o(log n)` from the proof (`reports/dense_staircase.md`); the staircase
+      count moves by a polynomial factor per unit of `s`, as the clique count does,
+      so two-point concentration (standard deviation below 1) is the expected
+      truth. Sharpen the second moment up to the threshold, Matula's clique-number
+      argument transposed to staircases; kill criterion: the overlap sum fails to
+      tend to one within `s* − O(1)`. Measure first on the proved dense cells (20
+      graphs per cell at 30–60, `reports/random_graph_middle.md` §4): the spread of
+      `pw` per cell and the mass on the two most frequent values.
+- [ ] **Sparse regime, `p = c/n`**: no exact value is possible while the mean's
+      constant is unknown (Lee–Lee–Oum: linear, constant not explicit). Measure the
+      standard deviation per cell from what is on record (`learning/data/ensemble/`,
+      150 per cell at `n ≤ 40`; the 50–75 campaign; the 320 middle-regime graphs)
+      and fit its growth in `n` at fixed `c`: `√n` (the martingale ceiling), `n^{1/2−o(1)}`
+      (Heckel–Riordan's chromatic-number behaviour), or bounded. Report as
+      measurement only; no new solving. Record the per-cell table in Appendix E
+      beside the means.
+
 ## The parallel tabu step, proved and run on the hardest instances (owner, 2026-11-07)
 
 - [ ] **Prove it.** The neighbours of one tabu step are independent exact calls
