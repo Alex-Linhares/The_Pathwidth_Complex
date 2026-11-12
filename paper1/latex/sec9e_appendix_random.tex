@@ -263,6 +263,43 @@ graph with at most six vertices, and the claim was then handed to a second,
 independent reading with its own code, which confirmed it and found nothing
 to correct beyond wording; its report is \path{reports/dense_staircase_refutation.md}.
 
+\paragraph{How concentrated.}
+Everything above is about the location of $\mathrm{pw}(G(n,p))$; its spread
+has a ceiling that costs one line. Pathwidth is $1$-Lipschitz under vertex
+exposure: two graphs on the same vertices that agree on every pair avoiding
+$v$ have pathwidths within one of each other, since $v$ can be put into every
+bag of a decomposition of either~\leanref{concentration}. Exposing the
+vertices one at a time therefore gives $n$ independent coordinates with
+difference bound $1$, and the bounded-differences inequality of
+\citet{McDiarmid1989}, the argument \citet{ShamirSpencer1987} used for the
+chromatic number, gives for every $p$
+\[
+  \Pr\bigl[\,|\mathrm{pw}-\mathbb E\,\mathrm{pw}|\ge t\,\bigr]\le 2e^{-2t^{2}/n},
+  \qquad \mathrm{Var}(\mathrm{pw})\le n/4 ,
+\]
+a standard deviation at most $\sqrt n/2$; the same observation is made for
+treewidth by \citet{Gao2012} and \citet{DoErdeKang2024}. The ceiling is far
+from tight. At $p=\tfrac12$, where Theorem~\ref{thm:dense} puts $n-\mathrm{pw}$
+within $o(\log n)$ of $(2+\sqrt2)\log_{2}n$, the proved widths at
+$n=30,40,50,60$ have standard deviations $0.91$, $0.75$, $0.70$, $0.76$
+against ceilings $2.7$ to $3.9$, with $75$ to $95$ per cent of each cell on
+two values. The clique number of $G(n,p)$ is concentrated on two values
+\citep{Matula1976,BollobasErdos1976}, and the block first moment behind
+Theorem~\ref{thm:dense} drops by $n^{-(\sqrt2+o(1))}$ per unit of $s$ as the
+clique count does, so the upper tail of $n-\mathrm{pw}$ is sharp to one step;
+but the second moment on staircases is not, and cannot be made so: a
+staircase, unlike a clique, has $e^{\Theta(\log n)}$ cheap deformations
+(permutations of its sloped part of small depth), each a distinct forced set
+of nearly the same cost, and the sum over them exceeds one step of the first
+moment for $p\le\tfrac12$. Whether $n-\mathrm{pw}$ is two-point concentrated is
+open; what the second moment can give is a window of a bounded number of
+values. At fixed $c$ the standard deviation of $\mathrm{pw}(G(n,c/n))$ on the
+proved cells of the sparse pilot ($137$ graphs per cell at $n=20$ to $60$)
+grows like $n^{\gamma}$ with $\gamma=0.34$ to $0.43\pm0.07$ at $c=3$ to $10$:
+a bounded spread is excluded, and $\sqrt n$ is not distinguishable from
+$n^{1/2-o(1)}$ at these sizes. The details are in
+\path{reports/pathwidth_concentration.md}.
+
 \paragraph{A trivial upper bound.}
 The upper end of the sandwich at fixed $c$ has been the degree-sequence bound
 of \citet[Corollary~5.2]{EdwardsMcDermid2015}. A bound that needs no structure

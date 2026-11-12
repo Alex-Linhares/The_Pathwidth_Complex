@@ -1903,6 +1903,30 @@ pebbling with `pb ≥ pbw = pw(G_u) + 1`, strict from 5 vertices, gap 2 at 7–8
 Fourteen `refs.bib` entries proposed, not applied; three bibliographic records from memory,
 flagged. Nothing on record touched.
 
+**The standard deviation of the pathwidth of a random graph (2026-11-12, one agent session;
+`reports/pathwidth_concentration.md`, §0 the summary; `learning/pathwidth_concentration.py`,
+33 tests; `lean/MOSPFormalization/Concentration.lean`, 18 declarations, no `sorry`, three
+standard axioms; the paper's Appendix E paragraph "How concentrated", Appendix A row
+`concentration`; nothing solved, under 0.1 core-hours).** **Ceiling, proved**: pathwidth is
+1-Lipschitz under vertex exposure (`pathwidth_lipschitz_vertex`; brute-forced on 500,793
+neighbourhood replacements to 7 vertices, 0 violations), so McDiarmid gives
+`P(|pw − E pw| ≥ t) ≤ 2 exp(−2t²/n)`, `sd ≤ √n/2`, for every `p` — the Shamir–Spencer argument;
+Mathlib has Azuma in sub-Gaussian form but not McDiarmid, so the two probabilistic
+statements are `Prop`s with the citation. The same observation is in print for treewidth
+(Gao 2012; Do–Erde–Kang 2024). **Dense (`p = ½`)**: measured sd 0.91, 0.75, 0.70, 0.76 at
+`n = 30–60` (ceiling 2.7–3.9), 75–95% of each cell on two values; the corner-block first
+moment drops by `n^{−1.414}` per unit of `s`, so the upper tail is sharp to one step like
+the clique number's, but the second moment on staircases **cannot** be made sharp: a
+staircase has `e^{Θ(log n)}` cheap deformations (small-depth permutations of its sloped
+part, each a distinct forced set; loss lemma brute-forced on 86,400 pairs), and their sum
+exceeds one first-moment step at `p ≤ ½` (`R ≥ n^{0.41}` at `s* − 1`). Two-point
+concentration is **neither proved nor refuted**; the kill criterion as stated was not met
+(the slack is polynomial, not `e^{Θ(L log L)}`), in substance met. **Sparse**: sd 1.0–1.5 at
+`c = 3–10`, `n = 20–60` (0.31–0.47 of the ceiling), growth `n^γ` with `γ = 0.34–0.43 ± 0.07`;
+bounded excluded, `√n` and `n^{1/2−o(1)}` indistinguishable at these sizes. Incident: the
+agent's first write overwrote `learning/concentration.py` (loop0002's module); restored from
+HEAD before committing, nothing lost.
+
 **Unrelated to the plan:**
 - Fix the pathwidth SAT encoding variable ID collision bug in `encoding.py`.
 - ~~Becceneri, Yanasse & Soma (2004) is still missing~~ — **obtained 2026-09-27**,
