@@ -114,14 +114,21 @@ complex, but these two contain it):
 
 ## The standard deviation of the pathwidth of a random graph (owner, 2026-11-12)
 
-- [ ] **What is proved cheaply**: pathwidth changes by at most one when one vertex's
+- [x] *(2026-11-12, `reports/pathwidth_concentration.md` §1; Lean `Concentration.lean`,
+      `pathwidth_lipschitz_vertex`, no sorry; Mathlib has Azuma–Hoeffding but not McDiarmid, so
+      the inequality is a cited `Prop`; the Appendix E paragraph is proposed in §7, not applied.)*
+      **What is proved cheaply**: pathwidth changes by at most one when one vertex's
       edges change, so the vertex-exposure martingale (McDiarmid's inequality)
       gives concentration of `pw(G(n, p))` within `O(√n)` of its median for every
       `p`, Gaussian tails — the Shamir–Spencer argument for the chromatic number.
       State and prove it (on paper; in Lean if Mathlib has Azuma/McDiarmid — check
       `Mathlib.Probability` first, else state the Lipschitz lemma in Lean and cite
       the inequality), one paragraph in Appendix E.
-- [ ] **Dense regime, `p` fixed**: `n − pw = (2 + √2 + o(1)) log_b n` with a window
+- [x] *(2026-11-12, §2 of the same report: measured — sd 0.70–0.91, two-value mass 0.75–0.95
+      at 30–60; the transposition fails at its first step: the staircase second moment's
+      corner-block slack is `e^{Θ(L)}`, not `e^{Θ(L log L)}` (kill as stated not met), but exceeds
+      one step of the first moment for `p ≤ ½`, so two-point is neither proved nor refuted.)*
+      **Dense regime, `p` fixed**: `n − pw = (2 + √2 + o(1)) log_b n` with a window
       of `o(log n)` from the proof (`reports/dense_staircase.md`); the staircase
       count moves by a polynomial factor per unit of `s`, as the clique count does,
       so two-point concentration (standard deviation below 1) is the expected
@@ -130,7 +137,10 @@ complex, but these two contain it):
       tend to one within `s* − O(1)`. Measure first on the proved dense cells (20
       graphs per cell at 30–60, `reports/random_graph_middle.md` §4): the spread of
       `pw` per cell and the mass on the two most frequent values.
-- [ ] **Sparse regime, `p = c/n`**: no exact value is possible while the mean's
+- [x] *(2026-11-12, §3 of the same report: `γ = 0.34–0.43 ± 0.07` at `c = 3–10`, `n ≤ 80`;
+      bounded rejected, `√n` and `n^{1/2−o(1)}` indistinguishable; the per-cell table proposed
+      for Appendix E in §7.3, not applied.)*
+      **Sparse regime, `p = c/n`**: no exact value is possible while the mean's
       constant is unknown (Lee–Lee–Oum: linear, constant not explicit). Measure the
       standard deviation per cell from what is on record (`learning/data/ensemble/`,
       150 per cell at `n ≤ 40`; the 50–75 campaign; the 320 middle-regime graphs)

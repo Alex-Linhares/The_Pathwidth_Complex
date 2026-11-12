@@ -1,0 +1,1 @@
+{'graphs': 1252, 'pairs': 500793, 'violations': 0, 'diff0': 290871, 'diff1': 209922, 'deletions': 8475, 'deletion_violations': 0, 'deletion_drop': 4198, 'oracle_disagreements': 0, 'max_n': 7, 'seconds': 88.6, 'distinct_graphs_evaluated': 310087}

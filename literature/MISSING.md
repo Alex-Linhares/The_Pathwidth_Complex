@@ -1677,3 +1677,63 @@ G&J's own (pp. 291–325) unless marked otherwise.
   which the report proves and checks on its own; the attribution is to be verified.
 - **Kashiwabara, T. & Fujisawa, T.** (1979). Interval thickness: recorded missing earlier
   (Table 1 ref. [5]); it is the clique-size sibling of GT35 and is not in G&J's list.
+
+## Concentration of the pathwidth of a random graph (2026-11-12)
+
+Behind `reports/pathwidth_concentration.md` (the item "The standard deviation of the
+pathwidth of a random graph" of `paper1/todo.md`). Nothing downloaded; two held PDFs
+read through `pdftotext`, the rest cited from the record and the standard references.
+
+**Held, read.** Gao, Y. (2012). Treewidth of Erdős–Rényi random graphs, random
+intersection graphs, and scale-free random graphs. *Discrete Applied Mathematics* 160,
+566–578 (`literature/2012-Gao-…`): Lemma 3.3 is McDiarmid's bounded-differences
+inequality (quoted as "Lemma 1.2 [21] and Theorem 1.19 [5]", [21] = McDiarmid 1989,
+[5] = Bollobás, *Random Graphs*, 2001) applied to the treewidth of `G(n, m)` through a
+weighted count of small tree components, with the remark (§1.1) that they "are not aware
+of any other application of the Hoeffding–Azuma inequality in the study of random
+discrete structures where this idea of weighted counts is beneficial". Do, Erde & Kang
+(2024, `literature/2024-Do-Erde-Kang-…`), concluding remarks: "the fact that rank- and
+tree-width are vertex-Lipschitz functions imply that these parameters are tightly
+concentrated about their mean, for example using the Azuma–Hoeffding inequality", with
+Frieze & Karoński as the reference, and the open question whether the concentration is
+within `o(ε³ n)` for small `ε`. **So the one-line Lipschitz observation is in print for
+treewidth and rank-width; for pathwidth we found no explicit statement, and the content
+is identical — no novelty is claimed.**
+
+**Not held.**
+
+- **McDiarmid, C.** (1989). On the method of bounded differences. In *Surveys in
+  Combinatorics 1989*, LMS Lecture Note Series 141, 148–188. The inequality
+  `P(f − E f ≥ t) ≤ exp(−2t² / Σ c_i²)` (Lemma 1.2 in Gao's citation); the source for
+  `PathwidthConcentration` in `Concentration.lean`.
+- **Shamir, E. & Spencer, J.** (1987). Sharp concentration of the chromatic number on
+  random graphs `G_{n,p}`. *Combinatorica* 7(1), 121–129. The vertex-exposure martingale
+  argument: `P(|χ − μ| > λ√n) < 2 exp(−λ²/2)` for every `p`.
+- **Efron, B. & Stein, C.** (1981). The jackknife estimate of variance. *Ann. Statist.*
+  9(3), 586–596; **Steele, J. M.** (1986). An Efron–Stein inequality for nonsymmetric
+  statistics. *Ann. Statist.* 14(2), 753–758; **Boucheron, S., Lugosi, G. & Massart, P.**
+  (2013). *Concentration Inequalities*. OUP, Corollary 3.2 (`Var ≤ ¼ Σ c_i²`). The source
+  for `PathwidthVarianceBound`.
+- **Matula, D. W.** (1972). The employee party problem. *Notices AMS* 19, A-382; (1976),
+  the SMU report already listed under "Dense random graphs"; **Bollobás, B. & Erdős, P.**
+  (1976), already listed; **Grimmett, G. R. & McDiarmid, C. J. H.** (1975), already
+  listed. The two-point concentration of the clique number, the argument §2 of the report
+  tries to transpose and finds blocked at its first step.
+- **Alon, N. & Krivelevich, M.** (1997). The concentration of the chromatic number of
+  random graphs. *Combinatorica* 17(3), 303–313. Two-point concentration of `χ(G(n, p))`
+  for `p < n^{−1/2−ε}`; the model for a two-point statement from a martingale plus a
+  structural argument.
+- **Heckel, A.** (2021). Non-concentration of the chromatic number of a random graph.
+  *J. Amer. Math. Soc.* 34, 245–260; **Heckel, A. & Riordan, O.** (2023). How does the
+  chromatic number of a random graph vary? *J. London Math. Soc.* 108(5), 1769–1815.
+  `χ(G(n, ½))` is not concentrated on fewer than `n^{1/2 − o(1)}` values, against the
+  `√n` martingale ceiling — the "`n^{1/2 − o(1)}`" hypothesis of the sparse-regime fit,
+  which the record at `n ≤ 120` cannot separate from `√n`.
+- **Kuang, Y. & McDiarmid, C.** (1985), already listed under "Dense random graphs":
+  whether their bandwidth statement comes with a concentration width is not known here
+  (the paper is unread).
+
+**Mathlib, checked at rev `1192d624`**: Hoeffding's lemma and the Azuma–Hoeffding
+inequality in sub-Gaussian form (`Mathlib/Probability/Moments/SubGaussian.lean`,
+`measure_sum_ge_le_of_hasCondSubgaussianMGF`); no McDiarmid, no bounded-differences
+variance bound, no Efron–Stein.
