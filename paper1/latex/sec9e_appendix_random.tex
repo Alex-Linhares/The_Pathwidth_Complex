@@ -264,41 +264,145 @@ independent reading with its own code, which confirmed it and found nothing
 to correct beyond wording; its report is \path{reports/dense_staircase_refutation.md}.
 
 \paragraph{How concentrated.}
-Everything above is about the location of $\mathrm{pw}(G(n,p))$; its spread
-has a ceiling that costs one line. Pathwidth is $1$-Lipschitz under vertex
-exposure: two graphs on the same vertices that agree on every pair avoiding
-$v$ have pathwidths within one of each other, since $v$ can be put into every
-bag of a decomposition of either~\leanref{concentration}. Exposing the
-vertices one at a time therefore gives $n$ independent coordinates with
-difference bound $1$, and the bounded-differences inequality of
-\citet{McDiarmid1989}, the argument \citet{ShamirSpencer1987} used for the
+Everything above is about the location of $\mathrm{pw}(G(n,p))$. Its spread
+has a ceiling that costs one line, a measured value in both regimes, and, in
+the dense regime, a precise reason why the argument that pins the clique
+number to two values does not pin the pathwidth.
+
+\begin{lemma}[pathwidth is $1$-Lipschitz under vertex exposure]
+\label{lem:lipschitz}
+Let $G$ and $G'$ be graphs on the same vertex set that agree on every pair
+of vertices avoiding $v$. Then $|\mathrm{pw}(G)-\mathrm{pw}(G')|\le1$. In
+particular deleting the edges at a vertex, or the vertex itself, lowers the
+pathwidth by at most one and never raises it~\leanref{concentration}.
+\end{lemma}
+
+The proof is the construction: put $v$ into every bag of an optimal path
+decomposition of $G'$; every edge of $G$ at $v$ is then covered, every other
+edge was already covered, and the width rises by at most one. The lemma
+was brute-forced before it was stated, on every graph with at most seven
+vertices, every vertex, and every one of the $2^{n-1}$ replacements of its
+neighbourhood: 500,793 pairs, no violation, the difference exactly one on
+41.9 per cent of them; and on all 8,475 vertex deletions, no violation.
+Exposing the vertices one at a time now gives $n$ independent coordinates
+with difference bound $1$, and the bounded-differences inequality of
+\citet{McDiarmid1989}, in the form \citet{ShamirSpencer1987} used for the
 chromatic number, gives for every $p$
 \[
   \Pr\bigl[\,|\mathrm{pw}-\mathbb E\,\mathrm{pw}|\ge t\,\bigr]\le 2e^{-2t^{2}/n},
   \qquad \mathrm{Var}(\mathrm{pw})\le n/4 ,
 \]
-a standard deviation at most $\sqrt n/2$; the same observation is made for
-treewidth by \citet{Gao2012} and \citet{DoErdeKang2024}. The ceiling is far
-from tight. At $p=\tfrac12$, where Theorem~\ref{thm:dense} puts $n-\mathrm{pw}$
-within $o(\log n)$ of $(2+\sqrt2)\log_{2}n$, the proved widths at
-$n=30,40,50,60$ have standard deviations $0.91$, $0.75$, $0.70$, $0.76$
-against ceilings $2.7$ to $3.9$, with $75$ to $95$ per cent of each cell on
-two values. The clique number of $G(n,p)$ is concentrated on two values
-\citep{Matula1976,BollobasErdos1976}, and the block first moment behind
-Theorem~\ref{thm:dense} drops by $n^{-(\sqrt2+o(1))}$ per unit of $s$ as the
-clique count does, so the upper tail of $n-\mathrm{pw}$ is sharp to one step;
-but the second moment on staircases is not, and cannot be made so: a
-staircase, unlike a clique, has $e^{\Theta(\log n)}$ cheap deformations
-(permutations of its sloped part of small depth), each a distinct forced set
-of nearly the same cost, and the sum over them exceeds one step of the first
-moment for $p\le\tfrac12$. Whether $n-\mathrm{pw}$ is two-point concentrated is
-open; what the second moment can give is a window of a bounded number of
-values. At fixed $c$ the standard deviation of $\mathrm{pw}(G(n,c/n))$ on the
-proved cells of the sparse pilot ($137$ graphs per cell at $n=20$ to $60$)
-grows like $n^{\gamma}$ with $\gamma=0.34$ to $0.43\pm0.07$ at $c=3$ to $10$:
-a bounded spread is excluded, and $\sqrt n$ is not distinguishable from
-$n^{1/2-o(1)}$ at these sizes. The details are in
-\path{reports/pathwidth_concentration.md}.
+a standard deviation at most $\sqrt n/2$, and a median within
+$\sqrt{n\ln2/2}$ of the mean. The same remark is made for treewidth by
+\citet{Gao2012} and \citet{DoErdeKang2024}; for pathwidth we found no
+explicit statement, and the content is the one line above. Mathlib holds
+the Azuma--Hoeffding inequality in sub-Gaussian form but not McDiarmid's,
+so the lemma is a Lean theorem and the two displayed statements are stated
+propositions with the citation.
+
+\emph{The dense regime, measured.} The ceiling is far from tight.
+Table~\ref{tab:concdense} gives the four cells of proved widths at
+$p=\tfrac12$: the standard deviation is $0.7$ to $0.9$ against a ceiling of
+$2.7$ to $3.9$, and $75$ to $95$ per cent of each cell sits on two values.
+Twenty graphs per cell cannot separate a two-point law from a three-point
+one; what they show is where the mass sits, namely on the two values just
+below the largest $s$ at which some corner block still has expected count at
+least one, with a few graphs at that $s$ itself.
+
+\begin{table}[htbp]
+\centering
+\caption{The spread of $\mathrm{pw}(G(n,\tfrac12))$ on the proved cells of
+Figure~\ref{fig:middle}'s companion run, 20 graphs each. ``Top two'' is the
+share of the cell on its two most frequent values; $s_{\mathrm{block}}$ is the
+largest $s$ whose corner-block first moment is at least one; the last column
+is the ceiling $\sqrt n/2$.}
+\label{tab:concdense}
+\begin{tabular}{@{}rlrrrrrr@{}}
+\toprule
+$n$ & $\mathrm{pw}$ histogram & mean & sd ($\pm$ se) & top two & spread & $s_{\mathrm{block}}$ & $\sqrt n/2$ \\
+\midrule
+30 & 16:1, 19:11, 20:8 & 19.25 & 0.91 (0.15) & 0.95 & 4 & 12 & 2.74 \\
+40 & 26:1, 27:1, 28:12, 29:6 & 28.15 & 0.75 (0.12) & 0.90 & 3 & 13 & 3.16 \\
+50 & 36:3, 37:10, 38:7 & 37.20 & 0.70 (0.11) & 0.85 & 2 & 14 & 3.54 \\
+60 & 45:5, 46:9, 47:6 & 46.05 & 0.76 (0.12) & 0.75 & 2 & 15 & 3.87 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\emph{Why the clique argument does not transfer.} The clique number of
+$G(n,p)$ is concentrated on two values \citep{Matula1976,BollobasErdos1976}
+because its first moment drops by a polynomial factor per unit of $k$ and
+its second moment is $1+o(1)$ up to one step below the threshold. The first
+half transfers: the corner-block first moment behind Theorem~\ref{thm:dense}
+drops by $n^{-(\sqrt2+o(1))}$ per unit of $s$ at its threshold (measured
+$e^{-3.2}$ to $e^{-3.8}$ per step at $n=30$ to $60$, where $\log_{2}n$ is
+only $5$ to $6$), so the upper tail of $n-\mathrm{pw}$ is sharp to one step.
+The second half does not. Writing $\mathbb E[X^{2}]/\mathbb E[X]^{2}$ for
+staircases exactly as a sum over partial injections from the slots of one
+staircase to the slots of another, the dangerous terms are the bijections
+of the corner block onto itself, and for those the overlap lost against the
+aligned placement is at least the \emph{floored depth}
+$\sum_{i}(\pi(i)-\max(i,F))^{+}$ of either permutation $\pi$, with equality
+when the other is the identity (brute-forced on eight blocks and 86,400
+pairs). The generating function of the depth has a transfer matrix over the
+number of open positions with a finite spectral radius, so the slack of this
+family is $e^{\kappa\log_{b}n}$, a polynomial in $n$, not the
+$e^{\Theta(\log n\log\log n)}$ of the cruder bracket; but its rate is to be
+compared with the first moment's gain $(\sqrt2+o(1))\ln n$ per step, and the
+comparison goes the wrong way for $p\le\tfrac12$: at $p=\tfrac12$ a
+sub-family whose contribution is exact, one permutation free and the other
+the identity on the sloped part, already contributes $n^{0.41}\to\infty$ at
+one step below the threshold. A clique has no roles, and its $k!$
+relabellings are divided out exactly; a staircase has polynomially many
+cheap deformations, permutations of its sloped part of small depth, each a
+distinct forced set of nearly the same cost, and the second moment pays for
+that clustering. What the staircase second moment can give is a window of a
+bounded number of values, $3$ to $6$ at $p=\tfrac12$, $6$ to $14$ at
+$p=0.3$, $2$ to $3$ at $p=0.7$, if the family bound is the whole sum, which
+is not proved. Whether $n-\mathrm{pw}$ is two-point concentrated is open in
+both directions; Janson's inequality changes the rate and not the window,
+and a proof would need a second moment on clusters of staircases or a
+canonical representative of each cluster.
+
+\emph{The sparse regime, measured.} At fixed $c$ no exact value is
+possible while the constant in the mean is unknown, so the spread is
+measured and its growth fitted. Table~\ref{tab:concsparse} gives the pilot
+cells of proved widths of $G(n,c/n)$, 137 graphs per cell. The standard
+deviation is $1.0$ to $1.5$ stacks at $c=3$ to $10$ and $n=20$ to $60$, a
+third to a half of the ceiling $\sqrt n/2$. A weighted fit of
+$\mathrm{sd}\propto n^{\gamma}$ over the uncensored cells, which reach
+$n=70$ or $80$, gives $\gamma=0.34$ to $0.43$ with standard error $0.07$ at
+$c=3$ to $10$; a bounded spread ($\gamma=0$) is rejected at every
+$c\ge2$ ($\chi^{2}$ of $33$ to $56$ against $2.5$ to $12$ for the free fit),
+and $\gamma=\tfrac12$ is within two standard errors at $c=2,4,6,8,10$. The
+cells span a factor $3.5$ to $4$ in $n$, over which an $n^{1/2-o(1)}$ law
+with a slowly varying correction moves $\ln\mathrm{sd}$ by less than one
+standard error, so the record cannot distinguish the martingale ceiling's
+$\sqrt n$ from the $n^{1/2-o(1)}$ that Heckel and Riordan found for the
+chromatic number of $G(n,\tfrac12)$; whether that phenomenon has a pathwidth
+analogue at fixed $c$ is not a question these sizes can answer.
+
+\begin{table}[htbp]
+\centering
+\caption{The spread of $\mathrm{pw}(G(n,c/n))$ on the proved pilot cells,
+137 graphs per cell: mean and, in parentheses, standard deviation (standard
+error of the latter $0.05$ to $0.09$); then the fitted growth exponent over
+the uncensored cells to $n=70$ or $80$ and the ratio of the measured
+standard deviation to the ceiling $\sqrt n/2$ at $n=60$.}
+\label{tab:concsparse}
+\begin{tabular}{@{}rrrrrrrr@{}}
+\toprule
+$c$ & $n=20$ & $30$ & $40$ & $50$ & $60$ & $\gamma\pm$se & sd$/(\sqrt n/2)$ \\
+\midrule
+2  & 2.42 (0.69) & 2.89 (0.84) & 3.36 (1.01) & 3.68 (1.08) & 4.26 (1.02) & $0.38\pm0.06$ & 0.26 \\
+3  & 3.95 (1.01) & 4.96 (1.20) & 6.03 (1.24) & 7.08 (1.47) & 8.13 (1.48) & $0.34\pm0.07$ & 0.38 \\
+4  & 5.44 (1.01) & 7.09 (1.16) & 8.81 (1.19) & 10.28 (1.44) & 12.27 (1.53) & $0.38\pm0.07$ & 0.40 \\
+6  & 7.87 (0.90) & 10.49 (1.18) & 13.37 (1.17) & 16.27 (1.41) & 18.78 (1.44) & $0.42\pm0.07$ & 0.37 \\
+8  & 9.77 (0.81) & 13.39 (1.02) & 17.04 (1.21) & 20.37 (1.22) & 24.03 (1.33) & $0.43\pm0.07$ & 0.34 \\
+10 & 11.42 (0.79) & 15.47 (0.97) & 19.72 (1.07) & 23.74 (1.11) & 27.80 (1.20) & $0.38\pm0.07$ & 0.31 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \paragraph{A trivial upper bound.}
 The upper end of the sandwich at fixed $c$ has been the degree-sequence bound
