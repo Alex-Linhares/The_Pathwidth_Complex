@@ -57,10 +57,14 @@ is far from random, and the sign says in which direction (§6). The designed MOS
 the graph collections give exactly that: the Harwell–Boeing meshes, the PACE and
 TreewidthLIB graphs and the VSPLIB grids sit **40–70 stacks below** the random
 prediction (small separators the random model cannot see; Wilson's GP instances 7.7 below,
-the VLSI circuits 5.9 below), the **cages sit above it** (four of the five open cubic
-cages have a record width 4 above min-fill treewidth and 17–24 above the first-moment
-floor: more pathwidth than a random cubic graph, as `reports/random_graph_classes.md`
-said), and the Rome graphs, the control-flow graphs and the SCOOP covers sit within one
+the VLSI circuits 5.9 below), the **cages sit slightly below it** (the record widths of
+Ljubljana, the Balaban 11-cage and the Tutte 12-cage are 4 below min-fill treewidth,
+Biggs–Smith 1 below, Foster 1 above; the records are upper bounds, so the true distances
+below are at least these; they are 17–24 above the first-moment floor only because that
+floor is 2 on every cubic graph — *corrected 2026-11-12: the first draft of this sentence
+had the sign reversed; the figure and `quick_estimate_designed.csv` were right*. What
+places the cages above random cubic graphs is their certified floors against the
+random-cubic constants, `reports/gaspers_cages.md`, not this recipe), and the Rome graphs, the control-flow graphs and the SCOOP covers sit within one
 stack of it with the floor well below (the SCOOP instance `B_REVAL_145` is two stacks
 below its floor, as `reports/excess_phase_diagram.md` §4 found). The sign is **proved
 pathwidth minus estimate**: positive is expansion beyond random, negative is structure
@@ -264,12 +268,14 @@ opposite sign as `recipe_bias`), with the floor's distance beside it:
 Reading the sign. The floor reads `n` and the density only, so for a graph with `pw` far
 below the random floor the graph has small separators that no random graph of its
 density has — meshes, grids, planar and near-planar control-flow and PACE graphs, and the
-designed MOSP covers of Wilson. The cages are the other direction: cubic, so their
+designed MOSP covers of Wilson. The cages are not: cubic, so their
 first-moment floor is 2 and their ceiling the random-ordering width, and their record
-width sits above the treewidth estimate by 4 on three of the five (above by 1 on Foster,
-below by 1 on Biggs–Smith; records are upper bounds, so these distances are at most the
-true ones) — expansion beyond what a random cubic graph has, the reading of
-`reports/gaspers_cages.md`. The recipe's bias on these collections is the floor's: on the
+width sits *below* the treewidth estimate by 4 on three of the five (below by 1 on
+Biggs–Smith, above by 1 on Foster; records are upper bounds, so the true widths are at
+least that far below) — the recipe reads them as mildly less than random, and the
+expansion beyond a random cubic graph that `reports/gaspers_cages.md` reports is seen by
+their certified floors against the random-cubic constants, not by this recipe. *(Corrected
+2026-11-12; the first draft had the sign reversed.)* The recipe's bias on these collections is the floor's: on the
 designed sets the floor is above the truth on 46–83% of the instances and the bracket
 inverts, so the estimate is pulled up to the floor or the midpoint (PACE 2017 exact:
 treewidth alone is +1.5, the recipe +43.9). **That is the structure detector working as
@@ -329,8 +335,8 @@ rows, the floor against `lb_best`, the Chu & Stuckey classes by size, the error 
 > sign: the Harwell–Boeing meshes, the PACE graphs and the VSPLIB grids have pathwidth
 > 9–67 below the parameter-only prediction (small separators the model cannot see), the
 > SCOOP, Rome and control-flow graphs sit within half a stack of it, and the five open
-> cubic cages sit 1–4 above the treewidth estimate and 17–24 above the first-moment
-> floor (Figure E.y). Above 100 customers the parameter-only floor is also nearer the
+> cubic cages sit 1–4 below the treewidth estimate on four of the five, above the
+> first-moment floor only because that floor is trivial on cubic graphs (Figure E.y). Above 100 customers the parameter-only floor is also nearer the
 > optimum than the solver's own degree-based lower bound (7.5 against 14.0 below it on
 > the 125 × 125 classes), though it is not a bound and cannot start a descent. The four
 > numbers cost 25–49 ms at 100–125 customers; the solver's bound costs seconds.

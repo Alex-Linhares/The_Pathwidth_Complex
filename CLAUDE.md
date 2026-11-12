@@ -1952,6 +1952,29 @@ browser-only); Monma–Sidney 1977, Austrin–Pitassi–Wu 2011, Hertel–Pitass
 finding: `fixed_parameter_algorithm/pathwidth_fpt.py` returns 1 on complete binary trees of
 height 4 and 5 (true 2, 3) — the known tree bug of the todo, not fixed.
 
+**The quick estimate, tested and killed (2026-11-12, one agent session;
+`reports/quick_estimate.md`, §0 the summary; `learning/quick_estimate.py`, 18 tests; figures
+`paper1/figures/quick_estimate_{truth,error,bracket,designed}.pdf` from
+`paper1/latex/figures/quick_estimate_*.py`, data `paper1/latex/data/quick_estimate_*.csv`; the
+paper's Appendix E paragraph "A practical recipe, tested" with the bracket and
+distance-from-random figures; nothing solved, 1.2 core-hours).** Four parameter-only numbers
+per instance (first-moment floor at 0.05, min(random-ordering width, `n − α_greedy`), min-fill
+treewidth, the corner-block threshold where `p ≥ 0.3`), one pre-registered estimate and a
+pre-registered kill criterion, on 70,708 certified instances. **Kill met in every band: use
+treewidth** — tw alone MAE 0.31 / exact 75.3% on 57,673 random-model instances, the recipe
+0.93 / 50.0%. The bracket holds on 99.6% and binds on 0.3% (floor tight 0.9%, ceiling 2.6–9
+above); the block threshold is the median at `p = ½` on `G(n, p)` (beats tw there) but +2 on
+clique covers of the same density. **Distance from random, signed** (proved − estimate): HB
+meshes −60, PACE −37 to −44, VSPLIB grids −9, Wilson −7.7 (below the floor on 15 of 20),
+Rome/SCOOP/control-flow within ±0.5, VSPLIB trees +3.4; **the five open cages are 1–4 below
+the treewidth estimate on four of five** (the agent's text first said "above"; its figure and
+CSV were right, the report is corrected) and above the first-moment floor only because it is
+2 on cubic graphs. Above 100 customers the parameter-only floor is nearer the optimum than
+`_lower_bound` (7.5 vs 14.0 below at 125) but is not a bound. Cost 25–49 ms at 100–125
+customers; `_lower_bound` seconds. Notes: `learning/data/instances.csv` is stale on four
+125×125 provenances (rebuild); `_lower_bound` runs the expansion bound unbudgeted by default
+against its docstring (owner's call, on the todo).
+
 **Unrelated to the plan:**
 - Fix the pathwidth SAT encoding variable ID collision bug in `encoding.py`.
 - ~~Becceneri, Yanasse & Soma (2004) is still missing~~ — **obtained 2026-09-27**,

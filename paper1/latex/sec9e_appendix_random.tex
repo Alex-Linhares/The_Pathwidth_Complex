@@ -448,6 +448,63 @@ those graphs, losing to $n-\alpha(G)$ by $0.2$ to $2$ per cell. We found no
 prior statement of the width of a random ordering as a pathwidth bound on
 $G(n,p)$, in the searches recorded for this appendix.
 
+\paragraph{A practical recipe, tested.}
+The floors and ceilings of this appendix read an instance's parameters only,
+$n$, the pattern sizes or the edge density, the degree sequence, so they can
+be evaluated in a millisecond on anything. We asked how well they estimate
+the pathwidth of the 70,708 instances with a certified value on record, the
+corpus, the generated ensembles, 6,862 random graphs and the graph
+collections of Section~\ref{sec:results}, with the estimate and its kill
+criterion fixed before measuring: min-fill treewidth, clipped into the
+first-moment floor at level $0.05$ and the smaller of the random-ordering
+width and $n-\alpha_{\mathrm{greedy}}$, replaced by the corner-block
+threshold $n-s_{\mathrm{block}}+1$ where the density is at least $0.3$; the
+recipe had to beat min-fill treewidth alone on both mean absolute error and
+exact rate in every size band. It does not, in any band: treewidth alone has
+mean absolute error $0.31$ and is exact on $75$ per cent of the 57,673
+certified random-model instances, the recipe $0.93$ and $50$ per cent. The
+reasons are measured. The bracket contains the truth on $99.6$ per cent of
+those instances but binds on $0.3$ per cent of them, the floor being tight on
+$0.9$ per cent and the ceiling $2.6$ to $9$ stacks above
+(Figure~\ref{fig:bracket}); and the block threshold, which sits on the proved
+median at $p=\tfrac12$ on $G(n,p)$, is two stacks above the optimum on clique
+covers of the same density, which are two thirds of the record. What the
+recipe does measure is distance from the random model, with a sign
+(Figure~\ref{fig:designed}): the Harwell--Boeing meshes, the PACE graphs and
+the VSPLIB grids have pathwidth $9$ to $67$ below the parameter-only
+prediction, small separators the model cannot see; the SCOOP, Rome and
+control-flow graphs sit within half a stack of it; and the five open cubic
+cages sit one to four stacks below the treewidth estimate on four of the
+five, their records being upper bounds, and far above the first-moment floor
+only because that floor is trivial on a cubic graph. Above $100$ customers
+the parameter-only floor is also nearer the optimum than the solver's own
+degree-based lower bound, $7.5$ against $14.0$ below it on the
+$125\times125$ classes, though it is not a bound and cannot start a descent.
+The four numbers cost $25$ to $49$ milliseconds at $100$ to $125$ customers;
+the solver's bound costs seconds.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{quick_estimate_bracket.pdf}
+\caption{The theorems' floor and ceiling against proved pathwidths on random
+graphs: $G(n,c/n)$ at $c=3,6,10$ and $G(n,\tfrac12)$; dots and bars are the
+median and range of the proved widths per cell, hollow squares the recipe's
+estimate. The bracket always holds and rarely binds; at $p=\tfrac12$ the
+corner-block threshold sits on the median.}
+\label{fig:bracket}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{quick_estimate_designed.pdf}
+\caption{Distance from random: proved pathwidth minus the parameter-only
+estimate on the designed instance sets and the graph collections, mean and
+interquartile range; hollow where the record is an upper bound only.
+Negative is less pathwidth than a random graph of the same parameters, the
+signature of small separators.}
+\label{fig:designed}
+\end{figure}
+
 \paragraph{Other models.} The empty-pair argument is a statement about a
 product measure on the edges and transfers to any model whose pair
 probabilities can be written down; three such transfers bear on this paper.
